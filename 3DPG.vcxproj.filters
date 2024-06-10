@@ -86,6 +86,7 @@
     </ClInclude>
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Resources.h" />
+    <ClInclude Include="Interface\IObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
