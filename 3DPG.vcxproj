@@ -181,6 +181,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="DeviceResources.h" />
+    <ClInclude Include="Framework\Graphics.h" />
+    <ClInclude Include="Framework\Resources.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\CommonResources.h" />
     <ClInclude Include="Game\Scene\IScene.h" />
@@ -199,6 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DeviceResources.cpp" />
+    <ClCompile Include="Framework\Graphics.cpp" />
+    <ClCompile Include="Framework\Resources.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\CommonResources.cpp" />
     <ClCompile Include="Game\Scene\PlayScene.cpp" />

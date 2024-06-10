@@ -84,6 +84,8 @@
     <ClInclude Include="Game\Scene\SceneManager.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\Graphics.h" />
+    <ClInclude Include="Framework\Resources.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -119,6 +121,8 @@
     <ClCompile Include="Game\Scene\SceneManager.cpp">
       <Filter>Game\Scene</Filter>
     </ClCompile>
+    <ClCompile Include="Framework\Graphics.cpp" />
+    <ClCompile Include="Framework\Resources.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

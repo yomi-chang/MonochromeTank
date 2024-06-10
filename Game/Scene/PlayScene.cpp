@@ -27,7 +27,11 @@ PlayScene::PlayScene()
 	m_projection{},
 	m_isChangeScene{},
 	bodyModel{},
-	m_angle{}
+
+	m_angle{},
+	m_bodyPosition{},
+	m_turretPosition{},
+	m_canonPosition{}
 {
 }
 
@@ -73,11 +77,11 @@ void PlayScene::Initialize(CommonResources* resources)
 	fx->SetDirectory(L"Resources/Models");
 
 	// モデルを読み込む
-	bodyModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Body.cmo", *fx);
+	bodyModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankBody.cmo", *fx);
 
-	canonModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/canon.cmo", *fx);
+	canonModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankCanon.cmo", *fx);
 
-	turretModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/Turret.cmo", *fx);
+	turretModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankTurret.cmo", *fx);
 
 	// 回転角を初期化する（度）
 	m_angle = 0;
@@ -86,6 +90,14 @@ void PlayScene::Initialize(CommonResources* resources)
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
+
+	//速度の設定
+	m_speed = 0.05f;
+
+	//初期座標の設定
+	m_bodyPosition = { 0.0f,0.5,0.0f };
+	m_turretPosition = { 0.0f,1.0f,0.0f };
+	m_canonPosition = { 0.0f,1.0f,-0.6f };
 }
 
 //---------------------------------------------------------
@@ -95,42 +107,11 @@ void PlayScene::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
+	//キーボードイベントの処理
+	this->KeyBoardEvent();
+
 	// デバッグカメラを更新する
 	m_debugCamera->Update(m_commonResources->GetInputManager());
-
-	// 〇〇を回転する
-	m_angle++;
-	m_angle %= 360;
-
-
-	// キーボードステートトラッカーを取得する
-	const auto& kbTracker = m_commonResources->GetInputManager()->GetKeyboardTracker();
-
-	// スペースキーが押されたら
-	if (kbTracker->pressed.Space)
-	{
-		m_isChangeScene = true;
-	}
-
-	if (kbTracker->pressed.Down)
-	{
-		m_canonAngle += XMConvertToRadians(1.0f);
-	}
-
-	if (kbTracker->pressed.Down)
-	{
-		m_canonAngle += XMConvertToRadians(-1.0f);
-	}
-
-	if (kbTracker->pressed.Left)
-	{
-		m_turretAngle += XMConvertToRadians(-1.0f);
-	}
-
-	if (kbTracker->pressed.Right)
-	{
-		m_turretAngle += XMConvertToRadians(1.0f);
-	}
 }
 
 //---------------------------------------------------------
@@ -147,23 +128,25 @@ void PlayScene::Render()
 	m_gridFloor->Render(context, view, m_projection);
 
 	//車体
-	Matrix world = Matrix::CreateScale(0.01f);
-	world *= Matrix::CreateTranslation({ 0,0.5,0 });
-	world *= Matrix::CreateRotationY(XMConvertToRadians(static_cast<float>(m_angle)));
+	Matrix world = Matrix::CreateScale(1.0f);
+
+	world *= Matrix::CreateRotationY(m_angle);
+	world *= Matrix::CreateTranslation(m_bodyPosition);
+
 	bodyModel->Draw(context, *states, world, view, m_projection);
-	
+
 	//砲塔
-	world = Matrix::CreateScale(0.01f);
-	world *= Matrix::CreateRotationY(m_turretAngle);
-	world *= Matrix::CreateRotationY(XMConvertToRadians(static_cast<float>(m_angle)));
-	world *= Matrix::CreateTranslation({ 0,0.5,0 });
+	world = Matrix::CreateScale(1.0f);
+
+	world *= Matrix::CreateTranslation(m_turretPosition);
+	world *= Matrix::CreateRotationY(m_angle);
 	turretModel->Draw(context, *states, world, view, m_projection);
 
 	//砲身
-	world = Matrix::CreateScale(0.01f);
-	world *= Matrix::CreateRotationZ(m_canonAngle);
-	world *= Matrix::CreateRotationY(XMConvertToRadians(static_cast<float>(m_angle)));
-	world *= Matrix::CreateTranslation({ 0.1,0.5,0 });
+	world = Matrix::CreateScale(1.0f);
+
+	world *= Matrix::CreateTranslation(m_canonPosition);
+	world *= Matrix::CreateRotationY(m_angle);
 	canonModel->Draw(context, *states, world, view, m_projection);
 
 
@@ -193,4 +176,40 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
+}
+
+
+//---------------------------------------------------------
+// キーボードの処理
+//---------------------------------------------------------
+void PlayScene::KeyBoardEvent()
+{
+	// キーボードステートを取得する
+	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+
+	//速度の初期化
+	m_velocity = Vector3::Zero;
+
+	// 前後移動
+	if (keyboardState.Up)
+	{
+		m_velocity += Matrix::CreateRotationY(m_angle).Forward() * m_speed;
+	}
+	else if (keyboardState.Down)
+	{
+		m_velocity -= Matrix::CreateRotationY(m_angle).Forward() * m_speed;
+	}
+	// 左右回転
+	if (keyboardState.Left)
+	{
+		m_angle += XMConvertToRadians(1.0f);
+	}
+	else if (keyboardState.Right)
+	{
+		m_angle -= XMConvertToRadians(1.0f);
+	}
+
+	m_bodyPosition += m_velocity;
+	m_turretPosition += m_velocity;
+	m_canonPosition += m_velocity;
 }

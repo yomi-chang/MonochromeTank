@@ -16,7 +16,7 @@ namespace mylib
 
 
 class PlayScene final :
-    public IScene
+	public IScene
 {
 private:
 	// 共通リソース
@@ -38,19 +38,20 @@ private:
 	std::unique_ptr<DirectX::Model> bodyModel;
 	std::unique_ptr<DirectX::Model> canonModel;
 	std::unique_ptr<DirectX::Model> turretModel;
-	
+
 	// 回転角(度)
-	int m_angle;
+	float m_angle;
 
 	float m_canonAngle;
 	float m_turretAngle;
 
-	struct Transform
-	{
-		DirectX::SimpleMath::Vector3 position;
-		DirectX::SimpleMath::Vector3 rotation;
-		DirectX::SimpleMath::Vector3 scale;
-	};
+	DirectX::SimpleMath::Vector3 m_bodyPosition;
+	DirectX::SimpleMath::Vector3 m_turretPosition;
+	DirectX::SimpleMath::Vector3 m_canonPosition;
+
+	DirectX::SimpleMath::Vector3 m_velocity;
+
+	float m_speed;
 
 public:
 	PlayScene();
@@ -62,4 +63,7 @@ public:
 	void Finalize() override;
 
 	SceneID GetNextSceneID() const;
+
+private:
+	void KeyBoardEvent();
 };
