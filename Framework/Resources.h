@@ -1,6 +1,6 @@
 #pragma once
 #include "Model.h"
-#include "Graphics.h"
+#include "Framework/Graphics.h"
 
 // ResourcesƒNƒ‰ƒX‚ð’è‹`‚·‚é
 class Resources

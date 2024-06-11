@@ -11,6 +11,9 @@
 #include "Libraries/MyLib/GridFloor.h"
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
+
+#include "Framework/Resources.h"
+
 #include <cassert>
 
 using namespace DirectX;
@@ -71,17 +74,20 @@ void PlayScene::Initialize(CommonResources* resources)
 		0.1f, 100.0f
 	);
 
-
-	// モデルを読み込む準備
-	std::unique_ptr<DirectX::EffectFactory> fx = std::make_unique<DirectX::EffectFactory>(device);
-	fx->SetDirectory(L"Resources/Models");
-
 	// モデルを読み込む
-	bodyModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankBody.cmo", *fx);
+	/*bodyModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankBody.cmo", *fx);
 
 	canonModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankCanon.cmo", *fx);
 
-	turretModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankTurret.cmo", *fx);
+	turretModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankTurret.cmo", *fx);*/
+
+	m_graphics = Graphics::GetInstance();
+
+	Graphics::GetInstance()->Initialize();
+	Resources::GetInstance()->LoadResource();
+	bodyModel = Resources::GetInstance()->GetTankBodyModel();
+	turretModel = Resources::GetInstance()->GetTankTurretModel();
+	canonModel = Resources::GetInstance()->GetTankCanonModel();
 
 	// 回転角を初期化する（度）
 	m_angle = 0;

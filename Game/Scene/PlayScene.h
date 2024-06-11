@@ -5,6 +5,8 @@
 #pragma once
 #include "IScene.h"
 
+#include "Framework/Graphics.h"
+
 // 前方宣言
 class CommonResources;
 
@@ -35,9 +37,9 @@ private:
 	bool m_isChangeScene;
 
 	// モデル
-	std::unique_ptr<DirectX::Model> bodyModel;
-	std::unique_ptr<DirectX::Model> canonModel;
-	std::unique_ptr<DirectX::Model> turretModel;
+	DirectX::Model* bodyModel;
+	DirectX::Model* canonModel;
+	DirectX::Model* turretModel;
 
 	// 回転角(度)
 	float m_angle;
@@ -54,6 +56,11 @@ private:
 	float m_speed;
 
 	// ゲームオブジェクト
+
+
+
+	//仮でPlayにグラフックをおく
+	Graphics* m_graphics;
 
 public:
 	PlayScene();
