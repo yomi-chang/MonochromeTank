@@ -53,6 +53,8 @@ private:
 
 	float m_speed;
 
+	// ゲームオブジェクト
+
 public:
 	PlayScene();
 	~PlayScene() override;

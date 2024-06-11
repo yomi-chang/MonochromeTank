@@ -185,12 +185,15 @@
     <ClInclude Include="Framework\Resources.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\CommonResources.h" />
+    <ClInclude Include="Game\Objects\Tank\Tank.h" />
+    <ClInclude Include="Game\Objects\Tank\TankBase.h" />
+    <ClInclude Include="Game\Objects\Tank\TankBody.h" />
     <ClInclude Include="Game\Scene\IScene.h" />
     <ClInclude Include="Game\Scene\PlayScene.h" />
     <ClInclude Include="Game\Scene\SceneManager.h" />
     <ClInclude Include="Game\Scene\TitleScene.h" />
     <ClInclude Include="Game\Screen.h" />
-    <ClInclude Include="Interface\IObject.h" />
+    <ClInclude Include="Interface\ITankComponent.h" />
     <ClInclude Include="Libraries\Microsoft\DebugDraw.h" />
     <ClInclude Include="Libraries\MyLib\DebugCamera.h" />
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
@@ -206,6 +209,9 @@
     <ClCompile Include="Framework\Resources.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\CommonResources.cpp" />
+    <ClCompile Include="Game\Objects\Tank\Tank.cpp" />
+    <ClCompile Include="Game\Objects\Tank\TankBase.cpp" />
+    <ClCompile Include="Game\Objects\Tank\TankBody.cpp" />
     <ClCompile Include="Game\Scene\PlayScene.cpp" />
     <ClCompile Include="Game\Scene\SceneManager.cpp" />
     <ClCompile Include="Game\Scene\TitleScene.cpp" />

@@ -86,7 +86,10 @@
     </ClInclude>
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Resources.h" />
-    <ClInclude Include="Interface\IObject.h" />
+    <ClInclude Include="Interface\ITankComponent.h" />
+    <ClInclude Include="Game\Objects\Tank\TankBase.h" />
+    <ClInclude Include="Game\Objects\Tank\Tank.h" />
+    <ClInclude Include="Game\Objects\Tank\TankBody.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\Resources.cpp" />
+    <ClCompile Include="Game\Objects\Tank\TankBase.cpp" />
+    <ClCompile Include="Game\Objects\Tank\Tank.cpp" />
+    <ClCompile Include="Game\Objects\Tank\TankBody.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
