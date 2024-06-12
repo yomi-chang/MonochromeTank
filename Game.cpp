@@ -21,18 +21,26 @@ Game::Game() noexcept(false)
     m_commonResources{},
     m_debugString{},
     m_inputManager{},
-    m_sceneManager{}
+    m_sceneManager{},
+    m_graphics{},
+    m_hWnd{}
 {
-    m_deviceResources = std::make_unique<DX::DeviceResources>();
-    // TODO: Provide parameters for swapchain format, depth/stencil format, and backbuffer count.
-    //   Add DX::DeviceResources::c_AllowTearing to opt-in to variable rate displays.
-    //   Add DX::DeviceResources::c_EnableHDR for HDR10 display.
+    // グラフィックスインスタンスの取得
+    m_graphics = Graphics::GetInstance();
+
+    //m_deviceResources = std::make_unique<DX::DeviceResources>();
+    
+    // グラフィックスからデバイスリソースを受け取る
+    m_deviceResources = m_graphics->GetDeviceResources();
+
     m_deviceResources->RegisterDeviceNotify(this);
 }
 
 // Initialize the Direct3D resources required to run.
 void Game::Initialize(HWND window, int width, int height)
 {
+    m_hWnd = window;
+
     // デバイスリソース関連を設定する
     m_deviceResources->SetWindow(window, width, height);
 
@@ -51,6 +59,12 @@ void Game::Initialize(HWND window, int width, int height)
 
 
     // ★追記ココから↓↓↓★
+    // 画面サイズ
+    int screenWidth, screenHeight;
+    // 画面サイズを取得する
+    GetDefaultSize(screenWidth, screenHeight);
+    // 画面サイズを設定する
+    m_graphics->SetScreenSize(screenWidth, screenHeight);
 
     // デバイスとコンテキストを取得する
     auto device  = m_deviceResources->GetD3DDevice();
@@ -75,7 +89,7 @@ void Game::Initialize(HWND window, int width, int height)
     // シーンへ渡す共通リソースを設定する
     m_commonResources->Initialize(
         &m_timer,
-        m_deviceResources.get(),
+        m_deviceResources,
         m_commonStates.get(),
         m_debugString.get(),
         m_inputManager.get()
@@ -253,6 +267,17 @@ void Game::CreateDeviceDependentResources()
 
     // TODO: Initialize device dependent objects here (independent of window size).
     device;
+
+
+    // デバイスに依存したオブジェクトを初期化する
+    int width, height;
+    // ウィンドウの既定サイズを取得する
+    GetDefaultSize(width, height);
+    // 「ウィンドウハンドル」「幅」「高さ」を設定する
+    m_graphics->GetDeviceResources()->SetWindow(m_hWnd, width, height);
+    // グラフィックスを初期化する
+    m_graphics->Initialize();
+
 
     // ★追記★
     UNREFERENCED_PARAMETER(device);

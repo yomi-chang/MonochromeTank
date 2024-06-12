@@ -81,9 +81,7 @@ void PlayScene::Initialize(CommonResources* resources)
 
 	turretModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankTurret.cmo", *fx);*/
 
-	m_graphics = Graphics::GetInstance();
-
-	Graphics::GetInstance()->Initialize();
+	//Graphics::GetInstance()->Initialize();
 	Resources::GetInstance()->LoadResource();
 	bodyModel = Resources::GetInstance()->GetTankBodyModel();
 	turretModel = Resources::GetInstance()->GetTankTurretModel();

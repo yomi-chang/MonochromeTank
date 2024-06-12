@@ -13,6 +13,7 @@
 #include "Game/Scene/SceneManager.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/InputManager.h"
+#include "Framework/Graphics.h"
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -62,8 +63,7 @@ private:
     void CreateDeviceDependentResources();
     void CreateWindowSizeDependentResources();
 
-    // Device resources.
-    std::unique_ptr<DX::DeviceResources>    m_deviceResources;
+    
 
     // Rendering loop timer.
     DX::StepTimer                           m_timer;
@@ -85,6 +85,16 @@ private:
 
     // シーンマネージャ
     std::unique_ptr<SceneManager>           m_sceneManager;
+
+    // グラフィックス
+    Graphics* m_graphics;
+
+    // Device resources.
+    //std::unique_ptr<DX::DeviceResources>    m_deviceResources;
+    DX::DeviceResources* m_deviceResources;
+
+    // ウィンドウハンドル
+    HWND m_hWnd;
 
     // ★追記ココまで↑↑↑★
 };
