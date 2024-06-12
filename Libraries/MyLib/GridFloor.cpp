@@ -80,8 +80,8 @@ void mylib::GridFloor::Render(
 	m_primitiveBatch->Begin();
 	DX::DrawGrid(
 		m_primitiveBatch.get(),
-		Vector3(m_size / 2.0f, 0.0f, 0.0f),	// â°é≤
-		Vector3(0.0f, 0.0f, m_size / 2.0f),	// ècé≤
+		Vector3(m_size/* / 2.0f*/, 0.0f, 0.0f),	// â°é≤
+		Vector3(0.0f, 0.0f, m_size /*/ 2.0f*/),	// ècé≤
 		Vector3::Zero,						// origin
 		m_divs,								// xdivs
 		m_divs,								// ydivs

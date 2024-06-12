@@ -1,11 +1,9 @@
 #include "pch.h"
-#include "Game/Objects/Tank/TankBase.h"
-#include "Game/Objects/Tank/TankBody.h"
-#include "Game/Objects/Tank/TankTurret.h"
+#include "Game/Objects/Tank/TankCannon.h"
 #include "Framework/Resources.h"
 
 // コンストラクタ
-TankBody::TankBody(
+TankCannon::TankCannon(
 	ITankComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
 	const float& initialAngleRL
@@ -21,28 +19,23 @@ TankBody::TankBody(
 }
 
 // デストラクタ
-TankBody::~TankBody()
+TankCannon::~TankCannon()
 {
 	Finalize();
 }
 
 // 初期化処理
-void TankBody::Initialize()
+void TankCannon::Initialize()
 {
-	using namespace DirectX::SimpleMath;
-
 	// モデル情報の受け取り
-	m_model = Resources::GetInstance()->GetTankBodyModel();
-
-	// 砲塔の生成
-	Attach(std::make_unique<TankTurret>(this, Vector3{ 0,0,0 },0.0f));
+	m_model = Resources::GetInstance()->GetTankCannonModel();
 
 	// モデルをセットする
 	TankBase::SetModel(m_model);
 }
 
 // 更新処理
-void TankBody::Update(
+void TankCannon::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
 	const float& currentAngleRL
@@ -58,14 +51,14 @@ void TankBody::Update(
 }
 
 // 自身を描画しない描画処理(Tank用)
-void TankBody::Render()
+void TankCannon::Render()
 {
 	// パーツの描画
 	TankBase::Render();
 }
 
 // 終了処理
-void TankBody::Finalize()
+void TankCannon::Finalize()
 {
 	// 削除する部品をリセットする
 	m_tankParts.clear();

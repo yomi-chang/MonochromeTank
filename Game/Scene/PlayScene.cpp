@@ -74,18 +74,11 @@ void PlayScene::Initialize(CommonResources* resources)
 		0.1f, 100.0f
 	);
 
-	// モデルを読み込む
-	/*bodyModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankBody.cmo", *fx);
-
-	canonModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankCanon.cmo", *fx);
-
-	turretModel = DirectX::Model::CreateFromCMO(device, L"Resources/Models/TankTurret.cmo", *fx);*/
-
-	//Graphics::GetInstance()->Initialize();
+	//モデルの受け取り
 	Resources::GetInstance()->LoadResource();
 	bodyModel = Resources::GetInstance()->GetTankBodyModel();
 	turretModel = Resources::GetInstance()->GetTankTurretModel();
-	canonModel = Resources::GetInstance()->GetTankCanonModel();
+	canonModel = Resources::GetInstance()->GetTankCannonModel();
 
 	// 回転角を初期化する（度）
 	m_angle = 0;

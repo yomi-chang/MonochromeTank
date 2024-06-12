@@ -40,7 +40,8 @@ void SceneManager::Initialize(CommonResources* resources)
 	assert(resources);
 	m_commonResources = resources;
 
-	ChangeScene(IScene::SceneID::TITLE);
+	// Å‰‚ÌƒV[ƒ“‚ğİ’è‚·‚é
+	ChangeScene(IScene::SceneID::PLAY);
 }
 
 //---------------------------------------------------------

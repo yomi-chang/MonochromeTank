@@ -11,7 +11,7 @@ public:
 	// –C“ƒƒ‚ƒfƒ‹‚Ìæ“¾
 	DirectX::Model* GetTankTurretModel() { return m_tankTurretModel.get(); }
 	// –Cgƒ‚ƒfƒ‹‚Ìæ“¾
-	DirectX::Model* GetTankCanonModel() { return m_tankCanonModel.get(); }
+	DirectX::Model* GetTankCannonModel() { return m_tankCanonModel.get(); }
 
 public:
 	Resources(Resources&&) = default;
