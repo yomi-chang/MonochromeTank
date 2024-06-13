@@ -34,7 +34,9 @@ PlayScene::PlayScene()
 	m_angle{},
 	m_bodyPosition{},
 	m_turretPosition{},
-	m_canonPosition{}
+	m_canonPosition{},
+
+	m_tank{}
 {
 }
 
@@ -73,6 +75,8 @@ void PlayScene::Initialize(CommonResources* resources)
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
 		0.1f, 100.0f
 	);
+	// 射影行列を設定する
+	Graphics::GetInstance()->SetProjectionMatrix(m_projection);
 
 	//モデルの受け取り
 	Resources::GetInstance()->LoadResource();
@@ -95,6 +99,9 @@ void PlayScene::Initialize(CommonResources* resources)
 	m_bodyPosition = { 0.0f,0.5,0.0f };
 	m_turretPosition = { 0.0f,1.0f,0.0f };
 	m_canonPosition = { 0.0f,1.0f,-0.6f };
+
+	m_tank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, 0.0f), 0.0f);
+	m_tank->Initialize();
 }
 
 //---------------------------------------------------------
@@ -109,6 +116,15 @@ void PlayScene::Update(float elapsedTime)
 
 	// デバッグカメラを更新する
 	m_debugCamera->Update(m_commonResources->GetInputManager());
+
+	// ビュー行列を取得する
+	const Matrix& view = m_debugCamera->GetViewMatrix();
+	// ビュー行列を設定する
+	Graphics::GetInstance()->SetViewMatrix(view);
+
+	Vector3 position(0.0f, 0.0f, 0.0f);
+	float angle = 0.0f;
+	m_tank->Update(elapsedTime,position,angle);
 }
 
 //---------------------------------------------------------
@@ -124,28 +140,36 @@ void PlayScene::Render()
 	// 格子床を描画する
 	m_gridFloor->Render(context, view, m_projection);
 
-	//車体
-	Matrix world = Matrix::CreateScale(1.0f);
+	m_tank->Render();
 
-	world *= Matrix::CreateRotationY(m_angle);
-	world *= Matrix::CreateTranslation(m_bodyPosition);
+	////車体
+	//Matrix world = Matrix::CreateScale(1.0f);
 
-	bodyModel->Draw(context, *states, world, view, m_projection);
+	//world *= Matrix::CreateRotationY(m_angle);
+	//world *= Matrix::CreateTranslation(m_bodyPosition);
 
-	//砲塔
-	world = Matrix::CreateScale(1.0f);
+	//bodyModel->Draw(context, *states, world, view, m_projection);
 
-	world *= Matrix::CreateTranslation(m_turretPosition);
-	world *= Matrix::CreateRotationY(m_angle);
-	turretModel->Draw(context, *states, world, view, m_projection);
+	////砲塔
+	//world = Matrix::CreateScale(1.0f);
+
+	//world *= Matrix::CreateTranslation(m_turretPosition);
+	//world *= Matrix::CreateRotationY(m_angle);
+	//turretModel->Draw(context, *states, world, view, m_projection);
+
+	////砲身
+	//Matrix world = Matrix::CreateScale(1.0f);
+
+	//world *= Matrix::CreateTranslation(m_canonPosition);
+	//world *= Matrix::CreateRotationY(m_angle);
+	//canonModel->Draw(context, *states, world, view, m_projection);
 
 	//砲身
-	world = Matrix::CreateScale(1.0f);
+	/*Matrix world = Matrix::CreateScale(1.0f);
 
-	world *= Matrix::CreateTranslation(m_canonPosition);
-	world *= Matrix::CreateRotationY(m_angle);
-	canonModel->Draw(context, *states, world, view, m_projection);
-
+	world *= Matrix::CreateTranslation({0,0,0});
+	world *= Matrix::CreateRotationY(0.0f);
+	canonModel->Draw(context, *states, world, view, m_projection);*/
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = m_commonResources->GetDebugString();

@@ -6,6 +6,7 @@
 #include "IScene.h"
 
 #include "Framework/Graphics.h"
+#include "Game/Objects/Tank/Tank.h"
 
 // 前方宣言
 class CommonResources;
@@ -56,11 +57,7 @@ private:
 	float m_speed;
 
 	// ゲームオブジェクト
-
-
-
-	//仮でPlayにグラフックをおく
-	Graphics* m_graphics;
+	std::unique_ptr<Tank> m_tank;
 
 public:
 	PlayScene();

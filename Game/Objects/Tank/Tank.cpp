@@ -13,7 +13,8 @@ Tank::Tank(
 	m_graphics{Graphics::GetInstance()},
 	m_currentPosition{},
 	m_currentAngleRL{},
-	m_tankParts{}
+	m_tankParts{},
+	m_worldMatrix{}
 {
 }
 
@@ -29,7 +30,7 @@ void Tank::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	// 車体の生成
-	Attach(std::make_unique<TankBody>(this, Vector3(0.0f, 0.0f, 0.0f), 0.0f));
+	Attach(std::make_unique<TankBody>(this, Vector3(0.0f, 0.5, 0.0f), 0.0f));
 }
 
 // 更新処理
@@ -39,7 +40,35 @@ void Tank::Update(
 	const float& currentAngleRL
 )
 {
+	using namespace DirectX::SimpleMath;
 	UNREFERENCED_PARAMETER(elapsedTime);
+
+	// キーボードステートを取得する
+	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+	// 砲塔の速度を初期化する
+	Vector3 turretVelocity = Vector3::Zero;
+
+	// 前後移動
+	if (keyboardState.Up)
+	{
+		turretVelocity += Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
+	}
+	else if (keyboardState.Down)
+	{
+		turretVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
+	}
+
+	// 左右回転
+	if (keyboardState.Left)
+	{
+		m_currentAngleRL += DirectX::XMConvertToRadians(1.0f);
+	}
+	else if (keyboardState.Right)
+	{
+		m_currentAngleRL -= DirectX::XMConvertToRadians(1.0f);
+	}
+
+	m_currentPosition += turretVelocity;
 
 	// 砲塔部品を更新する
 	TankBase::Update(elapsedTime, m_currentPosition + GetInitialPosition(), m_currentAngleRL + GetInitialAngleRL());

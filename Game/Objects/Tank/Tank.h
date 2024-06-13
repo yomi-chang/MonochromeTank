@@ -43,4 +43,7 @@ private:
 
 	// 自身が管理する戦車部品の配列
 	std::vector<std::unique_ptr<ITankComponent>> m_tankParts;
+
+	// ワールド行列
+	DirectX::SimpleMath::Matrix m_worldMatrix;
 };

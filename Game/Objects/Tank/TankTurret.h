@@ -37,14 +37,17 @@ private:
 	Graphics* m_graphics;
 
 	// 初期位置
-	DirectX::SimpleMath::Vector3 m_initialPosition;
+	DirectX::SimpleMath::Vector3 m_currentPosition;
 
 	// 初期回転角
-	float m_initialAngleRL;
+	float m_currentAngleRL;
 
 	// 自身が管理する戦車部品の配列
 	std::vector<std::unique_ptr<ITankComponent>> m_tankParts;
 
 	// モデル
 	DirectX::Model* m_model;
+
+	// ワールド行列
+	DirectX::SimpleMath::Matrix m_worldMatrix;
 };

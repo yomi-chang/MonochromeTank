@@ -13,10 +13,11 @@ TankTurret::TankTurret(
 	:
 	TankBase(parent, initialPosition, initialAngleRL),
 	m_graphics{Graphics::GetInstance()},
-	m_initialPosition{ initialPosition },
-	m_initialAngleRL{ initialAngleRL },
+	m_currentPosition{},
+	m_currentAngleRL{},
 	m_tankParts{},
-	m_model{}
+	m_model{},
+	m_worldMatrix{}
 {
 }
 
@@ -35,7 +36,7 @@ void TankTurret::Initialize()
 	m_model = Resources::GetInstance()->GetTankTurretModel();
 
 	// 砲身の生成
-	Attach(std::make_unique<TankCannon>(this, Vector3{ 0,0,0 }, 0.0f));
+	Attach(std::make_unique<TankCannon>(this, Vector3{ 0.0f,1.0f,-0.6f }, 0.0f));
 
 	// モデルをセットする
 	TankBase::SetModel(m_model);
@@ -50,18 +51,33 @@ void TankTurret::Update(
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// パーツの更新
-	for (auto& turretPart : m_tankParts)
-	{
-		turretPart->Update(elapsedTime, currentPosition, currentAngleRL);
-	}
+	// 現在の位置を更新する
+	m_currentPosition = currentPosition;
+	// 現在の回転角を更新する
+	m_currentAngleRL = currentAngleRL;
+	// 「砲塔中部」を更新する
+	TankBase::Update(elapsedTime, currentPosition, currentAngleRL);
+
+
+	//// パーツの更新
+	//for (auto& turretPart : m_tankParts)
+	//{
+	//	turretPart->Update(elapsedTime, currentPosition, currentAngleRL);
+	//}
 }
 
 // 自身を描画しない描画処理(Tank用)
 void TankTurret::Render()
 {
+	using namespace DirectX::SimpleMath;
+
+	// ワールド行列を生成する
+	m_worldMatrix = Matrix::CreateScale(1.0f) *
+		Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL()) *
+		Matrix::CreateTranslation(m_currentPosition + GetInitialPosition());
+
 	// パーツの描画
-	TankBase::Render();
+	TankBase::Render(m_worldMatrix);
 }
 
 // 終了処理

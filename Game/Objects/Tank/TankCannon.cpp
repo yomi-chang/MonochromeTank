@@ -11,10 +11,11 @@ TankCannon::TankCannon(
 	:
 	TankBase(parent, initialPosition, initialAngleRL),
 	m_graphics{Graphics::GetInstance()},
-	m_initialPosition{ initialPosition },
-	m_initialAngleRL{ initialAngleRL },
+	m_currentPosition{},
+	m_currentAngleRL{},
 	m_tankParts{},
-	m_model{}
+	m_model{},
+	m_worldMatrix{}
 {
 }
 
@@ -43,23 +44,28 @@ void TankCannon::Update(
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// パーツの更新
-	for (auto& turretPart : m_tankParts)
-	{
-		turretPart->Update(elapsedTime, currentPosition, currentAngleRL);
-	}
+	// 現在の位置を更新する
+	m_currentPosition = currentPosition;
+	// 現在の回転角を更新する
+	m_currentAngleRL = currentAngleRL;
 }
 
 // 自身を描画しない描画処理(Tank用)
 void TankCannon::Render()
 {
-	// パーツの描画
-	TankBase::Render();
+	using namespace DirectX::SimpleMath;
+
+	// ワールド行列を生成する
+	m_worldMatrix = Matrix::CreateScale(1.0f) *
+		Matrix::CreateRotationZ(0.0f) *
+		Matrix::CreateRotationX(0.0f) * Matrix::CreateTranslation(Vector3(0.0f, 0.0f, 0.0f)) *
+		Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL()) *
+		Matrix::CreateTranslation(m_currentPosition + GetInitialPosition());
+	// 描画を行う
+	TankBase::Render(m_worldMatrix);
 }
 
 // 終了処理
 void TankCannon::Finalize()
 {
-	// 削除する部品をリセットする
-	m_tankParts.clear();
 }
