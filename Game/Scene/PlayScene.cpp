@@ -73,7 +73,7 @@ void PlayScene::Initialize(CommonResources* resources)
 	m_projection = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
 		XMConvertToRadians(45.0f),
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
-		0.1f, 100.0f
+		0.1f, 1000.0f
 	);
 	// 射影行列を設定する
 	Graphics::GetInstance()->SetProjectionMatrix(m_projection);
@@ -83,6 +83,8 @@ void PlayScene::Initialize(CommonResources* resources)
 	bodyModel = Resources::GetInstance()->GetTankBodyModel();
 	turretModel = Resources::GetInstance()->GetTankTurretModel();
 	canonModel = Resources::GetInstance()->GetTankCannonModel();
+
+	m_skyModel = Resources::GetInstance()->GetSkySphereModel();
 
 	// 回転角を初期化する（度）
 	m_angle = 0;
@@ -170,6 +172,31 @@ void PlayScene::Render()
 	world *= Matrix::CreateTranslation({0,0,0});
 	world *= Matrix::CreateRotationY(0.0f);
 	canonModel->Draw(context, *states, world, view, m_projection);*/
+
+
+	// モデルのエフェクト情報を更新する
+	m_skyModel->UpdateEffects([](DirectX::IEffect* effect)
+		{
+			// ベーシックエフェクトを設定する
+			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				// 個別のライトをすべて無効化する
+				basicEffect->SetLightEnabled(0, false);
+				basicEffect->SetLightEnabled(1, false);
+				basicEffect->SetLightEnabled(2, false);
+
+				// モデルを自発光させる
+				basicEffect->SetEmissiveColor(Colors::White);
+			}
+		}
+	);
+
+	// ワールド行列を更新する
+	Matrix world = Matrix::Identity;
+
+	// モデルを描画する
+	m_skyModel->Draw(context, *states, world, view, m_projection);
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = m_commonResources->GetDebugString();

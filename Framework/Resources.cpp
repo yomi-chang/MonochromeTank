@@ -29,4 +29,7 @@ void Resources::LoadResource()
 
 	// 「砲塔」モデルをロードする
 	m_tankCanonModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\TankCanon.cmo", *m_graphics->GetFX());
+
+	// 「天球」モデルをロードする
+	m_skySphereModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\SnowSky.cmo", *m_graphics->GetFX());
 }

@@ -42,6 +42,8 @@ private:
 	DirectX::Model* canonModel;
 	DirectX::Model* turretModel;
 
+	DirectX::Model* m_skyModel;
+
 	// ‰ñ“]Šp(“x)
 	float m_angle;
 
