@@ -38,7 +38,7 @@ void TankTurret::Initialize()
 	// 砲身の生成
 	Attach(std::make_unique<TankCannon>(this, Vector3{ 0.0f,1.0f,-0.6f }, 0.0f));
 
-	// モデルをセットする
+	// モデルのセット
 	TankBase::SetModel(m_model);
 }
 
@@ -51,11 +51,11 @@ void TankTurret::Update(
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// 現在の位置を更新する
+	// 現在の位置の更新
 	m_currentPosition = currentPosition;
-	// 現在の回転角を更新する
+	// 現在の回転角の更新
 	m_currentAngleRL = currentAngleRL;
-	// 「砲塔中部」を更新する
+	// 「砲身」の更新
 	TankBase::Update(elapsedTime, currentPosition, currentAngleRL);
 
 
@@ -66,7 +66,7 @@ void TankTurret::Update(
 	//}
 }
 
-// 自身を描画しない描画処理(Tank用)
+// 描画処理
 void TankTurret::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -83,6 +83,6 @@ void TankTurret::Render()
 // 終了処理
 void TankTurret::Finalize()
 {
-	// 削除する部品をリセットする
+	// 削除する部品のリセット
 	m_tankParts.clear();
 }

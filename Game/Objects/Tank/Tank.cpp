@@ -43,34 +43,35 @@ void Tank::Update(
 	using namespace DirectX::SimpleMath;
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// キーボードステートを取得する
+	// キーボードステートの取得
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
-	// 砲塔の速度を初期化する
-	Vector3 turretVelocity = Vector3::Zero;
+
+	// 速度の初期化
+	Vector3 tunkVelocity = Vector3::Zero;
 
 	// 前後移動
-	if (keyboardState.Up)
+	if (keyboardState.W || keyboardState.Up)
 	{
-		turretVelocity += Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
+		tunkVelocity += Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
 	}
-	else if (keyboardState.Down)
+	else if (keyboardState.S || keyboardState.Down)
 	{
-		turretVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
+		tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
 	}
 
 	// 左右回転
-	if (keyboardState.Left)
+	if (keyboardState.A || keyboardState.Left)
 	{
 		m_currentAngleRL += DirectX::XMConvertToRadians(1.0f);
 	}
-	else if (keyboardState.Right)
+	else if (keyboardState.D || keyboardState.Right)
 	{
 		m_currentAngleRL -= DirectX::XMConvertToRadians(1.0f);
 	}
 
-	m_currentPosition += turretVelocity;
+	m_currentPosition += tunkVelocity;
 
-	// 砲塔部品を更新する
+	// パーツの更新
 	TankBase::Update(elapsedTime, m_currentPosition + GetInitialPosition(), m_currentAngleRL + GetInitialAngleRL());
 }
 

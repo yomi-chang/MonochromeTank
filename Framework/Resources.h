@@ -16,6 +16,9 @@ public:
 	// 天球モデルの取得
 	DirectX::Model* GetSkySphereModel() { return m_skySphereModel.get(); }
 
+	// 弾モデルの取得
+	DirectX::Model* GetBulletModel() { return m_bulletModel.get(); }
+
 public:
 	Resources(Resources&&) = default;
 	Resources& operator= (Resources&&) = default;
@@ -35,7 +38,8 @@ private:
 		m_tankBodyModel{},
 		m_tankTurretModel{},
 		m_tankCanonModel{},
-		m_skySphereModel{}
+		m_skySphereModel{},
+		m_bulletModel {}
 	{
 	}
 
@@ -61,4 +65,7 @@ private:
 
 	// 天球モデル
 	std::unique_ptr<DirectX::Model> m_skySphereModel;
+
+	// 弾モデル
+	std::unique_ptr<DirectX::Model> m_bulletModel;
 };

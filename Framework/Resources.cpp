@@ -32,4 +32,7 @@ void Resources::LoadResource()
 
 	// 「天球」モデルをロードする
 	m_skySphereModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\SnowSky.cmo", *m_graphics->GetFX());
+
+	// 「弾」モデルをロードする
+	m_bulletModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\bullet.cmo", *m_graphics->GetFX());
 }

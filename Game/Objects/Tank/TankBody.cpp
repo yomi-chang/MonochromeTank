@@ -51,11 +51,11 @@ void TankBody::Update(
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// 現在の位置を更新する
+	// 現在の位置の更新
 	m_currentPosition = currentPosition;
-	// 現在の回転角を更新する
+	// 現在の回転角の更新
 	m_currentAngleRL = currentAngleRL;
-	// 「砲塔中部」を更新する
+	// 「砲塔」の更新
 	TankBase::Update(elapsedTime, currentPosition, currentAngleRL);
 
 	//// パーツの更新

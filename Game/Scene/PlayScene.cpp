@@ -29,13 +29,7 @@ PlayScene::PlayScene()
 	m_gridFloor{},
 	m_projection{},
 	m_isChangeScene{},
-	bodyModel{},
-
-	m_angle{},
-	m_bodyPosition{},
-	m_turretPosition{},
-	m_canonPosition{},
-
+	m_skySphere{},
 	m_tank{}
 {
 }
@@ -75,33 +69,20 @@ void PlayScene::Initialize(CommonResources* resources)
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
 		0.1f, 1000.0f
 	);
+
 	// 射影行列を設定する
 	Graphics::GetInstance()->SetProjectionMatrix(m_projection);
 
-	//モデルの受け取り
+	//モデルの読み込み(GameClassの方がいいかも)
 	Resources::GetInstance()->LoadResource();
-	bodyModel = Resources::GetInstance()->GetTankBodyModel();
-	turretModel = Resources::GetInstance()->GetTankTurretModel();
-	canonModel = Resources::GetInstance()->GetTankCannonModel();
-
-	m_skyModel = Resources::GetInstance()->GetSkySphereModel();
-
-	// 回転角を初期化する（度）
-	m_angle = 0;
-	m_canonAngle = 0;
-	m_turretAngle = 0;
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 
-	//速度の設定
-	m_speed = 0.05f;
+	// 天球
+	m_skySphere = std::make_unique<SkySphere>();
 
-	//初期座標の設定
-	m_bodyPosition = { 0.0f,0.5,0.0f };
-	m_turretPosition = { 0.0f,1.0f,0.0f };
-	m_canonPosition = { 0.0f,1.0f,-0.6f };
-
+	// 戦車
 	m_tank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, 0.0f), 0.0f);
 	m_tank->Initialize();
 }
@@ -121,9 +102,11 @@ void PlayScene::Update(float elapsedTime)
 
 	// ビュー行列を取得する
 	const Matrix& view = m_debugCamera->GetViewMatrix();
+
 	// ビュー行列を設定する
 	Graphics::GetInstance()->SetViewMatrix(view);
 
+	// 戦車の更新処理
 	Vector3 position(0.0f, 0.0f, 0.0f);
 	float angle = 0.0f;
 	m_tank->Update(elapsedTime,position,angle);
@@ -139,64 +122,15 @@ void PlayScene::Render()
 
 	// ビュー行列を取得する
 	const Matrix& view = m_debugCamera->GetViewMatrix();
+
 	// 格子床を描画する
 	m_gridFloor->Render(context, view, m_projection);
 
+	//戦車の描画
 	m_tank->Render();
 
-	////車体
-	//Matrix world = Matrix::CreateScale(1.0f);
-
-	//world *= Matrix::CreateRotationY(m_angle);
-	//world *= Matrix::CreateTranslation(m_bodyPosition);
-
-	//bodyModel->Draw(context, *states, world, view, m_projection);
-
-	////砲塔
-	//world = Matrix::CreateScale(1.0f);
-
-	//world *= Matrix::CreateTranslation(m_turretPosition);
-	//world *= Matrix::CreateRotationY(m_angle);
-	//turretModel->Draw(context, *states, world, view, m_projection);
-
-	////砲身
-	//Matrix world = Matrix::CreateScale(1.0f);
-
-	//world *= Matrix::CreateTranslation(m_canonPosition);
-	//world *= Matrix::CreateRotationY(m_angle);
-	//canonModel->Draw(context, *states, world, view, m_projection);
-
-	//砲身
-	/*Matrix world = Matrix::CreateScale(1.0f);
-
-	world *= Matrix::CreateTranslation({0,0,0});
-	world *= Matrix::CreateRotationY(0.0f);
-	canonModel->Draw(context, *states, world, view, m_projection);*/
-
-
-	// モデルのエフェクト情報を更新する
-	m_skyModel->UpdateEffects([](DirectX::IEffect* effect)
-		{
-			// ベーシックエフェクトを設定する
-			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
-			if (basicEffect)
-			{
-				// 個別のライトをすべて無効化する
-				basicEffect->SetLightEnabled(0, false);
-				basicEffect->SetLightEnabled(1, false);
-				basicEffect->SetLightEnabled(2, false);
-
-				// モデルを自発光させる
-				basicEffect->SetEmissiveColor(Colors::White);
-			}
-		}
-	);
-
-	// ワールド行列を更新する
-	Matrix world = Matrix::Identity;
-
-	// モデルを描画する
-	m_skyModel->Draw(context, *states, world, view, m_projection);
+	// 天球の描画
+	m_skySphere->Render();
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = m_commonResources->GetDebugString();
@@ -232,32 +166,32 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 //---------------------------------------------------------
 void PlayScene::KeyBoardEvent()
 {
-	// キーボードステートを取得する
-	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+	//// キーボードステートを取得する
+	//DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 
-	//速度の初期化
-	m_velocity = Vector3::Zero;
+	////速度の初期化
+	//m_velocity = Vector3::Zero;
 
-	// 前後移動
-	if (keyboardState.Up)
-	{
-		m_velocity += Matrix::CreateRotationY(m_angle).Forward() * m_speed;
-	}
-	else if (keyboardState.Down)
-	{
-		m_velocity -= Matrix::CreateRotationY(m_angle).Forward() * m_speed;
-	}
-	// 左右回転
-	if (keyboardState.Left)
-	{
-		m_angle += XMConvertToRadians(1.0f);
-	}
-	else if (keyboardState.Right)
-	{
-		m_angle -= XMConvertToRadians(1.0f);
-	}
+	//// 前後移動
+	//if (keyboardState.Up)
+	//{
+	//	m_velocity += Matrix::CreateRotationY(m_angle).Forward() * m_speed;
+	//}
+	//else if (keyboardState.Down)
+	//{
+	//	m_velocity -= Matrix::CreateRotationY(m_angle).Forward() * m_speed;
+	//}
+	//// 左右回転
+	//if (keyboardState.Left)
+	//{
+	//	m_angle += XMConvertToRadians(1.0f);
+	//}
+	//else if (keyboardState.Right)
+	//{
+	//	m_angle -= XMConvertToRadians(1.0f);
+	//}
 
-	m_bodyPosition += m_velocity;
-	m_turretPosition += m_velocity;
-	m_canonPosition += m_velocity;
+	//m_bodyPosition += m_velocity;
+	//m_turretPosition += m_velocity;
+	//m_canonPosition += m_velocity;
 }

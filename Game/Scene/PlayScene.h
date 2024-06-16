@@ -7,6 +7,7 @@
 
 #include "Framework/Graphics.h"
 #include "Game/Objects/Tank/Tank.h"
+#include "Game/Objects/Other/SkySphere.h"
 
 // 前方宣言
 class CommonResources;
@@ -37,28 +38,10 @@ private:
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 
-	// モデル
-	DirectX::Model* bodyModel;
-	DirectX::Model* canonModel;
-	DirectX::Model* turretModel;
-
-	DirectX::Model* m_skyModel;
-
-	// 回転角(度)
-	float m_angle;
-
-	float m_canonAngle;
-	float m_turretAngle;
-
-	DirectX::SimpleMath::Vector3 m_bodyPosition;
-	DirectX::SimpleMath::Vector3 m_turretPosition;
-	DirectX::SimpleMath::Vector3 m_canonPosition;
-
 	DirectX::SimpleMath::Vector3 m_velocity;
 
-	float m_speed;
-
 	// ゲームオブジェクト
+	std::unique_ptr<SkySphere> m_skySphere;
 	std::unique_ptr<Tank> m_tank;
 
 public:
