@@ -12,6 +12,9 @@ public:
 	//初期回転角の取得
 	float GetInitialAngleRL() { return m_initialAngleRL; }
 
+	// 親を取得する
+	ITankComponent* GetParent() const { return m_parent; }
+
 public:
 	// コンストラクタ
 	TankBase(

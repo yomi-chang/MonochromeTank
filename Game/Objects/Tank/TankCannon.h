@@ -2,9 +2,13 @@
 #pragma once
 #include "Interface/ITankComponent.h"
 #include "Game/Objects/Tank/TankBase.h"
+#include "Game/Objects/Tank/Tank.h"
 
 class TankCannon : public TankBase
 {
+	// インターバル
+	const float SHOT_INTERVAL = 0.2f;
+
 public:
 	// コンストラクタ
 	TankCannon(
@@ -32,6 +36,9 @@ public:
 	// 終了処理
 	void Finalize() override;
 
+	// 砲弾を発射する
+	void Shoot(IBullet* bullet);
+
 private:
 	// グラフィックス
 	Graphics* m_graphics;
@@ -53,4 +60,13 @@ private:
 
 	// 上下の回転角
 	float m_currentAngleUD;
+
+	// 使用済み砲弾数
+	int m_shotBulletNumber;
+
+	// 砲弾発射タイマー
+	float m_shotTimer;
+
+	// 砲塔
+	Tank* m_tank;
 };

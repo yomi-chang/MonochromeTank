@@ -1,13 +1,16 @@
 #pragma once
 #include "Interface/ITankComponent.h"
 #include "Game/Objects/Tank/TankBase.h"
+#include "Interface/IBullet.h"
+#include "Game/Objects/Bullet/Bullet.h"
 
 class Tank : public TankBase
 {
 public:
 	// 戦車座標の取得
 	DirectX::SimpleMath::Vector3 GetTankPosition() { return m_currentPosition; }
-
+	// 「砲弾」を参照する
+	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
 public:
 	// コンストラクタ
 	Tank(
@@ -50,4 +53,7 @@ private:
 
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
+
+	// 砲弾配列
+	std::vector<std::unique_ptr<IBullet>> m_bullets;
 };

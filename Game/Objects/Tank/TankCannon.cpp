@@ -16,8 +16,12 @@ TankCannon::TankCannon(
 	m_tankParts{},
 	m_model{},
 	m_worldMatrix{},
-	m_currentAngleUD{}
+	m_currentAngleUD{},
+	m_shotBulletNumber{},
+	m_shotTimer(SHOT_INTERVAL)
 {
+	// 砲塔へのポインタを取得する
+	m_tank = dynamic_cast<Tank*>(parent->GetParent()->GetParent()->GetParent());
 }
 
 // デストラクタ
@@ -62,6 +66,33 @@ void TankCannon::Update(
 	{
 		m_currentAngleUD -= DirectX::XMConvertToRadians(0.2f);
 	}
+
+	// 「砲身」の回転させる
+	if (keyboardState.Space)
+	{
+		// 発射タイマーが0.0より大きい場合は発射タイマーを減らす
+		if (m_shotTimer > 0.0f)
+			// タイマーを減らす
+			m_shotTimer -= elapsedTime;
+		else
+		{
+			// 「砲弾」を発射する
+  			for (auto& bullet : m_tank->GetBullets())
+			{
+				// 使用されていない砲弾は発射できる
+				if (bullet->GetBulletState() == IBullet::UNUSED)
+				{
+					// 「砲弾」を発射する
+					Shoot(bullet.get());
+					// 発射砲弾数をインクリメントする
+					m_shotBulletNumber++;
+					break;
+				}
+			}
+			// 初期値を設定する
+			m_shotTimer = SHOT_INTERVAL;
+		}
+	}
 }
 
 // 自身を描画しない描画処理(Tank用)
@@ -83,4 +114,16 @@ void TankCannon::Render()
 // 終了処理
 void TankCannon::Finalize()
 {
+}
+
+void TankCannon::Shoot(IBullet* bullet)
+{
+	// 「砲弾」位置を設定する
+	bullet->SetPosition(m_currentPosition);
+	// 「砲弾」初期左右角を設定する
+	bullet->SetAngleRL(m_currentAngleRL);
+	// 「砲弾」初期上下角を設定する
+	bullet->SetAngleUD(m_currentAngleUD);
+	// 「砲弾」を発射する
+	bullet->SetBulletState(IBullet::FLYING);
 }

@@ -14,7 +14,8 @@ Tank::Tank(
 	m_currentPosition{},
 	m_currentAngleRL{},
 	m_tankParts{},
-	m_worldMatrix{}
+	m_worldMatrix{},
+	m_bullets{}
 {
 }
 
@@ -31,6 +32,17 @@ void Tank::Initialize()
 
 	// Ô‘Ì‚Ì¶¬
 	Attach(std::make_unique<TankBody>(this, Vector3(0.0f, 0.5, 0.0f), 0.0f));
+
+	// –C’e”z—ñ‚ğì¬‚·‚é
+	m_bullets.resize(100);
+	// ”z—ñ‚É–C’e‚ğŠi”[‚·‚é
+	for (int index = 0; index < 100; index++)
+	{
+		// –C’e‚ğ¶¬‚·‚é
+		m_bullets[index] = std::make_unique<Bullet>(IBullet::UNUSED);
+		// –C’e‚ğ‰Šú‰»‚·‚é
+		m_bullets[index]->Initialize();
+	}
 }
 
 // XVˆ—
@@ -73,6 +85,17 @@ void Tank::Update(
 
 	// ƒp[ƒc‚ÌXV
 	TankBase::Update(elapsedTime, m_currentPosition + GetInitialPosition(), m_currentAngleRL + GetInitialAngleRL());
+
+	// ”ò’e’†‚Ì–C’e‚ğXV‚·‚é
+	for (auto& bullet : m_bullets)
+	{
+		// –C’e‚ª”ò’e‚µ‚Ä‚¢‚éê‡ –C’e‚ğXV‚·‚é
+		if (bullet->GetBulletState() == IBullet::FLYING)
+		{
+			// –C’e‚ğXV‚·‚é
+			bullet->Update(elapsedTime);
+		}
+	}
 }
 
 // ©g‚ğ•`‰æ‚µ‚È‚¢•`‰æˆ—(Tank—p)
@@ -80,6 +103,17 @@ void Tank::Render()
 {
 	// ƒp[ƒc‚Ì•`‰æ
 	TankBase::Render();
+
+	// ”ò’e’†‚Ì–C’e‚ğ•`‰æ‚·‚é
+	for (auto& bullet : m_bullets)
+	{
+		// ”ò’e’†‚Ì–C’e‚ğ•`‰æ‚·‚é
+		if (bullet->GetBulletState() == IBullet::FLYING)
+		{
+			// –C’e‚ğ•`‰æ‚·‚é
+			bullet->Render();
+		}
+	}
 }
 
 // I—¹ˆ—

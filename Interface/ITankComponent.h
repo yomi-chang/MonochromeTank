@@ -3,6 +3,10 @@
 class ITankComponent
 {
 public:
+	// 親を取得する
+	virtual ITankComponent* GetParent() const = 0;
+
+public:
 	//デストラクタ
 	virtual ~ITankComponent() = default;
 
