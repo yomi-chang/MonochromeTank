@@ -50,21 +50,21 @@ void Tank::Update(
 	Vector3 tunkVelocity = Vector3::Zero;
 
 	// ëOå„à⁄ìÆ
-	if (keyboardState.W || keyboardState.Up)
+	if (keyboardState.W)
 	{
 		tunkVelocity += Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
 	}
-	else if (keyboardState.S || keyboardState.Down)
+	else if (keyboardState.S)
 	{
 		tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
 	}
 
 	// ç∂âEâÒì]
-	if (keyboardState.A || keyboardState.Left)
+	if (keyboardState.A)
 	{
 		m_currentAngleRL += DirectX::XMConvertToRadians(1.0f);
 	}
-	else if (keyboardState.D || keyboardState.Right)
+	else if (keyboardState.D)
 	{
 		m_currentAngleRL -= DirectX::XMConvertToRadians(1.0f);
 	}

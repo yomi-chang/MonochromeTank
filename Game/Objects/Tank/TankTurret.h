@@ -50,4 +50,7 @@ private:
 
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
+
+	// 砲塔の角度
+	float m_turretAngle;
 };

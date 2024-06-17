@@ -17,7 +17,8 @@ TankTurret::TankTurret(
 	m_currentAngleRL{},
 	m_tankParts{},
 	m_model{},
-	m_worldMatrix{}
+	m_worldMatrix{},
+	m_turretAngle{}
 {
 }
 
@@ -36,7 +37,7 @@ void TankTurret::Initialize()
 	m_model = Resources::GetInstance()->GetTankTurretModel();
 
 	// 砲身の生成
-	Attach(std::make_unique<TankCannon>(this, Vector3{ 0.0f,1.0f,-0.6f }, 0.0f));
+	Attach(std::make_unique<TankCannon>(this, Vector3{ 0.0f,1.0f,0.0f }, 0.0f));
 
 	// モデルのセット
 	TankBase::SetModel(m_model);
@@ -51,19 +52,27 @@ void TankTurret::Update(
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
+	// キーボードステートの取得
+	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+
+	// 砲塔の回転
+	if (keyboardState.Left)
+	{
+		m_turretAngle += DirectX::XMConvertToRadians(0.2f);
+	}
+	else if (keyboardState.Right)
+	{
+		m_turretAngle -= DirectX::XMConvertToRadians(0.2f);
+	}
+
 	// 現在の位置の更新
 	m_currentPosition = currentPosition;
 	// 現在の回転角の更新
 	m_currentAngleRL = currentAngleRL;
 	// 「砲身」の更新
-	TankBase::Update(elapsedTime, currentPosition, currentAngleRL);
+	TankBase::Update(elapsedTime, currentPosition, currentAngleRL + m_turretAngle);
 
-
-	//// パーツの更新
-	//for (auto& turretPart : m_tankParts)
-	//{
-	//	turretPart->Update(elapsedTime, currentPosition, currentAngleRL);
-	//}
+	
 }
 
 // 描画処理
@@ -73,7 +82,7 @@ void TankTurret::Render()
 
 	// ワールド行列を生成する
 	m_worldMatrix = Matrix::CreateScale(1.0f) *
-		Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL()) *
+		Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL() + m_turretAngle) *
 		Matrix::CreateTranslation(m_currentPosition + GetInitialPosition());
 
 	// パーツの描画

@@ -5,6 +5,10 @@
 class Tank : public TankBase
 {
 public:
+	// 戦車座標の取得
+	DirectX::SimpleMath::Vector3 GetTankPosition() { return m_currentPosition; }
+
+public:
 	// コンストラクタ
 	Tank(
 		ITankComponent* parent,

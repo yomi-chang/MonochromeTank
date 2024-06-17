@@ -30,7 +30,8 @@ PlayScene::PlayScene()
 	m_projection{},
 	m_isChangeScene{},
 	m_skySphere{},
-	m_tank{}
+	m_tank{}//,
+	//m_tpsCamera{}
 {
 }
 
@@ -69,7 +70,7 @@ void PlayScene::Initialize(CommonResources* resources)
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
 		0.1f, 1000.0f
 	);
-
+	
 	// 射影行列を設定する
 	Graphics::GetInstance()->SetProjectionMatrix(m_projection);
 
@@ -85,6 +86,10 @@ void PlayScene::Initialize(CommonResources* resources)
 	// 戦車
 	m_tank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, 0.0f), 0.0f);
 	m_tank->Initialize();
+
+	// カメラの生成
+	//m_tpsCamera = std::make_unique<mylib::FollowCamera>();
+	//m_tpsCamera->Initialize(&m_tank->GetTankPosition(), &m_tank->GetInitialAngleRL())
 }
 
 //---------------------------------------------------------
@@ -110,6 +115,9 @@ void PlayScene::Update(float elapsedTime)
 	Vector3 position(0.0f, 0.0f, 0.0f);
 	float angle = 0.0f;
 	m_tank->Update(elapsedTime,position,angle);
+
+	// フォローカメラを更新する
+	//m_tpsCamera->Update(elapsedTime);
 }
 
 //---------------------------------------------------------
@@ -122,6 +130,13 @@ void PlayScene::Render()
 
 	// ビュー行列を取得する
 	const Matrix& view = m_debugCamera->GetViewMatrix();
+
+	// フォローカメラの情報からビュー行列を作成する
+	/*Matrix view = Matrix::CreateLookAt(
+		m_tpsCamera->GetEyePosition(),
+		m_tpsCamera->GetTargetPosition(),
+		Vector3::UnitY
+	);*/
 
 	// 格子床を描画する
 	m_gridFloor->Render(context, view, m_projection);

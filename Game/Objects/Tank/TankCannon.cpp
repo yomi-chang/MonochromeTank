@@ -15,7 +15,8 @@ TankCannon::TankCannon(
 	m_currentAngleRL{},
 	m_tankParts{},
 	m_model{},
-	m_worldMatrix{}
+	m_worldMatrix{},
+	m_currentAngleUD{}
 {
 }
 
@@ -48,6 +49,19 @@ void TankCannon::Update(
 	m_currentPosition = currentPosition;
 	// 現在の回転角を更新する
 	m_currentAngleRL = currentAngleRL;
+
+	// キーボードステートの取得
+	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+
+	// 砲身の上下
+	if (keyboardState.Up)
+	{
+		m_currentAngleUD += DirectX::XMConvertToRadians(0.2f);
+	}
+	else if ( keyboardState.Down)
+	{
+		m_currentAngleUD -= DirectX::XMConvertToRadians(0.2f);
+	}
 }
 
 // 自身を描画しない描画処理(Tank用)
@@ -56,11 +70,12 @@ void TankCannon::Render()
 	using namespace DirectX::SimpleMath;
 
 	// ワールド行列を生成する
-	m_worldMatrix = Matrix::CreateScale(1.0f) *
-		Matrix::CreateRotationZ(0.0f) *
-		Matrix::CreateRotationX(0.0f) * Matrix::CreateTranslation(Vector3(0.0f, 0.0f, 0.0f)) *
-		Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL()) *
-		Matrix::CreateTranslation(m_currentPosition + GetInitialPosition());
+	m_worldMatrix = Matrix::CreateScale(1.0f);
+	m_worldMatrix *= Matrix::CreateRotationX(m_currentAngleUD);
+	m_worldMatrix *= Matrix::CreateTranslation(Vector3(0.0f, 0.0f, -0.6f));
+	m_worldMatrix *= Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL());
+	m_worldMatrix *= Matrix::CreateTranslation(m_currentPosition + GetInitialPosition());
+	
 	// 描画を行う
 	TankBase::Render(m_worldMatrix);
 }

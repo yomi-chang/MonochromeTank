@@ -8,6 +8,7 @@
 #include "Framework/Graphics.h"
 #include "Game/Objects/Tank/Tank.h"
 #include "Game/Objects/Other/SkySphere.h"
+#include "Libraries/MyLib/FollowCamera.h"
 
 // 前方宣言
 class CommonResources;
@@ -43,6 +44,9 @@ private:
 	// ゲームオブジェクト
 	std::unique_ptr<SkySphere> m_skySphere;
 	std::unique_ptr<Tank> m_tank;
+
+	// 追従カメラ
+	//std::unique_ptr<mylib::FollowCamera> m_tpsCamera;
 
 public:
 	PlayScene();

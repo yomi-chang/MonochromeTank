@@ -50,4 +50,7 @@ private:
 
 	// ƒ[ƒ‹ƒhs—ñ
 	DirectX::SimpleMath::Matrix m_worldMatrix;
+
+	// ã‰º‚Ì‰ñ“]Šp
+	float m_currentAngleUD;
 };

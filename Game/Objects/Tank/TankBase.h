@@ -11,6 +11,7 @@ public:
 
 	//初期回転角の取得
 	float GetInitialAngleRL() { return m_initialAngleRL; }
+
 public:
 	// コンストラクタ
 	TankBase(
