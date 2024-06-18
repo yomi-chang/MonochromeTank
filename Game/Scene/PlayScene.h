@@ -46,7 +46,7 @@ private:
 	std::unique_ptr<Tank> m_tank;
 
 	// ’Ç]ƒJƒƒ‰
-	//std::unique_ptr<mylib::FollowCamera> m_tpsCamera;
+	std::unique_ptr<mylib::FollowCamera> m_tpsCamera;
 
 public:
 	PlayScene();

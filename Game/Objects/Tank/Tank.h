@@ -9,6 +9,8 @@ class Tank : public TankBase
 public:
 	// 戦車座標の取得
 	DirectX::SimpleMath::Vector3 GetTankPosition() { return m_currentPosition; }
+	// 戦車の向きの取得
+	float GetTankAngleRL() { return m_currentAngleRL; }
 	// 「砲弾」を参照する
 	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
 public:

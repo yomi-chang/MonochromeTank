@@ -83,8 +83,11 @@ void Tank::Update(
 
 	m_currentPosition += tunkVelocity;
 
+	m_currentPosition = m_currentPosition + GetInitialPosition();
+	m_currentAngleRL = m_currentAngleRL + GetInitialAngleRL();
+
 	// パーツの更新
-	TankBase::Update(elapsedTime, m_currentPosition + GetInitialPosition(), m_currentAngleRL + GetInitialAngleRL());
+	TankBase::Update(elapsedTime, m_currentPosition , m_currentAngleRL);
 
 	// 飛弾中の砲弾を更新する
 	for (auto& bullet : m_bullets)

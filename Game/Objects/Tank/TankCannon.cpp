@@ -21,7 +21,7 @@ TankCannon::TankCannon(
 	m_shotTimer(SHOT_INTERVAL)
 {
 	// 砲塔へのポインタを取得する
-	m_tank = dynamic_cast<Tank*>(parent->GetParent()->GetParent()->GetParent());
+	m_tank = dynamic_cast<Tank*>(parent->GetParent()->GetParent());
 }
 
 // デストラクタ
@@ -48,6 +48,7 @@ void TankCannon::Update(
 )
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
+	using namespace DirectX;
 
 	// 現在の位置を更新する
 	m_currentPosition = currentPosition;
@@ -67,6 +68,9 @@ void TankCannon::Update(
 		m_currentAngleUD -= DirectX::XMConvertToRadians(0.2f);
 	}
 
+	// 砲身の向きを制限する
+	m_currentAngleUD = TankBase::Clamp(m_currentAngleUD, CANON_ANGLEUD_MIN , CANON_ANGLEUD_MAX);
+
 	// 「砲身」の回転させる
 	if (keyboardState.Space)
 	{
@@ -80,7 +84,7 @@ void TankCannon::Update(
   			for (auto& bullet : m_tank->GetBullets())
 			{
 				// 使用されていない砲弾は発射できる
-				if (bullet->GetBulletState() == IBullet::UNUSED)
+   				if (bullet->GetBulletState() == IBullet::UNUSED)
 				{
 					// 「砲弾」を発射する
 					Shoot(bullet.get());

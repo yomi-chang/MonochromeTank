@@ -91,3 +91,9 @@ void TankBase::Attach(std::unique_ptr<ITankComponent> tankPart)
 	// •”•i‚ğ’Ç‰Á‚·‚é
 	m_tankParts.emplace_back(std::move(tankPart));
 }
+
+// ƒNƒ‰ƒ“ƒvŠÖ”
+float TankBase::Clamp(float value, float min, float max)
+{
+	return std::max(min, std::min(value, max));
+}

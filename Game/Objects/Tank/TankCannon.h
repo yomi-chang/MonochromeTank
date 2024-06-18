@@ -9,6 +9,10 @@ class TankCannon : public TankBase
 	// インターバル
 	const float SHOT_INTERVAL = 0.2f;
 
+	// 砲身の角度の制限
+	const float CANON_ANGLEUD_MIN = DirectX::XMConvertToRadians(-10.0f);
+	const float CANON_ANGLEUD_MAX = DirectX::XMConvertToRadians(30.0f);
+
 public:
 	// コンストラクタ
 	TankCannon(

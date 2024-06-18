@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "FollowCamera.h"
 #include "Game/Screen.h"
+#include "Game/Objects/Tank/Tank.h"
 #include <cassert>
 
 //-------------------------------------------------------------------
@@ -15,24 +16,18 @@ mylib::FollowCamera::FollowCamera()
 	m_eye{},
 	m_target{},
 	m_followUpTargetPosition{},
-	m_followUpTargetQuaternion{}
+	m_followUpTargetQuaternion{},
+	m_tank{}
 {
 }
 
 //-------------------------------------------------------------------
 // 初期化する
 //-------------------------------------------------------------------
-void mylib::FollowCamera::Initialize(
-	const DirectX::SimpleMath::Vector3* followUpTargetPosition,
-	const DirectX::SimpleMath::Quaternion* followUpTargetQuaternion
-)
-{
-	assert(followUpTargetPosition);
-	assert(followUpTargetQuaternion);
 
-	// ターゲットに関するポインタを保持する
-	m_followUpTargetPosition = followUpTargetPosition;
-	m_followUpTargetQuaternion = followUpTargetQuaternion;
+void mylib::FollowCamera::Initialize(Tank* tank)
+{
+	m_tank = tank;
 }
 
 //-------------------------------------------------------------------
@@ -42,12 +37,16 @@ void mylib::FollowCamera::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
+	m_followUpTargetPosition = m_tank->GetTankPosition();
+	float tankAngleRL = m_tank->GetTankAngleRL();
+	m_followUpTargetQuaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll({ 0.0f,DirectX::XMConvertToDegrees(tankAngleRL),0.0f });
+
 	// 基準になる「eye」を計算する
 	DirectX::SimpleMath::Vector3 eye{ 0.0f, HEIGHT, DISTANCE };
-	eye = DirectX::SimpleMath::Vector3::Transform(eye, *m_followUpTargetQuaternion);
+	eye = DirectX::SimpleMath::Vector3::Transform(eye, m_followUpTargetQuaternion);
 
 	// 基準になる「target」を計算する
-	DirectX::SimpleMath::Vector3 target = *m_followUpTargetPosition;
+	DirectX::SimpleMath::Vector3 target = m_followUpTargetPosition;
 
 	// （ビュー行列で使用する）「m_eye」と「m_target」を計算する
 	m_eye += ((target + eye) - m_eye) * SPRING_RATE_EYE;

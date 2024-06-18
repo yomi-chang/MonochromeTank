@@ -30,8 +30,8 @@ PlayScene::PlayScene()
 	m_projection{},
 	m_isChangeScene{},
 	m_skySphere{},
-	m_tank{}//,
-	//m_tpsCamera{}
+	m_tank{},
+	m_tpsCamera{}
 {
 }
 
@@ -88,8 +88,8 @@ void PlayScene::Initialize(CommonResources* resources)
 	m_tank->Initialize();
 
 	// カメラの生成
-	//m_tpsCamera = std::make_unique<mylib::FollowCamera>();
-	//m_tpsCamera->Initialize(&m_tank->GetTankPosition(), &m_tank->GetInitialAngleRL())
+	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
+	m_tpsCamera->Initialize(m_tank.get());
 }
 
 //---------------------------------------------------------
@@ -99,17 +99,15 @@ void PlayScene::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	//キーボードイベントの処理
-	this->KeyBoardEvent();
-
 	// デバッグカメラを更新する
-	m_debugCamera->Update(m_commonResources->GetInputManager());
+	//m_debugCamera->Update(m_commonResources->GetInputManager());
 
 	// ビュー行列を取得する
-	const Matrix& view = m_debugCamera->GetViewMatrix();
+	//const Matrix& view = m_debugCamera->GetViewMatrix();
 
-	// ビュー行列を設定する
-	Graphics::GetInstance()->SetViewMatrix(view);
+	
+
+	
 
 	// 戦車の更新処理
 	Vector3 position(0.0f, 0.0f, 0.0f);
@@ -117,7 +115,16 @@ void PlayScene::Update(float elapsedTime)
 	m_tank->Update(elapsedTime,position,angle);
 
 	// フォローカメラを更新する
-	//m_tpsCamera->Update(elapsedTime);
+	m_tpsCamera->Update(elapsedTime);
+
+	Matrix view = Matrix::CreateLookAt(
+		m_tpsCamera->GetEyePosition(),
+		m_tpsCamera->GetTargetPosition(),
+		Vector3::UnitY
+	);
+
+	// ビュー行列を設定する
+	Graphics::GetInstance()->SetViewMatrix(view);
 }
 
 //---------------------------------------------------------
@@ -129,7 +136,7 @@ void PlayScene::Render()
 	auto states = m_commonResources->GetCommonStates();
 
 	// ビュー行列を取得する
-	const Matrix& view = m_debugCamera->GetViewMatrix();
+	//const Matrix& view = m_debugCamera->GetViewMatrix();
 
 	// フォローカメラの情報からビュー行列を作成する
 	/*Matrix view = Matrix::CreateLookAt(
@@ -139,7 +146,7 @@ void PlayScene::Render()
 	);*/
 
 	// 格子床を描画する
-	m_gridFloor->Render(context, view, m_projection);
+	m_gridFloor->Render(context, Graphics::GetInstance()->GetViewMatrix(), m_projection);
 
 	//戦車の描画
 	m_tank->Render();

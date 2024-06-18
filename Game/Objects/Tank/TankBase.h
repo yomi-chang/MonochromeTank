@@ -48,6 +48,9 @@ public:
 	// 部品の追加
 	virtual void Attach(std::unique_ptr<ITankComponent> tankPart);
 
+	// クランプ関数(今後移動させるかも)
+	virtual float Clamp(float value, float min, float max);
+
 private:
 	// グラフィックス
 	Graphics* m_graphics;

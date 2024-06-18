@@ -24,7 +24,7 @@ const float Bullet::CROSS_SECTION = 0.25f * (DirectX::XM_PI * DIAMETER * DIAMETE
 // 空気抵抗係数(k)  砲弾に働く空気抵抗は砲弾の速度の二乗に比例する
 const float Bullet::AIR_RESISTANCE = -0.5f * AIR_DENSITY * CROSS_SECTION * DRAG_COEFFICIENT;
 // 砲弾速度を定義する
-const DirectX::SimpleMath::Vector3 Bullet::SPEED(0.0f, 0.0f, 1.0f);
+const DirectX::SimpleMath::Vector3 Bullet::SPEED(0.0f, 0.0f, -1.0f);
 
 // コンストラクタ
 Bullet::Bullet(IBullet::BulletState bulletState)
@@ -92,7 +92,7 @@ void Bullet::Update(float time)
 	using namespace DirectX::SimpleMath;
 
 	// クォータニオンを生成する
-	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
+ 	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	
 	// 速度を計算する
 	m_velocity = Vector3::Transform(SPEED, rotationQuat);
@@ -117,7 +117,8 @@ void Bullet::Render()
 	// モデル描画のためのワールド行列を計算する
 	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	m_worldMatrix = Matrix::CreateScale(Bullet::BULLET_MODEL_SCALE) *
-		Matrix::CreateTranslation(Vector3(0.0f, 14.2f, 10.0f)) *
+		Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) * 
+		Matrix::CreateTranslation(Vector3(0.0f, 1.0f, -0.8f)) *
 		Matrix::CreateFromQuaternion(rotationQuat) *
 		Matrix::CreateTranslation(m_position);
 
@@ -145,9 +146,9 @@ void Bullet::DrawBullet(const DirectX::SimpleMath::Matrix& matrix)
 			// ベイシックエフェクトを取得する
 			auto basicEffect = dynamic_cast<DirectX::BasicEffect*>(effect);
 			// ディフューズカラーを設定する
-			basicEffect->SetDiffuseColor(DirectX::Colors::LightGray);
+			basicEffect->SetDiffuseColor(DirectX::Colors::Black);
 			// スペキュラカラーを設定する
-			basicEffect->SetSpecularColor(DirectX::Colors::LightGray);
+			basicEffect->SetSpecularColor(DirectX::Colors::Black);
 			// スペキュラパワーを設定する
 			basicEffect->SetSpecularPower(50.0f);
 			// エミッションカラーを設定する
