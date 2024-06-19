@@ -39,7 +39,7 @@ void mylib::FollowCamera::Update(float elapsedTime)
 
 	m_followUpTargetPosition = m_tank->GetTankPosition();
 	float tankAngleRL = m_tank->GetTankAngleRL();
-	m_followUpTargetQuaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll({ 0.0f,DirectX::XMConvertToDegrees(tankAngleRL),0.0f });
+	m_followUpTargetQuaternion = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll({ 0.0f,tankAngleRL,0.0f });
 
 	// Šî€‚É‚È‚éueyev‚ğŒvZ‚·‚é
 	DirectX::SimpleMath::Vector3 eye{ 0.0f, HEIGHT, DISTANCE };

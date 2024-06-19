@@ -14,8 +14,8 @@ namespace mylib
 		static constexpr float SPRING_RATE_EYE = 0.05f;
 		static constexpr float SPRING_RATE_TARGET = 0.05f;
 		// ãóó£ÅAçÇÇ≥
-		static constexpr float DISTANCE = 10.0f;
-		static constexpr float HEIGHT = 2.0f;
+		static constexpr float DISTANCE = 8.0f;
+		static constexpr float HEIGHT = 3.5f;
 
 		// ÉJÉÅÉâç¿ïW
 		DirectX::SimpleMath::Vector3 m_eye;
