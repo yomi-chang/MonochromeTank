@@ -15,19 +15,6 @@ public:
 	static const float MAX_BOUNDARY;
 	// 砲弾スピードを定義する
 	static const DirectX::SimpleMath::Vector3 SPEED;
-	// 発射する力
-	static const float IMPULSIVE_FORCE;
-	// 直径 (m)
-	static const float DIAMETER;
-	// 空気抵抗係数(Cd)
-	static const float DRAG_COEFFICIENT;
-	// 空気密度(ρ) kg/m^3
-	static const float AIR_DENSITY;
-	//サッカーボール直径断面積( m^2)
-	static const float CROSS_SECTION;
-	// 空気抵抗係数(k)
-	// ボールに働く空気抵抗はボールの速度の二乗に比例する
-	static const float AIR_RESISTANCE;
 
 public:
 	// 位置を取得する 

@@ -13,6 +13,8 @@
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 
 #include "Framework/Resources.h"
+#include "Libraries/MyLib/FollowCamera.h"
+#include "Libraries/MyLib/CollisionMesh.h"
 
 #include <cassert>
 
@@ -31,7 +33,9 @@ PlayScene::PlayScene()
 	m_isChangeScene{},
 	m_skySphere{},
 	m_tank{},
-	m_tpsCamera{}
+	m_tpsCamera{},
+	m_collisionMesh{},
+	m_enemyTank{}
 {
 }
 
@@ -74,7 +78,7 @@ void PlayScene::Initialize(CommonResources* resources)
 	// 射影行列を設定する
 	Graphics::GetInstance()->SetProjectionMatrix(m_projection);
 
-	//モデルの読み込み(GameClassの方がいいかも)
+	// モデルの読み込み(GameClassの方がいいかも)
 	Resources::GetInstance()->LoadResource();
 
 	// シーン変更フラグを初期化する
@@ -87,9 +91,17 @@ void PlayScene::Initialize(CommonResources* resources)
 	m_tank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, 0.0f), 0.0f);
 	m_tank->Initialize();
 
-	// カメラの生成
+	//敵戦車
+	m_enemyTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f));
+	m_enemyTank->Initialize();
+
+	// TPSカメラの生成
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
 	m_tpsCamera->Initialize(m_tank.get());
+
+	// コリジョンメッシュを生成する
+	m_collisionMesh = std::make_unique<mylib::CollisionMesh>();
+	m_collisionMesh->Initialize(device, context, L"Terrain");
 }
 
 //---------------------------------------------------------
@@ -105,26 +117,14 @@ void PlayScene::Update(float elapsedTime)
 	// ビュー行列を取得する
 	//const Matrix& view = m_debugCamera->GetViewMatrix();
 
-	
-
-	
-
 	// 戦車の更新処理
 	Vector3 position(0.0f, 0.0f, 0.0f);
 	float angle = 0.0f;
 	m_tank->Update(elapsedTime,position,angle);
+	m_enemyTank->Update(elapsedTime, position, angle);
 
 	// フォローカメラを更新する
 	m_tpsCamera->Update(elapsedTime);
-
-	Matrix view = Matrix::CreateLookAt(
-		m_tpsCamera->GetEyePosition(),
-		m_tpsCamera->GetTargetPosition(),
-		Vector3::UnitY
-	);
-
-	// ビュー行列を設定する
-	Graphics::GetInstance()->SetViewMatrix(view);
 }
 
 //---------------------------------------------------------
@@ -138,21 +138,34 @@ void PlayScene::Render()
 	// ビュー行列を取得する
 	//const Matrix& view = m_debugCamera->GetViewMatrix();
 
-	// フォローカメラの情報からビュー行列を作成する
-	/*Matrix view = Matrix::CreateLookAt(
+	// ビュー行列の取得
+	Matrix view = Matrix::CreateLookAt(
 		m_tpsCamera->GetEyePosition(),
 		m_tpsCamera->GetTargetPosition(),
 		Vector3::UnitY
-	);*/
+	);
+
+	// ビュー行列を設定する
+	Graphics::GetInstance()->SetViewMatrix(view);
 
 	// 格子床を描画する
-	m_gridFloor->Render(context, Graphics::GetInstance()->GetViewMatrix(), m_projection);
+	//m_gridFloor->Render(context, Graphics::GetInstance()->GetViewMatrix(), m_projection);
+
+
+	// 天球の描画
+	m_skySphere->Render();
+
+	// メッシュを描画する
+	m_collisionMesh->Draw(
+		context, states,
+		Graphics::GetInstance()->GetViewMatrix(),
+		Graphics::GetInstance()->GetProjectionMatrix()
+	);
 
 	//戦車の描画
 	m_tank->Render();
 
-	// 天球の描画
-	m_skySphere->Render();
+	m_enemyTank->Render();
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = m_commonResources->GetDebugString();
@@ -180,40 +193,4 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
-}
-
-
-//---------------------------------------------------------
-// キーボードの処理
-//---------------------------------------------------------
-void PlayScene::KeyBoardEvent()
-{
-	//// キーボードステートを取得する
-	//DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
-
-	////速度の初期化
-	//m_velocity = Vector3::Zero;
-
-	//// 前後移動
-	//if (keyboardState.Up)
-	//{
-	//	m_velocity += Matrix::CreateRotationY(m_angle).Forward() * m_speed;
-	//}
-	//else if (keyboardState.Down)
-	//{
-	//	m_velocity -= Matrix::CreateRotationY(m_angle).Forward() * m_speed;
-	//}
-	//// 左右回転
-	//if (keyboardState.Left)
-	//{
-	//	m_angle += XMConvertToRadians(1.0f);
-	//}
-	//else if (keyboardState.Right)
-	//{
-	//	m_angle -= XMConvertToRadians(1.0f);
-	//}
-
-	//m_bodyPosition += m_velocity;
-	//m_turretPosition += m_velocity;
-	//m_canonPosition += m_velocity;
 }

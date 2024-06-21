@@ -30,6 +30,10 @@ void Tank::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
+	// 初期座標、初期回転角の取得
+	m_currentPosition = GetInitialPosition();
+	m_currentAngleRL = GetInitialAngleRL();
+
 	// 車体の生成
 	Attach(std::make_unique<TankBody>(this, Vector3(0.0f, 0.5, 0.0f), 0.0f));
 
@@ -65,10 +69,12 @@ void Tank::Update(
 	if (keyboardState.W)
 	{
 		tunkVelocity += Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
+		m_currentPosition += tunkVelocity;
 	}
 	else if (keyboardState.S)
 	{
 		tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
+		m_currentPosition += tunkVelocity;
 	}
 
 	// 左右回転
@@ -80,11 +86,6 @@ void Tank::Update(
 	{
 		m_currentAngleRL -= DirectX::XMConvertToRadians(1.0f);
 	}
-
-	m_currentPosition += tunkVelocity;
-
-	m_currentPosition = m_currentPosition + GetInitialPosition();
-	m_currentAngleRL = m_currentAngleRL + GetInitialAngleRL();
 
 	// パーツの更新
 	TankBase::Update(elapsedTime, m_currentPosition , m_currentAngleRL);

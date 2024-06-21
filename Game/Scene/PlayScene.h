@@ -8,7 +8,7 @@
 #include "Framework/Graphics.h"
 #include "Game/Objects/Tank/Tank.h"
 #include "Game/Objects/Other/SkySphere.h"
-#include "Libraries/MyLib/FollowCamera.h"
+//#include "Libraries/MyLib/FollowCamera.h"
 
 // 前方宣言
 class CommonResources;
@@ -17,6 +17,8 @@ namespace mylib
 {
 	class DebugCamera;
 	class GridFloor;
+	class FollowCamera;
+	class CollisionMesh;
 }
 
 
@@ -44,9 +46,14 @@ private:
 	// ゲームオブジェクト
 	std::unique_ptr<SkySphere> m_skySphere;
 	std::unique_ptr<Tank> m_tank;
+	std::unique_ptr<Tank> m_enemyTank;
+	
 
 	// 追従カメラ
 	std::unique_ptr<mylib::FollowCamera> m_tpsCamera;
+
+	// コリジョンメッシュ
+	std::unique_ptr<mylib::CollisionMesh> m_collisionMesh;
 
 public:
 	PlayScene();
@@ -60,5 +67,4 @@ public:
 	SceneID GetNextSceneID() const;
 
 private:
-	void KeyBoardEvent();
 };

@@ -13,16 +13,6 @@ const float Bullet::MIN_BOUNDARY = -300.0f;
 // ‹«ŠE(Å‘å)
 const float Bullet::MAX_BOUNDARY = 300.0f;
 
-// ’¼Œa (m)
-const float Bullet::DIAMETER = 0.2f;
-// ‹ó‹C’ïRŒW”(Cd)
-const float Bullet::DRAG_COEFFICIENT = 0.2f;
-// ‹ó‹C–§“x(ƒÏ) kg/m^3
-const float Bullet::AIR_DENSITY = 1.22f;
-//–C’e’¼Œa’f–ÊÏ( m^2)
-const float Bullet::CROSS_SECTION = 0.25f * (DirectX::XM_PI * DIAMETER * DIAMETER);
-// ‹ó‹C’ïRŒW”(k)  –C’e‚É“­‚­‹ó‹C’ïR‚Í–C’e‚Ì‘¬“x‚Ì“ñæ‚É”ä—á‚·‚é
-const float Bullet::AIR_RESISTANCE = -0.5f * AIR_DENSITY * CROSS_SECTION * DRAG_COEFFICIENT;
 // –C’e‘¬“x‚ğ’è‹`‚·‚é
 const DirectX::SimpleMath::Vector3 Bullet::SPEED(0.0f, 0.0f, -1.0f);
 
