@@ -45,7 +45,7 @@ private:
 
 	// ゲームオブジェクト
 	std::unique_ptr<SkySphere> m_skySphere;
-	std::unique_ptr<Tank> m_tank;
+	std::unique_ptr<Tank> m_playerTank;
 	std::unique_ptr<Tank> m_enemyTank;
 	
 

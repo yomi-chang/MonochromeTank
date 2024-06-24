@@ -10,7 +10,8 @@ public:
 	TankTurret(
 		ITankComponent* parent,
 		const DirectX::SimpleMath::Vector3& initialPosition,
-		const float& initialAngleRL
+		const float& initialAngleRL,
+		TankType type
 	);
 
 	// デストラクタ
@@ -53,4 +54,7 @@ private:
 
 	// 砲塔の角度
 	float m_turretAngle;
+
+	// 敵かプレイヤーか
+	TankBase::TankType m_tankType;
 };

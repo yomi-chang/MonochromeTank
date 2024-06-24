@@ -15,6 +15,7 @@
 #include "Framework/Resources.h"
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Libraries/MyLib/CollisionMesh.h"
+#include "Game/Objects/Tank/TankBase.h"
 
 #include <cassert>
 
@@ -32,7 +33,7 @@ PlayScene::PlayScene()
 	m_projection{},
 	m_isChangeScene{},
 	m_skySphere{},
-	m_tank{},
+	m_playerTank{},
 	m_tpsCamera{},
 	m_collisionMesh{},
 	m_enemyTank{}
@@ -88,16 +89,17 @@ void PlayScene::Initialize(CommonResources* resources)
 	m_skySphere = std::make_unique<SkySphere>();
 
 	// 戦車
-	m_tank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, 0.0f), 0.0f);
-	m_tank->Initialize();
+	m_playerTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, 0.0f), 0.0f, TankBase::TankType::Player);
+	m_playerTank->Initialize();
 
 	//敵戦車
-	m_enemyTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f));
+	m_enemyTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f), TankBase::TankType::Enemy);
 	m_enemyTank->Initialize();
+	m_enemyTank->SetOtherTank(m_playerTank.get());
 
 	// TPSカメラの生成
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
-	m_tpsCamera->Initialize(m_tank.get());
+	m_tpsCamera->Initialize(m_playerTank.get());
 
 	// コリジョンメッシュを生成する
 	m_collisionMesh = std::make_unique<mylib::CollisionMesh>();
@@ -120,7 +122,7 @@ void PlayScene::Update(float elapsedTime)
 	// 戦車の更新処理
 	Vector3 position(0.0f, 0.0f, 0.0f);
 	float angle = 0.0f;
-	m_tank->Update(elapsedTime,position,angle);
+	m_playerTank->Update(elapsedTime,position,angle);
 	m_enemyTank->Update(elapsedTime, position, angle);
 
 	// フォローカメラを更新する
@@ -163,13 +165,25 @@ void PlayScene::Render()
 	);
 
 	//戦車の描画
-	m_tank->Render();
+	m_playerTank->Render();
 
 	m_enemyTank->Render();
 
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = m_commonResources->GetDebugString();
 	debugString->AddString("Play Scene");
+	debugString->AddString(" ");
+	debugString->AddString("PlayerTank");
+	debugString->AddString("x : %f", m_playerTank->GetTankPosition().x);
+	debugString->AddString("z : %f", m_playerTank->GetTankPosition().z);
+	debugString->AddString("angle : %f", DirectX::XMConvertToDegrees(m_playerTank->GetTankAngleRL()));
+	debugString->AddString(" ");
+	debugString->AddString("EnemyTank");
+	debugString->AddString("x : %f", m_enemyTank->GetTankPosition().x);
+	debugString->AddString("z : %f", m_enemyTank->GetTankPosition().z);
+	debugString->AddString("angle : %f", DirectX::XMConvertToDegrees(m_enemyTank->GetTankAngleRL()));
+
+
 }
 
 //---------------------------------------------------------

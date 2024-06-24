@@ -13,12 +13,17 @@ public:
 	float GetTankAngleRL() { return m_currentAngleRL; }
 	// 「砲弾」を参照する
 	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
+
+	// 他戦車の情報の受け取り
+	void SetOtherTank(Tank* tank) { m_otherTank = tank; }
+
 public:
 	// コンストラクタ
 	Tank(
 		ITankComponent* parent,
 		const DirectX::SimpleMath::Vector3& initialPosition,
-		const float& initialAngleRL
+		const float& initialAngleRL,
+		TankType type
 	);
 
 	// デストラクタ
@@ -58,4 +63,14 @@ private:
 
 	// 砲弾配列
 	std::vector<std::unique_ptr<IBullet>> m_bullets;
+
+	// 敵かプレイヤーか
+	TankBase::TankType m_tankType;
+
+	// 他戦車の情報
+	Tank* m_otherTank;
+
+private:
+	void PlayerAction();
+	void EnemyAction();
 };

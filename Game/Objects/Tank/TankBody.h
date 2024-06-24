@@ -10,7 +10,8 @@ public:
 	TankBody(
 		ITankComponent* parent,
 		const DirectX::SimpleMath::Vector3& initialPosition,
-		const float& initialAngleRL
+		const float& initialAngleRL,
+		TankType type
 	);
 
 	// デストラクタ
@@ -50,4 +51,7 @@ private:
 
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
+
+	// 敵かプレイヤーか
+	TankBase::TankType m_tankType;
 };

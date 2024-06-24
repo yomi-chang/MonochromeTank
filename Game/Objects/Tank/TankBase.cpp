@@ -5,7 +5,8 @@
 TankBase::TankBase(
 	ITankComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
-	const float& initialAngleRL
+	const float& initialAngleRL,
+	TankType type
 )
 	:
 	m_graphics{ Graphics::GetInstance() },

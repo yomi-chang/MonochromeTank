@@ -6,16 +6,18 @@
 Tank::Tank(
 	ITankComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
-	const float& initialAngleRL
+	const float& initialAngleRL,
+	TankType type
 )
 	:
-	TankBase(parent, initialPosition, initialAngleRL),
+	TankBase(parent, initialPosition, initialAngleRL, type),
 	m_graphics{Graphics::GetInstance()},
 	m_currentPosition{},
 	m_currentAngleRL{},
 	m_tankParts{},
 	m_worldMatrix{},
-	m_bullets{}
+	m_bullets{},
+	m_tankType{ type }
 {
 }
 
@@ -35,7 +37,7 @@ void Tank::Initialize()
 	m_currentAngleRL = GetInitialAngleRL();
 
 	// 車体の生成
-	Attach(std::make_unique<TankBody>(this, Vector3(0.0f, 0.5, 0.0f), 0.0f));
+	Attach(std::make_unique<TankBody>(this, Vector3(0.0f, 0.5, 0.0f), 0.0f, m_tankType));
 
 	// 砲弾配列を作成する
 	m_bullets.resize(100);
@@ -64,29 +66,44 @@ void Tank::Update(
 
 	// 速度の初期化
 	Vector3 tunkVelocity = Vector3::Zero;
-
-	// 前後移動
-	if (keyboardState.W)
+	
+	//プレイヤーの場合
+	if (m_tankType == TankType::Player)
 	{
-		tunkVelocity += Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
+		// 前後移動
+		if (keyboardState.W)
+		{
+			tunkVelocity += Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
+			m_currentPosition += tunkVelocity;
+		}
+		else if (keyboardState.S)
+		{
+			tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
+			m_currentPosition += tunkVelocity;
+		}
+
+		// 左右回転
+		if (keyboardState.A)
+		{
+			m_currentAngleRL += DirectX::XMConvertToRadians(1.0f);
+		}
+		else if (keyboardState.D)
+		{
+			m_currentAngleRL -= DirectX::XMConvertToRadians(1.0f);
+		}
+	}
+
+	if (m_tankType == TankType::Enemy)
+	{
+		// プレイヤーの方向を向く
+		Vector3 delta = m_currentPosition - m_otherTank->GetTankPosition();
+		float angleRadians = atan2(delta.x, delta.z);
+		m_currentAngleRL = angleRadians;
+
+		tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.01f;
 		m_currentPosition += tunkVelocity;
 	}
-	else if (keyboardState.S)
-	{
-		tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
-		m_currentPosition += tunkVelocity;
-	}
-
-	// 左右回転
-	if (keyboardState.A)
-	{
-		m_currentAngleRL += DirectX::XMConvertToRadians(1.0f);
-	}
-	else if (keyboardState.D)
-	{
-		m_currentAngleRL -= DirectX::XMConvertToRadians(1.0f);
-	}
-
+	
 	// パーツの更新
 	TankBase::Update(elapsedTime, m_currentPosition , m_currentAngleRL);
 
@@ -125,4 +142,14 @@ void Tank::Finalize()
 {
 	// 削除する部品をリセットする
 	m_tankParts.clear();
+}
+
+
+// プレイヤーの操作
+void Tank::PlayerAction()
+{
+}
+
+void Tank::EnemyAction()
+{
 }

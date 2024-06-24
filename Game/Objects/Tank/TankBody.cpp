@@ -8,16 +8,18 @@
 TankBody::TankBody(
 	ITankComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
-	const float& initialAngleRL
+	const float& initialAngleRL,
+	TankType type
 )
 	:
-	TankBase(parent, initialPosition, initialAngleRL),
+	TankBase(parent, initialPosition, initialAngleRL, type),
 	m_graphics{Graphics::GetInstance()},
 	m_currentPosition{},
 	m_currentAngleRL{},
 	m_tankParts{},
 	m_model{},
-	m_worldMatrix{}
+	m_worldMatrix{},
+	m_tankType{ type }
 {
 }
 
@@ -36,7 +38,7 @@ void TankBody::Initialize()
 	m_model = Resources::GetInstance()->GetTankBodyModel();
 
 	// 砲塔の生成
-	Attach(std::make_unique<TankTurret>(this, Vector3{ 0.0f,1.0f,0.0f },0.0f));
+	Attach(std::make_unique<TankTurret>(this, Vector3{ 0.0f,1.0f,0.0f },0.0f,m_tankType));
 
 	// モデルをセットする
 	TankBase::SetModel(m_model);

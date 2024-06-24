@@ -6,6 +6,13 @@
 class TankBase : public ITankComponent
 {
 public:
+	enum TankType
+	{
+		Player,
+		Enemy
+	};
+
+public:
 	// 初期位置の取得
 	DirectX::SimpleMath::Vector3 GetInitialPosition() { return m_initialPosition; }
 
@@ -20,7 +27,8 @@ public:
 	TankBase(
 		ITankComponent* parent,
 		const DirectX::SimpleMath::Vector3& initialPosition,
-		const float& initialAngleRL
+		const float& initialAngleRL,
+		TankType type
 	);
 
 	// デストラクタ
@@ -69,4 +77,6 @@ private:
 
 	// パーツモデル
 	DirectX::Model* m_model;
+
+	TankType m_tankType;
 };

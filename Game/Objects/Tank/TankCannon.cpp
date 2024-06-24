@@ -6,10 +6,11 @@
 TankCannon::TankCannon(
 	ITankComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
-	const float& initialAngleRL
+	const float& initialAngleRL,
+	TankType type
 )
 	:
-	TankBase(parent, initialPosition, initialAngleRL),
+	TankBase(parent, initialPosition, initialAngleRL, type),
 	m_graphics{Graphics::GetInstance()},
 	m_currentPosition{},
 	m_currentAngleRL{},
@@ -18,7 +19,8 @@ TankCannon::TankCannon(
 	m_worldMatrix{},
 	m_currentAngleUD{},
 	m_shotBulletNumber{},
-	m_shotTimer(SHOT_INTERVAL)
+	m_shotTimer(SHOT_INTERVAL),
+	m_tankType{ type }
 {
 	// 砲塔へのポインタを取得する
 	m_tank = dynamic_cast<Tank*>(parent->GetParent()->GetParent());
@@ -58,43 +60,48 @@ void TankCannon::Update(
 	// キーボードステートの取得
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 
-	// 砲身の上下
-	if (keyboardState.Up)
+	if (m_tankType == TankType::Player)
 	{
-		m_currentAngleUD += DirectX::XMConvertToRadians(0.2f);
-	}
-	else if ( keyboardState.Down)
-	{
-		m_currentAngleUD -= DirectX::XMConvertToRadians(0.2f);
-	}
-
-	// 砲身の向きを制限する
-	m_currentAngleUD = TankBase::Clamp(m_currentAngleUD, CANON_ANGLEUD_MIN , CANON_ANGLEUD_MAX);
-
-	// 「砲身」の回転させる
-	if (keyboardState.Space)
-	{
-		// 発射タイマーが0.0より大きい場合は発射タイマーを減らす
-		if (m_shotTimer > 0.0f)
-			// タイマーを減らす
-			m_shotTimer -= elapsedTime;
-		else
+		// 砲身の上下
+		if (keyboardState.Up)
 		{
-			// 「砲弾」を発射する
-  			for (auto& bullet : m_tank->GetBullets())
+			m_currentAngleUD += DirectX::XMConvertToRadians(0.2f);
+		}
+		else if (keyboardState.Down)
+		{
+			m_currentAngleUD -= DirectX::XMConvertToRadians(0.2f);
+		}
+
+		// 砲身の向きを制限する
+		m_currentAngleUD = TankBase::Clamp(m_currentAngleUD, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
+
+		// 「砲身」の回転させる
+		if (keyboardState.Space)
+		{
+			// 発射タイマーが0.0より大きい場合は発射タイマーを減らす
+			if (m_shotTimer > 0.0f)
 			{
-				// 使用されていない砲弾は発射できる
-   				if (bullet->GetBulletState() == IBullet::UNUSED)
-				{
-					// 「砲弾」を発射する
-					Shoot(bullet.get());
-					// 発射砲弾数をインクリメントする
-					m_shotBulletNumber++;
-					break;
-				}
+				// タイマーを減らす
+				m_shotTimer -= elapsedTime;
 			}
-			// 初期値を設定する
-			m_shotTimer = SHOT_INTERVAL;
+			else
+			{
+				// 「砲弾」を発射する
+				for (auto& bullet : m_tank->GetBullets())
+				{
+					// 使用されていない砲弾は発射できる
+					if (bullet->GetBulletState() == IBullet::UNUSED)
+					{
+						// 「砲弾」を発射する
+						Shoot(bullet.get());
+						// 発射砲弾数をインクリメントする
+						m_shotBulletNumber++;
+						break;
+					}
+				}
+				// 初期値を設定する
+				m_shotTimer = SHOT_INTERVAL;
+			}
 		}
 	}
 }

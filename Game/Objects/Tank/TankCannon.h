@@ -18,7 +18,8 @@ public:
 	TankCannon(
 		ITankComponent* parent,
 		const DirectX::SimpleMath::Vector3& initialPosition,
-		const float& initialAngleRL
+		const float& initialAngleRL,
+		TankType type
 	);
 
 	// デストラクタ
@@ -73,4 +74,7 @@ private:
 
 	// 砲塔
 	Tank* m_tank;
+
+	// 敵かプレイヤーか
+	TankBase::TankType m_tankType;
 };

@@ -8,17 +8,19 @@
 TankTurret::TankTurret(
 	ITankComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
-	const float& initialAngleRL
+	const float& initialAngleRL,
+	TankType type
 )
 	:
-	TankBase(parent, initialPosition, initialAngleRL),
+	TankBase(parent, initialPosition, initialAngleRL, type),
 	m_graphics{Graphics::GetInstance()},
 	m_currentPosition{},
 	m_currentAngleRL{},
 	m_tankParts{},
 	m_model{},
 	m_worldMatrix{},
-	m_turretAngle{}
+	m_turretAngle{},
+	m_tankType{ type }
 {
 }
 
@@ -37,7 +39,7 @@ void TankTurret::Initialize()
 	m_model = Resources::GetInstance()->GetTankTurretModel();
 
 	// 砲身の生成
-	Attach(std::make_unique<TankCannon>(this, Vector3{ 0.0f,1.0f,0.0f }, 0.0f));
+	Attach(std::make_unique<TankCannon>(this, Vector3{ 0.0f,1.0f,0.0f }, 0.0f, m_tankType));
 
 	// モデルのセット
 	TankBase::SetModel(m_model);
@@ -55,14 +57,17 @@ void TankTurret::Update(
 	// キーボードステートの取得
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 
-	// 砲塔の回転
-	if (keyboardState.Left)
+	if (m_tankType == TankType::Player)
 	{
-		m_turretAngle += DirectX::XMConvertToRadians(0.2f);
-	}
-	else if (keyboardState.Right)
-	{
-		m_turretAngle -= DirectX::XMConvertToRadians(0.2f);
+		// 砲塔の回転
+		if (keyboardState.Left)
+		{
+			m_turretAngle += DirectX::XMConvertToRadians(0.2f);
+		}
+		else if (keyboardState.Right)
+		{
+			m_turretAngle -= DirectX::XMConvertToRadians(0.2f);
+		}
 	}
 
 	// 現在の位置の更新
