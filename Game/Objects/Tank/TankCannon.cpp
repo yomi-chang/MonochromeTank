@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Game/Objects/Tank/TankCannon.h"
-//#include "Game/Objects/Tank/TankMuzzle.h"
 #include "Framework/Resources.h"
 
 // コンストラクタ
@@ -45,9 +44,6 @@ void TankCannon::Initialize()
 
 	// モデルをセットする
 	TankBase::SetModel(m_model);
-
-	// 砲塔の生成
-	//Attach(std::make_unique<TankMuzzle>(this, Vector3{ 0.0f,0.75f,0.0f }, 0.0f, m_tankType));
 }
 
 // 更新処理
@@ -83,7 +79,7 @@ void TankCannon::Update(
 		}
 
 		// 最初の回転角を設定
-		m_cannonAngle = DirectX::XMConvertToRadians(30.0f);
+		m_cannonAngle = DirectX::XMConvertToRadians(40.0f);
 
 		// マウス座標に応じて回転
 		m_cannonAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.y) / 10.0f);
@@ -152,11 +148,33 @@ void TankCannon::Finalize()
 void TankCannon::Shoot(IBullet* bullet)
 {
 	// 「砲弾」位置を設定する
-	bullet->SetPosition(m_currentPosition);
+	//bullet->SetPosition(m_currentPosition);
+	bullet->SetPosition(this->GetMuzzlePosition());
 	// 「砲弾」初期左右角を設定する
 	bullet->SetAngleRL(m_currentAngleRL);
 	// 「砲弾」初期上下角を設定する
 	bullet->SetAngleUD(m_currentAngleUD);
 	// 「砲弾」を発射する
 	bullet->SetBulletState(IBullet::FLYING);
+}
+
+DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
+{
+	using namespace DirectX::SimpleMath;
+	Vector3 position = m_currentPosition + GetInitialPosition();
+	float angle = m_currentAngleRL + GetInitialAngleRL();
+
+	//return m_currentPosition + GetInitialPosition() + Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL()).Forward() * 0.8f + Matrix::CreateRotationX(m_cannonAngle).Forward() * 0.5f;
+	/*return  position + Matrix::CreateRotationX(m_cannonAngle).Forward() * 0.75f;*/
+
+	DirectX::SimpleMath::Matrix rotationX = DirectX::SimpleMath::Matrix::CreateRotationX(m_cannonAngle);
+	DirectX::SimpleMath::Matrix rotationY = DirectX::SimpleMath::Matrix::CreateRotationY(angle);
+	DirectX::SimpleMath::Matrix combinedRotation = rotationX * rotationY;
+
+	DirectX::SimpleMath::Vector3 muzzleOffset = DirectX::SimpleMath::Vector3(0.0f, 0.0f, -0.8f);
+
+	// 軸の位置に回転を適用して砲身の先端の座標を求める
+	return DirectX::SimpleMath::Vector3::Transform(muzzleOffset, combinedRotation) + position;
+
+
 }

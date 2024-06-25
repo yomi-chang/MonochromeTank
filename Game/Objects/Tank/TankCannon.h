@@ -14,7 +14,8 @@ class TankCannon : public TankBase
 	const float CANON_ANGLEUD_MAX = DirectX::XMConvertToRadians(10.0f);
 
 public:
-	float GetCannonAngle() { return m_currentAngleUD; }
+	// 銃口の座標を取得する
+	DirectX::SimpleMath::Vector3 GetMuzzlePosition();
 
 public:
 	// コンストラクタ

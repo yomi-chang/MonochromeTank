@@ -72,6 +72,7 @@ void TankTurret::Update(
 	//}
 
 	// Å‰‚Ì‰ñ“]Šp‚ğİ’è
+	//m_turretAngle = DirectX::XMConvertToRadians(90);
 	m_turretAngle = DirectX::XMConvertToRadians (1280.0 / 10.0);
 
 	// ƒ}ƒEƒXÀ•W‚É‰‚¶‚Ä‰ñ“]

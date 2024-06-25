@@ -100,7 +100,7 @@ void Tank::Update(
 		float angleRadians = atan2(delta.x, delta.z);
 		m_currentAngleRL = angleRadians;
 
-		tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.01f;
+		//tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.01f;
 		m_currentPosition += tunkVelocity;
 	}
 	
