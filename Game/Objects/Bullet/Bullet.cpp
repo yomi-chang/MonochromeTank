@@ -5,7 +5,7 @@
 #include "Utilities/DebugDraw.h"
 
 // 砲弾モデルスケール
-const DirectX::SimpleMath::Vector3 Bullet::BULLET_MODEL_SCALE(0.003f);
+const DirectX::SimpleMath::Vector3 Bullet::BULLET_MODEL_SCALE(0.0005f);
 // 砲弾境界ボックススケール
 const DirectX::SimpleMath::Vector3 Bullet::BULLET_BOUNDINGBOX_SCALE(0.003);
 // 境界(最小)
@@ -14,7 +14,7 @@ const float Bullet::MIN_BOUNDARY = -300.0f;
 const float Bullet::MAX_BOUNDARY = 300.0f;
 
 // 砲弾速度を定義する
-const DirectX::SimpleMath::Vector3 Bullet::SPEED(0.0f, 0.0f, -1.0f);
+const DirectX::SimpleMath::Vector3 Bullet::SPEED(0.0f, 0.0f, -0.05f);
 
 // コンストラクタ
 Bullet::Bullet(IBullet::BulletState bulletState)
@@ -108,7 +108,7 @@ void Bullet::Render()
 	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	m_worldMatrix = Matrix::CreateScale(Bullet::BULLET_MODEL_SCALE) *
 		Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) * 
-		Matrix::CreateTranslation(Vector3(0.0f, 1.0f, -0.8f)) *
+		Matrix::CreateTranslation(Vector3(0.0f, 0.75f, -0.8f)) *
 		Matrix::CreateFromQuaternion(rotationQuat) *
 		Matrix::CreateTranslation(m_position);
 
@@ -122,10 +122,10 @@ void Bullet::Render()
 	// 砲弾を描画する
 	DrawBullet(m_worldMatrix);
 
-#ifdef _DEBUG
-	// 境界ボックスを描画する
-	DrawBoundingBox(m_worldMatrix);
-#endif
+//#ifdef _DEBUG
+//	// 境界ボックスを描画する
+//	DrawBoundingBox(m_worldMatrix);
+//#endif
 }
 
 // 砲弾を描画する

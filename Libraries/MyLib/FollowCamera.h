@@ -11,11 +11,14 @@ namespace mylib
 	{
 	private:
 		// バネレート
-		static constexpr float SPRING_RATE_EYE = 0.05f;
-		static constexpr float SPRING_RATE_TARGET = 0.05f;
+		static constexpr float SPRING_RATE_EYE = 0.2f;
+		static constexpr float SPRING_RATE_TARGET = 0.2f;
 		// 距離、高さ
-		static constexpr float DISTANCE = 8.0f;
-		static constexpr float HEIGHT = 3.5f;
+		static constexpr float DISTANCE = 3.2f;
+		static constexpr float HEIGHT = 1.2f;
+
+		/*static constexpr float DISTANCE = 8.0f;
+		static constexpr float HEIGHT = 5.0f;*/
 
 		// カメラ座標
 		DirectX::SimpleMath::Vector3 m_eye;

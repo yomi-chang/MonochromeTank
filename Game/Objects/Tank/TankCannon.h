@@ -11,7 +11,10 @@ class TankCannon : public TankBase
 
 	// 砲身の角度の制限
 	const float CANON_ANGLEUD_MIN = DirectX::XMConvertToRadians(-10.0f);
-	const float CANON_ANGLEUD_MAX = DirectX::XMConvertToRadians(30.0f);
+	const float CANON_ANGLEUD_MAX = DirectX::XMConvertToRadians(10.0f);
+
+public:
+	float GetCannonAngle() { return m_currentAngleUD; }
 
 public:
 	// コンストラクタ
@@ -65,6 +68,9 @@ private:
 
 	// 上下の回転角
 	float m_currentAngleUD;
+
+	// 砲身の角度
+	float m_cannonAngle;
 
 	// 使用済み砲弾数
 	int m_shotBulletNumber;

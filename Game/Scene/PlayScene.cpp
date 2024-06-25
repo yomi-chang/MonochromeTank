@@ -169,6 +169,12 @@ void PlayScene::Render()
 
 	m_enemyTank->Render();
 
+
+	// キーボードステートの取得
+	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
+	float mousePosX = 1.0f / static_cast<float>(mouseState.x);
+	float mousePosY = 1.0f / static_cast<float>(mouseState.y);
+
 	// デバッグ情報を「DebugString」で表示する
 	auto debugString = m_commonResources->GetDebugString();
 	debugString->AddString("Play Scene");
@@ -182,7 +188,12 @@ void PlayScene::Render()
 	debugString->AddString("x : %f", m_enemyTank->GetTankPosition().x);
 	debugString->AddString("z : %f", m_enemyTank->GetTankPosition().z);
 	debugString->AddString("angle : %f", DirectX::XMConvertToDegrees(m_enemyTank->GetTankAngleRL()));
-
+	debugString->AddString(" ");
+	debugString->AddString("MousePosition");
+	debugString->AddString("x : %d", mouseState.x);
+	debugString->AddString("y : %d", mouseState.y);
+	debugString->AddString("x : %f", mousePosX);
+	debugString->AddString("y : %f", mousePosY);
 
 }
 

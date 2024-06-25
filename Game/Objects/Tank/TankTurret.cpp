@@ -39,7 +39,7 @@ void TankTurret::Initialize()
 	m_model = Resources::GetInstance()->GetTankTurretModel();
 
 	// 砲身の生成
-	Attach(std::make_unique<TankCannon>(this, Vector3{ 0.0f,1.0f,0.0f }, 0.0f, m_tankType));
+	Attach(std::make_unique<TankCannon>(this, Vector3{ 0.0f,0.75f,0.0f }, 0.0f, m_tankType));
 
 	// モデルのセット
 	TankBase::SetModel(m_model);
@@ -56,19 +56,29 @@ void TankTurret::Update(
 
 	// キーボードステートの取得
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
 
-	if (m_tankType == TankType::Player)
-	{
-		// 砲塔の回転
-		if (keyboardState.Left)
-		{
-			m_turretAngle += DirectX::XMConvertToRadians(0.2f);
-		}
-		else if (keyboardState.Right)
-		{
-			m_turretAngle -= DirectX::XMConvertToRadians(0.2f);
-		}
-	}
+	//if (m_tankType == TankType::Player)
+	//{
+	//	// 砲塔の回転
+	//	if (keyboardState.Left)
+	//	{
+	//		m_turretAngle += DirectX::XMConvertToRadians(0.2f);
+	//	}
+	//	else if (keyboardState.Right)
+	//	{
+	//		m_turretAngle -= DirectX::XMConvertToRadians(0.2f);
+	//	}
+	//}
+
+	// 最初の回転角を設定
+	m_turretAngle = DirectX::XMConvertToRadians (1280.0 / 10.0);
+
+	// マウス座標に応じて回転
+	m_turretAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.x) / 5.0f);
+
+	// 回転の制限
+	m_turretAngle = TankBase::Clamp(m_turretAngle, DirectX::XMConvertToRadians(-90.0f), DirectX::XMConvertToRadians(90.0f));
 
 	// 現在の位置の更新
 	m_currentPosition = currentPosition;
@@ -86,7 +96,7 @@ void TankTurret::Render()
 	using namespace DirectX::SimpleMath;
 
 	// ワールド行列を生成する
-	m_worldMatrix = Matrix::CreateScale(1.0f) *
+	m_worldMatrix = Matrix::CreateScale(0.5f) *
 		Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL() + m_turretAngle) *
 		Matrix::CreateTranslation(m_currentPosition + GetInitialPosition());
 

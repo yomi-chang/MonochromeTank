@@ -37,11 +37,11 @@ void TankBody::Initialize()
 	// モデル情報の受け取り
 	m_model = Resources::GetInstance()->GetTankBodyModel();
 
-	// 砲塔の生成
-	Attach(std::make_unique<TankTurret>(this, Vector3{ 0.0f,1.0f,0.0f },0.0f,m_tankType));
-
 	// モデルをセットする
 	TankBase::SetModel(m_model);
+
+	// 砲塔の生成
+	Attach(std::make_unique<TankTurret>(this, Vector3{ 0.0f,0.75f,0.0f },0.0f,m_tankType));
 }
 
 // 更新処理
@@ -73,7 +73,7 @@ void TankBody::Render()
 	using namespace DirectX::SimpleMath;
 
 	// ワールド行列を生成する
-	m_worldMatrix = Matrix::CreateScale(1.0f) *
+	m_worldMatrix = Matrix::CreateScale(0.5f) *
 		Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL()) *
 		Matrix::CreateTranslation(m_currentPosition + GetInitialPosition());
 

@@ -37,7 +37,7 @@ void Tank::Initialize()
 	m_currentAngleRL = GetInitialAngleRL();
 
 	// é‘ëÃÇÃê∂ê¨
-	Attach(std::make_unique<TankBody>(this, Vector3(0.0f, 0.5, 0.0f), 0.0f, m_tankType));
+	Attach(std::make_unique<TankBody>(this, Vector3(0.0f, 0.5f, 0.0f), 0.0f, m_tankType));
 
 	// ñCíeîzóÒÇçÏê¨Ç∑ÇÈ
 	m_bullets.resize(100);
@@ -73,23 +73,23 @@ void Tank::Update(
 		// ëOå„à⁄ìÆ
 		if (keyboardState.W)
 		{
-			tunkVelocity += Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
+			tunkVelocity += Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.05f;
 			m_currentPosition += tunkVelocity;
 		}
 		else if (keyboardState.S)
 		{
-			tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.1f;
+			tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.05f;
 			m_currentPosition += tunkVelocity;
 		}
 
 		// ç∂âEâÒì]
 		if (keyboardState.A)
 		{
-			m_currentAngleRL += DirectX::XMConvertToRadians(1.0f);
+			m_currentAngleRL += DirectX::XMConvertToRadians(0.5f);
 		}
 		else if (keyboardState.D)
 		{
-			m_currentAngleRL -= DirectX::XMConvertToRadians(1.0f);
+			m_currentAngleRL -= DirectX::XMConvertToRadians(0.5f);
 		}
 	}
 
