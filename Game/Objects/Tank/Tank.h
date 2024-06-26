@@ -17,6 +17,9 @@ public:
 	// 他戦車の情報の受け取り
 	void SetOtherTank(Tank* tank) { m_otherTank = tank; }
 
+	// 当たっているかどうか
+	bool GetHit() { return m_hit; }
+
 public:
 	// コンストラクタ
 	Tank(
@@ -70,7 +73,17 @@ private:
 	// 他戦車の情報
 	Tank* m_otherTank;
 
+	// 当たり判定
+	DirectX::BoundingSphere m_boundingSphere;
+
+	// 体力
+	bool m_hit;
+
 private:
 	void PlayerAction();
+
 	void EnemyAction();
+
+	// 砲塔と砲弾の衝突判定を行う
+	void DetectCollisionTurretAndBullets();
 };

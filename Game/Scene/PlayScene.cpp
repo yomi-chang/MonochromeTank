@@ -95,7 +95,9 @@ void PlayScene::Initialize(CommonResources* resources)
 	//“GíÔ
 	m_enemyTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f), TankBase::TankType::Enemy);
 	m_enemyTank->Initialize();
+
 	m_enemyTank->SetOtherTank(m_playerTank.get());
+	m_playerTank->SetOtherTank(m_enemyTank.get());
 
 	// TPSƒJƒƒ‰‚Ì¶¬
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
@@ -194,6 +196,8 @@ void PlayScene::Render()
 	debugString->AddString("y : %d", mouseState.y);
 	debugString->AddString("x : %f", mousePosX);
 	debugString->AddString("y : %f", mousePosY);
+
+	debugString->AddString("hp : %d", m_enemyTank->GetHit());
 
 }
 

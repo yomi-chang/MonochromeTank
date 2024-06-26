@@ -138,6 +138,16 @@ void TankCannon::Render()
 	
 	// 描画を行う
 	TankBase::Render(m_worldMatrix);
+
+	// プリミティブ描画を開始
+	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+
+	// 線分の描画
+	Matrix matrix = Matrix::CreateRotationX(m_cannonAngle) * Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL());
+	Graphics::GetInstance()->DrawLine(GetMuzzlePosition(), {matrix.Forward()}, DirectX::Colors::Red);
+
+	// プリミティブ描画を終了
+	m_graphics->DrawPrimitiveEnd();
 }
 
 // 終了処理

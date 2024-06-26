@@ -17,7 +17,9 @@ Tank::Tank(
 	m_tankParts{},
 	m_worldMatrix{},
 	m_bullets{},
-	m_tankType{ type }
+	m_tankType{ type },
+	m_boundingSphere{},
+	m_hit{}
 {
 }
 
@@ -41,6 +43,7 @@ void Tank::Initialize()
 
 	// 砲弾配列を作成する
 	m_bullets.resize(100);
+
 	// 配列に砲弾を格納する
 	for (int index = 0; index < 100; index++)
 	{
@@ -49,6 +52,9 @@ void Tank::Initialize()
 		// 砲弾を初期化する
 		m_bullets[index]->Initialize();
 	}
+
+	// 境界球
+	m_boundingSphere.Radius = 2.5f;
 }
 
 // 更新処理
@@ -61,48 +67,11 @@ void Tank::Update(
 	using namespace DirectX::SimpleMath;
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// キーボードステートの取得
-	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+	// プレイヤーの行動
+	PlayerAction();
 
-	// 速度の初期化
-	Vector3 tunkVelocity = Vector3::Zero;
-	
-	//プレイヤーの場合
-	if (m_tankType == TankType::Player)
-	{
-		// 前後移動
-		if (keyboardState.W)
-		{
-			tunkVelocity += Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.05f;
-			m_currentPosition += tunkVelocity;
-		}
-		else if (keyboardState.S)
-		{
-			tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.05f;
-			m_currentPosition += tunkVelocity;
-		}
-
-		// 左右回転
-		if (keyboardState.A)
-		{
-			m_currentAngleRL += DirectX::XMConvertToRadians(0.5f);
-		}
-		else if (keyboardState.D)
-		{
-			m_currentAngleRL -= DirectX::XMConvertToRadians(0.5f);
-		}
-	}
-
-	if (m_tankType == TankType::Enemy)
-	{
-		// プレイヤーの方向を向く
-		Vector3 delta = m_currentPosition - m_otherTank->GetTankPosition();
-		float angleRadians = atan2(delta.x, delta.z);
-		m_currentAngleRL = angleRadians;
-
-		//tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.01f;
-		m_currentPosition += tunkVelocity;
-	}
+	// 敵の行動
+	EnemyAction();
 	
 	// パーツの更新
 	TankBase::Update(elapsedTime, m_currentPosition , m_currentAngleRL);
@@ -117,6 +86,8 @@ void Tank::Update(
 			bullet->Update(elapsedTime);
 		}
 	}
+
+	DetectCollisionTurretAndBullets();
 }
 
 // 自身を描画しない描画処理(Tank用)
@@ -148,8 +119,70 @@ void Tank::Finalize()
 // プレイヤーの操作
 void Tank::PlayerAction()
 {
+	using namespace DirectX::SimpleMath;
+
+	// キーボードステートの取得
+	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+
+	//プレイヤーの場合
+	if (m_tankType == TankType::Player)
+	{
+		// 速度の初期化
+		Vector3 tunkVelocity = Vector3::Zero;
+
+		// 前後移動
+		if (keyboardState.W)
+		{
+			tunkVelocity += Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.05f;
+			m_currentPosition += tunkVelocity;
+		}
+		else if (keyboardState.S)
+		{
+			tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.05f;
+			m_currentPosition += tunkVelocity;
+		}
+
+		// 左右回転
+		if (keyboardState.A)
+		{
+			m_currentAngleRL += DirectX::XMConvertToRadians(0.5f);
+		}
+		else if (keyboardState.D)
+		{
+			m_currentAngleRL -= DirectX::XMConvertToRadians(0.5f);
+		}
+	}
 }
 
 void Tank::EnemyAction()
 {
+	using namespace DirectX::SimpleMath;
+
+	if (m_tankType == TankType::Enemy)
+	{
+		// 速度の初期化
+		Vector3 tunkVelocity = Vector3::Zero;
+
+		// プレイヤーの方向を向く
+		Vector3 delta = m_currentPosition - m_otherTank->GetTankPosition();
+		float angleRadians = atan2(delta.x, delta.z);
+		m_currentAngleRL = angleRadians;
+		tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + TankBase::GetInitialAngleRL()).Forward() * 0.01f;
+		m_currentPosition += tunkVelocity;
+	}
+}
+
+void Tank::DetectCollisionTurretAndBullets()
+{
+	m_hit = false;
+
+	// 弾丸と戦車の当たり判定
+	for (auto& bullet : m_otherTank->GetBullets())
+	{
+		if (bullet->GetBulletState() == IBullet::FLYING &&
+			m_boundingSphere.Intersects(*bullet->GetWorldBoundingBox()))
+		{
+			m_hit = true;
+		}
+	}
 }
