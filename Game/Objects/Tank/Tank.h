@@ -3,6 +3,7 @@
 #include "Game/Objects/Tank/TankBase.h"
 #include "Interface/IBullet.h"
 #include "Game/Objects/Bullet/Bullet.h"
+#include "Game/Collider/SphereCollider.h"
 
 class Tank : public TankBase
 {
@@ -19,6 +20,9 @@ public:
 
 	// 当たっているかどうか
 	bool GetHit() { return m_hit; }
+
+	// コライダーの取得
+	DirectX::BoundingSphere GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
 
 public:
 	// コンストラクタ
@@ -74,7 +78,7 @@ private:
 	Tank* m_otherTank;
 
 	// 当たり判定
-	DirectX::BoundingSphere m_boundingSphere;
+	std::unique_ptr<SphereCollider> m_collider;
 
 	// 体力
 	bool m_hit;

@@ -8,6 +8,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugCamera.h"
 #include "Libraries/MyLib/DebugString.h"
+#include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/GridFloor.h"
 #include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
@@ -89,7 +90,7 @@ void PlayScene::Initialize(CommonResources* resources)
 	m_skySphere = std::make_unique<SkySphere>();
 
 	// 戦車
-	m_playerTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, 0.0f), 0.0f, TankBase::TankType::Player);
+	m_playerTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, 10.0f), 0.0f, TankBase::TankType::Player);
 	m_playerTank->Initialize();
 
 	//敵戦車
@@ -125,7 +126,7 @@ void PlayScene::Update(float elapsedTime)
 	Vector3 position(0.0f, 0.0f, 0.0f);
 	float angle = 0.0f;
 	m_playerTank->Update(elapsedTime,position,angle);
-	m_enemyTank->Update(elapsedTime, position, angle);
+	m_enemyTank->Update(elapsedTime, position,angle);
 
 	// フォローカメラを更新する
 	m_tpsCamera->Update(elapsedTime);
@@ -168,9 +169,13 @@ void PlayScene::Render()
 
 	//戦車の描画
 	m_playerTank->Render();
-
 	m_enemyTank->Render();
 
+	// 当たり判定の表示
+	Graphics::GetInstance()->GetPrimitiveBatch()->Begin();
+	//DX::Draw(Graphics::GetInstance()->GetPrimitiveBatch(), m_playerTank->GetBoundingBox());
+	//DX::Draw(Graphics::GetInstance()->GetPrimitiveBatch(), m_enemyTank->GetBoundingBox());
+	Graphics::GetInstance()->GetPrimitiveBatch()->End();
 
 	// キーボードステートの取得
 	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
@@ -197,7 +202,7 @@ void PlayScene::Render()
 	debugString->AddString("x : %f", mousePosX);
 	debugString->AddString("y : %f", mousePosY);
 
-	debugString->AddString("hp : %d", m_enemyTank->GetHit());
+	debugString->AddString("Hit : %d", m_enemyTank->GetHit());
 
 }
 

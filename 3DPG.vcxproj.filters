@@ -98,6 +98,8 @@
     <ClInclude Include="Libraries\MyLib\FollowCamera.h" />
     <ClInclude Include="Utilities\DebugDraw.h" />
     <ClInclude Include="Libraries\MyLib\CollisionMesh.h" />
+    <ClInclude Include="Game\Collider\SphereCollider.h" />
+    <ClInclude Include="Game\Collider\BoxCollider.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -145,6 +147,8 @@
     <ClCompile Include="Libraries\MyLib\FollowCamera.cpp" />
     <ClCompile Include="Utilities\DebugDraw.cpp" />
     <ClCompile Include="Libraries\MyLib\CollisionMesh.cpp" />
+    <ClCompile Include="Game\Collider\SphereCollider.cpp" />
+    <ClCompile Include="Game\Collider\BoxCollider.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

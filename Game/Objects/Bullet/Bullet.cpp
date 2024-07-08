@@ -122,10 +122,10 @@ void Bullet::Render()
 	// –C’e‚ð•`‰æ‚·‚é
 	DrawBullet(m_worldMatrix);
 
-//#ifdef _DEBUG
-//	// ‹«ŠEƒ{ƒbƒNƒX‚ð•`‰æ‚·‚é
-//	DrawBoundingBox(m_worldMatrix);
-//#endif
+#ifdef _DEBUG
+	// ‹«ŠEƒ{ƒbƒNƒX‚ð•`‰æ‚·‚é
+	DrawBoundingBox(m_worldMatrix);
+#endif
 }
 
 // –C’e‚ð•`‰æ‚·‚é

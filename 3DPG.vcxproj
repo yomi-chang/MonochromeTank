@@ -184,6 +184,8 @@
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Resources.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="Game\Collider\BoxCollider.h" />
+    <ClInclude Include="Game\Collider\SphereCollider.h" />
     <ClInclude Include="Game\CommonResources.h" />
     <ClInclude Include="Game\Objects\Bullet\Bullet.h" />
     <ClInclude Include="Game\Objects\Other\SkySphere.h" />
@@ -216,6 +218,8 @@
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\Resources.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Game\Collider\BoxCollider.cpp" />
+    <ClCompile Include="Game\Collider\SphereCollider.cpp" />
     <ClCompile Include="Game\CommonResources.cpp" />
     <ClCompile Include="Game\Objects\Bullet\Bullet.cpp" />
     <ClCompile Include="Game\Objects\Other\SkySphere.cpp" />
