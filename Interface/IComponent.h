@@ -1,17 +1,27 @@
 #pragma once
+#include "Framework/Graphics.h"
 
-class ITankComponent
+class IComponent
 {
 public:
+	enum Type
+	{
+		PLAYER,
+		ENEMY
+	};
+
+public:
 	// 親を取得する
-	virtual ITankComponent* GetParent() const = 0;
+	virtual IComponent* GetParent() const = 0;
 
 public:
 	//デストラクタ
-	virtual ~ITankComponent() = default;
+	virtual ~IComponent() = default;
 
 	//初期化処理
-	virtual void Initialize() = 0;
+	virtual void Initialize(
+		Type type
+	) = 0;
 
 	//更新処理
 	virtual void Update(
@@ -25,7 +35,4 @@ public:
 
 	//終了処理
 	virtual void Finalize() = 0;
-
-	// 砲塔部品を追加する
-	virtual void Attach(std::unique_ptr<ITankComponent> tankParts) = 0;
 };

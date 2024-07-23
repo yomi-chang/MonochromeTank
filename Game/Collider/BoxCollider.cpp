@@ -8,7 +8,7 @@
 BoxCollider::BoxCollider()
 	:
 	m_boundingBox{},
-	m_graphics{Graphics::GetInstance()}
+	m_graphics{ Graphics::GetInstance() }
 {
 }
 
@@ -22,8 +22,8 @@ void BoxCollider::CreateBoundingBox(DirectX::SimpleMath::Vector3 centerPosition,
 	// 中心座標の設定
 	m_boundingBox.Center = centerPosition;
 
-	// 半径の設定
-	m_boundingBox.Extents = size;
+	// サイズの設定
+	m_boundingBox.Extents = size / 2;
 }
 
 /// <summary>
@@ -43,41 +43,85 @@ void BoxCollider::Update(DirectX::SimpleMath::Vector3 centerPosition)
 void BoxCollider::Render()
 {
 	// 当たり判定の表示
-	m_graphics->GetPrimitiveBatch()->Begin();
-	DX::Draw(Graphics::GetInstance()->GetPrimitiveBatch(), m_boundingBox);
-	m_graphics->GetPrimitiveBatch()->End();
+	// プリミティブ描画を開始する
+	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+	// 境界ボックスを描画する
+	DX::Draw(m_graphics->GetPrimitiveBatch(), m_boundingBox, DirectX::Colors::White);
+	// プリミティブ描画を終了する
+	m_graphics->DrawPrimitiveEnd();
 }
 
-/// <summary>
-/// ボックスと球の当たり判定
-/// </summary>
-/// <param name="boundingSphere">相手のスフィアコライダー</param>
-/// <returns>当たったかどうか</returns>
-bool BoxCollider::ChackHitBoundingSphere(DirectX::BoundingSphere* boundingSphere)
+// 当たり判定の処理==================================================================================
+/// バウンディングスフィアとの押し戻しありの当たり判定
+DirectX::SimpleMath::Vector3 BoxCollider::CheckCollisionCollider(DirectX::BoundingSphere* boundingSphere)
 {
-	// 当たっている場合
-	if (m_boundingBox.Intersects(*boundingSphere))
+	using namespace DirectX::SimpleMath;
+	if (!m_boundingBox.Intersects(*boundingSphere)) { return Vector3::Zero; }
+
+	// AABB用のmin/maxを計算する
+	Vector3 aMin = m_boundingBox.Center - m_boundingBox.Extents;
+	Vector3 aMax = m_boundingBox.Center + m_boundingBox.Extents;
+	Vector3 bMin = boundingSphere->Center - Vector3(boundingSphere->Radius, boundingSphere->Radius, boundingSphere->Radius);
+	Vector3 bMax = boundingSphere->Center + Vector3(boundingSphere->Radius, boundingSphere->Radius, boundingSphere->Radius);
+
+	// 各軸の差分を計算する
+	float dx1 = aMin.x - bMax.x;
+	float dx2 = aMax.x - bMin.x;
+	float dy1 = aMin.y - bMax.y;
+	float dy2 = aMax.y - bMin.y;
+	float dz1 = aMin.z - bMax.z;
+	float dz2 = aMax.z - bMin.z;
+
+	// 各軸について、絶対値の小さい方を軸のめり込み量とする：AABBの重なった部分を特定する
+	float dx = abs(dx1) < abs(dx2) ? dx1 : dx2;
+	float dy = abs(dy1) < abs(dy2) ? dy1 : dy2;
+	float dz = abs(dz1) < abs(dz2) ? dz1 : dz2;
+
+	// 押し戻しベクトル
+	Vector3 pushBackVec = Vector3::Zero;
+
+	// めり込みが一番小さい軸を押し戻す
+	if (abs(dx) <= abs(dy) && abs(dx) <= abs(dz))
 	{
-		return true;
+		pushBackVec.x += dx;
+	}
+	else if (abs(dz) <= abs(dx) && abs(dz) <= abs(dy))
+	{
+		pushBackVec.z += dz;
+	}
+	else
+	{
+		pushBackVec.y += dy;
 	}
 
-	//当たっていない場合
-	return false;
+	// 押し戻す
+	boundingSphere->Center = boundingSphere->Center + pushBackVec;
+	return pushBackVec;
 }
 
-/// <summary>
-/// ボックスとボックスの当たり判定
-/// </summary>
-/// <param name="boundingBox">相手のボックスコライダー</param>
-/// <returns>当たったかどうか</returns>
-bool BoxCollider::ChackHitBoundingBox(DirectX::BoundingBox* boundingBox)
+// バウンディングボックスとの押し戻しありの当たり判定
+DirectX::SimpleMath::Vector3 BoxCollider::CheckCollisionCollider(DirectX::BoundingBox* boundingBox)
 {
-	// 当たっている場合
-	if (m_boundingBox.Intersects(*boundingBox))
-	{
-		return true;
-	}
-
-	//当たっていない場合
-	return false;
+	using namespace DirectX::SimpleMath;
+	return Vector3::Zero;
 }
+
+// バウンディングスフィアとの当たり判定
+bool BoxCollider::CheckTriggerCollider(DirectX::BoundingSphere* boundingSphere)
+{
+	if (!m_boundingBox.Intersects(*boundingSphere)) { return false; }
+
+	// 当たっていたらtrueを返す
+	return true;
+}
+
+// バウンディングボックスとの当たり判定
+bool BoxCollider::CheckTriggerCollider(DirectX::BoundingBox* boundingBox)
+{
+	if (!m_boundingBox.Intersects(*boundingBox)) { return false; }
+
+	// 当たっていたらtrueを返す
+	return true;
+}
+//==================================================================================================
+

@@ -4,14 +4,15 @@
 
 // コンストラクタ
 TankCannon::TankCannon(
-	ITankComponent* parent,
+	IComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
-	const float& initialAngleRL,
-	TankType type
+	const float& initialAngleRL
 )
 	:
-	TankBase(parent, initialPosition, initialAngleRL, type),
+	m_parent{ parent },
 	m_graphics{Graphics::GetInstance()},
+	m_initialPosition{ initialPosition },
+	m_initialAngle{ initialAngleRL },
 	m_currentPosition{},
 	m_currentAngleRL{},
 	m_tankParts{},
@@ -21,7 +22,7 @@ TankCannon::TankCannon(
 	m_currentAngleUD{},
 	m_shotBulletNumber{},
 	m_shotTimer(SHOT_INTERVAL),
-	m_tankType{ type }
+	m_tankType{}
 {
 	// 砲塔へのポインタを取得する
 	m_tank = dynamic_cast<Tank*>(parent->GetParent()->GetParent());
@@ -34,16 +35,15 @@ TankCannon::~TankCannon()
 }
 
 // 初期化処理
-void TankCannon::Initialize()
+void TankCannon::Initialize(Type type)
 {
-
 	using namespace DirectX::SimpleMath;
+
+	// タイプの確定
+	m_tankType = type;
 
 	// モデル情報の受け取り
 	m_model = Resources::GetInstance()->GetTankCannonModel();
-
-	// モデルをセットする
-	TankBase::SetModel(m_model);
 }
 
 // 更新処理
@@ -66,7 +66,7 @@ void TankCannon::Update(
 
 	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
 
-	if (m_tankType == TankType::Player)
+	if (m_tankType == Type::PLAYER)
 	{
 		// 砲身の上下
 		if (keyboardState.Up)
@@ -85,7 +85,7 @@ void TankCannon::Update(
 		m_cannonAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.y) / 10.0f);
 
 		// 砲身の向きを制限する
-		m_cannonAngle = TankBase::Clamp(m_cannonAngle, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
+		//m_cannonAngle = TankBase::Clamp(m_cannonAngle, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
 
 		m_currentAngleUD = m_cannonAngle;
 
@@ -119,9 +119,6 @@ void TankCannon::Update(
 			}
 		}
 	}
-
-	// 「マズル」の更新
-	//TankBase::Update(elapsedTime, currentPosition, currentAngleRL);
 }
 
 // 自身を描画しない描画処理(Tank用)
@@ -133,20 +130,19 @@ void TankCannon::Render()
 	m_worldMatrix = Matrix::CreateScale(0.5f);
 	m_worldMatrix *= Matrix::CreateRotationX(m_cannonAngle);
 	m_worldMatrix *= Matrix::CreateTranslation(Vector3(0.0f, 0.0f, -0.3f));
-	m_worldMatrix *= Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL());
-	m_worldMatrix *= Matrix::CreateTranslation(m_currentPosition + GetInitialPosition());
+	m_worldMatrix *= Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle);
+	m_worldMatrix *= Matrix::CreateTranslation(m_currentPosition + m_initialPosition);
 	
-	// 描画を行う
-	TankBase::Render(m_worldMatrix);
-
-	// プリミティブ描画を開始
+	// プリミティブ描画を開始する
 	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+	// 「砲塔下部」を描画する
+	m_graphics->DrawModel(m_model, m_worldMatrix);
 
-	// 線分の描画
-	Matrix matrix = Matrix::CreateRotationX(m_cannonAngle) * Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL());
-	Graphics::GetInstance()->DrawLine(GetMuzzlePosition(), {matrix.Forward()}, DirectX::Colors::Red);
-
-	// プリミティブ描画を終了
+	// 照準の描画
+	Matrix matrix = Matrix::CreateRotationX(m_cannonAngle) * Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle);
+	Graphics::GetInstance()->DrawLine(GetMuzzlePosition(), { matrix.Forward() }, DirectX::Colors::Red);
+	
+	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();
 }
 
@@ -171,8 +167,8 @@ void TankCannon::Shoot(IBullet* bullet)
 DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 {
 	using namespace DirectX::SimpleMath;
-	Vector3 position = m_currentPosition + GetInitialPosition();
-	float angle = m_currentAngleRL + GetInitialAngleRL();
+	Vector3 position = m_currentPosition + m_initialPosition;
+	float angle = m_currentAngleRL + m_initialAngle;
 
 	//return m_currentPosition + GetInitialPosition() + Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL()).Forward() * 0.8f + Matrix::CreateRotationX(m_cannonAngle).Forward() * 0.5f;
 	/*return  position + Matrix::CreateRotationX(m_cannonAngle).Forward() * 0.75f;*/

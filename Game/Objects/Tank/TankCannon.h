@@ -1,10 +1,12 @@
 // 戦車の更新や描画などを担うクラス
 #pragma once
-#include "Interface/ITankComponent.h"
+#include "Interface/IComponent.h"
 #include "Game/Objects/Tank/TankBase.h"
 #include "Game/Objects/Tank/Tank.h"
 
-class TankCannon : public TankBase
+#include "Interface/ILeaf.h"
+
+class TankCannon : public ILeaf
 {
 	// インターバル
 	const float SHOT_INTERVAL = 0.2f;
@@ -14,36 +16,39 @@ class TankCannon : public TankBase
 	const float CANON_ANGLEUD_MAX = DirectX::XMConvertToRadians(10.0f);
 
 public:
+	// 親オブジェクトを取得する
+	IComponent* GetParent() const { return m_parent; }
+
+public:
 	// 銃口の座標を取得する
 	DirectX::SimpleMath::Vector3 GetMuzzlePosition();
 
 public:
 	// コンストラクタ
 	TankCannon(
-		ITankComponent* parent,
+		IComponent* parent,
 		const DirectX::SimpleMath::Vector3& initialPosition,
-		const float& initialAngleRL,
-		TankType type
+		const float& initialAngleRL
 	);
 
 	// デストラクタ
-	~TankCannon() override;
+	~TankCannon();
 
 	// 初期化処理
-	void Initialize() override;
+	void Initialize(Type type);
 
 	// 更新処理
 	void Update(
 		float elapsedTime,
 		const DirectX::SimpleMath::Vector3& currentPosition,
 		const float& currentAngleRL
-	) override;
+	);
 
 	// 自身を描画しない描画処理
-	void Render() override;
+	void Render();
 
 	// 終了処理
-	void Finalize() override;
+	void Finalize();
 
 	// 砲弾を発射する
 	void Shoot(IBullet* bullet);
@@ -52,14 +57,23 @@ private:
 	// グラフィックス
 	Graphics* m_graphics;
 
-	// 初期位置
-	DirectX::SimpleMath::Vector3 m_currentPosition;
+	// 親オブジェクト
+	IComponent* m_parent;
+
+	// 初期座標
+	DirectX::SimpleMath::Vector3 m_initialPosition;
 
 	// 初期回転角
+	float m_initialAngle;
+
+	// 現在の座標
+	DirectX::SimpleMath::Vector3 m_currentPosition;
+
+	// 現在の回転角
 	float m_currentAngleRL;
 
 	// 自身が管理する戦車部品の配列
-	std::vector<std::unique_ptr<ITankComponent>> m_tankParts;
+	std::vector<std::unique_ptr<IComponent>> m_tankParts;
 
 	// モデル
 	DirectX::Model* m_model;
@@ -83,5 +97,5 @@ private:
 	Tank* m_tank;
 
 	// 敵かプレイヤーか
-	TankBase::TankType m_tankType;
+	Type m_tankType;
 };

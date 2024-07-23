@@ -20,8 +20,10 @@ public:
 	void Render();
 
 	// 当たっているかどうかの判定
-	bool ChackHitBoundingSphere(DirectX::BoundingSphere* boundingSphere);
-	bool ChackHitBoundingBox(DirectX::BoundingBox* boundingBox);
+	DirectX::SimpleMath::Vector3 CheckCollisionCollider(DirectX::BoundingSphere* boundingSphere);
+	DirectX::SimpleMath::Vector3 CheckCollisionCollider(DirectX::BoundingBox* boundingBox);
+	bool CheckTriggerCollider(DirectX::BoundingSphere* boundingSphere);
+	bool CheckTriggerCollider(DirectX::BoundingBox* boundingBox);
 
 private:
 	// グラフィックス

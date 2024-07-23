@@ -86,7 +86,7 @@
     </ClInclude>
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Resources.h" />
-    <ClInclude Include="Interface\ITankComponent.h" />
+    <ClInclude Include="Interface\IComponent.h" />
     <ClInclude Include="Game\Objects\Tank\TankBase.h" />
     <ClInclude Include="Game\Objects\Tank\Tank.h" />
     <ClInclude Include="Game\Objects\Tank\TankBody.h" />
@@ -100,6 +100,9 @@
     <ClInclude Include="Libraries\MyLib\CollisionMesh.h" />
     <ClInclude Include="Game\Collider\SphereCollider.h" />
     <ClInclude Include="Game\Collider\BoxCollider.h" />
+    <ClInclude Include="Interface\IComposite.h" />
+    <ClInclude Include="Interface\ILeaf.h" />
+    <ClInclude Include="Game\UserInterface\HpGauge.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -149,6 +152,7 @@
     <ClCompile Include="Libraries\MyLib\CollisionMesh.cpp" />
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
     <ClCompile Include="Game\Collider\BoxCollider.cpp" />
+    <ClCompile Include="Game\UserInterface\HpGauge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

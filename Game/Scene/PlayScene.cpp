@@ -16,7 +16,7 @@
 #include "Framework/Resources.h"
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Libraries/MyLib/CollisionMesh.h"
-#include "Game/Objects/Tank/TankBase.h"
+#include "Interface/IComponent.h"
 
 #include <cassert>
 
@@ -90,12 +90,12 @@ void PlayScene::Initialize(CommonResources* resources)
 	m_skySphere = std::make_unique<SkySphere>();
 
 	// 戦車
-	m_playerTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, 10.0f), 0.0f, TankBase::TankType::Player);
-	m_playerTank->Initialize();
+	m_playerTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, 10.0f), 0.0f);
+	m_playerTank->Initialize(IComponent::Type::PLAYER);
 
 	//敵戦車
-	m_enemyTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f), TankBase::TankType::Enemy);
-	m_enemyTank->Initialize();
+	m_enemyTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f));
+	m_enemyTank->Initialize(IComponent::Type::ENEMY);
 
 	m_enemyTank->SetOtherTank(m_playerTank.get());
 	m_playerTank->SetOtherTank(m_enemyTank.get());
@@ -172,10 +172,10 @@ void PlayScene::Render()
 	m_enemyTank->Render();
 
 	// 当たり判定の表示
-	Graphics::GetInstance()->GetPrimitiveBatch()->Begin();
-	//DX::Draw(Graphics::GetInstance()->GetPrimitiveBatch(), m_playerTank->GetBoundingBox());
-	//DX::Draw(Graphics::GetInstance()->GetPrimitiveBatch(), m_enemyTank->GetBoundingBox());
-	Graphics::GetInstance()->GetPrimitiveBatch()->End();
+	/*Graphics::GetInstance()->GetPrimitiveBatch()->Begin();
+	DX::Draw(Graphics::GetInstance()->GetPrimitiveBatch(), m_playerTank->GetBoundingSphere());
+	DX::Draw(Graphics::GetInstance()->GetPrimitiveBatch(), m_enemyTank->GetBoundingSphere());
+	Graphics::GetInstance()->GetPrimitiveBatch()->End();*/
 
 	// キーボードステートの取得
 	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();

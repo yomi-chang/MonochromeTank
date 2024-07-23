@@ -1,50 +1,69 @@
 // 戦車の更新や描画などを担うクラス
 #pragma once
-#include "Interface/ITankComponent.h"
+#include "Interface/IComponent.h"
 #include "Game/Objects/Tank/TankBase.h"
+#include "Interface/IComposite.h"
 
-class TankBody : public TankBase
+class TankBody : public IComposite
 {
+public:
+	// 親オブジェクトを取得する
+	IComponent* GetParent() const { return m_parent; }
+
 public:
 	// コンストラクタ
 	TankBody(
-		ITankComponent* parent,
+		IComponent* parent,
 		const DirectX::SimpleMath::Vector3& initialPosition,
-		const float& initialAngleRL,
-		TankType type
+		const float& initialAngleRL
 	);
 
 	// デストラクタ
-	~TankBody() override;
+	~TankBody();
 
 	// 初期化処理
-	void Initialize() override;
+	void Initialize(Type type);
 
 	// 更新処理
 	void Update(
 		float elapsedTime,
 		const DirectX::SimpleMath::Vector3& currentPosition,
 		const float& currentAngleRL
-	) override;
+	);
 
 	// 自身を描画しない描画処理
-	void Render() override;
+	void Render();
 
 	// 終了処理
-	void Finalize() override;
+	void Finalize();
+
+	// 部品を追加する
+	void Attach(std::unique_ptr<IComponent> part);
+
+	// 部品を削除する
+	void Detach(std::unique_ptr<IComponent> part);
 
 private:
 	// グラフィックス
 	Graphics* m_graphics;
 
-	// 初期位置
-	DirectX::SimpleMath::Vector3 m_currentPosition;
+	// 親オブジェクト
+	IComponent* m_parent;
+
+	// 初期座標
+	DirectX::SimpleMath::Vector3 m_initialPosition;
 
 	// 初期回転角
+	float m_initialAngle;
+
+	// 現在の座標
+	DirectX::SimpleMath::Vector3 m_currentPosition;
+
+	// 現在の回転角
 	float m_currentAngleRL;
 
 	// 自身が管理する戦車部品の配列
-	std::vector<std::unique_ptr<ITankComponent>> m_tankParts;
+	std::vector<std::unique_ptr<IComponent>> m_tankParts;
 
 	// モデル
 	DirectX::Model* m_model;
@@ -53,5 +72,5 @@ private:
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 
 	// 敵かプレイヤーか
-	TankBase::TankType m_tankType;
+	Type m_tankType;
 };

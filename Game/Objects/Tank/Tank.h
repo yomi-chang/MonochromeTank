@@ -1,17 +1,20 @@
 #pragma once
-#include "Interface/ITankComponent.h"
+#include "Interface/IComponent.h"
 #include "Game/Objects/Tank/TankBase.h"
 #include "Interface/IBullet.h"
 #include "Game/Objects/Bullet/Bullet.h"
 #include "Game/Collider/SphereCollider.h"
+#include "Interface/IComposite.h"
 
-class Tank : public TankBase
+class Tank : public IComposite
 {
 public:
 	// 戦車座標の取得
 	DirectX::SimpleMath::Vector3 GetTankPosition() { return m_currentPosition; }
+
 	// 戦車の向きの取得
 	float GetTankAngleRL() { return m_currentAngleRL; }
+
 	// 「砲弾」を参照する
 	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
 
@@ -22,22 +25,24 @@ public:
 	bool GetHit() { return m_hit; }
 
 	// コライダーの取得
-	DirectX::BoundingSphere GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
+	DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
+
+	// 親オブジェクトを取得する
+	IComponent* GetParent() const { return m_parent; }
 
 public:
 	// コンストラクタ
 	Tank(
-		ITankComponent* parent,
+		IComponent* parent,
 		const DirectX::SimpleMath::Vector3& initialPosition,
-		const float& initialAngleRL,
-		TankType type
+		const float& initialAngleRL
 	);
 
 	// デストラクタ
 	~Tank() override;
 
 	// 初期化処理
-	void Initialize() override;
+	void Initialize(Type type) override;
 
 	// 更新処理
 	void Update(
@@ -52,9 +57,24 @@ public:
 	// 終了処理
 	void Finalize() override;
 
+	// 部品を追加する
+	void Attach(std::unique_ptr<IComponent> part);
+
+	// 部品を削除する
+	void Detach(std::unique_ptr<IComponent> part);
+
 private:
 	// グラフィックス
 	Graphics* m_graphics;
+	
+	// 親オブジェクト
+	IComponent* m_parent;
+
+	// 初期座標
+	DirectX::SimpleMath::Vector3 m_initialPosition;
+
+	// 初期回転角
+	float m_initialAngle;
 
 	// 現在の位置
 	DirectX::SimpleMath::Vector3 m_currentPosition;
@@ -63,7 +83,7 @@ private:
 	float m_currentAngleRL;
 
 	// 自身が管理する戦車部品の配列
-	std::vector<std::unique_ptr<ITankComponent>> m_tankParts;
+	std::vector<std::unique_ptr<IComponent>> m_tankParts;
 
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
@@ -72,7 +92,7 @@ private:
 	std::vector<std::unique_ptr<IBullet>> m_bullets;
 
 	// 敵かプレイヤーか
-	TankBase::TankType m_tankType;
+	Type m_tankType;
 
 	// 他戦車の情報
 	Tank* m_otherTank;
@@ -84,10 +104,14 @@ private:
 	bool m_hit;
 
 private:
+	// プレイヤーの行動
 	void PlayerAction();
-
+	// 敵行動
 	void EnemyAction();
 
-	// 砲塔と砲弾の衝突判定を行う
-	void DetectCollisionTurretAndBullets();
+	// 戦車と砲弾の衝突判定を行う
+	void DetectCollisionTankAndBullets();
+
+	// 戦車と戦車の衝突判定を行う
+	void DetectCollisionTankAndOtherTanks();
 };
