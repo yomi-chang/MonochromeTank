@@ -25,7 +25,9 @@ Tank::Tank(
 	m_bullets{},
 	m_tankType{},
 	m_collider{},
-	m_hit{}
+	m_hit{},
+	m_hpGauge{},
+	m_hpValue{}
 {
 }
 
@@ -68,6 +70,11 @@ void Tank::Initialize(Type type)
 	// 境界球
 	m_collider = std::make_unique<SphereCollider>();
 	m_collider->CreateBoundingSphere(m_currentPosition, 1.0f);
+
+	// 体力ゲージを生成
+	m_hpGauge = std::make_unique<HpGauge>();
+	m_hpGauge->Initialize();
+	m_hpValue = m_hpGauge->GetDefaultValue();
 }
 
 
@@ -118,13 +125,14 @@ void Tank::Update(
 	{
 		tankPart->Update(elapsedTime, m_currentPosition, m_currentAngleRL);
 	}
+
+	// 体力の更新
+	m_hpGauge->SetValue(m_hpValue);
 }
 
 /// 描画処理
 void Tank::Render()
 {
-	
-
 	// パーツの描画
 	for (auto& tankPart : m_tankParts)
 	{
@@ -144,6 +152,8 @@ void Tank::Render()
 			bullet->Render();
 		}
 	}
+
+	m_hpGauge->Render();
 }
 
 /// <summary>
@@ -254,5 +264,10 @@ void Tank::DetectCollisionTankAndBullets()
 void Tank::DetectCollisionTankAndOtherTanks()
 {
 	m_hit = false;
-	m_currentPosition += m_collider->CheckCollisionCollider(m_otherTank->GetBoundingSphere());
+	if (m_collider->CheckTriggerCollider(m_otherTank->GetBoundingSphere()))
+	{
+		m_hit = true;
+		m_currentPosition += m_collider->CheckCollisionCollider(m_otherTank->GetBoundingSphere());
+		m_hpValue--;
+	}
 }

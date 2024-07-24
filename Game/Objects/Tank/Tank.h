@@ -5,6 +5,7 @@
 #include "Game/Objects/Bullet/Bullet.h"
 #include "Game/Collider/SphereCollider.h"
 #include "Interface/IComposite.h"
+#include "Game/UserInterface/HpGauge.h"
 
 class Tank : public IComposite
 {
@@ -100,8 +101,14 @@ private:
 	// 当たり判定
 	std::unique_ptr<SphereCollider> m_collider;
 
-	// 体力
+	// ヒットしているかどうか
 	bool m_hit;
+
+	// 体力
+	int m_hpValue;
+
+	// 体力ゲージ
+	std::unique_ptr<HpGauge> m_hpGauge;
 
 private:
 	// プレイヤーの行動

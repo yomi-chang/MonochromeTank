@@ -107,7 +107,7 @@ void Bullet::Render()
 	// モデル描画のためのワールド行列を計算する
 	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	m_worldMatrix = Matrix::CreateScale(Bullet::BULLET_MODEL_SCALE) *
-		Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) * 
+		Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) *
 		//Matrix::CreateTranslation(Vector3(0.0f, 0.75f, -0.8f)) *
 		Matrix::CreateFromQuaternion(rotationQuat) *
 		Matrix::CreateTranslation(m_position);

@@ -10,6 +10,10 @@ public:
 
 	// スクリーンサイズを取得する
 	void GetScreenSize(int& width, int& height) const { 	width = m_screenW; height = m_screenH; }
+	// スクリーンサイズを取得(個別)
+	int GetScreenWidth() const { return m_screenW; }
+	int GetScreenHeight() const { return m_screenH; }
+	
 	// スクリーンサイズを設定する
 	void SetScreenSize(const int& width, const int& height) { m_screenW = width; m_screenH = height; }
 	// デバイスリソースを取得する
