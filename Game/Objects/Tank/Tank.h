@@ -3,6 +3,7 @@
 #include "Game/Objects/Tank/TankBase.h"
 #include "Interface/IBullet.h"
 #include "Game/Objects/Bullet/Bullet.h"
+#include "Game/Objects/Bullet/CannonBall.h"
 #include "Game/Collider/SphereCollider.h"
 #include "Interface/IComposite.h"
 #include "Game/UserInterface/HpGauge.h"

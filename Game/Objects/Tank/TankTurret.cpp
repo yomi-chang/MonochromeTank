@@ -59,25 +59,23 @@ void TankTurret::Update(
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
 	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
 
-	//if (m_tankType == TankType::Player)
-	//{
-	//	// –C“ƒ‚Ì‰ñ“]
-	//	if (keyboardState.Left)
-	//	{
-	//		m_turretAngle += DirectX::XMConvertToRadians(0.2f);
-	//	}
-	//	else if (keyboardState.Right)
-	//	{
-	//		m_turretAngle -= DirectX::XMConvertToRadians(0.2f);
-	//	}
-	//}
+	if (m_tankType == Type::PLAYER)
+	{
+		// –C“ƒ‚Ì‰ñ“]
+		if (keyboardState.Left)
+		{
+			m_turretAngle += DirectX::XMConvertToRadians(0.5f);
+		}
+		else if (keyboardState.Right)
+		{
+			m_turretAngle -= DirectX::XMConvertToRadians(0.5f);
+		}
+	}
 
 	// Å‰‚Ì‰ñ“]Šp‚ğİ’è
-	//m_turretAngle = DirectX::XMConvertToRadians(90);
-	m_turretAngle = DirectX::XMConvertToRadians (1280.0f / 10.0f);
-
+	//m_turretAngle = DirectX::XMConvertToRadians (1280.0f / 10.0f);
 	// ƒ}ƒEƒXÀ•W‚É‰‚¶‚Ä‰ñ“]
-	m_turretAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.x) / 5.0f);
+	//m_turretAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.x) / 5.0f);
 
 	// ‰ñ“]‚Ì§ŒÀ
 	//m_turretAngle = TankBase::Clamp(m_turretAngle, DirectX::XMConvertToRadians(-90.0f), DirectX::XMConvertToRadians(90.0f));

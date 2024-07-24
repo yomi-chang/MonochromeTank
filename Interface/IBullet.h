@@ -25,10 +25,14 @@ public:
 	virtual BulletState GetBulletState() const = 0;
 	// 砲弾の状態を設定する
 	virtual void SetBulletState(BulletState bulletState) = 0;
+
+	// コライダーの取得
+	virtual DirectX::BoundingSphere* GetBoundingSphere() = 0;
+
 	// モデルを取得する
-	virtual DirectX::Model* GetModel() = 0;
+	//virtual DirectX::Model* GetModel() = 0;
 	// ワールド境界ボックスを取得する
-	virtual DirectX::BoundingBox* GetWorldBoundingBox() = 0;
+	//virtual DirectX::BoundingBox* GetWorldBoundingBox() = 0;
 
 public:
 	// 仮想デストラクタ

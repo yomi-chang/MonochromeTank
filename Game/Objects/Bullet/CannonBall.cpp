@@ -1,74 +1,77 @@
 #include "pch.h"
-#include "Game/Objects/Bullet/Bullet.h"
+#include "Game/Objects/Bullet/CannonBall.h"
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
-#include "Utilities/DebugDraw.h"
-
 
 // 砲弾速度を定義する
-const DirectX::SimpleMath::Vector3 Bullet::SPEED(0.0f, 0.0f, -0.5f);
+const DirectX::SimpleMath::Vector3 CannonBall::SPEED(0.0f, 0.0f, -0.3f);
 
 // コンストラクタ
-Bullet::Bullet(IBullet::BulletState bulletState)
+CannonBall::CannonBall(IBullet::BulletState bulletState)
 	:
-	m_graphics{Graphics::GetInstance()},
 	m_position{},
 	m_angleUD(0.0f),
 	m_angleRL(0.0f),
 	m_velocity{},
-	m_gravity(DirectX::SimpleMath::Vector3(0.0f, -9.8f, 0.0f)),
+	m_gravity(DirectX::SimpleMath::Vector3(0.0f, -0.05f, 0.0f)),
 	m_worldMatrix{},
 	m_bulletState(bulletState),
+	m_graphics{Graphics::GetInstance()},
 	m_collider{},
-	m_bullet{}
+	m_bullet{},
+	m_elapsedTime{}
 {
 }
 
 // デストラクタ
-Bullet::~Bullet()
+CannonBall::~CannonBall()
 {
 }
 
 // 初期化する
-void Bullet::Initialize()
+void CannonBall::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
 	// 砲弾モデルの作成
-	m_bullet = DirectX::GeometricPrimitive::CreateSphere(m_graphics->GetDeviceResources()->GetD3DDeviceContext(), 0.05f);
+	m_bullet = DirectX::GeometricPrimitive::CreateSphere(m_graphics->GetDeviceResources()->GetD3DDeviceContext(),0.2f);
 
 	// スフィアコライダーの作成
 	m_collider = std::make_unique<SphereCollider>();
-	m_collider->CreateBoundingSphere(m_position, 0.025f);
+	m_collider->CreateBoundingSphere(m_position, 0.1f);
 }
 
 // 更新する 
-void Bullet::Update(float time)
+void CannonBall::Update(float time)
 {
 	UNREFERENCED_PARAMETER(time);
 	using namespace DirectX::SimpleMath;
 
+	// 経過時間を記録
+	m_elapsedTime += time;
+
 	// クォータニオンを生成する
- 	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
-	
-	// 速度を計算する
-	m_velocity = Vector3::Transform(SPEED, rotationQuat);
-	
-	// 位置を計算する
+	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
+
+	// 速度を計算する（初速度）
+	Vector3 initialVelocity = Vector3::Transform(SPEED, rotationQuat);
+
+	// 速度に重力の影響を加えて位置を計算する
+	m_velocity = initialVelocity + (m_gravity * m_elapsedTime);
 	m_position += m_velocity;
 
-	// コライダーの座標更新
+	// コライダーの座標を更新
 	m_collider->Update(m_position);
 
-	// 床より下なら使用済みに
-	if (m_position.y <= 0.0f)
+	// 地面より下に行ったら使用済みに
+	if (m_position.y <= 0)
 	{
 		SetBulletState(IBullet::USED);
 	}
 }
 
 // 描画する 
-void Bullet::Render()
+void CannonBall::Render()
 {
 	using namespace DirectX::SimpleMath;
 
@@ -83,13 +86,12 @@ void Bullet::Render()
 	if (m_bulletState == UNUSED || m_bulletState == USED)
 		return;
 
-
 	// 砲弾を描画する
 	DrawBullet(m_worldMatrix);
 }
 
 // 砲弾を描画する
-void Bullet::DrawBullet(const DirectX::SimpleMath::Matrix& matrix)
+void CannonBall::DrawBullet(const DirectX::SimpleMath::Matrix& matrix)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -99,10 +101,10 @@ void Bullet::DrawBullet(const DirectX::SimpleMath::Matrix& matrix)
 	// コライダーの描画
 	m_collider->Render();
 
-	m_bullet->Draw(m_worldMatrix, view, proj, DirectX::Colors::Black);
+	m_bullet->Draw(m_worldMatrix, view, proj,DirectX::Colors::Black);
 }
 
 // Bulletオブジェクトの後処理をおこなう 
-void Bullet::Finalize()
+void CannonBall::Finalize()
 {
 }

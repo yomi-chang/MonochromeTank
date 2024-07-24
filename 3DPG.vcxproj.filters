@@ -103,6 +103,7 @@
     <ClInclude Include="Interface\IComposite.h" />
     <ClInclude Include="Interface\ILeaf.h" />
     <ClInclude Include="Game\UserInterface\HpGauge.h" />
+    <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
     <ClCompile Include="Game\Collider\BoxCollider.cpp" />
     <ClCompile Include="Game\UserInterface\HpGauge.cpp" />
+    <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

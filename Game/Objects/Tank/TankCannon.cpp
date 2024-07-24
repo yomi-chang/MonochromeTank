@@ -71,18 +71,17 @@ void TankCannon::Update(
 		// 砲身の上下
 		if (keyboardState.Up)
 		{
-			m_cannonAngle += DirectX::XMConvertToRadians(0.2f);
+			m_cannonAngle += DirectX::XMConvertToRadians(0.5f);
 		}
 		else if (keyboardState.Down)
 		{
-			m_cannonAngle -= DirectX::XMConvertToRadians(0.2f);
+			m_cannonAngle -= DirectX::XMConvertToRadians(0.5f);
 		}
 
 		// 最初の回転角を設定
-		m_cannonAngle = DirectX::XMConvertToRadians(40.0f);
-
+		//m_cannonAngle = DirectX::XMConvertToRadians(40.0f);
 		// マウス座標に応じて回転
-		m_cannonAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.y) / 10.0f);
+		//m_cannonAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.y) / 10.0f);
 
 		// 砲身の向きを制限する
 		//m_cannonAngle = TankBase::Clamp(m_cannonAngle, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
@@ -90,7 +89,7 @@ void TankCannon::Update(
 		m_currentAngleUD = m_cannonAngle;
 
 		// 弾の発射
-		if (mouseState.leftButton)
+		if (/*mouseState.leftButton*/keyboardState.Space)
 		{
 			// 発射タイマーが0.0より大きい場合は発射タイマーを減らす
 			if (m_shotTimer > 0.0f)
@@ -103,7 +102,6 @@ void TankCannon::Update(
 				// 「砲弾」を発射する
 				for (auto& bullet : m_tank->GetBullets())
 				{
-
 					// 使用されていない砲弾は発射できる
 					if (bullet->GetBulletState() == IBullet::UNUSED)
 					{
@@ -164,14 +162,13 @@ void TankCannon::Shoot(IBullet* bullet)
 	bullet->SetBulletState(IBullet::FLYING);
 }
 
+// 砲塔の先端座標を求める
 DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 {
 	using namespace DirectX::SimpleMath;
+
 	Vector3 position = m_currentPosition + m_initialPosition;
 	float angle = m_currentAngleRL + m_initialAngle;
-
-	//return m_currentPosition + GetInitialPosition() + Matrix::CreateRotationY(m_currentAngleRL + GetInitialAngleRL()).Forward() * 0.8f + Matrix::CreateRotationX(m_cannonAngle).Forward() * 0.5f;
-	/*return  position + Matrix::CreateRotationX(m_cannonAngle).Forward() * 0.75f;*/
 
 	DirectX::SimpleMath::Matrix rotationX = DirectX::SimpleMath::Matrix::CreateRotationX(m_cannonAngle);
 	DirectX::SimpleMath::Matrix rotationY = DirectX::SimpleMath::Matrix::CreateRotationY(angle);
@@ -181,6 +178,4 @@ DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 
 	// 軸の位置に回転を適用して砲身の先端の座標を求める
 	return DirectX::SimpleMath::Vector3::Transform(muzzleOffset, combinedRotation) + position;
-
-
 }

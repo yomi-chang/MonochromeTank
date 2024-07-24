@@ -62,7 +62,9 @@ void Tank::Initialize(Type type)
 	for (int index = 0; index < 100; index++)
 	{
 		// –C’e‚ğ¶¬‚·‚é
-		m_bullets[index] = std::make_unique<Bullet>(IBullet::UNUSED);
+		//m_bullets[index] = std::make_unique<Bullet>(IBullet::UNUSED);
+		// –C’e‚ğ¶¬‚·‚é
+		m_bullets[index] = std::make_unique<CannonBall>(IBullet::UNUSED);
 		// –C’e‚ğ‰Šú‰»‚·‚é
 		m_bullets[index]->Initialize();
 	}
@@ -72,9 +74,12 @@ void Tank::Initialize(Type type)
 	m_collider->CreateBoundingSphere(m_currentPosition, 1.0f);
 
 	// ‘Ì—ÍƒQ[ƒW‚ğ¶¬
-	m_hpGauge = std::make_unique<HpGauge>();
-	m_hpGauge->Initialize();
-	m_hpValue = m_hpGauge->GetDefaultValue();
+	if (m_tankType == Type::ENEMY)
+	{
+		m_hpGauge = std::make_unique<HpGauge>();
+		m_hpGauge->Initialize();
+		m_hpValue = m_hpGauge->GetDefaultValue();
+	}
 }
 
 
@@ -127,6 +132,7 @@ void Tank::Update(
 	}
 
 	// ‘Ì—Í‚ÌXV
+	if (m_tankType == Type::ENEMY)
 	m_hpGauge->SetValue(m_hpValue);
 }
 
@@ -153,6 +159,7 @@ void Tank::Render()
 		}
 	}
 
+	if (m_tankType == Type::ENEMY)
 	m_hpGauge->Render();
 }
 
@@ -247,15 +254,16 @@ void Tank::DetectCollisionTankAndBullets()
 	m_hit = false;
 
 	// ’eŠÛ‚ÆíÔ‚Ì“–‚½‚è”»’è
-	//for (auto& bullet : m_otherTank->GetBullets())
-	//{
-	//	// ’eŠÛ‚ª”ò‚ñ‚Å‚¢‚éA‚©‚Â“–‚½‚Á‚Ä‚¢‚é‚È‚ç
-	//	if (bullet->GetBulletState() == IBullet::FLYING &&
-	//		m_collider->ChackHitBoundingBox(bullet->GetWorldBoundingBox()))
-	//	{
-	//		m_hit = true;
-	//	}
-	//}
+	for (auto& bullet : m_otherTank->GetBullets())
+	{
+		// ’eŠÛ‚ª”ò‚ñ‚Å‚¢‚éA‚©‚Â“–‚½‚Á‚Ä‚¢‚é‚È‚ç
+		if (bullet->GetBulletState() == IBullet::FLYING &&
+			m_collider->CheckTriggerCollider(bullet->GetBoundingSphere()))
+		{
+			bullet->SetBulletState(IBullet::USED);
+			m_hpValue-=10;
+		}
+	}
 }
 
 /// <summary>

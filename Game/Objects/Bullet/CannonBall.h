@@ -3,7 +3,7 @@
 #include "Framework/Graphics.h"
 #include "Game/Collider/SphereCollider.h"
 
-class Bullet : public IBullet
+class CannonBall : public IBullet
 {
 public:
 	// 砲弾スピードを定義する
@@ -26,14 +26,15 @@ public:
 	IBullet::BulletState GetBulletState() const { return m_bulletState; }
 	// 砲弾の状態を設定する
 	void SetBulletState(IBullet::BulletState bulletState) { m_bulletState = bulletState; }
+
 	// コライダーの取得
 	DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
 
 public:
 	// コンストラクタ
-	Bullet(IBullet::BulletState bulletState);
+	CannonBall(IBullet::BulletState bulletState);
 	// デストラクタ
-	~Bullet();
+	~CannonBall();
 	// 初期化する
 	void Initialize();
 	// Bulletオブジェクトを更新する 
@@ -66,4 +67,6 @@ private:
 	std::unique_ptr<SphereCollider> m_collider;
 	// ジオメトリックプリミティブ
 	std::unique_ptr<DirectX::GeometricPrimitive> m_bullet;
+
+	float m_elapsedTime;
 };
