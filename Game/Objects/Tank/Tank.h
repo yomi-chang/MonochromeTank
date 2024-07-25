@@ -21,7 +21,10 @@ public:
 	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
 
 	// 他戦車の情報の受け取り
-	void SetOtherTank(Tank* tank) { m_otherTank = tank; }
+	//void SetOtherTank(std::vector<Tank*> tank) { m_otherTanks = tank; }
+
+	// プレイヤー情報の受取り(敵側)
+	void SetOtherTank(Tank* tank) { m_otherTanks.push_back(tank); }
 
 	// 当たっているかどうか
 	bool GetHit() { return m_hit; }
@@ -31,6 +34,9 @@ public:
 
 	// 親オブジェクトを取得する
 	IComponent* GetParent() const { return m_parent; }
+
+	// 体力を渡す
+	int GetHpValue() { return m_hpValue; }
 
 public:
 	// コンストラクタ
@@ -97,7 +103,7 @@ private:
 	Type m_tankType;
 
 	// 他戦車の情報
-	Tank* m_otherTank;
+	std::vector<Tank*> m_otherTanks;
 
 	// 当たり判定
 	std::unique_ptr<SphereCollider> m_collider;

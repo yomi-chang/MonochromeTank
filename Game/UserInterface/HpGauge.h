@@ -10,7 +10,7 @@ public:
 	// デストラクタ
 	~HpGauge() = default;
 
-	void Initialize();
+	void Initialize(DirectX::SimpleMath::Vector2 position);
 	void Render();
 
 	/*
@@ -48,4 +48,7 @@ private:
 
 	// ゲージの現在値
 	int m_value;
+
+	// 座標
+	DirectX::SimpleMath::Vector2 m_position;
 };

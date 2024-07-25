@@ -4,12 +4,13 @@
 // コンストラクタ
 HpGauge::HpGauge()
 	:
-	m_graphics{ Graphics::GetInstance() }
+	m_graphics{ Graphics::GetInstance() },
+	m_position{}
 {
 }
 
 // 初期化処理
-void HpGauge::Initialize()
+void HpGauge::Initialize(DirectX::SimpleMath::Vector2 position)
 {
 	using namespace DirectX;
 
@@ -33,6 +34,7 @@ void HpGauge::Initialize()
 	m_value = DEFAULT_VALUE;
 
 	// ゲージの初期座標の設定
+	m_position = position;
 }
 
 // 描画処理
@@ -47,12 +49,12 @@ void HpGauge::Render()
 	//Vector2 origin{ m_spriteFont->MeasureString(buf) / 2.0f };	// 文字列の中心位置
 
 	// 描画位置のオフセット値や緑ゲージの幅を計算する
-	LONG offset = static_cast<LONG>(1100 - (MAX_WIDTH / 2));
+	LONG offset = static_cast<LONG>(m_position.x - (MAX_WIDTH / 2));
 	LONG width  = static_cast<LONG>(offset + MAX_WIDTH * (m_value / static_cast<float>(DEFAULT_VALUE)));
 
 	// ゲージの矩形を決める
-	RECT back { offset, 600, offset + MAX_WIDTH, 650 };
-	RECT front{ offset, 600, width,              650 };
+	RECT back { offset, m_position.y - 20, offset + MAX_WIDTH, m_position.y + 20 };
+	RECT front{ offset, m_position.y - 20, width,              m_position.y + 20 };
 	//** left,top,right,bottom
 
 	// スプライトバッチを開始する

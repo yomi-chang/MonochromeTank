@@ -1,6 +1,6 @@
 /*
-	@file	TitleScene.h
-	@brief	タイトルシーンクラス
+	@file	ResultScene.h
+	@brief	リザルトシーンクラス
 */
 #pragma once
 #include "IScene.h"
@@ -16,7 +16,7 @@ namespace mylib
 }
 
 
-class TitleScene final :
+class ResultScene final :
     public IScene
 {
 private:
@@ -47,8 +47,8 @@ private:
 
 
 public:
-    TitleScene();
-    ~TitleScene() override;
+	ResultScene();
+    ~ResultScene() override;
 
     void Initialize(CommonResources* resources) override;
     void Update(float elapsedTime)override;

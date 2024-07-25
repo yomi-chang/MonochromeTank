@@ -37,7 +37,7 @@ PlayScene::PlayScene()
 	m_playerTank{},
 	m_tpsCamera{},
 	m_collisionMesh{},
-	m_enemyTank{}
+	m_enemyTanks{}
 {
 }
 
@@ -94,11 +94,17 @@ void PlayScene::Initialize(CommonResources* resources)
 	m_playerTank->Initialize(IComponent::Type::PLAYER);
 
 	//敵戦車
-	m_enemyTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f));
-	m_enemyTank->Initialize(IComponent::Type::ENEMY);
+	m_enemyTanks.emplace_back(std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f)));
+	//m_enemyTanks.emplace_back(std::make_unique<Tank>(nullptr, Vector3(10.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f)));
+	for (auto& enemyTank : m_enemyTanks)
+	{
+		// 敵にプレイヤー戦車情報を渡す
+		enemyTank->Initialize(IComponent::Type::ENEMY);
+		enemyTank->SetOtherTank(m_playerTank.get());
 
-	m_enemyTank->SetOtherTank(m_playerTank.get());
-	m_playerTank->SetOtherTank(m_enemyTank.get());
+		// プレイヤーに敵戦車情報を渡す
+		m_playerTank->SetOtherTank(enemyTank.get());
+	}
 
 	// TPSカメラの生成
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
@@ -126,7 +132,18 @@ void PlayScene::Update(float elapsedTime)
 	Vector3 position(0.0f, 0.0f, 0.0f);
 	float angle = 0.0f;
 	m_playerTank->Update(elapsedTime,position,angle);
-	m_enemyTank->Update(elapsedTime, position,angle);
+
+	for (auto& enemyTank : m_enemyTanks)
+	{
+		enemyTank->Update(elapsedTime, position, angle);
+
+		// プレイヤーか敵の体力のどちらかの体力が０ならリザルトへ
+		if (enemyTank->GetHpValue() <= 0 ||
+			m_playerTank->GetHpValue() <= 0)
+		{
+			m_isChangeScene = true;
+		}
+	}
 
 	// フォローカメラを更新する
 	m_tpsCamera->Update(elapsedTime);
@@ -169,7 +186,11 @@ void PlayScene::Render()
 
 	//戦車の描画
 	m_playerTank->Render();
-	m_enemyTank->Render();
+
+	for (auto& enemyTank : m_enemyTanks)
+	{
+		enemyTank->Render();
+	}
 
 	// 当たり判定の表示
 	/*Graphics::GetInstance()->GetPrimitiveBatch()->Begin();
@@ -191,19 +212,11 @@ void PlayScene::Render()
 	debugString->AddString("z : %f", m_playerTank->GetTankPosition().z);
 	debugString->AddString("angle : %f", DirectX::XMConvertToDegrees(m_playerTank->GetTankAngleRL()));
 	debugString->AddString(" ");
-	debugString->AddString("EnemyTank");
-	debugString->AddString("x : %f", m_enemyTank->GetTankPosition().x);
-	debugString->AddString("z : %f", m_enemyTank->GetTankPosition().z);
-	debugString->AddString("angle : %f", DirectX::XMConvertToDegrees(m_enemyTank->GetTankAngleRL()));
-	debugString->AddString(" ");
 	debugString->AddString("MousePosition");
 	debugString->AddString("x : %d", mouseState.x);
 	debugString->AddString("y : %d", mouseState.y);
 	debugString->AddString("x : %f", mousePosX);
 	debugString->AddString("y : %f", mousePosY);
-
-	debugString->AddString("Hit : %d", m_enemyTank->GetHit());
-
 }
 
 //---------------------------------------------------------
@@ -222,7 +235,7 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 	// シーン変更がある場合
 	if (m_isChangeScene)
 	{
-		return IScene::SceneID::TITLE;
+		return IScene::SceneID::RESULT;
 	}
 
 	// シーン変更がない場合

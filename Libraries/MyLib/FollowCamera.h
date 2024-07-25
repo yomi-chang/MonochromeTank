@@ -14,8 +14,8 @@ namespace mylib
 		static constexpr float SPRING_RATE_EYE = 0.2f;
 		static constexpr float SPRING_RATE_TARGET = 0.2f;
 		// ãóó£ÅAçÇÇ≥
-		static constexpr float DISTANCE = 3.2f;
-		static constexpr float HEIGHT = 1.2f;
+		static constexpr float DISTANCE = 4.5f;
+		static constexpr float HEIGHT = 2.0f;
 
 		/*static constexpr float DISTANCE = 8.0f;
 		static constexpr float HEIGHT = 5.0f;*/

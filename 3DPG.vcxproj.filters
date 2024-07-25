@@ -104,6 +104,8 @@
     <ClInclude Include="Interface\ILeaf.h" />
     <ClInclude Include="Game\UserInterface\HpGauge.h" />
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
+    <ClInclude Include="Game\AI\EnemyTankAi.h" />
+    <ClInclude Include="Game\Scene\ResultScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -155,6 +157,8 @@
     <ClCompile Include="Game\Collider\BoxCollider.cpp" />
     <ClCompile Include="Game\UserInterface\HpGauge.cpp" />
     <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
+    <ClCompile Include="Game\AI\EnemyTankAi.cpp" />
+    <ClCompile Include="Game\Scene\ResultScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

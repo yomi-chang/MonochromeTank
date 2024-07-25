@@ -133,12 +133,12 @@ void TankCannon::Render()
 	
 	// プリミティブ描画を開始する
 	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-	// 「砲塔下部」を描画する
+	// 「砲身」を描画する
 	m_graphics->DrawModel(m_model, m_worldMatrix);
 
 	// 照準の描画
 	Matrix matrix = Matrix::CreateRotationX(m_cannonAngle) * Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle);
-	Graphics::GetInstance()->DrawLine(GetMuzzlePosition(), { matrix.Forward() }, DirectX::Colors::Red);
+	m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() }, DirectX::Colors::Red);
 	
 	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();

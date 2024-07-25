@@ -1,9 +1,9 @@
 /*
-	@file	TitleScene.cpp
-	@brief	タイトルシーンクラス
+	@file	ResultScene.cpp
+	@brief	リザルトシーンクラス
 */
 #include "pch.h"
-#include "TitleScene.h"
+#include "ResultScene.h"
 #include "Game/Screen.h"
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
@@ -17,7 +17,7 @@ using namespace DirectX::SimpleMath;
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
-TitleScene::TitleScene()
+ResultScene::ResultScene()
 	:
 	m_graphics{ Graphics::GetInstance()},
 	m_commonResources{},
@@ -32,7 +32,7 @@ TitleScene::TitleScene()
 //---------------------------------------------------------
 // デストラクタ
 //---------------------------------------------------------
-TitleScene::~TitleScene()
+ResultScene::~ResultScene()
 {
 	// do nothing.
 }
@@ -40,7 +40,7 @@ TitleScene::~TitleScene()
 //---------------------------------------------------------
 // 初期化する
 //---------------------------------------------------------
-void TitleScene::Initialize(CommonResources* resources)
+void ResultScene::Initialize(CommonResources* resources)
 {
 	assert(resources);
 	m_commonResources = resources;
@@ -67,7 +67,7 @@ void TitleScene::Initialize(CommonResources* resources)
 	DX::ThrowIfFailed(
 		CreateWICTextureFromFile(
 			device,
-			L"Resources/Textures/Title.png",
+			L"Resources/Textures/Result.png",
 			nullptr,
 			m_texture.ReleaseAndGetAddressOf()
 		)
@@ -108,7 +108,7 @@ void TitleScene::Initialize(CommonResources* resources)
 //---------------------------------------------------------
 // 更新する
 //---------------------------------------------------------
-void TitleScene::Update(float elapsedTime)
+void ResultScene::Update(float elapsedTime)
 {
 	// 宣言をしたが、実際は使用していない変数
 	UNREFERENCED_PARAMETER(elapsedTime);
@@ -126,7 +126,7 @@ void TitleScene::Update(float elapsedTime)
 //---------------------------------------------------------
 // 描画する
 //---------------------------------------------------------
-void TitleScene::Render()
+void ResultScene::Render()
 {
 	auto states = m_commonResources->GetCommonStates();
 
@@ -153,7 +153,7 @@ void TitleScene::Render()
 
 
 	// 純粋にスプライトフォントで文字列を描画する方法
-	m_spriteFont->DrawString(m_spriteBatch/*.get()*/, L"Title Scene", Vector2(10, 40));
+	m_spriteFont->DrawString(m_spriteBatch/*.get()*/, L"Result Scene", Vector2(10, 40));
 
 	wchar_t buf[32];
 	swprintf_s(buf, 32, L"right : %d, bottom : %d", rect.right, rect.bottom);
@@ -166,7 +166,7 @@ void TitleScene::Render()
 //---------------------------------------------------------
 // 後始末する
 //---------------------------------------------------------
-void TitleScene::Finalize()
+void ResultScene::Finalize()
 {
 	// do nothing.
 }
@@ -174,12 +174,12 @@ void TitleScene::Finalize()
 //---------------------------------------------------------
 // 次のシーンIDを取得する
 //---------------------------------------------------------
-IScene::SceneID TitleScene::GetNextSceneID() const
+IScene::SceneID ResultScene::GetNextSceneID() const
 {
 	// シーン変更がある場合
 	if (m_isChangeScene)
 	{
-		return IScene::SceneID::PLAY;
+		return IScene::SceneID::TITLE;
 	}
 
 	// シーン変更がない場合

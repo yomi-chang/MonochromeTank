@@ -27,7 +27,8 @@ Tank::Tank(
 	m_collider{},
 	m_hit{},
 	m_hpGauge{},
-	m_hpValue{}
+	m_hpValue{},
+	m_otherTanks{}
 {
 }
 
@@ -69,17 +70,21 @@ void Tank::Initialize(Type type)
 		m_bullets[index]->Initialize();
 	}
 
-	// 境界球
+	// コライダーの作成
 	m_collider = std::make_unique<SphereCollider>();
 	m_collider->CreateBoundingSphere(m_currentPosition, 1.0f);
 
 	// 体力ゲージを生成
+	m_hpGauge = std::make_unique<HpGauge>();
 	if (m_tankType == Type::ENEMY)
 	{
-		m_hpGauge = std::make_unique<HpGauge>();
-		m_hpGauge->Initialize();
-		m_hpValue = m_hpGauge->GetDefaultValue();
+		m_hpGauge->Initialize(Vector2{1100,650 });
 	}
+	else if (m_tankType == Type::PLAYER)
+	{
+		m_hpGauge->Initialize(Vector2{ 200,50 });
+	}
+	m_hpValue = m_hpGauge->GetDefaultValue();
 }
 
 
@@ -132,7 +137,6 @@ void Tank::Update(
 	}
 
 	// 体力の更新
-	if (m_tankType == Type::ENEMY)
 	m_hpGauge->SetValue(m_hpValue);
 }
 
@@ -159,7 +163,7 @@ void Tank::Render()
 		}
 	}
 
-	if (m_tankType == Type::ENEMY)
+	//体力ゲージの描画
 	m_hpGauge->Render();
 }
 
@@ -238,8 +242,8 @@ void Tank::EnemyAction()
 	// 速度の初期化
 	Vector3 tunkVelocity = Vector3::Zero;
 
-	// プレイヤーの方向を向く
-	Vector3 delta = m_currentPosition - m_otherTank->GetTankPosition();
+	// プレイヤーの方向を向く m_otherTanks[0]はプレイヤー　ToDo:EnemyのAiクラスを作成
+	Vector3 delta = m_currentPosition - m_otherTanks[0]->GetTankPosition();
 	float angleRadians = atan2(delta.x, delta.z);
 	m_currentAngleRL = angleRadians;
 	tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle).Forward() * 0.01f;
@@ -254,14 +258,17 @@ void Tank::DetectCollisionTankAndBullets()
 	m_hit = false;
 
 	// 弾丸と戦車の当たり判定
-	for (auto& bullet : m_otherTank->GetBullets())
+	for (auto& otherTank : m_otherTanks)
 	{
-		// 弾丸が飛んでいる、かつ当たっているなら
-		if (bullet->GetBulletState() == IBullet::FLYING &&
-			m_collider->CheckTriggerCollider(bullet->GetBoundingSphere()))
+		for (auto& bullet : otherTank->GetBullets())
 		{
-			bullet->SetBulletState(IBullet::USED);
-			m_hpValue-=10;
+			// 弾丸が飛んでいる、かつ当たっているなら
+			if (bullet->GetBulletState() == IBullet::FLYING &&
+				m_collider->CheckTriggerCollider(bullet->GetBoundingSphere()))
+			{
+				bullet->SetBulletState(IBullet::USED);
+				m_hpValue -= 10;
+			}
 		}
 	}
 }
@@ -272,10 +279,13 @@ void Tank::DetectCollisionTankAndBullets()
 void Tank::DetectCollisionTankAndOtherTanks()
 {
 	m_hit = false;
-	if (m_collider->CheckTriggerCollider(m_otherTank->GetBoundingSphere()))
+	for (auto& otherTank : m_otherTanks)
 	{
-		m_hit = true;
-		m_currentPosition += m_collider->CheckCollisionCollider(m_otherTank->GetBoundingSphere());
-		m_hpValue--;
+		if (m_collider->CheckTriggerCollider(otherTank->GetBoundingSphere()))
+		{
+			m_hit = true;
+			m_currentPosition += m_collider->CheckCollisionCollider(otherTank->GetBoundingSphere());
+			m_hpValue--;
+		}
 	}
 }
