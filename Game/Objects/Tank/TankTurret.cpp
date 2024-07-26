@@ -61,21 +61,21 @@ void TankTurret::Update(
 
 	if (m_tankType == Type::PLAYER)
 	{
-		// –C“ƒ‚Ì‰ñ“]
-		if (keyboardState.Left)
-		{
-			m_turretAngle += DirectX::XMConvertToRadians(0.5f);
-		}
-		else if (keyboardState.Right)
-		{
-			m_turretAngle -= DirectX::XMConvertToRadians(0.5f);
-		}
+		//// –C“ƒ‚Ì‰ñ“]
+		//if (keyboardState.Left)
+		//{
+		//	m_turretAngle += DirectX::XMConvertToRadians(0.5f);
+		//}
+		//else if (keyboardState.Right)
+		//{
+		//	m_turretAngle -= DirectX::XMConvertToRadians(0.5f);
+		//}
 	}
 
 	// Å‰‚Ì‰ñ“]Šp‚ğİ’è
-	//m_turretAngle = DirectX::XMConvertToRadians (1280.0f / 10.0f);
+	m_turretAngle = DirectX::XMConvertToRadians (1280.0f / 10.0f);
 	// ƒ}ƒEƒXÀ•W‚É‰‚¶‚Ä‰ñ“]
-	//m_turretAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.x) / 5.0f);
+	m_turretAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.x) / 5.0f);
 
 	// ‰ñ“]‚Ì§ŒÀ
 	//m_turretAngle = TankBase::Clamp(m_turretAngle, DirectX::XMConvertToRadians(-90.0f), DirectX::XMConvertToRadians(90.0f));

@@ -6,6 +6,9 @@
 // 砲弾速度を定義する
 const DirectX::SimpleMath::Vector3 CannonBall::SPEED(0.0f, 0.0f, -0.3f);
 
+// 砲弾にかかる重力を定義する
+const DirectX::SimpleMath::Vector3 CannonBall::GRAVITY(0.0f, -0.1f, 0.0f);
+
 // コンストラクタ
 CannonBall::CannonBall(IBullet::BulletState bulletState)
 	:
@@ -13,7 +16,6 @@ CannonBall::CannonBall(IBullet::BulletState bulletState)
 	m_angleUD(0.0f),
 	m_angleRL(0.0f),
 	m_velocity{},
-	m_gravity(DirectX::SimpleMath::Vector3(0.0f, -0.05f, 0.0f)),
 	m_worldMatrix{},
 	m_bulletState(bulletState),
 	m_graphics{Graphics::GetInstance()},
@@ -57,7 +59,7 @@ void CannonBall::Update(float time)
 	Vector3 initialVelocity = Vector3::Transform(SPEED, rotationQuat);
 
 	// 速度に重力の影響を加えて位置を計算する
-	m_velocity = initialVelocity + (m_gravity * m_elapsedTime);
+	m_velocity = initialVelocity + (GRAVITY * m_elapsedTime);
 	m_position += m_velocity;
 
 	// コライダーの座標を更新
@@ -99,7 +101,7 @@ void CannonBall::DrawBullet(const DirectX::SimpleMath::Matrix& matrix)
 	Matrix proj = m_graphics->GetProjectionMatrix();
 
 	// コライダーの描画
-	m_collider->Render();
+	//m_collider->Render();
 
 	m_bullet->Draw(m_worldMatrix, view, proj,DirectX::Colors::Black);
 }

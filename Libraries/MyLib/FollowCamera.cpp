@@ -28,6 +28,9 @@ mylib::FollowCamera::FollowCamera()
 void mylib::FollowCamera::Initialize(Tank* tank)
 {
 	m_tank = tank;
+
+	// ビュー行列の作成のために一度Updateを呼ぶ
+	this->Update(0.0f);
 }
 
 //-------------------------------------------------------------------

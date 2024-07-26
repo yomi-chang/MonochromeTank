@@ -110,6 +110,7 @@ void PlayScene::Initialize(CommonResources* resources)
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
 	m_tpsCamera->Initialize(m_playerTank.get());
 
+
 	// コリジョンメッシュを生成する
 	m_collisionMesh = std::make_unique<mylib::CollisionMesh>();
 	m_collisionMesh->Initialize(device, context, L"Terrain");
@@ -217,6 +218,12 @@ void PlayScene::Render()
 	debugString->AddString("y : %d", mouseState.y);
 	debugString->AddString("x : %f", mousePosX);
 	debugString->AddString("y : %f", mousePosY);
+	debugString->AddString(" ");
+	debugString->AddString("Bullet");
+	debugString->AddString("value : %d", m_playerTank->GetBulletValue());
+	debugString->AddString(" ");
+	debugString->AddString("CannonBall");
+	debugString->AddString("value : %d", m_playerTank->GetCannonBallValue());
 }
 
 //---------------------------------------------------------

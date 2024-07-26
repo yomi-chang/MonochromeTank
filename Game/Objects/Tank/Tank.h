@@ -11,14 +11,24 @@
 class Tank : public IComposite
 {
 public:
+	// 弾の種類
+	enum BulletType
+	{
+		BULLET,
+		CANNONBALL
+	};
+
+public:
 	// 戦車座標の取得
 	DirectX::SimpleMath::Vector3 GetTankPosition() { return m_currentPosition; }
 
 	// 戦車の向きの取得
 	float GetTankAngleRL() { return m_currentAngleRL; }
 
-	// 「砲弾」を参照する
+	// 「連射弾」を参照する
 	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
+	// 「砲弾」を参照する
+	std::unique_ptr<IBullet>& GetCannonBall() { return m_cannonBall; }
 
 	// 他戦車の情報の受け取り
 	//void SetOtherTank(std::vector<Tank*> tank) { m_otherTanks = tank; }
@@ -37,6 +47,32 @@ public:
 
 	// 体力を渡す
 	int GetHpValue() { return m_hpValue; }
+
+	// 残弾数を渡す
+	int GetBulletValue() 
+	{
+		int value = 0;
+		// 使われていない弾の数を調べる
+		for (auto& bullet : m_bullets)
+		{
+			if (bullet->GetBulletState() == IBullet::UNUSED)
+				value++;
+		}
+		return value;
+	}
+
+	int GetCannonBallValue() 
+	{
+		// 弾の使用未使用によって変更
+		if (m_cannonBall->GetBulletState() == IBullet::UNUSED)
+		{
+			return 1;
+		}
+		return 0;
+	}
+	
+	// 現在選択されている弾の種類を渡す
+	BulletType GetBulletType() { return m_bulletType; }
 
 public:
 	// コンストラクタ
@@ -98,6 +134,7 @@ private:
 
 	// 砲弾配列
 	std::vector<std::unique_ptr<IBullet>> m_bullets;
+	std::unique_ptr<IBullet> m_cannonBall;
 
 	// 敵かプレイヤーか
 	Type m_tankType;
@@ -116,6 +153,9 @@ private:
 
 	// 体力ゲージ
 	std::unique_ptr<HpGauge> m_hpGauge;
+
+	// 現在の弾の種類
+	BulletType m_bulletType;
 
 private:
 	// プレイヤーの行動

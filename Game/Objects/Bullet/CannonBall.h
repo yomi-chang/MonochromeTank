@@ -9,6 +9,8 @@ public:
 	// 砲弾スピードを定義する
 	static const DirectX::SimpleMath::Vector3 SPEED;
 
+	static const DirectX::SimpleMath::Vector3 GRAVITY;
+
 public:
 	// 位置を取得する 
 	DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
@@ -49,8 +51,6 @@ public:
 private:
 	// グラフィックス
 	Graphics* m_graphics;
-	// 加速度
-	DirectX::SimpleMath::Vector3 m_gravity;
 	// 速度
 	DirectX::SimpleMath::Vector3 m_velocity;
 	// 位置

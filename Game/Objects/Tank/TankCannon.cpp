@@ -63,25 +63,24 @@ void TankCannon::Update(
 
 	// キーボードステートの取得
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
-
 	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
 
 	if (m_tankType == Type::PLAYER)
 	{
 		// 砲身の上下
-		if (keyboardState.Up)
+		/*if (keyboardState.Up)
 		{
 			m_cannonAngle += DirectX::XMConvertToRadians(0.5f);
 		}
 		else if (keyboardState.Down)
 		{
 			m_cannonAngle -= DirectX::XMConvertToRadians(0.5f);
-		}
+		}*/
 
 		// 最初の回転角を設定
-		//m_cannonAngle = DirectX::XMConvertToRadians(40.0f);
+		m_cannonAngle = DirectX::XMConvertToRadians(40.0f);
 		// マウス座標に応じて回転
-		//m_cannonAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.y) / 10.0f);
+		m_cannonAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.y) / 10.0f);
 
 		// 砲身の向きを制限する
 		//m_cannonAngle = TankBase::Clamp(m_cannonAngle, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
@@ -89,7 +88,7 @@ void TankCannon::Update(
 		m_currentAngleUD = m_cannonAngle;
 
 		// 弾の発射
-		if (/*mouseState.leftButton*/keyboardState.Space)
+		if (mouseState.leftButton/*keyboardState.Space*/)
 		{
 			// 発射タイマーが0.0より大きい場合は発射タイマーを減らす
 			if (m_shotTimer > 0.0f)
@@ -100,17 +99,30 @@ void TankCannon::Update(
 			else
 			{
 				// 「砲弾」を発射する
-				for (auto& bullet : m_tank->GetBullets())
+				switch (m_tank->GetBulletType())
 				{
-					// 使用されていない砲弾は発射できる
-					if (bullet->GetBulletState() == IBullet::UNUSED)
-					{
-						// 「砲弾」を発射する
-						Shoot(bullet.get());
-						// 発射砲弾数をインクリメントする
-						m_shotBulletNumber++;
+					case Tank::BulletType::BULLET:
+						for (auto& bullet : m_tank->GetBullets())
+						{
+							// 使用されていない砲弾は発射できる
+							if (bullet->GetBulletState() == IBullet::UNUSED)
+							{
+								// 「砲弾」を発射する
+								Shoot(bullet.get());
+								// 発射砲弾数をインクリメントする
+								m_shotBulletNumber++;
+								break;
+							}
+						}
 						break;
-					}
+					case Tank::BulletType::CANNONBALL:
+						// 「連射弾」を発射する
+						if (m_tank->GetCannonBall()->GetBulletState() == IBullet::UNUSED)
+						{
+							// 「砲弾」を発射する
+							Shoot(m_tank->GetCannonBall().get());
+						}
+						break;
 				}
 				// 初期値を設定する
 				m_shotTimer = SHOT_INTERVAL;

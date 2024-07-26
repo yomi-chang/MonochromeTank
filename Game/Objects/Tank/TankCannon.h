@@ -19,7 +19,6 @@ public:
 	// 親オブジェクトを取得する
 	IComponent* GetParent() const { return m_parent; }
 
-public:
 	// 銃口の座標を取得する
 	DirectX::SimpleMath::Vector3 GetMuzzlePosition();
 

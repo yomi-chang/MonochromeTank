@@ -2,12 +2,7 @@
 #include "Game/Objects/Tank/Tank.h"
 #include "Game/Objects/Tank/TankBody.h"
 
-/// <summary>
 /// コンストラクタ
-/// </summary>
-/// <param name="parent">親オブジェクト</param>
-/// <param name="initialPosition">初期座標</param>
-/// <param name="initialAngleRL">初期回転角</param>
 Tank::Tank(
 	IComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
@@ -28,21 +23,19 @@ Tank::Tank(
 	m_hit{},
 	m_hpGauge{},
 	m_hpValue{},
-	m_otherTanks{}
+	m_otherTanks{},
+	m_bulletType{ BulletType::CANNONBALL }
 {
 }
 
-/// <summary>
-/// デストラクタ
-/// </summary>
+// デストラクタ
 Tank::~Tank()
 {
 	Finalize();
 }
 
-/// <summary>
-/// 初期化処理
-/// </summary>
+
+// 初期化処理
 void Tank::Initialize(Type type)
 {
 	using namespace DirectX::SimpleMath;
@@ -56,19 +49,19 @@ void Tank::Initialize(Type type)
 	// 車体の生成
 	Attach(std::make_unique<TankBody>(this, Vector3(0.0f, 0.5f, 0.0f), 0.0f));
 
-	// 砲弾配列を作成する
+	// 連射弾配列を作成する
 	m_bullets.resize(100);
-
-	// 配列に砲弾を格納する
+	// 配列に連射弾を格納する
 	for (int index = 0; index < 100; index++)
 	{
-		// 砲弾を生成する
-		//m_bullets[index] = std::make_unique<Bullet>(IBullet::UNUSED);
-		// 砲弾を生成する
-		m_bullets[index] = std::make_unique<CannonBall>(IBullet::UNUSED);
-		// 砲弾を初期化する
+		// 連射弾を生成する
+		m_bullets[index] = std::make_unique<Bullet>(IBullet::UNUSED);
+		// 連射弾を初期化する
 		m_bullets[index]->Initialize();
 	}
+	// 砲弾を生成する
+	m_cannonBall = std::make_unique<CannonBall>(IBullet::UNUSED);
+	m_cannonBall->Initialize();
 
 	// コライダーの作成
 	m_collider = std::make_unique<SphereCollider>();
@@ -123,6 +116,10 @@ void Tank::Update(
 			bullet->Update(elapsedTime);
 		}
 	}
+	if (m_cannonBall->GetBulletState() == IBullet::FLYING)
+	{
+		m_cannonBall->Update(elapsedTime);
+	}
 
 	// 弾丸と戦車の当たり判定
 	DetectCollisionTankAndBullets();
@@ -150,7 +147,7 @@ void Tank::Render()
 	}
 
 	// コライダーの表示
-	m_collider->Render();
+	//m_collider->Render();
 
 	// 飛弾中の砲弾を描画する
 	for (auto& bullet : m_bullets)
@@ -162,24 +159,23 @@ void Tank::Render()
 			bullet->Render();
 		}
 	}
+	if (m_cannonBall->GetBulletState() == IBullet::FLYING)
+	{
+		m_cannonBall->Render();
+	}
 
 	//体力ゲージの描画
 	m_hpGauge->Render();
 }
 
-/// <summary>
-/// 終了処理
-/// </summary>
+// 終了処理
 void Tank::Finalize()
 {
 	// 削除する部品をリセットする
 	//m_tankParts.clear();
 }
 
-/// <summary>
-/// パーツの追加
-/// </summary>
-/// <param name="part">パーツ</param>
+// パーツの追加
 void Tank::Attach(std::unique_ptr<IComponent> part)
 {
 	// パーツの初期化
@@ -188,23 +184,20 @@ void Tank::Attach(std::unique_ptr<IComponent> part)
 	m_tankParts.emplace_back(std::move(part));
 }
 
-/// <summary>
-/// パーツの削除
-/// </summary>
-/// <param name="part">パーツ</param>
+
+// パーツの削除
 void Tank::Detach(std::unique_ptr<IComponent> part)
 {
 }
 
-/// <summary>
-/// プレイヤーの操作
-/// </summary>
+
+// プレイヤーの操作
 void Tank::PlayerAction()
 {
 	using namespace DirectX::SimpleMath;
-
 	// キーボードステートの取得
 	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
+	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
 
 	// 速度の初期化
 	Vector3 tunkVelocity = Vector3::Zero;
@@ -220,7 +213,6 @@ void Tank::PlayerAction()
 		tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle).Forward() * 0.05f;
 		m_currentPosition += tunkVelocity;
 	}
-
 	// 左右回転
 	if (keyboardState.A)
 	{
@@ -230,11 +222,41 @@ void Tank::PlayerAction()
 	{
 		m_currentAngleRL -= DirectX::XMConvertToRadians(0.5f);
 	}
+
+	// 弾の種類を変更
+	if (keyboardState.Space)
+	{
+		switch (m_bulletType)
+		{
+			case BulletType::BULLET:
+				m_bulletType = BulletType::CANNONBALL;
+				break;
+			case BulletType::CANNONBALL:
+				m_bulletType = BulletType::BULLET;
+				break;
+		}
+	}
+
+	// リロード
+	if (mouseState.rightButton)
+	{
+		switch (m_bulletType)
+		{
+			case BulletType::BULLET:
+				for (auto& bullet : m_bullets)
+				{
+					bullet->SetBulletState(IBullet::UNUSED);
+				}
+				break;
+			case BulletType::CANNONBALL:
+				m_cannonBall->SetBulletState(IBullet::UNUSED);
+				break;
+		}
+	}
 }
 
-/// <summary>
-/// 敵の行動　ToDo:敵AIは別でクラス化
-/// </summary>
+
+// 敵の行動　ToDo:敵AIは別でクラス化
 void Tank::EnemyAction()
 {
 	using namespace DirectX::SimpleMath;
@@ -250,9 +272,7 @@ void Tank::EnemyAction()
 	m_currentPosition += tunkVelocity;
 }
 
-/// <summary>
-/// 弾丸と戦車の当たり判定
-/// </summary>
+// 弾丸と戦車の当たり判定
 void Tank::DetectCollisionTankAndBullets()
 {
 	m_hit = false;
@@ -260,6 +280,7 @@ void Tank::DetectCollisionTankAndBullets()
 	// 弾丸と戦車の当たり判定
 	for (auto& otherTank : m_otherTanks)
 	{
+		// 連射弾
 		for (auto& bullet : otherTank->GetBullets())
 		{
 			// 弾丸が飛んでいる、かつ当たっているなら
@@ -270,12 +291,17 @@ void Tank::DetectCollisionTankAndBullets()
 				m_hpValue -= 10;
 			}
 		}
+		// 砲弾
+		if (otherTank->GetCannonBall()->GetBulletState() == IBullet::FLYING &&
+			m_collider->CheckTriggerCollider(otherTank->GetCannonBall()->GetBoundingSphere()))
+		{
+			otherTank->GetCannonBall()->SetBulletState(IBullet::USED);
+			m_hpValue -= 100;
+		}
 	}
 }
 
-/// <summary>
-/// 戦車と戦車の当たり判定
-/// </summary>
+// 戦車と戦車の当たり判定
 void Tank::DetectCollisionTankAndOtherTanks()
 {
 	m_hit = false;
