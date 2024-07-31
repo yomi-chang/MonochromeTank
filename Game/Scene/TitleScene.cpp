@@ -8,7 +8,7 @@
 #include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
-#include "Libraries/MyLib/InputManager.h"
+#include "Framework/InputManager.h"
 #include <cassert>
 
 using namespace DirectX;
@@ -113,11 +113,11 @@ void TitleScene::Update(float elapsedTime)
 	// 宣言をしたが、実際は使用していない変数
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// キーボードステートトラッカーを取得する
-	const auto& kbTracker = m_commonResources->GetInputManager()->GetKeyboardTracker();
+	// キーボードステートの取得
+	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
 
 	// スペースキーが押されたら
-	if (kbTracker->pressed.Space)
+	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
 	{
 		m_isChangeScene = true;
 	}

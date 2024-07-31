@@ -97,8 +97,9 @@ void Bullet::DrawBullet(const DirectX::SimpleMath::Matrix& matrix)
 	Matrix proj = m_graphics->GetProjectionMatrix();
 
 	// ƒRƒ‰ƒCƒ_[‚Ì•`‰æ
-	//m_collider->Render();
+	m_collider->Render();
 
+	// ’eŠÛ‚Ì•`‰æ
 	m_bullet->Draw(m_worldMatrix, view, proj, DirectX::Colors::Black);
 }
 

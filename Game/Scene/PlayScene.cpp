@@ -10,9 +10,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/GridFloor.h"
-#include "Libraries/MyLib/InputManager.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
-
 #include "Framework/Resources.h"
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Libraries/MyLib/CollisionMesh.h"
@@ -110,7 +108,6 @@ void PlayScene::Initialize(CommonResources* resources)
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
 	m_tpsCamera->Initialize(m_playerTank.get());
 
-
 	// コリジョンメッシュを生成する
 	m_collisionMesh = std::make_unique<mylib::CollisionMesh>();
 	m_collisionMesh->Initialize(device, context, L"Terrain");
@@ -124,8 +121,7 @@ void PlayScene::Update(float elapsedTime)
 	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// デバッグカメラを更新する
-	//m_debugCamera->Update(m_commonResources->GetInputManager());
-
+	//m_debugCamera->Update();
 	// ビュー行列を取得する
 	//const Matrix& view = m_debugCamera->GetViewMatrix();
 
@@ -174,7 +170,6 @@ void PlayScene::Render()
 	// 格子床を描画する
 	//m_gridFloor->Render(context, Graphics::GetInstance()->GetViewMatrix(), m_projection);
 
-
 	// 天球の描画
 	m_skySphere->Render();
 
@@ -187,17 +182,10 @@ void PlayScene::Render()
 
 	//戦車の描画
 	m_playerTank->Render();
-
 	for (auto& enemyTank : m_enemyTanks)
 	{
 		enemyTank->Render();
 	}
-
-	// 当たり判定の表示
-	/*Graphics::GetInstance()->GetPrimitiveBatch()->Begin();
-	DX::Draw(Graphics::GetInstance()->GetPrimitiveBatch(), m_playerTank->GetBoundingSphere());
-	DX::Draw(Graphics::GetInstance()->GetPrimitiveBatch(), m_enemyTank->GetBoundingSphere());
-	Graphics::GetInstance()->GetPrimitiveBatch()->End();*/
 
 	// キーボードステートの取得
 	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();

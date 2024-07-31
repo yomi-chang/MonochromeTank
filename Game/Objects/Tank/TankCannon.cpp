@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Game/Objects/Tank/TankCannon.h"
 #include "Framework/Resources.h"
+#include "Framework/InputManager.h"
 
 // コンストラクタ
 TankCannon::TankCannon(
@@ -20,7 +21,7 @@ TankCannon::TankCannon(
 	m_worldMatrix{},
 	m_cannonAngle{},
 	m_currentAngleUD{},
-	m_shotBulletNumber{},
+	//m_shotBulletNumber{},
 	m_shotTimer(SHOT_INTERVAL),
 	m_tankType{}
 {
@@ -62,8 +63,10 @@ void TankCannon::Update(
 	m_currentAngleRL = currentAngleRL;
 
 	// キーボードステートの取得
-	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
-	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
+	const auto& KeyboardTracker = InputManager::GetInstance()->GetKeyboardTracker();
+	// マウスステートの取得
+	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
+	const auto& mouseTracker = InputManager::GetInstance()->GetMouseTracker();
 
 	if (m_tankType == Type::PLAYER)
 	{
@@ -72,7 +75,7 @@ void TankCannon::Update(
 		{
 			m_cannonAngle += DirectX::XMConvertToRadians(0.5f);
 		}
-		else if (keyboardState.Down)
+		else if (keyboardStsate.Down)
 		{
 			m_cannonAngle -= DirectX::XMConvertToRadians(0.5f);
 		}*/
@@ -88,7 +91,7 @@ void TankCannon::Update(
 		m_currentAngleUD = m_cannonAngle;
 
 		// 弾の発射
-		if (mouseState.leftButton/*keyboardState.Space*/)
+		if (mouseState.leftButton)
 		{
 			// 発射タイマーが0.0より大きい場合は発射タイマーを減らす
 			if (m_shotTimer > 0.0f)
@@ -107,10 +110,10 @@ void TankCannon::Update(
 							// 使用されていない砲弾は発射できる
 							if (bullet->GetBulletState() == IBullet::UNUSED)
 							{
-								// 「砲弾」を発射する
+								//「砲弾」を発射する
 								Shoot(bullet.get());
 								// 発射砲弾数をインクリメントする
-								m_shotBulletNumber++;
+								//m_shotBulletNumber++;
 								break;
 							}
 						}
@@ -145,12 +148,13 @@ void TankCannon::Render()
 	
 	// プリミティブ描画を開始する
 	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+
 	// 「砲身」を描画する
 	m_graphics->DrawModel(m_model, m_worldMatrix);
 
 	// 照準の描画
 	Matrix matrix = Matrix::CreateRotationX(m_cannonAngle) * Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle);
-	m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() }, DirectX::Colors::Red);
+	m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward()}, DirectX::Colors::Red);
 	
 	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();

@@ -3,6 +3,7 @@
 #include "Game/Objects/Tank/TankBody.h"
 #include "Game/Objects/Tank/TankTurret.h"
 #include "Framework/Resources.h"
+#include "Framework/InputManager.h"
 
 // コンストラクタ
 TankBody::TankBody(

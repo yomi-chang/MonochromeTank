@@ -36,23 +36,28 @@ void BoxCollider::Update(DirectX::SimpleMath::Vector3 centerPosition)
 	m_boundingBox.Center = centerPosition;
 }
 
-
 /// <summary>
 /// 描画処理
 /// </summary>
 void BoxCollider::Render()
 {
-	// 当たり判定の表示
+	// 当たり判定の表示(デバッグビルドでのみ表示)
+#ifdef _DEBUG
 	// プリミティブ描画を開始する
 	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 	// 境界ボックスを描画する
-	DX::Draw(m_graphics->GetPrimitiveBatch(), m_boundingBox, DirectX::Colors::White);
+	DX::Draw(m_graphics->GetPrimitiveBatch(), m_boundingBox, DirectX::Colors::Aqua);
 	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();
+#endif
 }
 
 // 当たり判定の処理==================================================================================
+/// <summary>
 /// バウンディングスフィアとの押し戻しありの当たり判定
+/// </summary>
+/// <param name="boundingSphere">相手のバウンディングスフィア</param>
+/// <returns>押し戻し距離</returns>
 DirectX::SimpleMath::Vector3 BoxCollider::CheckCollisionCollider(DirectX::BoundingSphere* boundingSphere)
 {
 	using namespace DirectX::SimpleMath;
@@ -99,14 +104,24 @@ DirectX::SimpleMath::Vector3 BoxCollider::CheckCollisionCollider(DirectX::Boundi
 	return pushBackVec;
 }
 
-// バウンディングボックスとの押し戻しありの当たり判定
+/// <summary>
+/// バウンディングボックスとの押し戻しありの当たり判定
+/// </summary>
+/// <param name="boundingBox">相手のバウンディングボックス</param>
+/// <returns>押し戻し距離</returns>
 DirectX::SimpleMath::Vector3 BoxCollider::CheckCollisionCollider(DirectX::BoundingBox* boundingBox)
 {
 	using namespace DirectX::SimpleMath;
 	return Vector3::Zero;
+
+	//ToDo 押し戻しの追加
 }
 
-// バウンディングスフィアとの当たり判定
+/// <summary>
+/// バウンディングスフィアとの当たり判定
+/// </summary>
+/// <param name="boundingSphere">相手のバウンディングスフィア</param>
+/// <returns>当たっているかどうか</returns>
 bool BoxCollider::CheckTriggerCollider(DirectX::BoundingSphere* boundingSphere)
 {
 	if (!m_boundingBox.Intersects(*boundingSphere)) { return false; }
@@ -115,7 +130,11 @@ bool BoxCollider::CheckTriggerCollider(DirectX::BoundingSphere* boundingSphere)
 	return true;
 }
 
-// バウンディングボックスとの当たり判定
+/// <summary>
+/// バウンディングボックスとの当たり判定
+/// </summary>
+/// <param name="boundingSphere">相手のバウンディングボックス</param>
+/// <returns>当たっているかどうか</returns>
 bool BoxCollider::CheckTriggerCollider(DirectX::BoundingBox* boundingBox)
 {
 	if (!m_boundingBox.Intersects(*boundingBox)) { return false; }

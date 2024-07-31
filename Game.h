@@ -12,7 +12,7 @@
 #include "Game/Scene/IScene.h"
 #include "Game/Scene/SceneManager.h"
 #include "Libraries/MyLib/DebugString.h"
-#include "Libraries/MyLib/InputManager.h"
+#include "Framework/InputManager.h"
 #include "Framework/Graphics.h"
 
 
@@ -80,14 +80,14 @@ private:
     // デバッグストリング
     std::unique_ptr<mylib::DebugString>     m_debugString;
 
-    // 入力マネージャ
-    std::unique_ptr<mylib::InputManager>    m_inputManager;
-
     // シーンマネージャ
     std::unique_ptr<SceneManager>           m_sceneManager;
 
     // グラフィックス
     Graphics* m_graphics;
+
+    // インプットマネージャー
+    InputManager* m_inputManager;
 
     // Device resources.
     //std::unique_ptr<DX::DeviceResources>    m_deviceResources;

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Game/Objects/Tank/Tank.h"
 #include "Game/Objects/Tank/TankBody.h"
+#include "Framework/InputManager.h"
 
 /// コンストラクタ
 Tank::Tank(
@@ -103,7 +104,7 @@ void Tank::Update(
 			break;
 	}
 
-	// 当たり判定の更新
+	// コライダーの更新
 	m_collider->Update(m_currentPosition);
 
 	// 飛弾中の砲弾を更新する
@@ -147,7 +148,7 @@ void Tank::Render()
 	}
 
 	// コライダーの表示
-	//m_collider->Render();
+	m_collider->Render();
 
 	// 飛弾中の砲弾を描画する
 	for (auto& bullet : m_bullets)
@@ -196,8 +197,11 @@ void Tank::PlayerAction()
 {
 	using namespace DirectX::SimpleMath;
 	// キーボードステートの取得
-	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
-	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
+	const auto& keyboardState = InputManager::GetInstance()->GetKeyboardState();
+	const auto& keyboardTracker = InputManager::GetInstance()->GetKeyboardTracker();
+	// マウスステートの取得
+	const auto& mouseTracker = InputManager::GetInstance()->GetMouseTracker();
+
 
 	// 速度の初期化
 	Vector3 tunkVelocity = Vector3::Zero;
@@ -224,7 +228,7 @@ void Tank::PlayerAction()
 	}
 
 	// 弾の種類を変更
-	if (keyboardState.Space)
+	if (keyboardTracker->IsKeyPressed(DirectX::Keyboard::Space))
 	{
 		switch (m_bulletType)
 		{
@@ -238,17 +242,19 @@ void Tank::PlayerAction()
 	}
 
 	// リロード
-	if (mouseState.rightButton)
+	if (mouseTracker->rightButton == mouseTracker->PRESSED)
 	{
 		switch (m_bulletType)
 		{
 			case BulletType::BULLET:
 				for (auto& bullet : m_bullets)
 				{
+					// ToDo　時間のかかるリロードに変更
 					bullet->SetBulletState(IBullet::UNUSED);
 				}
 				break;
 			case BulletType::CANNONBALL:
+				// ToDo　時間のかかるリロードに変更
 				m_cannonBall->SetBulletState(IBullet::UNUSED);
 				break;
 		}

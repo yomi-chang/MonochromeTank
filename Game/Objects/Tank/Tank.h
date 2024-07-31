@@ -14,8 +14,8 @@ public:
 	// 弾の種類
 	enum BulletType
 	{
-		BULLET,
-		CANNONBALL
+		BULLET,			// 連射弾
+		CANNONBALL		// 砲弾
 	};
 
 public:
@@ -27,6 +27,7 @@ public:
 
 	// 「連射弾」を参照する
 	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
+	
 	// 「砲弾」を参照する
 	std::unique_ptr<IBullet>& GetCannonBall() { return m_cannonBall; }
 
@@ -110,41 +111,31 @@ public:
 private:
 	// グラフィックス
 	Graphics* m_graphics;
-	
 	// 親オブジェクト
 	IComponent* m_parent;
-
 	// 初期座標
 	DirectX::SimpleMath::Vector3 m_initialPosition;
-
 	// 初期回転角
 	float m_initialAngle;
-
-	// 現在の位置
+	// 現在の座標
 	DirectX::SimpleMath::Vector3 m_currentPosition;
-
 	// 現在の回転角
 	float m_currentAngleRL;
-
 	// 自身が管理する戦車部品の配列
 	std::vector<std::unique_ptr<IComponent>> m_tankParts;
-
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
-
-	// 砲弾配列
-	std::vector<std::unique_ptr<IBullet>> m_bullets;
-	std::unique_ptr<IBullet> m_cannonBall;
-
 	// 敵かプレイヤーか
 	Type m_tankType;
 
+private:
+	// 砲弾配列
+	std::vector<std::unique_ptr<IBullet>> m_bullets;
+	std::unique_ptr<IBullet> m_cannonBall;
 	// 他戦車の情報
 	std::vector<Tank*> m_otherTanks;
-
 	// 当たり判定
 	std::unique_ptr<SphereCollider> m_collider;
-
 	// ヒットしているかどうか
 	bool m_hit;
 
@@ -162,10 +153,8 @@ private:
 	void PlayerAction();
 	// 敵行動
 	void EnemyAction();
-
 	// 戦車と砲弾の衝突判定を行う
 	void DetectCollisionTankAndBullets();
-
 	// 戦車と戦車の衝突判定を行う
 	void DetectCollisionTankAndOtherTanks();
 };

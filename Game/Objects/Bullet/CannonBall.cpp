@@ -49,6 +49,13 @@ void CannonBall::Update(float time)
 	UNREFERENCED_PARAMETER(time);
 	using namespace DirectX::SimpleMath;
 
+	// Œo‰ßŽžŠÔ‚ðƒŠƒZƒbƒg‚·‚é
+	if (m_bulletState == IBullet::UNUSED)
+	{
+		m_elapsedTime = 0.0f;
+		m_velocity = Vector3::Zero;
+	}
+
 	// Œo‰ßŽžŠÔ‚ð‹L˜^
 	m_elapsedTime += time;
 
@@ -101,8 +108,9 @@ void CannonBall::DrawBullet(const DirectX::SimpleMath::Matrix& matrix)
 	Matrix proj = m_graphics->GetProjectionMatrix();
 
 	// ƒRƒ‰ƒCƒ_[‚Ì•`‰æ
-	//m_collider->Render();
+	m_collider->Render();
 
+	// –C’e‚Ì•`‰æ
 	m_bullet->Draw(m_worldMatrix, view, proj,DirectX::Colors::Black);
 }
 

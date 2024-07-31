@@ -28,6 +28,9 @@ Game::Game() noexcept(false)
     // グラフィックスインスタンスの取得
     m_graphics = Graphics::GetInstance();
 
+    // インプットマネージャーの取得
+    m_inputManager = InputManager::GetInstance();
+
     //m_deviceResources = std::make_unique<DX::DeviceResources>();
     
     // グラフィックスからデバイスリソースを受け取る
@@ -71,7 +74,7 @@ void Game::Initialize(HWND window, int width, int height)
     auto context = m_deviceResources->GetD3DDeviceContext();
 
     // 入力マネージャを作成する
-    m_inputManager = std::make_unique<mylib::InputManager>(window);
+    m_inputManager->Initialize(window);
 
     // コモンステートを作成する
     m_commonStates = std::make_unique<CommonStates>(device);
@@ -91,8 +94,8 @@ void Game::Initialize(HWND window, int width, int height)
         &m_timer,
         m_deviceResources,
         m_commonStates.get(),
-        m_debugString.get(),
-        m_inputManager.get()
+        m_debugString.get()/*,
+        m_inputManager.get()*/
     );
 
     // シーンマネージャを初期化する

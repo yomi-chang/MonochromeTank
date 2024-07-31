@@ -66,9 +66,6 @@
     <ClInclude Include="Libraries\MyLib\GridFloor.h">
       <Filter>Libraries\MyLib</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\MyLib\InputManager.h">
-      <Filter>Libraries\MyLib</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h">
       <Filter>Libraries\MyLib</Filter>
     </ClInclude>
@@ -106,6 +103,7 @@
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
     <ClInclude Include="Game\AI\EnemyTankAi.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
+    <ClInclude Include="Framework\InputManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -127,9 +125,6 @@
       <Filter>Libraries\MyLib</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MyLib\GridFloor.cpp">
-      <Filter>Libraries\MyLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MyLib\InputManager.cpp">
       <Filter>Libraries\MyLib</Filter>
     </ClCompile>
     <ClCompile Include="Game\Scene\TitleScene.cpp">
@@ -159,6 +154,7 @@
     <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
     <ClCompile Include="Game\AI\EnemyTankAi.cpp" />
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
+    <ClCompile Include="Framework\InputManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

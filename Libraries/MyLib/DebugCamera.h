@@ -3,12 +3,6 @@
 	@brief	デバッグ用カメラクラス
 */
 #pragma once
-
-namespace mylib
-{
-	class InputManager;
-}
-
 namespace mylib
 {
 	// デバッグ用カメラクラス
@@ -50,7 +44,7 @@ namespace mylib
 		~DebugCamera() = default;
 
 		void Initialize(int screenWidth, int screenHeight);
-		void Update(mylib::InputManager* inputManager);
+		void Update();
 
 		// ビュー行列（カメラ行列）を取得する
 		const DirectX::SimpleMath::Matrix& GetViewMatrix() const

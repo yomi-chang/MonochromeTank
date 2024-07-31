@@ -3,6 +3,7 @@
 #include "Game/Objects/Tank/TankTurret.h"
 #include "Game/Objects/Tank/TankCannon.h"
 #include "Framework/Resources.h"
+#include "Framework/InputManager.h"
 
 // コンストラクタ
 TankTurret::TankTurret(
@@ -55,9 +56,8 @@ void TankTurret::Update(
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// キーボードステートの取得
-	DirectX::Keyboard::State keyboardState = DirectX::Keyboard::Get().GetState();
-	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
+	// マウスステートの取得
+	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
 
 	if (m_tankType == Type::PLAYER)
 	{
@@ -70,15 +70,15 @@ void TankTurret::Update(
 		//{
 		//	m_turretAngle -= DirectX::XMConvertToRadians(0.5f);
 		//}
+
+		// 最初の回転角を設定
+		m_turretAngle = DirectX::XMConvertToRadians(1280.0f / 10.0f);
+		// マウス座標に応じて回転
+		m_turretAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.x) / 5.0f);
+
+		// 回転の制限
+		//m_turretAngle = TankBase::Clamp(m_turretAngle, DirectX::XMConvertToRadians(-90.0f), DirectX::XMConvertToRadians(90.0f));
 	}
-
-	// 最初の回転角を設定
-	m_turretAngle = DirectX::XMConvertToRadians (1280.0f / 10.0f);
-	// マウス座標に応じて回転
-	m_turretAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.x) / 5.0f);
-
-	// 回転の制限
-	//m_turretAngle = TankBase::Clamp(m_turretAngle, DirectX::XMConvertToRadians(-90.0f), DirectX::XMConvertToRadians(90.0f));
 
 	// 現在の位置の更新
 	m_currentPosition = currentPosition;
@@ -90,7 +90,6 @@ void TankTurret::Update(
 	{
 		tankPart->Update(elapsedTime, currentPosition, currentAngleRL + m_turretAngle);
 	}
-	
 }
 
 // 描画処理

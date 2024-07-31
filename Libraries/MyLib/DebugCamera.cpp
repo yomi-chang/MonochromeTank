@@ -4,7 +4,7 @@
 */
 #include "pch.h"
 #include "DebugCamera.h"
-#include "Libraries/MyLib/InputManager.h"
+#include "Framework/InputManager.h"
 
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
@@ -47,12 +47,10 @@ void mylib::DebugCamera::Initialize(int screenWidth,int screenHeight)
 //---------------------------------------------------------
 // 更新する
 //---------------------------------------------------------
-void mylib::DebugCamera::Update(mylib::InputManager* inputManager)
+void mylib::DebugCamera::Update()
 {
-	assert(inputManager);
-
-	const auto& state = inputManager->GetMouseState();
-	const auto& tracker = inputManager->GetMouseTracker();
+	const auto& state = InputManager::GetInstance()->GetMouseState();
+	const auto& tracker = InputManager::GetInstance()->GetMouseTracker();
 
 	// 相対モードなら何もしない
 	if (state.positionMode == Mouse::MODE_RELATIVE)

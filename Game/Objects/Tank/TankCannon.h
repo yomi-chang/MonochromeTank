@@ -87,7 +87,7 @@ private:
 	float m_cannonAngle;
 
 	// 使用済み砲弾数
-	int m_shotBulletNumber;
+	//int m_shotBulletNumber;
 
 	// 砲弾発射タイマー
 	float m_shotTimer;

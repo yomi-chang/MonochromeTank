@@ -13,7 +13,7 @@ namespace DX
 namespace mylib
 {
 	class DebugString;
-	class InputManager;
+	//class InputManager;
 }
 
 
@@ -30,7 +30,7 @@ private:
 
 	mylib::DebugString* m_debugString;
 
-	mylib::InputManager* m_inputManager;
+	//mylib::InputManager* m_inputManager;
 
 
 public:
@@ -41,8 +41,8 @@ public:
 		DX::StepTimer* timer,
 		DX::DeviceResources* dr,
 		DirectX::CommonStates* commonStates,
-		mylib::DebugString* debugString,
-		mylib::InputManager* inputManager
+		mylib::DebugString* debugString/*,
+		mylib::InputManager* inputManager*/
 	);
 
 	// getter
@@ -66,8 +66,8 @@ public:
 		return m_debugString;
 	}
 
-	mylib::InputManager* GetInputManager() const
+	/*mylib::InputManager* GetInputManager() const
 	{
 		return m_inputManager;
-	}
+	}*/
 };
