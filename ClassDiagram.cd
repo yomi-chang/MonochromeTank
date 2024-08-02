@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DX::DeviceResources" Collapsed="true">
+    <Position X="12" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>qgAIhAAAAAIWAJBEyAIBKAKQERAAAYrQIEWkBiyEIIo=</HashCode>
+      <FileName>DeviceResources.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DX::StepTimer" Collapsed="true">
+    <Position X="17.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACQEQAAAAQEQAABQEAIAIAAIAABQCAAgCAwBQJAAwAA=</HashCode>
+      <FileName>StepTimer.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DX::com_exception" Collapsed="true">
+    <Position X="13.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAACAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>pch.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mylib::DebugString" Collapsed="true">
+    <Position X="10.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAABAIAAEAAAAAAEAAAAAIBgAAAgCAAA=</HashCode>
+      <FileName>Libraries\MyLib\DebugString.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mylib::DebugCamera" Collapsed="true">
+    <Position X="17.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQCAIQAAAEQAQAAQAAIAAACQCBAYQAAAAAwQBAAAAA=</HashCode>
+      <FileName>Libraries\MyLib\DebugCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mylib::GridFloor" Collapsed="true">
+    <Position X="12" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAYAAAEACAAAAAAAAAAAAAAAIBgAAAoQAAA=</HashCode>
+      <FileName>Libraries\MyLib\GridFloor.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mylib::FollowCamera" Collapsed="true">
+    <Position X="15.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAACgAQAQBBAAAIAAAIAADAAQAAAACQAABAAAA=</HashCode>
+      <FileName>Libraries\MyLib\FollowCamera.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="mylib::CollisionMesh" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAQBCQAAwAAAAIQAAAAgAAAAAAAIEAgAAEQAAA=</HashCode>
+      <FileName>Libraries\MyLib\CollisionMesh.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CommonResources" Collapsed="true">
+    <Position X="15.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQABAAAAAAAAAwEAIAAAAAIAAAAAIABQAAAAACAAAAA=</HashCode>
+      <FileName>Game\CommonResources.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Screen" Collapsed="true">
+    <Position X="12" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAQAAAAIAgAABBAAAIAAAAQAAAAkAAAAAABAAAA=</HashCode>
+      <FileName>Game\Screen.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IScene" Collapsed="true">
+    <Position X="3.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAQAABAQAAAAAAAAAAAAAAgAAAABAAAAAAAAA=</HashCode>
+      <FileName>Game\Scene\IScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayScene" Collapsed="true">
+    <Position X="1" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAEAAQAAABgQAQACAAAAAACAIAkAQgABAAABAAAAA=</HashCode>
+      <FileName>Game\Scene\PlayScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SceneManager" Collapsed="true">
+    <Position X="10.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQACAAQAAAAAUgAAAAAAAAAAAAAgAgAABAAAAAAAgQ=</HashCode>
+      <FileName>Game\Scene\SceneManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TitleScene" Collapsed="true">
+    <Position X="3.25" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAQAQAAABAQBAAAAEAKAAAAAAkIAAABAAIAAAAAA=</HashCode>
+      <FileName>Game\Scene\TitleScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graphics" Collapsed="true">
+    <Position X="10.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AUAhAAAAAhQFAQFAACAEECAgHCkSAhjAIHAgDBIQACU=</HashCode>
+      <FileName>Framework\Graphics.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InputManager" Collapsed="true">
+    <Position X="15.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAIAAAQAQAAAQABCAABBAAAAAkAAEAgIAgICAA=</HashCode>
+      <FileName>Framework\InputManager.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Resources" Collapsed="true">
+    <Position X="17.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAhAAIQaAAAJACAAAAACKAABQAAAAAgAAAgCAAAAQA=</HashCode>
+      <FileName>Framework\Resources.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Game" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="17.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAQQCQQAwEGAAAAgCAAAAiAAABCAJAiAAxIQAQ=</HashCode>
+      <FileName>Game.h</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="EnemyTankAi" Collapsed="true">
+    <Position X="13.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Game\AI\EnemyTankAi.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="BoxCollider" Collapsed="true">
+    <Position X="10.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAAAAAAAEAAAAAACggACAAAAgAABAAAAAAAAA=</HashCode>
+      <FileName>Game\Collider\BoxCollider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SphereCollider" Collapsed="true">
+    <Position X="15.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQBAAAAAAAAgAABAAAAACAAAACAAAgAABAAAAAAAAA=</HashCode>
+      <FileName>Game\Collider\SphereCollider.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Bullet" Collapsed="true">
+    <Position X="0.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AkQABAQAACAAAQAAAAEAACAAABGAwmVEABAgAAIQAAA=</HashCode>
+      <FileName>Game\Objects\Bullet\Bullet.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CannonBall" Collapsed="true">
+    <Position X="3" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CEQABgQEACAAAQAAAAEAACAAABGAwmVAABAgAAQIAAE=</HashCode>
+      <FileName>Game\Objects\Bullet\CannonBall.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="SkySphere" Collapsed="true">
+    <Position X="13.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAABAAAAAAAAA=</HashCode>
+      <FileName>Game\Objects\Other\SkySphere.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Tank" Collapsed="true">
+    <Position X="1" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EASCCAAEAAAQAxoFgADAACAAAIDioABAAPgQAUaCAAA=</HashCode>
+      <FileName>Game\Objects\Tank\Tank.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TankBody" Collapsed="true">
+    <Position X="3.25" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgQAAAAAAQIAAQIEgAAAACAAAIACoABAADgAAAQAAAA=</HashCode>
+      <FileName>Game\Objects\Tank\TankBody.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TankCannon" Collapsed="true">
+    <Position X="7.75" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgQAAAAACECABQRkgACAgCAAAAACoABAADgAAIYAAAA=</HashCode>
+      <FileName>Game\Objects\Tank\TankCannon.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TankTurret" Collapsed="true">
+    <Position X="5.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EgQAAEAAAAAAAQIEgAAAACAAAIQCoABAADgAAASAAAA=</HashCode>
+      <FileName>Game\Objects\Tank\TankTurret.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ResultScene" Collapsed="true">
+    <Position X="5.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAQAQEAABAQBAAAAEACAAAAAAkAAAABAAIAAAAgA=</HashCode>
+      <FileName>Game\Scene\ResultScene.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="HpGauge" Collapsed="true">
+    <Position X="13.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAQAAACAAA0BABAAEACBAAAQAAAAAABAAAQAAAAA=</HashCode>
+      <FileName>Game\UserInterface\HpGauge.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IBullet" Collapsed="true">
+    <Position X="2" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQABASAACAAAQAAAAAAAAAAABCAwkEAABAAAAAAAAA=</HashCode>
+      <FileName>Interface\IBullet.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IComposite" Collapsed="true">
+    <Position X="3.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAIAAAAAAAAAAIAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\IComposite.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ILeaf" Collapsed="true">
+    <Position X="7.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Interface\ILeaf.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="IComponent" Collapsed="true">
+    <Position X="4.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAAAAAAQAQAAAAAAAAAAAAgAAAABAAAAQAAAA=</HashCode>
+      <FileName>Interface\IComponent.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="DX::IDeviceNotify" Collapsed="true">
+    <Position X="10.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAAAAAAAAAAAAAEAAAAgAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DeviceResources.h</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Yu Gothic UI" Size="9" />
+</ClassDiagram>

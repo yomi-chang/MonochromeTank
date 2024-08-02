@@ -193,6 +193,7 @@ void PlayScene::Render()
 	float mousePosY = 1.0f / static_cast<float>(mouseState.y);
 
 	// デバッグ情報を「DebugString」で表示する
+#ifdef _DEBUG
 	auto debugString = m_commonResources->GetDebugString();
 	debugString->AddString("Play Scene");
 	debugString->AddString(" ");
@@ -212,6 +213,7 @@ void PlayScene::Render()
 	debugString->AddString(" ");
 	debugString->AddString("CannonBall");
 	debugString->AddString("value : %d", m_playerTank->GetCannonBallValue());
+#endif
 }
 
 //---------------------------------------------------------
