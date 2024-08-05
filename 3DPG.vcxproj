@@ -193,7 +193,6 @@
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
     <ClInclude Include="Game\Objects\Other\SkySphere.h" />
     <ClInclude Include="Game\Objects\Tank\Tank.h" />
-    <ClInclude Include="Game\Objects\Tank\TankBase.h" />
     <ClInclude Include="Game\Objects\Tank\TankBody.h" />
     <ClInclude Include="Game\Objects\Tank\TankCannon.h" />
     <ClInclude Include="Game\Objects\Tank\TankTurret.h" />
@@ -214,6 +213,7 @@
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
     <ClInclude Include="Libraries\MyLib\FollowCamera.h" />
     <ClInclude Include="Libraries\MyLib\GridFloor.h" />
+    <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="StepTimer.h" />
@@ -233,7 +233,6 @@
     <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
     <ClCompile Include="Game\Objects\Other\SkySphere.cpp" />
     <ClCompile Include="Game\Objects\Tank\Tank.cpp" />
-    <ClCompile Include="Game\Objects\Tank\TankBase.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankBody.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankCannon.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankTurret.cpp" />
@@ -248,6 +247,7 @@
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
     <ClCompile Include="Libraries\MyLib\FollowCamera.cpp" />
     <ClCompile Include="Libraries\MyLib\GridFloor.cpp" />
+    <ClCompile Include="Libraries\MyLib\Math.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

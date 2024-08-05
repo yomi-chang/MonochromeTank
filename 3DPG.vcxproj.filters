@@ -84,7 +84,6 @@
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Resources.h" />
     <ClInclude Include="Interface\IComponent.h" />
-    <ClInclude Include="Game\Objects\Tank\TankBase.h" />
     <ClInclude Include="Game\Objects\Tank\Tank.h" />
     <ClInclude Include="Game\Objects\Tank\TankBody.h" />
     <ClInclude Include="Game\Objects\Tank\TankTurret.h" />
@@ -104,6 +103,7 @@
     <ClInclude Include="Game\AI\EnemyTankAi.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
     <ClInclude Include="Framework\InputManager.h" />
+    <ClInclude Include="Libraries\MyLib\Math.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -138,7 +138,6 @@
     </ClCompile>
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\Resources.cpp" />
-    <ClCompile Include="Game\Objects\Tank\TankBase.cpp" />
     <ClCompile Include="Game\Objects\Tank\Tank.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankBody.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankTurret.cpp" />
@@ -155,6 +154,7 @@
     <ClCompile Include="Game\AI\EnemyTankAi.cpp" />
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
     <ClCompile Include="Framework\InputManager.cpp" />
+    <ClCompile Include="Libraries\MyLib\Math.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

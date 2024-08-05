@@ -1,7 +1,6 @@
 // 戦車の更新や描画などを担うクラス
 #pragma once
 #include "Interface/IComponent.h"
-#include "Game/Objects/Tank/TankBase.h"
 #include "Game/Objects/Tank/Tank.h"
 
 #include "Interface/ILeaf.h"

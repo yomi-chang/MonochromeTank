@@ -1,9 +1,10 @@
 #include "pch.h"
-#include "Game/Objects/Tank/TankBase.h"
 #include "Game/Objects/Tank/TankTurret.h"
 #include "Game/Objects/Tank/TankCannon.h"
 #include "Framework/Resources.h"
 #include "Framework/InputManager.h"
+
+#include "Libraries/MyLib/Math.h"
 
 // コンストラクタ
 TankTurret::TankTurret(
@@ -77,7 +78,7 @@ void TankTurret::Update(
 		m_turretAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.x) / 5.0f);
 
 		// 回転の制限
-		//m_turretAngle = TankBase::Clamp(m_turretAngle, DirectX::XMConvertToRadians(-90.0f), DirectX::XMConvertToRadians(90.0f));
+		m_turretAngle = mylib::Clamp(m_turretAngle, DirectX::XMConvertToRadians(-90.0f), DirectX::XMConvertToRadians(90.0f));
 	}
 
 	// 現在の位置の更新

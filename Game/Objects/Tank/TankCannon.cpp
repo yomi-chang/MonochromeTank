@@ -3,6 +3,8 @@
 #include "Framework/Resources.h"
 #include "Framework/InputManager.h"
 
+#include "Libraries/MyLib/Math.h"
+
 // コンストラクタ
 TankCannon::TankCannon(
 	IComponent* parent,
@@ -63,7 +65,7 @@ void TankCannon::Update(
 	m_currentAngleRL = currentAngleRL;
 
 	// キーボードステートの取得
-	const auto& KeyboardTracker = InputManager::GetInstance()->GetKeyboardTracker();
+	const auto& keyboardState = InputManager::GetInstance()->GetKeyboardState();
 	// マウスステートの取得
 	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
 	const auto& mouseTracker = InputManager::GetInstance()->GetMouseTracker();
@@ -75,7 +77,7 @@ void TankCannon::Update(
 		{
 			m_cannonAngle += DirectX::XMConvertToRadians(0.5f);
 		}
-		else if (keyboardStsate.Down)
+		else if (keyboardState.Down)
 		{
 			m_cannonAngle -= DirectX::XMConvertToRadians(0.5f);
 		}*/
@@ -86,7 +88,7 @@ void TankCannon::Update(
 		m_cannonAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.y) / 10.0f);
 
 		// 砲身の向きを制限する
-		//m_cannonAngle = TankBase::Clamp(m_cannonAngle, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
+		m_cannonAngle = mylib::Clamp(m_cannonAngle, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
 
 		m_currentAngleUD = m_cannonAngle;
 

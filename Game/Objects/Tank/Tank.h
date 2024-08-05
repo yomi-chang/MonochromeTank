@@ -1,6 +1,5 @@
 #pragma once
 #include "Interface/IComponent.h"
-#include "Game/Objects/Tank/TankBase.h"
 #include "Interface/IBullet.h"
 #include "Game/Objects/Bullet/Bullet.h"
 #include "Game/Objects/Bullet/CannonBall.h"
