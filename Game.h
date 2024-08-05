@@ -53,6 +53,13 @@ public:
     // Properties
     void GetDefaultSize( int& width, int& height ) const noexcept;
 
+    // 画面モードを設定する関数
+    void SetFullscreenState(BOOL value)
+    {
+        m_fullscreen = value;
+        m_deviceResources->GetSwapChain()->SetFullscreenState(m_fullscreen, nullptr);
+        if (value) m_deviceResources->CreateWindowSizeDependentResources();
+    }
 private:
 
     void Update(DX::StepTimer const& timer);
@@ -95,6 +102,9 @@ private:
 
     // ウィンドウハンドル
     HWND m_hWnd;
+
+    // フルスクリーンフラグ
+    BOOL m_fullscreen;
 
     // ★追記ココまで↑↑↑★
 };

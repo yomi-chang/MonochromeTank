@@ -26,19 +26,16 @@ void CommonResources::Initialize(
 	DX::StepTimer* timer,
 	DX::DeviceResources* dr,
 	DirectX::CommonStates* commonStates,
-	mylib::DebugString* debugString/*,
-	mylib::InputManager* inputManager*/
+	mylib::DebugString* debugString
 )
 {
 	assert(timer);
 	assert(dr);
 	assert(commonStates);
 	assert(debugString);
-	assert(inputManager);
 
 	m_stepTimer = timer;
 	m_deviceResources = dr;
 	m_commonStates = commonStates;
 	m_debugString = debugString;
-	//m_inputManager = inputManager;
 }
