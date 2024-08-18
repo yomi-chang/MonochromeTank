@@ -92,7 +92,7 @@ void Bullet::Render()
 void Bullet::DrawBullet(const DirectX::SimpleMath::Matrix& matrix)
 {
 	using namespace DirectX::SimpleMath;
-
+	 
 	Matrix view = m_graphics->GetViewMatrix();
 	Matrix proj = m_graphics->GetProjectionMatrix();
 

@@ -8,7 +8,6 @@
 #include "PlayScene.h"
 #include "ResultScene.h"
 #include "Game/Screen.h"
-#include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include <cassert>
@@ -19,8 +18,7 @@
 //---------------------------------------------------------
 SceneManager::SceneManager()
 	:
-	m_currentScene{},
-	m_commonResources{}
+	m_currentScene{}
 {
 }
 
@@ -35,11 +33,8 @@ SceneManager::~SceneManager()
 //---------------------------------------------------------
 // 初期化する
 //---------------------------------------------------------
-void SceneManager::Initialize(CommonResources* resources)
+void SceneManager::Initialize()
 {
-	assert(resources);
-	m_commonResources = resources;
-
 	// 最初のシーンを設定する
 	ChangeScene(IScene::SceneID::TITLE);
 }
@@ -110,7 +105,7 @@ void SceneManager::CreateScene(IScene::SceneID sceneID)
 	}
 
 	assert(m_currentScene && "SceneManager::CreateScene::次のシーンが生成されませんでした！");
-	m_currentScene->Initialize(m_commonResources);
+	m_currentScene->Initialize();
 }
 
 //---------------------------------------------------------

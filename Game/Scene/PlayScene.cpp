@@ -4,7 +4,6 @@
 */
 #include "pch.h"
 #include "PlayScene.h"
-#include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/DebugCamera.h"
 #include "Libraries/MyLib/DebugString.h"
@@ -26,7 +25,7 @@ using namespace DirectX::SimpleMath;
 //---------------------------------------------------------
 PlayScene::PlayScene()
 	:
-	m_commonResources{},
+	m_graphics{Graphics::GetInstance()},
 	m_debugCamera{},
 	m_gridFloor{},
 	m_projection{},
@@ -50,21 +49,17 @@ PlayScene::~PlayScene()
 //---------------------------------------------------------
 // 初期化する
 //---------------------------------------------------------
-void PlayScene::Initialize(CommonResources* resources)
+void PlayScene::Initialize()
 {
-	assert(resources);
-	m_commonResources = resources;
-
-	auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
-	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = m_commonResources->GetCommonStates();
-
-
+	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = m_graphics->GetCommonStates();
+	
 	// グリッド床を作成する
 	m_gridFloor = std::make_unique<mylib::GridFloor>(device, context, states);
 
 	// デバッグカメラを作成する
-	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
+	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
 	m_debugCamera = std::make_unique<mylib::DebugCamera>();
 	m_debugCamera->Initialize(rect.right, rect.bottom);
 
@@ -76,7 +71,7 @@ void PlayScene::Initialize(CommonResources* resources)
 	);
 	
 	// 射影行列を設定する
-	Graphics::GetInstance()->SetProjectionMatrix(m_projection);
+	m_graphics->SetProjectionMatrix(m_projection);
 
 	// モデルの読み込み(GameClassの方がいいかも)
 	Resources::GetInstance()->LoadResource();
@@ -151,8 +146,8 @@ void PlayScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void PlayScene::Render()
 {
-	auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = m_commonResources->GetCommonStates();
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = m_graphics->GetCommonStates();
 
 	// ビュー行列を取得する
 	//const Matrix& view = m_debugCamera->GetViewMatrix();
@@ -194,7 +189,7 @@ void PlayScene::Render()
 
 	// デバッグ情報を「DebugString」で表示する
 #ifdef _DEBUG
-	auto debugString = m_commonResources->GetDebugString();
+	auto debugString = m_graphics->GetDebugString();
 	debugString->AddString("Play Scene");
 	debugString->AddString(" ");
 	debugString->AddString("PlayerTank");

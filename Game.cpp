@@ -18,7 +18,6 @@ Game::Game() noexcept(false)
     m_deviceResources{},
     m_timer{},
     m_commonStates{},
-    m_commonResources{},
     m_debugString{},
     m_inputManager{},
     m_sceneManager{},
@@ -31,8 +30,6 @@ Game::Game() noexcept(false)
     // インプットマネージャーの取得
     m_inputManager = InputManager::GetInstance();
 
-    //m_deviceResources = std::make_unique<DX::DeviceResources>();
-    
     // グラフィックスからデバイスリソースを受け取る
     m_deviceResources = m_graphics->GetDeviceResources();
 
@@ -86,21 +83,12 @@ void Game::Initialize(HWND window, int width, int height)
         L"Resources/Fonts/SegoeUI_18.spritefont"
     );
 
-    // 共通リソースを作成する
-    m_commonResources = std::make_unique<CommonResources>();
-
-    // シーンへ渡す共通リソースを設定する
-    m_commonResources->Initialize(
-        &m_timer,
-        m_deviceResources,
-        m_commonStates.get(),
-        m_debugString.get()/*,
-        m_inputManager.get()*/
-    );
+    // デバッグストリングの設定
+    m_graphics->SetDebugString(m_debugString.get());
 
     // シーンマネージャを初期化する
     m_sceneManager = std::make_unique<SceneManager>();
-    m_sceneManager->Initialize(m_commonResources.get());
+    m_sceneManager->Initialize();
 
     // ★追記ココまで↑↑↑★
 }

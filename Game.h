@@ -8,7 +8,6 @@
 #include "StepTimer.h"
 
 // ★includeの追記★
-#include "Game/CommonResources.h"
 #include "Game/Scene/IScene.h"
 #include "Game/Scene/SceneManager.h"
 #include "Libraries/MyLib/DebugString.h"
@@ -80,9 +79,6 @@ private:
 
     // コモンステート
     std::unique_ptr<DirectX::CommonStates>  m_commonStates;
-
-    // コモンリソース
-    std::unique_ptr<CommonResources>        m_commonResources;
 
     // デバッグストリング
     std::unique_ptr<mylib::DebugString>     m_debugString;

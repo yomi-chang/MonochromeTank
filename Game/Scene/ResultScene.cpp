@@ -5,7 +5,6 @@
 #include "pch.h"
 #include "ResultScene.h"
 #include "Game/Screen.h"
-#include "Game/CommonResources.h"
 #include "DeviceResources.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include "Framework/InputManager.h"
@@ -20,7 +19,6 @@ using namespace DirectX::SimpleMath;
 ResultScene::ResultScene()
 	:
 	m_graphics{ Graphics::GetInstance()},
-	m_commonResources{},
 	m_spriteBatch{},
 	m_spriteFont{},
 	m_texture{},
@@ -40,14 +38,8 @@ ResultScene::~ResultScene()
 //---------------------------------------------------------
 // 初期化する
 //---------------------------------------------------------
-void ResultScene::Initialize(CommonResources* resources)
+void ResultScene::Initialize()
 {
-	assert(resources);
-	m_commonResources = resources;
-
-	//auto device = m_commonResources->GetDeviceResources()->GetD3DDevice();
-	//auto context = m_commonResources->GetDeviceResources()->GetD3DDeviceContext();
-
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	
@@ -128,13 +120,13 @@ void ResultScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void ResultScene::Render()
 {
-	auto states = m_commonResources->GetCommonStates();
+	auto states = m_graphics->GetCommonStates();
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 
-	// TRIDENTロゴの描画位置を決める
-	RECT rect{ m_commonResources->GetDeviceResources()->GetOutputSize() };
+	// ロゴの描画位置を決める
+	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
 	// 画像の中心を計算する
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 

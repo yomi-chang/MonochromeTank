@@ -6,9 +6,6 @@
 #include "IScene.h"
 #include "Framework/Graphics.h"
 
-// 前方宣言
-class CommonResources;
-
 namespace mylib
 {
 	class DebugCamera;
@@ -22,9 +19,6 @@ class ResultScene final :
 private:
 	// グラフィックス
 	Graphics* m_graphics;
-
-	// 共通リソース
-	CommonResources* m_commonResources;
 
 	// スプライトバッチ
 	//std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
@@ -50,7 +44,7 @@ public:
 	ResultScene();
     ~ResultScene() override;
 
-    void Initialize(CommonResources* resources) override;
+    void Initialize() override;
     void Update(float elapsedTime)override;
     void Render() override;
     void Finalize() override;

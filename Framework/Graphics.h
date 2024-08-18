@@ -1,6 +1,11 @@
 #pragma once
 #include "DeviceResources.h"
 
+namespace mylib
+{
+	class DebugString;
+}
+
 // DirectX Graphicsクラス
 class Graphics final
 {
@@ -9,7 +14,7 @@ public:
 	static Graphics* const GetInstance();
 
 	// スクリーンサイズを取得する
-	void GetScreenSize(int& width, int& height) const { 	width = m_screenW; height = m_screenH; }
+	void GetScreenSize(int& width, int& height) const { width = m_screenW; height = m_screenH; }
 	// スクリーンサイズを取得(個別)
 	int GetScreenWidth() const { return m_screenW; }
 	int GetScreenHeight() const { return m_screenH; }
@@ -40,6 +45,10 @@ public:
 	void SetProjectionMatrix(const DirectX::SimpleMath::Matrix& projection) { m_projection = projection; }
 	// 射影行列を取得する
 	const DirectX::SimpleMath::Matrix& GetProjectionMatrix() { return m_projection; };
+	// デバッグストリングを設定する
+	void SetDebugString(mylib::DebugString* debugString) { m_debugString = debugString; }
+	// デバッグストリングを取得する
+	mylib::DebugString* GetDebugString() const { return m_debugString; }
 
 public:
 	// デストラクタ
@@ -84,7 +93,7 @@ private:
 	static std::unique_ptr<Graphics> m_graphics;
 	// デバイスリソースへのポインタ
 	// DX::DeviceResources* m_deviceResources;
-		// デバイスリソース
+	// デバイスリソース
 	std::unique_ptr<DX::DeviceResources> m_deviceResources;
 	// コモンステート
 	std::unique_ptr<DirectX::CommonStates> m_commonStates;
@@ -112,5 +121,7 @@ private:
 	ID3D11Device* m_device;
 	// デバイスコンテキスト
 	ID3D11DeviceContext* m_context;
+	// デバッグストリング　
+	mylib::DebugString* m_debugString;
 };
 

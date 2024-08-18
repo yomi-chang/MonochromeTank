@@ -8,10 +8,6 @@
 #include "Framework/Graphics.h"
 #include "Game/Objects/Tank/Tank.h"
 #include "Game/Objects/Other/SkySphere.h"
-//#include "Libraries/MyLib/FollowCamera.h"
-
-// 前方宣言
-class CommonResources;
 
 namespace mylib
 {
@@ -26,8 +22,8 @@ class PlayScene final :
 	public IScene
 {
 private:
-	// 共通リソース
-	CommonResources* m_commonResources;
+	// グラフィックス
+	Graphics* m_graphics;
 
 	// デバッグカメラ
 	std::unique_ptr<mylib::DebugCamera> m_debugCamera;
@@ -48,7 +44,6 @@ private:
 	std::unique_ptr<Tank> m_playerTank;
 	std::vector<std::unique_ptr<Tank>> m_enemyTanks;
 	
-
 	// 追従カメラ
 	std::unique_ptr<mylib::FollowCamera> m_tpsCamera;
 
@@ -59,7 +54,7 @@ public:
 	PlayScene();
 	~PlayScene() override;
 
-	void Initialize(CommonResources* resources) override;
+	void Initialize() override;
 	void Update(float elapsedTime)override;
 	void Render() override;
 	void Finalize() override;

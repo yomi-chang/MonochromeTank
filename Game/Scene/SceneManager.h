@@ -5,21 +5,16 @@
 #pragma once
 #include "IScene.h"
 
-// ‘O•ûéŒ¾
-class CommonResources;
-
 class SceneManager
 {
 private:
 	std::unique_ptr<IScene> m_currentScene;
-	CommonResources* m_commonResources;
-
 
 public:
 	SceneManager();
 	~SceneManager();
 
-	void Initialize(CommonResources* resources);
+	void Initialize();
 	void Update(float elapsedTime);
 	void Render();
 	void Finalize();
