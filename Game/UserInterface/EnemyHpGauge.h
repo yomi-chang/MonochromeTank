@@ -1,0 +1,51 @@
+#pragma once
+#include <PrimitiveBatch.h>
+#include <VertexTypes.h>
+#include "Framework/Graphics.h"
+
+class EnemyHpGauge
+{
+public:
+    // 最大体力の設定
+    void SetMaxHp(float maxHp) { m_maxHp = maxHp; }
+    // 現在の体力の設定
+    void SetHp(float damage) { m_damage += damage; }
+
+
+public:
+    EnemyHpGauge();
+    ~EnemyHpGauge();
+
+    void Render(DirectX::SimpleMath::Vector3 position);
+
+private:
+    //	入力レイアウト 
+    Microsoft::WRL::ComPtr<ID3D11InputLayout> m_InputLayout;
+
+    //	共通ステートオブジェクトへのポインタ
+    std::unique_ptr<DirectX::CommonStates> m_States;
+
+    //	エフェクト 
+    std::unique_ptr<DirectX::BasicEffect> m_BatchEffect;
+
+    //	プリミティブバッチ 
+    std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_Batch;
+
+    // テクスチャの移動
+    DirectX::SimpleMath::Vector3 m_position;
+
+    // 透明度
+    float m_alpha;
+
+    // 経過時間
+    float m_elapsedTime;
+
+    // グラフィックス
+    Graphics* m_graphics;
+
+    // 最大体力
+    float m_maxHp;
+
+    // 受けているダメージ
+    float m_damage;
+};

@@ -14,6 +14,7 @@
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Libraries/MyLib/CollisionMesh.h"
 #include "Interface/IComponent.h"
+#include "Framework/InputManager.h"
 
 #include <cassert>
 
@@ -27,14 +28,16 @@ PlayScene::PlayScene()
 	:
 	m_graphics{Graphics::GetInstance()},
 	m_debugCamera{},
+	m_tpsCamera{},
+	m_cameraType{CameraType::TPS},
 	m_gridFloor{},
 	m_projection{},
 	m_isChangeScene{},
 	m_skySphere{},
 	m_playerTank{},
-	m_tpsCamera{},
 	m_collisionMesh{},
-	m_enemyTanks{}
+	m_enemyTanks{},
+	m_walls{}
 {
 }
 
@@ -83,7 +86,7 @@ void PlayScene::Initialize()
 	m_skySphere = std::make_unique<SkySphere>();
 
 	// 戦車
-	m_playerTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, 10.0f), 0.0f);
+	m_playerTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f,5.0f), 0.0f);
 	m_playerTank->Initialize(IComponent::Type::PLAYER);
 
 	//敵戦車
@@ -106,6 +109,15 @@ void PlayScene::Initialize()
 	// コリジョンメッシュを生成する
 	m_collisionMesh = std::make_unique<mylib::CollisionMesh>();
 	m_collisionMesh->Initialize(device, context, L"Terrain");
+
+	// ステージ
+	m_walls.emplace_back(std::make_unique<Wall>(Vector3(20.0f, 5.0f, 0.5f), Vector3(0.0f,2.5f,-10.0f)));
+	m_walls.emplace_back(std::make_unique<Wall>(Vector3(20.0f, 5.0f, 0.5f), Vector3(0.0f, 2.5f, 10.0f)));
+
+	for (auto& wall : m_walls)
+	{
+		wall->SetPlayer(m_playerTank.get());
+	}
 }
 
 //---------------------------------------------------------
@@ -115,8 +127,6 @@ void PlayScene::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// デバッグカメラを更新する
-	//m_debugCamera->Update();
 	// ビュー行列を取得する
 	//const Matrix& view = m_debugCamera->GetViewMatrix();
 
@@ -130,15 +140,26 @@ void PlayScene::Update(float elapsedTime)
 		enemyTank->Update(elapsedTime, position, angle);
 
 		// プレイヤーか敵の体力のどちらかの体力が０ならリザルトへ
-		if (enemyTank->GetHpValue() <= 0 ||
+		/*if (enemyTank->GetHpValue() <= 0 ||
 			m_playerTank->GetHpValue() <= 0)
 		{
 			m_isChangeScene = true;
-		}
+		}*/
 	}
 
 	// フォローカメラを更新する
 	m_tpsCamera->Update(elapsedTime);
+
+	// デバッグカメラを更新する
+	m_debugCamera->Update();
+
+	// Cキーを押すことでデバッグカメラとTPSカメラを切り替える
+	const auto& keyboardTracker = InputManager::GetInstance()->GetKeyboardTracker();
+	if (keyboardTracker->IsKeyPressed(DirectX::Keyboard::C))
+	{
+		// 選択されていない方のカメラタイプにする
+		m_cameraType = (m_cameraType == CameraType::TPS) ? CameraType::DEBUG : CameraType::TPS;
+	}
 }
 
 //---------------------------------------------------------
@@ -148,18 +169,24 @@ void PlayScene::Render()
 {
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = m_graphics->GetCommonStates();
-
-	// ビュー行列を取得する
-	//const Matrix& view = m_debugCamera->GetViewMatrix();
-
-	// ビュー行列の取得
-	Matrix view = Matrix::CreateLookAt(
-		m_tpsCamera->GetEyePosition(),
-		m_tpsCamera->GetTargetPosition(),
-		Vector3::UnitY
-	);
-
-	// ビュー行列を設定する
+	
+	// カメラタイプに応じたビュー行列の取得
+	auto view = DirectX::SimpleMath::Matrix::Identity;
+	switch (m_cameraType)
+	{
+		case CameraType::TPS:
+			view = Matrix::CreateLookAt(
+				m_tpsCamera->GetEyePosition(),
+				m_tpsCamera->GetTargetPosition(),
+				Vector3::UnitY
+			);
+			Graphics::GetInstance()->SetViewMatrix(view);
+			break;
+		case CameraType::DEBUG:
+			view = m_debugCamera->GetViewMatrix();
+			Graphics::GetInstance()->SetViewMatrix(view);
+			break;
+	}
 	Graphics::GetInstance()->SetViewMatrix(view);
 
 	// 格子床を描画する
@@ -175,12 +202,18 @@ void PlayScene::Render()
 		Graphics::GetInstance()->GetProjectionMatrix()
 	);
 
+	// ステージの描画
+	for (auto& wall : m_walls)
+	{
+		wall->Render();
+	}
+
 	//戦車の描画
-	m_playerTank->Render();
 	for (auto& enemyTank : m_enemyTanks)
 	{
 		enemyTank->Render();
 	}
+	m_playerTank->Render();
 
 	// キーボードステートの取得
 	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
@@ -203,11 +236,18 @@ void PlayScene::Render()
 	debugString->AddString("x : %f", mousePosX);
 	debugString->AddString("y : %f", mousePosY);
 	debugString->AddString(" ");
-	debugString->AddString("Bullet");
-	debugString->AddString("value : %d", m_playerTank->GetBulletValue());
-	debugString->AddString(" ");
-	debugString->AddString("CannonBall");
-	debugString->AddString("value : %d", m_playerTank->GetCannonBallValue());
+	switch (m_playerTank->GetBulletType())
+	{
+		case Tank::BULLET:
+			debugString->AddString("Bullet");
+			debugString->AddString("value : %d", m_playerTank->GetBulletValue());
+			break;
+		case Tank::CANNONBALL:
+			debugString->AddString("CannonBall");
+			debugString->AddString("value : %d", m_playerTank->GetCannonBallValue());
+		default:
+			break;
+	}
 #endif
 }
 

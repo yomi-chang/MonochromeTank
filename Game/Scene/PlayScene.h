@@ -8,6 +8,7 @@
 #include "Framework/Graphics.h"
 #include "Game/Objects/Tank/Tank.h"
 #include "Game/Objects/Other/SkySphere.h"
+#include "Game/Objects/Stage/Wall.h"
 
 namespace mylib
 {
@@ -22,11 +23,24 @@ class PlayScene final :
 	public IScene
 {
 private:
+	enum CameraType
+	{
+		TPS,
+		DEBUG
+	};
+
+private:
 	// グラフィックス
 	Graphics* m_graphics;
 
 	// デバッグカメラ
 	std::unique_ptr<mylib::DebugCamera> m_debugCamera;
+
+	// 追従カメラ
+	std::unique_ptr<mylib::FollowCamera> m_tpsCamera;
+
+	// カメラタイプ
+	CameraType m_cameraType;
 
 	// 格子床
 	std::unique_ptr<mylib::GridFloor> m_gridFloor;
@@ -44,11 +58,11 @@ private:
 	std::unique_ptr<Tank> m_playerTank;
 	std::vector<std::unique_ptr<Tank>> m_enemyTanks;
 	
-	// 追従カメラ
-	std::unique_ptr<mylib::FollowCamera> m_tpsCamera;
-
 	// コリジョンメッシュ
 	std::unique_ptr<mylib::CollisionMesh> m_collisionMesh;
+
+	// ステージ
+	std::vector<std::unique_ptr<Wall>> m_walls;
 
 public:
 	PlayScene();

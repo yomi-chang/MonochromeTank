@@ -6,6 +6,7 @@
 #include "Game/Collider/SphereCollider.h"
 #include "Interface/IComposite.h"
 #include "Game/UserInterface/HpGauge.h"
+#include "Game/UserInterface/EnemyHpGauge.h"
 
 class Tank : public IComposite
 {
@@ -20,6 +21,8 @@ public:
 public:
 	// 戦車座標の取得
 	DirectX::SimpleMath::Vector3 GetTankPosition() { return m_currentPosition; }
+	// 戦車座標を入れる
+	void SetTankPosition(DirectX::SimpleMath::Vector3 position) { m_currentPosition = position; }
 
 	// 戦車の向きの取得
 	float GetTankAngleRL() { return m_currentAngleRL; }
@@ -143,6 +146,9 @@ private:
 
 	// 体力ゲージ
 	std::unique_ptr<HpGauge> m_hpGauge;
+
+	// 敵体力ゲージ
+	std::unique_ptr<EnemyHpGauge> m_enemyHpGauge;
 
 	// 現在の弾の種類
 	BulletType m_bulletType;

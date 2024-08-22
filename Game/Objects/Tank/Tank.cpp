@@ -23,6 +23,7 @@ Tank::Tank(
 	m_collider{},
 	m_hit{},
 	m_hpGauge{},
+	m_enemyHpGauge{},
 	m_hpValue{},
 	m_otherTanks{},
 	m_bulletType{ BulletType::CANNONBALL }
@@ -68,17 +69,22 @@ void Tank::Initialize(Type type)
 	m_collider = std::make_unique<SphereCollider>();
 	m_collider->CreateBoundingSphere(m_currentPosition, 1.0f);
 
-	// 体力ゲージを生成
-	m_hpGauge = std::make_unique<HpGauge>();
-	if (m_tankType == Type::ENEMY)
+	switch (m_tankType)
 	{
-		m_hpGauge->Initialize(Vector2{1100,650 });
+		case IComponent::PLAYER:
+			// 体力ゲージを生成
+			m_hpGauge = std::make_unique<HpGauge>();
+			m_hpGauge->Initialize(Vector2{ 200,50 });
+			m_hpValue = m_hpGauge->GetDefaultValue();
+			break;
+		case IComponent::ENEMY:
+			// 敵体力ゲージを生成
+			m_enemyHpGauge = std::make_unique<EnemyHpGauge>();
+			m_enemyHpGauge->SetMaxHp(10.0f);
+			break;
+		default:
+			break;
 	}
-	else if (m_tankType == Type::PLAYER)
-	{
-		m_hpGauge->Initialize(Vector2{ 200,50 });
-	}
-	m_hpValue = m_hpGauge->GetDefaultValue();
 }
 
 
@@ -135,6 +141,7 @@ void Tank::Update(
 	}
 
 	// 体力の更新
+	if(m_tankType == IComponent::PLAYER)
 	m_hpGauge->SetValue(m_hpValue);
 }
 
@@ -166,7 +173,17 @@ void Tank::Render()
 	}
 
 	//体力ゲージの描画
-	m_hpGauge->Render();
+	switch (m_tankType)
+	{
+		case IComponent::PLAYER:
+			m_hpGauge->Render();
+			break;
+		case IComponent::ENEMY:
+			m_enemyHpGauge->Render(m_currentPosition);
+			break;
+		default:
+			break;
+	}
 }
 
 // 終了処理
