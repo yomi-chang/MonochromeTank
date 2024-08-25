@@ -11,7 +11,8 @@ EnemyHpGauge::EnemyHpGauge()
 	m_alpha{},
 	m_elapsedTime{},
 	m_maxHp{},
-	m_damage{},
+	m_hp{},
+	m_isDead{},
 	m_graphics{Graphics::GetInstance()}
 {
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
@@ -42,6 +43,12 @@ EnemyHpGauge::~EnemyHpGauge()
 
 void EnemyHpGauge::Render(DirectX::SimpleMath::Vector3 position)
 {
+	// 死亡判定
+	if (m_hp <= 0.0f)
+	{
+		m_isDead = true;
+	}
+
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto view = m_graphics->GetViewMatrix();
 	auto proj = m_graphics->GetProjectionMatrix();
@@ -49,36 +56,26 @@ void EnemyHpGauge::Render(DirectX::SimpleMath::Vector3 position)
 	//	プリミティブバッチの作成
 	m_Batch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(context);
 
-	//	頂点情報 体力ゲージ後ろ
-	/*VertexPositionColor backVertex[4] =
-	{
-		VertexPositionColor(SimpleMath::Vector3(-1.0f,1.5f, 0.0f),Colors::Black),
-		VertexPositionColor(SimpleMath::Vector3(1.0f,1.5f, 0.0f),Colors::Black),
-		VertexPositionColor(SimpleMath::Vector3(-1.0f, 1.2f, 0.0f),Colors::Black),
-		VertexPositionColor(SimpleMath::Vector3(1.0f, 1.2f, 0.0f),Colors::Black)
-	};*/
+	// 最大体力の半分（座標指定で使用）
+	float halfMaxHp = m_maxHp / 2.0f;
+
 	VertexPositionColor backVertex[4] =
 	{
-		VertexPositionColor(SimpleMath::Vector3(-m_maxHp/10.0f,1.5f, 0.0f),Colors::Black),
-		VertexPositionColor(SimpleMath::Vector3(m_maxHp / 10.0f,1.5f, 0.0f),Colors::Black),
-		VertexPositionColor(SimpleMath::Vector3(-m_maxHp / 10.0f, 1.2f, 0.0f),Colors::Black),
-		VertexPositionColor(SimpleMath::Vector3(m_maxHp / 10.0f, 1.2f, 0.0f),Colors::Black)
+		VertexPositionColor(SimpleMath::Vector3(-halfMaxHp / 5.0f,1.5f, 0.0f),Colors::Black),
+		VertexPositionColor(SimpleMath::Vector3(halfMaxHp / 5.0f,1.5f, 0.0f),Colors::Black),
+		VertexPositionColor(SimpleMath::Vector3(-halfMaxHp / 5.0f, 1.2f, 0.0f),Colors::Black),
+		VertexPositionColor(SimpleMath::Vector3(halfMaxHp / 5.0f, 1.2f, 0.0f),Colors::Black)
 	};
 
-	//	頂点情報 体力ゲージ前
-	/*VertexPositionColor frontVertex[4] =
-	{
-		VertexPositionColor(SimpleMath::Vector3(-1.0f,1.5f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(1.0f,1.5f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(-1.0f, 1.2f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(1.0f, 1.2f, 0.0f),Colors::LightGreen)
-	};*/
+	// ダメージの計算
+	float damage = m_maxHp - m_hp;
+
 	VertexPositionColor frontVertex[4] =
 	{
-		VertexPositionColor(SimpleMath::Vector3(-m_maxHp / 10.0f,1.5f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(m_maxHp / 10.0f - m_damage / 10.0f,1.5f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(-m_maxHp / 10.0f, 1.2f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(m_maxHp / 10.0f - m_damage / 10.0f, 1.2f, 0.0f),Colors::LightGreen)
+		VertexPositionColor(SimpleMath::Vector3(-halfMaxHp / 5.0f,1.5f, 0.0f),Colors::LightGreen),
+		VertexPositionColor(SimpleMath::Vector3(halfMaxHp / 5.0f - damage / 5.0f,1.5f, 0.0f),Colors::LightGreen),
+		VertexPositionColor(SimpleMath::Vector3(-halfMaxHp / 5.0f, 1.2f, 0.0f),Colors::LightGreen),
+		VertexPositionColor(SimpleMath::Vector3(halfMaxHp / 5.0f - damage / 5.0f, 1.2f, 0.0f),Colors::LightGreen)
 	};
 
 	// 座標の指定

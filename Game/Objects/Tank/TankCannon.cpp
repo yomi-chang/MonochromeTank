@@ -126,6 +126,7 @@ void TankCannon::Update(
 						{
 							// u–C’ev‚ð”­ŽË‚·‚é
 							Shoot(m_tank->GetCannonBall().get());
+							m_tank->GetCannonBall()->ResetElapsedTime();
 						}
 						break;
 				}

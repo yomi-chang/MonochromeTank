@@ -110,10 +110,11 @@ void PlayScene::Initialize()
 	m_collisionMesh = std::make_unique<mylib::CollisionMesh>();
 	m_collisionMesh->Initialize(device, context, L"Terrain");
 
-	// ステージ
-	m_walls.emplace_back(std::make_unique<Wall>(Vector3(20.0f, 5.0f, 0.5f), Vector3(0.0f,2.5f,-10.0f)));
-	m_walls.emplace_back(std::make_unique<Wall>(Vector3(20.0f, 5.0f, 0.5f), Vector3(0.0f, 2.5f, 10.0f)));
-
+	// ステージの生成
+	m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 5.0f, 0.5f), Vector3(0.0f,2.5f,-20.0f)));
+	m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 5.0f, 0.5f), Vector3(0.0f, 2.5f, 20.0f)));
+	m_walls.emplace_back(std::make_unique<Wall>(Vector3(0.5f, 5.0f, 40.0f), Vector3(20.0f, 2.5f, 0.0f)));
+	m_walls.emplace_back(std::make_unique<Wall>(Vector3(0.5f, 5.0f, 40.0f), Vector3(-20.0f, 2.5f, 0.0f)));
 	for (auto& wall : m_walls)
 	{
 		wall->SetPlayer(m_playerTank.get());
@@ -140,11 +141,11 @@ void PlayScene::Update(float elapsedTime)
 		enemyTank->Update(elapsedTime, position, angle);
 
 		// プレイヤーか敵の体力のどちらかの体力が０ならリザルトへ
-		/*if (enemyTank->GetHpValue() <= 0 ||
-			m_playerTank->GetHpValue() <= 0)
+		if (enemyTank->GetDead() ||
+			m_playerTank->GetDead())
 		{
 			m_isChangeScene = true;
-		}*/
+		}
 	}
 
 	// フォローカメラを更新する
@@ -248,6 +249,8 @@ void PlayScene::Render()
 		default:
 			break;
 	}
+	debugString->AddString(" ");
+	debugString->AddString("time : %f", m_playerTank->GetTime());
 #endif
 }
 

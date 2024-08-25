@@ -28,9 +28,14 @@ public:
 	IBullet::BulletState GetBulletState() const { return m_bulletState; }
 	// 砲弾の状態を設定する
 	void SetBulletState(IBullet::BulletState bulletState) { m_bulletState = bulletState; }
-
 	// コライダーの取得
 	DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
+	
+	// 経過時間のリセット
+	void ResetElapsedTime() { m_elapsedTime = 0.0f; }
+
+	// 経過時間の取得
+	float GetTime() { return m_elapsedTime; }
 
 public:
 	// コンストラクタ

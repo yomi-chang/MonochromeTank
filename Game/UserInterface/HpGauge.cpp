@@ -5,7 +5,8 @@
 HpGauge::HpGauge()
 	:
 	m_graphics{ Graphics::GetInstance() },
-	m_position{}
+	m_position{},
+	m_isDead{}
 {
 }
 
@@ -40,6 +41,12 @@ void HpGauge::Initialize(DirectX::SimpleMath::Vector2 position)
 // •`‰æˆ—
 void HpGauge::Render()
 {
+	// €–S”»’è
+	if (m_value <= 0.0f)
+	{
+		m_isDead = true;
+	}
+
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 

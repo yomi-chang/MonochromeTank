@@ -24,7 +24,7 @@ Tank::Tank(
 	m_hit{},
 	m_hpGauge{},
 	m_enemyHpGauge{},
-	m_hpValue{},
+	m_damage{},
 	m_otherTanks{},
 	m_bulletType{ BulletType::CANNONBALL }
 {
@@ -69,13 +69,13 @@ void Tank::Initialize(Type type)
 	m_collider = std::make_unique<SphereCollider>();
 	m_collider->CreateBoundingSphere(m_currentPosition, 1.0f);
 
+	// 体力ゲージ関係の設定
 	switch (m_tankType)
 	{
 		case IComponent::PLAYER:
 			// 体力ゲージを生成
 			m_hpGauge = std::make_unique<HpGauge>();
 			m_hpGauge->Initialize(Vector2{ 200,50 });
-			m_hpValue = m_hpGauge->GetDefaultValue();
 			break;
 		case IComponent::ENEMY:
 			// 敵体力ゲージを生成
@@ -108,6 +108,8 @@ void Tank::Update(
 		case Type::ENEMY:
 			EnemyAction();
 			break;
+		default:
+			break;
 	}
 
 	// コライダーの更新
@@ -128,9 +130,11 @@ void Tank::Update(
 		m_cannonBall->Update(elapsedTime);
 	}
 
+	// ダメージの初期化
+	m_damage = 0.0f;
+
 	// 弾丸と戦車の当たり判定
 	DetectCollisionTankAndBullets();
-
 	// 戦車と戦車の当たり判定
 	DetectCollisionTankAndOtherTanks();
 
@@ -140,9 +144,18 @@ void Tank::Update(
 		tankPart->Update(elapsedTime, m_currentPosition, m_currentAngleRL);
 	}
 
-	// 体力の更新
-	if(m_tankType == IComponent::PLAYER)
-	m_hpGauge->SetValue(m_hpValue);
+	// ダメージ処理
+	switch (m_tankType)
+	{
+		case Type::PLAYER:
+			m_hpGauge->Damage(m_damage);
+			break;
+		case Type::ENEMY:
+			m_enemyHpGauge->Damage(m_damage);
+			break;
+		default:
+			break;
+	}
 }
 
 /// 描画処理
@@ -311,7 +324,7 @@ void Tank::DetectCollisionTankAndBullets()
 				m_collider->CheckTriggerCollider(bullet->GetBoundingSphere()))
 			{
 				bullet->SetBulletState(IBullet::USED);
-				m_hpValue -= 10;
+				m_damage += 0.5f;
 			}
 		}
 		// 砲弾
@@ -319,7 +332,7 @@ void Tank::DetectCollisionTankAndBullets()
 			m_collider->CheckTriggerCollider(otherTank->GetCannonBall()->GetBoundingSphere()))
 		{
 			otherTank->GetCannonBall()->SetBulletState(IBullet::USED);
-			m_hpValue -= 100;
+			m_damage += 3.0f;
 		}
 	}
 }
@@ -334,7 +347,23 @@ void Tank::DetectCollisionTankAndOtherTanks()
 		{
 			m_hit = true;
 			m_currentPosition += m_collider->CheckCollisionCollider(otherTank->GetBoundingSphere());
-			m_hpValue--;
+			//m_damage += 0.0001f;
 		}
+	}
+}
+
+// 死亡しているかどうか
+bool Tank::GetDead()
+{
+	switch (m_tankType)
+	{
+		case IComponent::PLAYER:
+			return m_hpGauge->GetDead();
+			break;
+		case IComponent::ENEMY:
+			return m_enemyHpGauge->GetDead();
+			break;
+		default:
+			break;
 	}
 }

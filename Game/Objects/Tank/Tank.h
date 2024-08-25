@@ -48,8 +48,9 @@ public:
 	// 親オブジェクトを取得する
 	IComponent* GetParent() const { return m_parent; }
 
-	// 体力を渡す
-	int GetHpValue() { return m_hpValue; }
+	// 死亡しているかどうか
+	bool GetDead();
+	
 
 	// 残弾数を渡す
 	int GetBulletValue() 
@@ -76,6 +77,9 @@ public:
 	
 	// 現在選択されている弾の種類を渡す
 	BulletType GetBulletType() { return m_bulletType; }
+
+	// 砲弾の経過時間を渡す
+	float GetTime() { return m_cannonBall->GetTime(); }
 
 public:
 	// コンストラクタ
@@ -141,8 +145,8 @@ private:
 	// ヒットしているかどうか
 	bool m_hit;
 
-	// 体力
-	int m_hpValue;
+	// ダメージ
+	float m_damage;
 
 	// 体力ゲージ
 	std::unique_ptr<HpGauge> m_hpGauge;

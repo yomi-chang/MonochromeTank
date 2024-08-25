@@ -29,6 +29,9 @@ public:
 	// コライダーの取得
 	DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
 
+	float GetTime() { return 0.0f; }
+	void ResetElapsedTime() { ; }
+
 public:
 	// コンストラクタ
 	Bullet(IBullet::BulletState bulletState);

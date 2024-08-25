@@ -17,15 +17,17 @@ public:
 		ゲージは外部から直接値を設定するか、
 		ダメージ値などを受け取って、内部でゲージの表示量を計算する仕様にする
 	*/
-	void SetValue(int value)
-	{
-		m_value = value;
-	}
+	void SetValue(int value) { m_value = value; }
 
-	const int GetDefaultValue() const
-	{
-		return DEFAULT_VALUE;
-	}
+	const int GetDefaultValue() const { return DEFAULT_VALUE; }
+
+	// ダメージ
+	void Damage(float damage) { m_value -= damage; }
+
+	// 死亡しているかどうか
+	bool GetDead() { return m_isDead; }
+
+
 
 private:
 	// グラフィックス
@@ -44,11 +46,14 @@ private:
 	const int MAX_WIDTH = 300;
 	
 	// ゲージの初期値
-	const int DEFAULT_VALUE = 1000;
+	const int DEFAULT_VALUE = 10;
 
 	// ゲージの現在値
 	int m_value;
 
 	// 座標
 	DirectX::SimpleMath::Vector2 m_position;
+
+	// 死亡しているかどうか
+	bool m_isDead;
 };

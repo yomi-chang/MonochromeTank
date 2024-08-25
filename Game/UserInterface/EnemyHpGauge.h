@@ -6,11 +6,22 @@
 class EnemyHpGauge
 {
 public:
-    // 最大体力の設定
-    void SetMaxHp(float maxHp) { m_maxHp = maxHp; }
+    // 体力の設定
+    void SetMaxHp(float maxHp) 
+    {
+        m_maxHp = maxHp;
+        m_hp = maxHp;
+    }
+    // 最大体力の取得
+    float GetMaxHp() { return m_maxHp; }
     // 現在の体力の設定
-    void SetHp(float damage) { m_damage += damage; }
-
+    void SetHp(float hp) { m_hp = hp; }
+    // 現在の体力の取得
+    float GetHp() { return m_hp; }
+    // ダメージ
+    void Damage(float damage) { m_hp -= damage; }
+    // 死亡しているかどうか
+    bool GetDead() { return m_isDead; }
 
 public:
     EnemyHpGauge();
@@ -46,6 +57,9 @@ private:
     // 最大体力
     float m_maxHp;
 
-    // 受けているダメージ
-    float m_damage;
+    // 現在の体力
+    float m_hp;
+
+    // 死亡判定
+    float m_isDead;
 };
