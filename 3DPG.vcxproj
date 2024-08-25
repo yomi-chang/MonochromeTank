@@ -193,6 +193,7 @@
     <ClInclude Include="Game\Objects\Other\SkySphere.h" />
     <ClInclude Include="Game\Objects\Stage\Wall.h" />
     <ClInclude Include="Game\Objects\Tank\Tank.h" />
+    <ClInclude Include="Game\Objects\Tank\TankArmor.h" />
     <ClInclude Include="Game\Objects\Tank\TankBody.h" />
     <ClInclude Include="Game\Objects\Tank\TankCannon.h" />
     <ClInclude Include="Game\Objects\Tank\TankTurret.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="Game\Objects\Other\SkySphere.cpp" />
     <ClCompile Include="Game\Objects\Stage\Wall.cpp" />
     <ClCompile Include="Game\Objects\Tank\Tank.cpp" />
+    <ClCompile Include="Game\Objects\Tank\TankArmor.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankBody.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankCannon.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankTurret.cpp" />

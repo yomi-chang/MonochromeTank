@@ -126,6 +126,7 @@ void TankCannon::Update(
 						{
 							// 「砲弾」を発射する
 							Shoot(m_tank->GetCannonBall().get());
+							// 経過時間のリセット
 							m_tank->GetCannonBall()->ResetElapsedTime();
 						}
 						break;

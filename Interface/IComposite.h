@@ -7,6 +7,6 @@ class IComposite : public IComponent
 public:
 	// •”•i‚Ì’Ç‰Á‚·‚é
 	virtual void Attach(std::unique_ptr<IComponent> turretParts) = 0;
-	// –C“ƒ‚Ìíœ‚·‚é
+	// •”•i‚Ìíœ‚·‚é
 	virtual void Detach(std::unique_ptr<IComponent> turretPart) = 0;
 };

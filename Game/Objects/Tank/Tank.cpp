@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Game/Objects/Tank/Tank.h"
 #include "Game/Objects/Tank/TankBody.h"
+#include "Game/Objects/Tank/TankArmor.h"
 #include "Framework/InputManager.h"
 
 /// コンストラクタ
@@ -50,6 +51,8 @@ void Tank::Initialize(Type type)
 
 	// 車体の生成
 	Attach(std::make_unique<TankBody>(this, Vector3(0.0f, 0.5f, 0.0f), 0.0f));
+	// 装甲の生成
+	Attach(std::make_unique<TankArmor>(this, Vector3(0.0f, 0.5f, 0.0f), 0.0f));
 
 	// 連射弾配列を作成する
 	m_bullets.resize(100);
@@ -279,12 +282,14 @@ void Tank::PlayerAction()
 			case BulletType::BULLET:
 				for (auto& bullet : m_bullets)
 				{
+					if(bullet->GetBulletState() == IBullet::USED)
 					// ToDo　時間のかかるリロードに変更
 					bullet->SetBulletState(IBullet::UNUSED);
 				}
 				break;
 			case BulletType::CANNONBALL:
 				// ToDo　時間のかかるリロードに変更
+				if (m_cannonBall->GetBulletState() == IBullet::USED)
 				m_cannonBall->SetBulletState(IBullet::UNUSED);
 				break;
 		}

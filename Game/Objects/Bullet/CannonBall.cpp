@@ -7,7 +7,7 @@
 const DirectX::SimpleMath::Vector3 CannonBall::SPEED(0.0f, 0.0f, -0.3f);
 
 // 砲弾にかかる重力を定義する
-const DirectX::SimpleMath::Vector3 CannonBall::GRAVITY(0.0f, -0.1f, 0.0f);
+const DirectX::SimpleMath::Vector3 CannonBall::GRAVITY(0.0f, -0.2f, 0.0f);
 
 // コンストラクタ
 CannonBall::CannonBall(IBullet::BulletState bulletState)
@@ -48,13 +48,6 @@ void CannonBall::Update(float time)
 {
 	UNREFERENCED_PARAMETER(time);
 	using namespace DirectX::SimpleMath;
-
-	// 経過時間をリセットする
-	if (m_bulletState == IBullet::UNUSED)
-	{
-		m_elapsedTime = 0.0f;
-		m_velocity = Vector3::Zero;
-	}
 
 	// 経過時間を記録
 	m_elapsedTime += time;
