@@ -4,6 +4,8 @@
 #include "Game/Objects/Tank/TankArmor.h"
 #include "Framework/InputManager.h"
 
+#include "Libraries/MyLib/DebugLog.h"
+
 /// コンストラクタ
 Tank::Tank(
 	IComponent* parent,
@@ -159,6 +161,8 @@ void Tank::Update(
 		default:
 			break;
 	}
+
+	//mylib::DebugLog("ダメージ",m_damage);
 }
 
 /// 描画処理

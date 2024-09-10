@@ -104,6 +104,7 @@
     <ClInclude Include="Game\UserInterface\EnemyHpGauge.h" />
     <ClInclude Include="Game\Objects\Stage\Wall.h" />
     <ClInclude Include="Game\Objects\Tank\TankArmor.h" />
+    <ClInclude Include="Libraries\MyLib\DebugLog.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="Game\UserInterface\EnemyHpGauge.cpp" />
     <ClCompile Include="Game\Objects\Stage\Wall.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankArmor.cpp" />
+    <ClCompile Include="Libraries\MyLib\DebugLog.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
