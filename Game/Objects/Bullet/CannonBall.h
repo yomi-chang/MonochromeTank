@@ -37,6 +37,9 @@ public:
 	// 経過時間の取得
 	float GetTime() { return m_elapsedTime; }
 
+	// コライダー座標の設定
+	void SetColliderPosition(DirectX::SimpleMath::Vector3 position) { m_collider->Update(position); }
+
 public:
 	// コンストラクタ
 	CannonBall(IBullet::BulletState bulletState);

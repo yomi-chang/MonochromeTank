@@ -32,6 +32,9 @@ public:
 	float GetTime() { return 0.0f; }
 	void ResetElapsedTime() { ; }
 
+	// コライダー座標の設定
+	void SetColliderPosition(DirectX::SimpleMath::Vector3 position) { m_collider->Update(position); }
+
 public:
 	// コンストラクタ
 	Bullet(IBullet::BulletState bulletState);

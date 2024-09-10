@@ -33,6 +33,9 @@ public:
 	virtual float GetTime() = 0;
 	// 経過時間のリセット
 	virtual void ResetElapsedTime() = 0;
+
+	// コライダーの座標の設定
+	virtual void SetColliderPosition(DirectX::SimpleMath::Vector3 position) = 0;
 	
 
 	// モデルを取得する

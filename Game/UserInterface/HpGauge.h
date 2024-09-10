@@ -46,7 +46,7 @@ private:
 	const int MAX_WIDTH = 300;
 	
 	// ゲージの初期値
-	const int DEFAULT_VALUE = 10;
+	const int DEFAULT_VALUE = 20;
 
 	// ゲージの現在値
 	int m_value;

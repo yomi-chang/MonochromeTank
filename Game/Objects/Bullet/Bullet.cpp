@@ -6,7 +6,7 @@
 
 
 // 砲弾速度を定義する
-const DirectX::SimpleMath::Vector3 Bullet::SPEED(0.0f, 0.0f, -0.5f);
+const DirectX::SimpleMath::Vector3 Bullet::SPEED(0.0f, 0.0f, -0.3f);
 
 // コンストラクタ
 Bullet::Bullet(IBullet::BulletState bulletState)

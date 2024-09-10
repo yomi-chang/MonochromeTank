@@ -23,7 +23,6 @@ TankCannon::TankCannon(
 	m_worldMatrix{},
 	m_cannonAngle{},
 	m_currentAngleUD{},
-	//m_shotBulletNumber{},
 	m_shotTimer(SHOT_INTERVAL),
 	m_tankType{}
 {
@@ -89,7 +88,6 @@ void TankCannon::Update(
 
 		// 砲身の向きを制限する
 		m_cannonAngle = mylib::Clamp(m_cannonAngle, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
-
 		m_currentAngleUD = m_cannonAngle;
 
 		// 弾の発射
@@ -103,16 +101,16 @@ void TankCannon::Update(
 			}
 			else
 			{
-				// 「砲弾」を発射する
+				// 「連射弾」を発射する
 				switch (m_tank->GetBulletType())
 				{
 					case Tank::BulletType::BULLET:
 						for (auto& bullet : m_tank->GetBullets())
 						{
-							// 使用されていない砲弾は発射できる
+							// 使用されていない弾は発射できる
 							if (bullet->GetBulletState() == IBullet::UNUSED)
 							{
-								//「砲弾」を発射する
+								//「連射弾」を発射する
 								Shoot(bullet.get());
 								// 発射砲弾数をインクリメントする
 								//m_shotBulletNumber++;
@@ -121,7 +119,7 @@ void TankCannon::Update(
 						}
 						break;
 					case Tank::BulletType::CANNONBALL:
-						// 「連射弾」を発射する
+						// 「砲弾」を発射する
 						if (m_tank->GetCannonBall()->GetBulletState() == IBullet::UNUSED)
 						{
 							// 「砲弾」を発射する
@@ -134,6 +132,34 @@ void TankCannon::Update(
 				// 初期値を設定する
 				m_shotTimer = SHOT_INTERVAL;
 			}
+		}
+	}
+
+	// 敵の弾発射処理
+	if (m_tankType == Type::ENEMY)
+	{
+		// 発射タイマーが0.0より大きい場合は発射タイマーを減らす
+		if (m_shotTimer > 0.0f)
+		{
+			// タイマーを減らす
+			m_shotTimer -= elapsedTime;
+		}
+		else
+		{
+			for (auto& bullet : m_tank->GetBullets())
+			{
+				// 使用されていない弾は発射できる
+				if (bullet->GetBulletState() == IBullet::UNUSED)
+				{
+					//「連射弾」を発射する
+					//Shoot(bullet.get());
+					// 発射砲弾数をインクリメントする
+					//m_shotBulletNumber++;
+					break;
+				}
+			}
+			// 初期値を設定する
+			m_shotTimer = ENEMY_SHOT_INTERVAL;
 		}
 	}
 }
@@ -150,11 +176,11 @@ void TankCannon::Render()
 	m_worldMatrix *= Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle);
 	m_worldMatrix *= Matrix::CreateTranslation(m_currentPosition + m_initialPosition);
 	
-	// プリミティブ描画を開始する
-	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-
 	// 「砲身」を描画する
 	m_graphics->DrawModel(m_model, m_worldMatrix);
+
+	// プリミティブ描画を開始する
+	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 
 	// 照準の描画
 	Matrix matrix = Matrix::CreateRotationX(m_cannonAngle) * Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle);
@@ -174,6 +200,8 @@ void TankCannon::Shoot(IBullet* bullet)
 	// 「砲弾」位置を設定する
 	//bullet->SetPosition(m_currentPosition);
 	bullet->SetPosition(this->GetMuzzlePosition());
+	// コライダー座標の更新
+	bullet->SetColliderPosition(this->GetMuzzlePosition());
 	// 「砲弾」初期左右角を設定する
 	bullet->SetAngleRL(m_currentAngleRL);
 	// 「砲弾」初期上下角を設定する

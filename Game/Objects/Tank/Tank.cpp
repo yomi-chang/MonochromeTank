@@ -177,16 +177,16 @@ void Tank::Render()
 	for (auto& bullet : m_bullets)
 	{
 		// ”ò’e’†‚Ì–C’e‚ğ•`‰æ‚·‚é
-		if (bullet->GetBulletState() == IBullet::FLYING)
-		{
+		//if (bullet->GetBulletState() == IBullet::FLYING)
+		//{
 			// –C’e‚ğ•`‰æ‚·‚é
 			bullet->Render();
-		}
+		//}
 	}
-	if (m_cannonBall->GetBulletState() == IBullet::FLYING)
-	{
+	//if (m_cannonBall->GetBulletState() == IBullet::FLYING)
+	//{
 		m_cannonBall->Render();
-	}
+	//}
 
 	//‘Ì—ÍƒQ[ƒW‚Ì•`‰æ
 	switch (m_tankType)

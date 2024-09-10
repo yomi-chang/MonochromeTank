@@ -32,7 +32,7 @@ Graphics::Graphics()
 	m_view{},							// ビュー行列
 	m_projection{},						// 射影行列
 	m_device{},							// デバイス
-	m_context{},							// デバイスコンテキスト
+	m_context{},						// デバイスコンテキスト
 	m_debugString{}
 {
 	// デバイスリソースのインスタンスを生成する

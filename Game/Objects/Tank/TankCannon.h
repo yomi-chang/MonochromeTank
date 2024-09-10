@@ -9,6 +9,7 @@ class TankCannon : public ILeaf
 {
 	// インターバル
 	const float SHOT_INTERVAL = 0.2f;
+	const float ENEMY_SHOT_INTERVAL = 1.0f;
 
 	// 砲身の角度の制限
 	const float CANON_ANGLEUD_MIN = DirectX::XMConvertToRadians(-10.0f);
@@ -90,6 +91,8 @@ private:
 
 	// 砲弾発射タイマー
 	float m_shotTimer;
+
+
 
 	// 砲塔
 	Tank* m_tank;
