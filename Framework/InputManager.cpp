@@ -5,6 +5,8 @@
 #include "pch.h"
 #include "InputManager.h"
 
+#include "Libraries/MyLib/DebugLog.h"
+
 std::unique_ptr<InputManager> InputManager::m_inputManager = nullptr;
 
 // グラフィックスのインスタンスを取得する
@@ -42,6 +44,9 @@ void InputManager::Initialize(const HWND& window)
 	// キーボードを使用できる状態にする
 	m_keyboard = std::make_unique<DirectX::Keyboard>();
 	m_keyboardTracker = std::make_unique<DirectX::Keyboard::KeyboardStateTracker>();
+
+	// マウスカーソルの固定
+	this->LockMouseCursor();
 }
 
 //---------------------------------------------------------

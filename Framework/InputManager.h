@@ -20,11 +20,6 @@ private:
 	std::unique_ptr<DirectX::Keyboard::KeyboardStateTracker> m_keyboardTracker;
 	DirectX::Keyboard::State m_keyboardState;
 
-	// マウスの移動量
-	DirectX::SimpleMath::Vector3 mouseMoveValue;
-	// 1フレーム前のマウス座標
-	DirectX::SimpleMath::Vector3 previousMousePosition;
-
 public:
 	//InputManager(const HWND& window);
 	~InputManager() = default;
@@ -57,9 +52,11 @@ public:
 		return m_keyboardTracker;
 	}
 
-	// ToDo マウスの移動量を取得する関数
-	DirectX::SimpleMath::Vector3 GetMouseMoveValue();
-	// ToDo マウスの移動量を計算する関数
+	// マウスカーソルを固定する
+	void LockMouseCursor() { m_mouse->SetMode(DirectX::Mouse::MODE_RELATIVE); }
+
+	// マウスカーソルの固定を解除する
+	void UnLockMouseCursor() { m_mouse->SetMode(DirectX::Mouse::MODE_ABSOLUTE); }
 
 private:
 	// コンストラクタ

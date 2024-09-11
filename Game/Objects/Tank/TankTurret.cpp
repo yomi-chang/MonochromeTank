@@ -72,10 +72,8 @@ void TankTurret::Update(
 		//	m_turretAngle -= DirectX::XMConvertToRadians(0.5f);
 		//}
 
-		// Å‰‚Ì‰ñ“]Šp‚ğİ’è
-		m_turretAngle = DirectX::XMConvertToRadians(1280.0f / 10.0f);
-		// ƒ}ƒEƒXÀ•W‚É‰‚¶‚Ä‰ñ“]
-		m_turretAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.x) / 5.0f);
+		// ƒ}ƒEƒX‚ÌˆÚ“®—Ê‚ğæ“¾‚µ‚Ä‰ñ“]‚³‚¹‚é
+		m_turretAngle -= static_cast<float>(mouseState.x) * 0.001f;
 
 		// ‰ñ“]‚Ì§ŒÀ
 		m_turretAngle = mylib::Clamp(m_turretAngle, DirectX::XMConvertToRadians(-90.0f), DirectX::XMConvertToRadians(90.0f));

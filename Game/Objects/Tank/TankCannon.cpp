@@ -4,6 +4,7 @@
 #include "Framework/InputManager.h"
 
 #include "Libraries/MyLib/Math.h"
+#include "Libraries/MyLib/DebugLog.h"
 
 // コンストラクタ
 TankCannon::TankCannon(
@@ -81,10 +82,8 @@ void TankCannon::Update(
 			m_cannonAngle -= DirectX::XMConvertToRadians(0.5f);
 		}*/
 
-		// 最初の回転角を設定
-		m_cannonAngle = DirectX::XMConvertToRadians(40.0f);
-		// マウス座標に応じて回転
-		m_cannonAngle -= DirectX::XMConvertToRadians(static_cast<float>(mouseState.y) / 10.0f);
+		// マウスの移動量を取得して回転させる
+		m_cannonAngle -= static_cast<float>(mouseState.y) * 0.001f;
 
 		// 砲身の向きを制限する
 		m_cannonAngle = mylib::Clamp(m_cannonAngle, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
