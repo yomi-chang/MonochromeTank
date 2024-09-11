@@ -5,6 +5,11 @@
 
 class TankTurret : public IComposite
 {
+private:
+	// 砲塔の回転範囲
+	const float TURRET_ANGLEUD_MIN = DirectX::XMConvertToRadians(-90.0f);
+	const float TURRET_ANGLEUD_MAX = DirectX::XMConvertToRadians(90.0f);
+
 public:
 	// 親オブジェクトを取得する
 	IComponent* GetParent() const { return m_parent; }

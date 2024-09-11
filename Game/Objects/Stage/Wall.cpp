@@ -3,6 +3,8 @@
 #include "Framework/Graphics.h"
 #include "Libraries/MyLib/FollowCamera.h"
 
+#include "Libraries/MyLib/DebugLog.h"
+
 using namespace DirectX;
 // コンストラクタ
 Wall::Wall(
@@ -25,8 +27,8 @@ Wall::Wall(
 	m_world = Matrix::CreateTranslation(movePosition);
 
 	// ボックスコライダーの作成
-	m_boxCollider = std::make_unique<BoxCollider>();
-	m_boxCollider->CreateBoundingBox(movePosition, scale);
+	m_collider = std::make_unique<BoxCollider>();
+	m_collider->CreateBoundingBox(movePosition, scale);
 }
 
 // デストラクタ
@@ -34,28 +36,24 @@ Wall::~Wall()
 {
 }
 
-
 // 描画処理
 void Wall::Render()
 {
 	// プレイヤーとの当たり判定
-	m_player->SetTankPosition(m_player->GetTankPosition() + m_boxCollider->CheckCollisionCollider(m_player->GetBoundingSphere()));
+	m_player->SetTankPosition(m_player->GetTankPosition() + m_collider->CheckCollisionCollider(m_player->GetBoundingSphere()));
 
 	// カメラとの当たり判定
-	/*if (m_boxCollider->CheckTriggerCollider(m_camera->GetCollider()))
+	if (m_collider->CheckTriggerCollider(m_camera->GetBoundingSphere()))
 	{
+		mylib::DebugLog("当たった");
 		m_color.w = 0.9f;
 	}
-	else
-	{
-		m_color = DirectX::Colors::SaddleBrown;
-	}*/
 
 	auto view = m_graphics->GetViewMatrix();
 	auto proj = m_graphics->GetProjectionMatrix();
 
 	// コライダーの描画
-	m_boxCollider->Render();
+	m_collider->Render();
 
 	// 壁の描画
 	m_model->Draw(m_world, view, proj, m_color);

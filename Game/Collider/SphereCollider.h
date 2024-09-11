@@ -29,9 +29,6 @@ private:
 	// グラフィックス
 	Graphics* m_graphics;
 
-	// プリミティブバッチ
-	//std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
-
 	// バウンディングスフィア
 	DirectX::BoundingSphere m_boundingSphere;
 };

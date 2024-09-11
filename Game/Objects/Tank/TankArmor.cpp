@@ -77,13 +77,6 @@ void TankArmor::Render()
 		Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle) *
 		Matrix::CreateTranslation(m_currentPosition + m_initialPosition);
 
-	//// プリミティブ描画を開始する
-	//m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-	//// 「砲塔下部」を描画する
-	//m_graphics->DrawModel(m_model, m_worldMatrix);
-	//// プリミティブ描画を終了する
-	//m_graphics->DrawPrimitiveEnd();
-
 	auto view = m_graphics->GetViewMatrix();
 	auto proj = m_graphics->GetProjectionMatrix();
 

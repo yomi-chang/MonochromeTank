@@ -22,7 +22,7 @@ public:
 	const int GetDefaultValue() const { return DEFAULT_VALUE; }
 
 	// ƒ_ƒ[ƒW
-	void Damage(float damage) { m_value -= damage; }
+	void Damage(float damage) { m_value -= static_cast<int>(damage); }
 
 	// €–S‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool GetDead() { return m_isDead; }

@@ -29,9 +29,6 @@ public:
 	// コライダーの取得
 	DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
 
-	float GetTime() { return 0.0f; }
-	void ResetElapsedTime() { ; }
-
 	// コライダー座標の設定
 	void SetColliderPosition(DirectX::SimpleMath::Vector3 position) { m_collider->Update(position); }
 
@@ -47,7 +44,7 @@ public:
 	// Bulletオブジェクトを描画する 
 	inline void Render();
 	// 砲弾を描画する
-	inline void DrawBullet(const DirectX::SimpleMath::Matrix& matrix);
+	inline void DrawBullet();
 	// Bulletオブジェクトの後処理をおこなう 
 	void Finalize();
 
@@ -72,4 +69,8 @@ private:
 	std::unique_ptr<SphereCollider> m_collider;
 	// ジオメトリックプリミティブ
 	std::unique_ptr<DirectX::GeometricPrimitive> m_bullet;
+
+	// 破壊カウント
+	const float SURVIVAL_TIME = 1.5f;
+	float m_count;
 };

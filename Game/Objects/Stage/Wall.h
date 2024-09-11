@@ -12,7 +12,7 @@ class Wall
 public:
 	void SetPlayer(Tank* player) { m_player = player; }
 
-	//void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
+	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 
 public:
 	// コンストラクタ
@@ -38,13 +38,13 @@ private:
 	DirectX::SimpleMath::Matrix m_world;
 
 	// ボックスコライダー
-	std::unique_ptr<BoxCollider> m_boxCollider;
+	std::unique_ptr<BoxCollider> m_collider;
 
 	// プレイヤー
 	Tank* m_player;
 
 	// カメラ
-	//mylib::FollowCamera* m_camera;
+	mylib::FollowCamera* m_camera;
 
 	// グラフィックス
 	Graphics* m_graphics;

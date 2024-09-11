@@ -62,21 +62,11 @@ void TankTurret::Update(
 
 	if (m_tankType == Type::PLAYER)
 	{
-		//// 砲塔の回転
-		//if (keyboardState.Left)
-		//{
-		//	m_turretAngle += DirectX::XMConvertToRadians(0.5f);
-		//}
-		//else if (keyboardState.Right)
-		//{
-		//	m_turretAngle -= DirectX::XMConvertToRadians(0.5f);
-		//}
-
 		// マウスの移動量を取得して回転させる
 		m_turretAngle -= static_cast<float>(mouseState.x) * 0.001f;
 
 		// 回転の制限
-		m_turretAngle = mylib::Clamp(m_turretAngle, DirectX::XMConvertToRadians(-90.0f), DirectX::XMConvertToRadians(90.0f));
+		m_turretAngle = mylib::Clamp(m_turretAngle, TURRET_ANGLEUD_MIN, TURRET_ANGLEUD_MAX);
 	}
 
 	// 現在の位置の更新
@@ -121,6 +111,7 @@ void TankTurret::Finalize()
 	// 削除する部品のリセット
 	m_tankParts.clear();
 }
+
 
 /// <summary>
 /// パーツの追加

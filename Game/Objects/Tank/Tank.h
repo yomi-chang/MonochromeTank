@@ -78,9 +78,6 @@ public:
 	// 現在選択されている弾の種類を渡す
 	BulletType GetBulletType() { return m_bulletType; }
 
-	// 砲弾の経過時間を渡す
-	float GetTime() { return m_cannonBall->GetTime(); }
-
 public:
 	// コンストラクタ
 	Tank(
@@ -136,8 +133,8 @@ private:
 
 private:
 	// 砲弾配列
-	std::vector<std::unique_ptr<IBullet>> m_bullets;
-	std::unique_ptr<IBullet> m_cannonBall;
+	std::vector<std::unique_ptr<IBullet>> m_bullets;	// 連射弾
+	std::unique_ptr<IBullet> m_cannonBall;				// 砲弾
 	// 他戦車の情報
 	std::vector<Tank*> m_otherTanks;
 	// 当たり判定
@@ -157,9 +154,15 @@ private:
 	// 現在の弾の種類
 	BulletType m_bulletType;
 
+	// リロードカウント
+	const float BULLET_RELOAD_TIME = 1.0f;
+	const float CANNONBALL_RELOAD_TIME = 1.0f;
+	float m_reloadCount;
+	bool m_isReload;
+
 private:
 	// プレイヤーの行動
-	void PlayerAction();
+	void PlayerAction(float elapsedTime);
 	// 敵行動
 	void EnemyAction();
 	// 戦車と砲弾の衝突判定を行う

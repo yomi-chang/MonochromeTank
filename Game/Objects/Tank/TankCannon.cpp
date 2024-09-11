@@ -4,7 +4,6 @@
 #include "Framework/InputManager.h"
 
 #include "Libraries/MyLib/Math.h"
-#include "Libraries/MyLib/DebugLog.h"
 
 // コンストラクタ
 TankCannon::TankCannon(
@@ -23,7 +22,6 @@ TankCannon::TankCannon(
 	m_model{},
 	m_worldMatrix{},
 	m_cannonAngle{},
-	m_currentAngleUD{},
 	m_shotTimer(SHOT_INTERVAL),
 	m_tankType{}
 {
@@ -57,37 +55,22 @@ void TankCannon::Update(
 )
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
-	using namespace DirectX;
 
 	// 現在の位置を更新する
 	m_currentPosition = currentPosition;
 	// 現在の回転角を更新する
 	m_currentAngleRL = currentAngleRL;
 
-	// キーボードステートの取得
-	const auto& keyboardState = InputManager::GetInstance()->GetKeyboardState();
 	// マウスステートの取得
 	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
-	const auto& mouseTracker = InputManager::GetInstance()->GetMouseTracker();
 
 	if (m_tankType == Type::PLAYER)
 	{
-		// 砲身の上下
-		/*if (keyboardState.Up)
-		{
-			m_cannonAngle += DirectX::XMConvertToRadians(0.5f);
-		}
-		else if (keyboardState.Down)
-		{
-			m_cannonAngle -= DirectX::XMConvertToRadians(0.5f);
-		}*/
-
 		// マウスの移動量を取得して回転させる
 		m_cannonAngle -= static_cast<float>(mouseState.y) * 0.001f;
 
 		// 砲身の向きを制限する
 		m_cannonAngle = mylib::Clamp(m_cannonAngle, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
-		m_currentAngleUD = m_cannonAngle;
 
 		// 弾の発射
 		if (mouseState.leftButton)
@@ -124,7 +107,7 @@ void TankCannon::Update(
 							// 「砲弾」を発射する
 							Shoot(m_tank->GetCannonBall().get());
 							// 経過時間のリセット
-							m_tank->GetCannonBall()->ResetElapsedTime();
+							//m_tank->GetCannonBall()->ResetElapsedTime();
 						}
 						break;
 				}
@@ -178,6 +161,7 @@ void TankCannon::Render()
 	// 「砲身」を描画する
 	m_graphics->DrawModel(m_model, m_worldMatrix);
 
+
 	// プリミティブ描画を開始する
 	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 
@@ -197,14 +181,13 @@ void TankCannon::Finalize()
 void TankCannon::Shoot(IBullet* bullet)
 {
 	// 「砲弾」位置を設定する
-	//bullet->SetPosition(m_currentPosition);
 	bullet->SetPosition(this->GetMuzzlePosition());
 	// コライダー座標の更新
 	bullet->SetColliderPosition(this->GetMuzzlePosition());
 	// 「砲弾」初期左右角を設定する
 	bullet->SetAngleRL(m_currentAngleRL);
 	// 「砲弾」初期上下角を設定する
-	bullet->SetAngleUD(m_currentAngleUD);
+	bullet->SetAngleUD(m_cannonAngle);
 	// 「砲弾」を発射する
 	bullet->SetBulletState(IBullet::FLYING);
 }

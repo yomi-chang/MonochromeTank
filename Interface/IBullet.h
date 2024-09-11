@@ -29,11 +29,6 @@ public:
 	// コライダーの取得
 	virtual DirectX::BoundingSphere* GetBoundingSphere() = 0;
 
-	// 経過時間の取得
-	virtual float GetTime() = 0;
-	// 経過時間のリセット
-	virtual void ResetElapsedTime() = 0;
-
 	// コライダーの座標の設定
 	virtual void SetColliderPosition(DirectX::SimpleMath::Vector3 position) = 0;
 	

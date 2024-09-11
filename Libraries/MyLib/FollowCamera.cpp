@@ -17,7 +17,8 @@ mylib::FollowCamera::FollowCamera()
 	m_target{},
 	m_followUpTargetPosition{},
 	m_followUpTargetQuaternion{},
-	m_tank{}
+	m_tank{},
+	m_collider{}
 {
 }
 
@@ -27,7 +28,12 @@ mylib::FollowCamera::FollowCamera()
 
 void mylib::FollowCamera::Initialize(Tank* tank)
 {
+	// 自機情報の受け取り
 	m_tank = tank;
+
+	// コライダーの生成
+	m_collider = std::make_unique<SphereCollider>();
+	m_collider->CreateBoundingSphere(m_eye, 0.5f);
 
 	// ビュー行列の作成のために一度Updateを呼ぶ
 	this->Update(0.0f);
@@ -54,4 +60,7 @@ void mylib::FollowCamera::Update(float elapsedTime)
 	// （ビュー行列で使用する）「m_eye」と「m_target」を計算する
 	m_eye += ((target + eye) - m_eye) * SPRING_RATE_EYE;
 	m_target += (target - m_target) * SPRING_RATE_TARGET;
+
+	// コライダーの座標更新
+	m_collider->Update(m_eye);
 }

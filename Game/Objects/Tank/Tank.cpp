@@ -29,7 +29,9 @@ Tank::Tank(
 	m_enemyHpGauge{},
 	m_damage{},
 	m_otherTanks{},
-	m_bulletType{ BulletType::CANNONBALL }
+	m_bulletType{},
+	m_reloadCount{},
+	m_isReload{}
 {
 }
 
@@ -57,9 +59,9 @@ void Tank::Initialize(Type type)
 	Attach(std::make_unique<TankArmor>(this, Vector3(0.0f, 0.5f, 0.0f), 0.0f));
 
 	// 連射弾配列を作成する
-	m_bullets.resize(100);
+	m_bullets.resize(10);
 	// 配列に連射弾を格納する
-	for (int index = 0; index < 100; index++)
+	for (int index = 0; index < 10; index++)
 	{
 		// 連射弾を生成する
 		m_bullets[index] = std::make_unique<Bullet>(IBullet::UNUSED);
@@ -90,6 +92,9 @@ void Tank::Initialize(Type type)
 		default:
 			break;
 	}
+
+	// 最初に発射できる弾を砲弾に設定する
+	m_bulletType = BulletType::CANNONBALL;
 }
 
 
@@ -107,7 +112,7 @@ void Tank::Update(
 	{
 		// プレイヤーの行動
 		case Type::PLAYER:
-			PlayerAction();
+			PlayerAction(elapsedTime);
 			break;
 		// 敵の行動
 		case Type::ENEMY:
@@ -120,20 +125,12 @@ void Tank::Update(
 	// コライダーの更新
 	m_collider->Update(m_currentPosition);
 
-	// 飛弾中の砲弾を更新する
+	// 弾の更新
 	for (auto& bullet : m_bullets)
 	{
-		// 砲弾が飛弾している場合 砲弾を更新する
-		if (bullet->GetBulletState() == IBullet::FLYING)
-		{
-			// 砲弾を更新する
-			bullet->Update(elapsedTime);
-		}
+		bullet->Update(elapsedTime);
 	}
-	if (m_cannonBall->GetBulletState() == IBullet::FLYING)
-	{
-		m_cannonBall->Update(elapsedTime);
-	}
+	m_cannonBall->Update(elapsedTime);
 
 	// ダメージの初期化
 	m_damage = 0.0f;
@@ -161,8 +158,6 @@ void Tank::Update(
 		default:
 			break;
 	}
-
-	//mylib::DebugLog("ダメージ",m_damage);
 }
 
 /// 描画処理
@@ -177,20 +172,12 @@ void Tank::Render()
 	// コライダーの表示
 	m_collider->Render();
 
-	// 飛弾中の砲弾を描画する
+	// 弾の描画
 	for (auto& bullet : m_bullets)
 	{
-		// 飛弾中の砲弾を描画する
-		//if (bullet->GetBulletState() == IBullet::FLYING)
-		//{
-			// 砲弾を描画する
-			bullet->Render();
-		//}
+		bullet->Render();
 	}
-	//if (m_cannonBall->GetBulletState() == IBullet::FLYING)
-	//{
-		m_cannonBall->Render();
-	//}
+	m_cannonBall->Render();
 
 	//体力ゲージの描画
 	switch (m_tankType)
@@ -230,7 +217,7 @@ void Tank::Detach(std::unique_ptr<IComponent> part)
 
 
 // プレイヤーの操作
-void Tank::PlayerAction()
+void Tank::PlayerAction(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 	// キーボードステートの取得
@@ -267,35 +254,65 @@ void Tank::PlayerAction()
 	// 弾の種類を変更
 	if (keyboardTracker->IsKeyPressed(DirectX::Keyboard::Space))
 	{
-		switch (m_bulletType)
-		{
-			case BulletType::BULLET:
-				m_bulletType = BulletType::CANNONBALL;
-				break;
-			case BulletType::CANNONBALL:
-				m_bulletType = BulletType::BULLET;
-				break;
-		}
+		m_bulletType = (m_bulletType == BulletType::CANNONBALL) ?  BulletType::BULLET : BulletType::CANNONBALL;
 	}
 
-	// リロード
-	if (mouseTracker->rightButton == mouseTracker->PRESSED)
+	// リロード開始
+	if (mouseTracker->rightButton == mouseTracker->PRESSED &&
+		!m_isReload)
 	{
 		switch (m_bulletType)
 		{
 			case BulletType::BULLET:
 				for (auto& bullet : m_bullets)
 				{
-					if(bullet->GetBulletState() == IBullet::USED)
-					// ToDo　時間のかかるリロードに変更
-					bullet->SetBulletState(IBullet::UNUSED);
+					if (bullet->GetBulletState() == IBullet::USED)
+					{
+						m_reloadCount = BULLET_RELOAD_TIME;
+						m_isReload = true;
+						mylib::DebugLog("連射弾のリロード開始");
+						return;
+					}
 				}
 				break;
 			case BulletType::CANNONBALL:
-				// ToDo　時間のかかるリロードに変更
 				if (m_cannonBall->GetBulletState() == IBullet::USED)
-				m_cannonBall->SetBulletState(IBullet::UNUSED);
+				{
+					m_reloadCount = CANNONBALL_RELOAD_TIME;
+					m_isReload = true;
+					mylib::DebugLog("砲弾のリロード開始");
+				}
 				break;
+			default:
+				break;
+		}
+	}
+
+	// リロード処理
+	if (m_isReload)
+	{
+		// カウントダウン
+		m_reloadCount -= elapsedTime;
+
+		// リロード完了
+		if (m_reloadCount <= 0.0f)
+		{
+			switch (m_bulletType)
+			{
+				case Tank::BULLET:
+					for (auto& bullet : m_bullets)
+					{
+						bullet->SetBulletState(IBullet::UNUSED);
+					}
+					break;
+				case Tank::CANNONBALL:
+					m_cannonBall->SetBulletState(IBullet::UNUSED);
+					break;
+				default:
+					break;
+			}
+
+			m_isReload = false;
 		}
 	}
 }

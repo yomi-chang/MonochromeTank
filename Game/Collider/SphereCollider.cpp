@@ -10,8 +10,6 @@ SphereCollider::SphereCollider()
 	m_boundingSphere{},
 	m_graphics{ Graphics::GetInstance() }
 {
-	//auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	//m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>>(context);
 }
 
 /// <summary>

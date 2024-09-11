@@ -30,12 +30,6 @@ public:
 	void SetBulletState(IBullet::BulletState bulletState) { m_bulletState = bulletState; }
 	// コライダーの取得
 	DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
-	
-	// 経過時間のリセット
-	void ResetElapsedTime() { m_elapsedTime = 0.0f; }
-
-	// 経過時間の取得
-	float GetTime() { return m_elapsedTime; }
 
 	// コライダー座標の設定
 	void SetColliderPosition(DirectX::SimpleMath::Vector3 position) { m_collider->Update(position); }
@@ -52,7 +46,7 @@ public:
 	// Bulletオブジェクトを描画する 
 	inline void Render();
 	// 砲弾を描画する
-	inline void DrawBullet(const DirectX::SimpleMath::Matrix& matrix);
+	inline void DrawBullet();
 	// Bulletオブジェクトの後処理をおこなう 
 	void Finalize();
 

@@ -117,7 +117,9 @@ void PlayScene::Initialize()
 	m_walls.emplace_back(std::make_unique<Wall>(Vector3(0.5f, 5.0f, 40.0f), Vector3(-20.0f, 2.5f, 0.0f)));
 	for (auto& wall : m_walls)
 	{
+		// カメラとプレイヤーの情報を渡す
 		wall->SetPlayer(m_playerTank.get());
+		wall->SetCamera(m_tpsCamera.get());
 	}
 }
 
@@ -127,9 +129,6 @@ void PlayScene::Initialize()
 void PlayScene::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
-
-	// ビュー行列を取得する
-	//const Matrix& view = m_debugCamera->GetViewMatrix();
 
 	// 戦車の更新処理
 	Vector3 position(0.0f, 0.0f, 0.0f);
@@ -249,8 +248,6 @@ void PlayScene::Render()
 		default:
 			break;
 	}
-	debugString->AddString(" ");
-	debugString->AddString("time : %f", m_playerTank->GetTime());
 #endif
 }
 

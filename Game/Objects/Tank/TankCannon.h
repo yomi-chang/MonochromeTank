@@ -7,13 +7,14 @@
 
 class TankCannon : public ILeaf
 {
+private:
 	// インターバル
 	const float SHOT_INTERVAL = 0.2f;
 	const float ENEMY_SHOT_INTERVAL = 1.0f;
 
 	// 砲身の角度の制限
 	const float CANON_ANGLEUD_MIN = DirectX::XMConvertToRadians(-10.0f);
-	const float CANON_ANGLEUD_MAX = DirectX::XMConvertToRadians(10.0f);
+	const float CANON_ANGLEUD_MAX = DirectX::XMConvertToRadians(15.0f);
 
 public:
 	// 親オブジェクトを取得する
@@ -80,9 +81,6 @@ private:
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 
-	// 上下の回転角
-	float m_currentAngleUD;
-
 	// 砲身の角度
 	float m_cannonAngle;
 
@@ -91,8 +89,6 @@ private:
 
 	// 砲弾発射タイマー
 	float m_shotTimer;
-
-
 
 	// 砲塔
 	Tank* m_tank;

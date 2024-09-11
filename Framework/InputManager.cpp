@@ -5,8 +5,6 @@
 #include "pch.h"
 #include "InputManager.h"
 
-#include "Libraries/MyLib/DebugLog.h"
-
 std::unique_ptr<InputManager> InputManager::m_inputManager = nullptr;
 
 // グラフィックスのインスタンスを取得する

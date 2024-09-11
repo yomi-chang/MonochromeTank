@@ -49,6 +49,17 @@ void CannonBall::Update(float time)
 	UNREFERENCED_PARAMETER(time);
 	using namespace DirectX::SimpleMath;
 
+	// 使用可能もしくは使用済みの場合
+	if (m_bulletState == USED)
+	{
+		return;
+	}
+	else if (m_bulletState == UNUSED)
+	{
+		m_elapsedTime = 0.0f;
+		return;
+	}
+
 	// 経過時間を記録
 	m_elapsedTime += time;
 
@@ -80,7 +91,6 @@ void CannonBall::Render()
 	// モデル描画のためのワールド行列を計算する
 	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	m_worldMatrix = Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) *
-		//Matrix::CreateTranslation(Vector3(0.0f, 0.75f, -0.8f)) *
 		Matrix::CreateFromQuaternion(rotationQuat) *
 		Matrix::CreateTranslation(m_position);
 
@@ -89,11 +99,11 @@ void CannonBall::Render()
 		return;
 
 	// 砲弾を描画する
-	DrawBullet(m_worldMatrix);
+	DrawBullet();
 }
 
 // 砲弾を描画する
-void CannonBall::DrawBullet(const DirectX::SimpleMath::Matrix& matrix)
+void CannonBall::DrawBullet()
 {
 	using namespace DirectX::SimpleMath;
 

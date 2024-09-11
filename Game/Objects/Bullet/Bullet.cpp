@@ -2,7 +2,7 @@
 #include "Game/Objects/Bullet/Bullet.h"
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
-#include "Utilities/DebugDraw.h"
+#include "Libraries/Microsoft/DebugDraw.h"
 
 
 // 砲弾速度を定義する
@@ -20,7 +20,8 @@ Bullet::Bullet(IBullet::BulletState bulletState)
 	m_worldMatrix{},
 	m_bulletState(bulletState),
 	m_collider{},
-	m_bullet{}
+	m_bullet{},
+	m_count{}
 {
 }
 
@@ -40,6 +41,8 @@ void Bullet::Initialize()
 	// スフィアコライダーの作成
 	m_collider = std::make_unique<SphereCollider>();
 	m_collider->CreateBoundingSphere(m_position, 0.025f);
+
+	m_count = SURVIVAL_TIME;
 }
 
 // 更新する 
@@ -48,20 +51,31 @@ void Bullet::Update(float time)
 	UNREFERENCED_PARAMETER(time);
 	using namespace DirectX::SimpleMath;
 
+	// 使用可能もしくは使用済みの場合
+	if (m_bulletState == USED)
+	{
+		return;
+	}
+	else if (m_bulletState == UNUSED)
+	{
+		m_count = SURVIVAL_TIME;
+		return;
+	}
+
 	// クォータニオンを生成する
- 	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
-	
+	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	// 速度を計算する
 	m_velocity = Vector3::Transform(SPEED, rotationQuat);
-	
 	// 位置を計算する
 	m_position += m_velocity;
-
 	// コライダーの座標更新
 	m_collider->Update(m_position);
+	// 生存カウントを減らす
+	m_count -= time;
 
-	// 床より下なら使用済みに
-	if (m_position.y <= 0.0f)
+	// 床より下または生存カウントが0になったら使用済みにする
+	if (m_position.y <= 0.0f ||
+		m_count <= 0.0f)
 	{
 		SetBulletState(IBullet::USED);
 	}
@@ -75,7 +89,6 @@ void Bullet::Render()
 	// モデル描画のためのワールド行列を計算する
 	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	m_worldMatrix = Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) *
-		//Matrix::CreateTranslation(Vector3(0.0f, 0.75f, -0.8f)) *
 		Matrix::CreateFromQuaternion(rotationQuat) *
 		Matrix::CreateTranslation(m_position);
 
@@ -83,13 +96,12 @@ void Bullet::Render()
 	if (m_bulletState == UNUSED || m_bulletState == USED)
 		return;
 
-
 	// 砲弾を描画する
-	DrawBullet(m_worldMatrix);
+	DrawBullet();
 }
 
 // 砲弾を描画する
-void Bullet::DrawBullet(const DirectX::SimpleMath::Matrix& matrix)
+void Bullet::DrawBullet()
 {
 	using namespace DirectX::SimpleMath;
 	 
