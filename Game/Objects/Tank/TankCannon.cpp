@@ -106,8 +106,6 @@ void TankCannon::Update(
 						{
 							// 「砲弾」を発射する
 							Shoot(m_tank->GetCannonBall().get());
-							// 経過時間のリセット
-							//m_tank->GetCannonBall()->ResetElapsedTime();
 						}
 						break;
 				}
@@ -146,7 +144,7 @@ void TankCannon::Update(
 	}
 }
 
-// 自身を描画しない描画処理(Tank用)
+// 描画処理
 void TankCannon::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -192,7 +190,7 @@ void TankCannon::Shoot(IBullet* bullet)
 	bullet->SetBulletState(IBullet::FLYING);
 }
 
-// 砲塔の先端座標を求める
+// 砲身の先端座標を求める
 DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 {
 	using namespace DirectX::SimpleMath;

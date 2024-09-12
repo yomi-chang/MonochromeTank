@@ -17,7 +17,7 @@ public:
 	void Update(DirectX::SimpleMath::Vector3 centerPosition);
 
 	// •`‰æˆ—
-	void Render();
+	void Render(DirectX::XMVECTOR color = DirectX::Colors::Aqua);
 
 	// “–‚½‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©‚Ì”»’è
 	DirectX::SimpleMath::Vector3 CheckCollisionCollider(DirectX::BoundingSphere* boundingSphere);

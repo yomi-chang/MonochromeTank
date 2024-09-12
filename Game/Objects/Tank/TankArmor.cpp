@@ -21,7 +21,8 @@ TankArmor::TankArmor(
 	m_model{},
 	m_worldMatrix{},
 	m_tankType{},
-	m_color{ static_cast<DirectX::SimpleMath::Vector4>(DirectX::Colors::Silver) }
+	m_color{ static_cast<DirectX::SimpleMath::Vector4>(DirectX::Colors::Silver) },
+	m_collider{}
 {
 }
 
@@ -40,10 +41,13 @@ void TankArmor::Initialize(Type type)
 	m_tankType = type;
 
 	// 装甲モデル（仮）
-	m_model = DirectX::GeometricPrimitive::CreateSphere(m_graphics->GetDeviceResources()->GetD3DDeviceContext(), 3.0f);
+	m_model = DirectX::GeometricPrimitive::CreateSphere(m_graphics->GetDeviceResources()->GetD3DDeviceContext(), 4.0f);
 
 	// カラー
 	m_color.w = 0.3f;
+
+	m_collider = std::make_unique<SphereCollider>();
+	m_collider->CreateBoundingSphere(m_initialPosition, 1.0f);
 }
 
 // 更新処理
@@ -65,6 +69,9 @@ void TankArmor::Update(
 	{
 		tankPart->Update(elapsedTime, currentPosition, currentAngleRL);
 	}
+
+	// コライダー座標の更新
+	m_collider->Update(m_currentPosition + m_initialPosition);
 }
 
 // 描画処理
@@ -87,6 +94,9 @@ void TankArmor::Render()
 	{
 		tankPart->Render();
 	}
+
+	// コライダーの描画
+	m_collider->Render(DirectX::Colors::Silver);
 }
 
 // 終了処理

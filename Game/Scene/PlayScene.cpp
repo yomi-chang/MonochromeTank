@@ -8,7 +8,6 @@
 #include "Libraries/MyLib/DebugCamera.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/Microsoft/DebugDraw.h"
-#include "Libraries/MyLib/GridFloor.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include "Framework/Resources.h"
 #include "Libraries/MyLib/FollowCamera.h"
@@ -30,7 +29,6 @@ PlayScene::PlayScene()
 	m_debugCamera{},
 	m_tpsCamera{},
 	m_cameraType{CameraType::TPS},
-	m_gridFloor{},
 	m_projection{},
 	m_isChangeScene{},
 	m_skySphere{},
@@ -56,10 +54,7 @@ void PlayScene::Initialize()
 {
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = m_graphics->GetCommonStates();
-	
-	// グリッド床を作成する
-	m_gridFloor = std::make_unique<mylib::GridFloor>(device, context, states);
+	//auto states = m_graphics->GetCommonStates();
 
 	// デバッグカメラを作成する
 	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
@@ -121,6 +116,8 @@ void PlayScene::Initialize()
 		wall->SetPlayer(m_playerTank.get());
 		wall->SetCamera(m_tpsCamera.get());
 	}
+
+	//m_playerTank->SetCamera(m_tpsCamera.get());
 }
 
 //---------------------------------------------------------
@@ -139,7 +136,7 @@ void PlayScene::Update(float elapsedTime)
 	{
 		enemyTank->Update(elapsedTime, position, angle);
 
-		// プレイヤーか敵の体力のどちらかの体力が０ならリザルトへ
+		// プレイヤーか敵の体力のどちらかの体力が0ならリザルトへ
 		if (enemyTank->GetDead() ||
 			m_playerTank->GetDead())
 		{
@@ -158,8 +155,7 @@ void PlayScene::Update(float elapsedTime)
 	if (keyboardTracker->IsKeyPressed(DirectX::Keyboard::C))
 	{
 		this->ChangeCameraType();
-
-		//m_tpsCamera->StartShakeCamera(/*1.0f, 100.0f, 1.0f*/);
+		//m_tpsCamera->StartShakeCamera();
 	}
 }
 
@@ -189,9 +185,6 @@ void PlayScene::Render()
 			break;
 	}
 	Graphics::GetInstance()->SetViewMatrix(view);
-
-	// 格子床を描画する
-	//m_gridFloor->Render(context, Graphics::GetInstance()->GetViewMatrix(), m_projection);
 
 	// 天球の描画
 	m_skySphere->Render();

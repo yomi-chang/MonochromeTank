@@ -39,14 +39,14 @@ void BoxCollider::Update(DirectX::SimpleMath::Vector3 centerPosition)
 /// <summary>
 /// 描画処理
 /// </summary>
-void BoxCollider::Render()
+void BoxCollider::Render(DirectX::XMVECTOR color)
 {
 	// 当たり判定の表示(デバッグビルドでのみ表示)
 #ifdef _DEBUG
 	// プリミティブ描画を開始する
 	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 	// 境界ボックスを描画する
-	DX::Draw(m_graphics->GetPrimitiveBatch(), m_boundingBox, DirectX::Colors::Aqua);
+	DX::Draw(m_graphics->GetPrimitiveBatch(), m_boundingBox, color);
 	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();
 #endif

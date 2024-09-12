@@ -2,6 +2,7 @@
 #pragma once
 #include "Interface/IComponent.h"
 #include "Interface/ILeaf.h"
+#include "Game/Collider/SphereCollider.h"
 
 class TankArmor : public ILeaf
 {
@@ -72,4 +73,7 @@ private:
 
 	// カラー
 	DirectX::SimpleMath::Vector4 m_color;
+
+	// コライダー
+	std::unique_ptr<SphereCollider> m_collider;
 };

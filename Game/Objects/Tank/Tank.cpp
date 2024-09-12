@@ -5,6 +5,7 @@
 #include "Framework/InputManager.h"
 
 #include "Libraries/MyLib/DebugLog.h"
+#include "Libraries/MyLib/FollowCamera.h"
 
 /// コンストラクタ
 Tank::Tank(

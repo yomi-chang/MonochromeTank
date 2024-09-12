@@ -13,11 +13,9 @@
 namespace mylib
 {
 	class DebugCamera;
-	class GridFloor;
 	class FollowCamera;
 	class CollisionMesh;
 }
-
 
 class PlayScene final :
 	public IScene
@@ -41,9 +39,6 @@ private:
 
 	// カメラタイプ
 	CameraType m_cameraType;
-
-	// 格子床
-	std::unique_ptr<mylib::GridFloor> m_gridFloor;
 
 	// 射影行列
 	DirectX::SimpleMath::Matrix m_projection;

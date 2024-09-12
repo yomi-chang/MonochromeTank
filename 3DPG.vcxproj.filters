@@ -60,9 +60,6 @@
     <ClInclude Include="Libraries\MyLib\DebugString.h">
       <Filter>Libraries\MyLib</Filter>
     </ClInclude>
-    <ClInclude Include="Libraries\MyLib\GridFloor.h">
-      <Filter>Libraries\MyLib</Filter>
-    </ClInclude>
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h">
       <Filter>Libraries\MyLib</Filter>
     </ClInclude>
@@ -119,9 +116,6 @@
       <Filter>Libraries\MyLib</Filter>
     </ClCompile>
     <ClCompile Include="Libraries\MyLib\DebugString.cpp">
-      <Filter>Libraries\MyLib</Filter>
-    </ClCompile>
-    <ClCompile Include="Libraries\MyLib\GridFloor.cpp">
       <Filter>Libraries\MyLib</Filter>
     </ClCompile>
     <ClCompile Include="Game\Scene\TitleScene.cpp">

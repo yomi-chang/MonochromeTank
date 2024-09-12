@@ -64,7 +64,6 @@ public:
 		}
 		return value;
 	}
-
 	int GetCannonBallValue() 
 	{
 		// 弾の使用未使用によって変更
@@ -77,6 +76,11 @@ public:
 	
 	// 現在選択されている弾の種類を渡す
 	BulletType GetBulletType() { return m_bulletType; }
+
+	// カメラのセット
+	//void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
+	// カメラの振動
+	//void ShakeCamera() { m_camera->StartShakeCamera(); };
 
 public:
 	// コンストラクタ
@@ -159,6 +163,9 @@ private:
 	const float CANNONBALL_RELOAD_TIME = 1.0f;
 	float m_reloadCount;
 	bool m_isReload;
+
+
+	//mylib::FollowCamera* m_camera;
 
 private:
 	// プレイヤーの行動

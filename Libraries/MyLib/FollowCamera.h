@@ -3,8 +3,10 @@
 	@brief	後追いカメラクラス、ばね付き
 */
 #pragma once
-#include "Game/Objects/Tank/Tank.h"
+//#include "Game/Objects/Tank/Tank.h"
 #include "Game/Collider/SphereCollider.h"
+
+class Tank;
 
 namespace mylib
 {
@@ -65,6 +67,9 @@ namespace mylib
 		// getter
 		const DirectX::SimpleMath::Vector3& GetEyePosition() const { return m_eye; }
 		const DirectX::SimpleMath::Vector3& GetTargetPosition() const { return m_target; }
+
+		// setter
+		void SetEyePosition(const DirectX::SimpleMath::Vector3& position) { m_eye = position; }
 
 		// コライダーの取得
 		DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }

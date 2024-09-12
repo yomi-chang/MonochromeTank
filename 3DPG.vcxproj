@@ -215,7 +215,6 @@
     <ClInclude Include="Libraries\MyLib\DebugLog.h" />
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
     <ClInclude Include="Libraries\MyLib\FollowCamera.h" />
-    <ClInclude Include="Libraries\MyLib\GridFloor.h" />
     <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
     <ClInclude Include="pch.h" />
@@ -251,7 +250,6 @@
     <ClCompile Include="Libraries\MyLib\DebugLog.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
     <ClCompile Include="Libraries\MyLib\FollowCamera.cpp" />
-    <ClCompile Include="Libraries\MyLib\GridFloor.cpp" />
     <ClCompile Include="Libraries\MyLib\Math.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">
