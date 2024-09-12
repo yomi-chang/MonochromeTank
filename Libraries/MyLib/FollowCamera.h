@@ -36,6 +36,24 @@ namespace mylib
 		// コライダー
 		std::unique_ptr<SphereCollider> m_collider;
 
+		// カメラが揺れているか
+		bool m_isShakeCamera;
+
+		// カメラの揺れる速度(1秒間に何回振動するか)
+		static constexpr float DEFAULT_SHAKE_SPEED = 25.0f;
+		float m_shakeSpeed;
+
+		// カメラの揺れ幅
+		static constexpr float DEFAULT_SHAKE_WIDTH = 0.05f;
+		float m_shakeWidth;
+
+		// カメラの振動時間
+		static constexpr float DEFAULT_SHAKE_TIME = 0.5f;
+		float m_shakeTime;
+
+		// カメラが揺れている時間
+		float m_shakeCount;
+
 	public:
 		FollowCamera();
 		~FollowCamera() = default;
@@ -50,5 +68,16 @@ namespace mylib
 
 		// コライダーの取得
 		DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
+
+		// カメラの振動開始
+		void StartShakeCamera(
+			float speed = DEFAULT_SHAKE_SPEED,
+			float width = DEFAULT_SHAKE_WIDTH,
+			float time = DEFAULT_SHAKE_TIME
+		);
+
+	private:
+		// カメラの振動
+		void ShakeCamera(float elapsedTime);
 	};
 }

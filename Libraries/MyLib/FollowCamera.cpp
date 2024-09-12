@@ -18,7 +18,12 @@ mylib::FollowCamera::FollowCamera()
 	m_followUpTargetPosition{},
 	m_followUpTargetQuaternion{},
 	m_tank{},
-	m_collider{}
+	m_collider{},
+	m_isShakeCamera{},
+	m_shakeCount{},
+	m_shakeSpeed{},
+	m_shakeWidth{},
+	m_shakeTime{}
 {
 }
 
@@ -63,4 +68,40 @@ void mylib::FollowCamera::Update(float elapsedTime)
 
 	// コライダーの座標更新
 	m_collider->Update(m_eye);
+
+	// カメラの振動処理
+	this->ShakeCamera(elapsedTime);
 }
+
+// カメラを揺らす処理
+void mylib::FollowCamera::ShakeCamera(float elapsedTime)
+{
+	// カメラ振動がセットされていないなら早期リターン
+	if (!m_isShakeCamera) { return; }
+
+	m_shakeCount += elapsedTime;
+	m_eye.y += std::sinf(m_shakeCount * m_shakeSpeed) * m_shakeWidth;
+
+	if (m_shakeCount >= m_shakeTime)
+	{
+		m_isShakeCamera = false;
+		m_shakeCount = 0.0f;
+	}
+}
+
+// 振動開始
+void mylib::FollowCamera::StartShakeCamera(
+	float speed,
+	float width,
+	float time
+)
+{
+	// 振動開始
+	m_isShakeCamera = true;
+
+	// 振動情報の設定
+	m_shakeSpeed = speed;
+	m_shakeWidth = width;
+	m_shakeTime = time;
+}
+

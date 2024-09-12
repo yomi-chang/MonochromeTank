@@ -76,4 +76,6 @@ public:
 	SceneID GetNextSceneID() const;
 
 private:
+	// デバッグカメラと切り替える
+	void ChangeCameraType();
 };

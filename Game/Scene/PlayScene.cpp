@@ -157,8 +157,9 @@ void PlayScene::Update(float elapsedTime)
 	const auto& keyboardTracker = InputManager::GetInstance()->GetKeyboardTracker();
 	if (keyboardTracker->IsKeyPressed(DirectX::Keyboard::C))
 	{
-		// 選択されていない方のカメラタイプにする
-		m_cameraType = (m_cameraType == CameraType::TPS) ? CameraType::DEBUG : CameraType::TPS;
+		this->ChangeCameraType();
+
+		//m_tpsCamera->StartShakeCamera(/*1.0f, 100.0f, 1.0f*/);
 	}
 }
 
@@ -215,11 +216,6 @@ void PlayScene::Render()
 	}
 	m_playerTank->Render();
 
-	// キーボードステートの取得
-	DirectX::Mouse::State mouseState = DirectX::Mouse::Get().GetState();
-	float mousePosX = 1.0f / static_cast<float>(mouseState.x);
-	float mousePosY = 1.0f / static_cast<float>(mouseState.y);
-
 	// デバッグ情報を「DebugString」で表示する
 #ifdef _DEBUG
 	auto debugString = m_graphics->GetDebugString();
@@ -229,12 +225,6 @@ void PlayScene::Render()
 	debugString->AddString("x : %f", m_playerTank->GetTankPosition().x);
 	debugString->AddString("z : %f", m_playerTank->GetTankPosition().z);
 	debugString->AddString("angle : %f", DirectX::XMConvertToDegrees(m_playerTank->GetTankAngleRL()));
-	debugString->AddString(" ");
-	debugString->AddString("MousePosition");
-	debugString->AddString("x : %d", mouseState.x);
-	debugString->AddString("y : %d", mouseState.y);
-	debugString->AddString("x : %f", mousePosX);
-	debugString->AddString("y : %f", mousePosY);
 	debugString->AddString(" ");
 	switch (m_playerTank->GetBulletType())
 	{
@@ -272,4 +262,28 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
+}
+
+
+//---------------------------------------------------------
+// カメラタイプを変更する
+//---------------------------------------------------------
+void PlayScene::ChangeCameraType()
+{
+	// 選択されていない方のカメラタイプにする
+	switch (m_cameraType)
+	{
+		case PlayScene::TPS:
+			m_cameraType = CameraType::DEBUG;
+			// マウスカーソルの解放
+			InputManager::GetInstance()->UnLockMouseCursor();
+			break;
+		case PlayScene::DEBUG:
+			m_cameraType = CameraType::TPS;
+			// マウスカーソルの固定
+			InputManager::GetInstance()->LockMouseCursor();
+			break;
+		default:
+			break;
+	}
 }
