@@ -4,8 +4,10 @@
 #include "Framework/InputManager.h"
 
 #include "Game/Objects/Stage/Wall.h"
+#include "Game/UserInterface/DrawTexture.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/DebugLog.h"
+#include "Framework/Resources.h"
 
 // コンストラクタ
 TankCannon::TankCannon(
@@ -47,6 +49,12 @@ void TankCannon::Initialize(Type type)
 
 	// モデル情報の受け取り
 	m_model = Resources::GetInstance()->GetTankCannonModel();
+
+	// 画像表示クラス
+	m_drawTexture = std::make_unique<DrawTexture>();
+
+	// 初期画像読み込み
+	m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
 }
 
 // 更新処理
@@ -147,36 +155,6 @@ void TankCannon::Update(
 			m_shotTimer = ENEMY_SHOT_INTERVAL;
 		}
 	}
-
-	// Rayを飛ばして着弾方向の表示
-	// Rayを飛ばす方向の計算
-	Matrix matrix = Matrix::CreateRotationX(m_cannonAngle) * Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle);
-	// Rayの距離設定
-	float maxDistance = 5.0f;
-	// Rayの作成
-	Ray ray {this->GetMuzzlePosition(), matrix.Forward()};
-	// 壁のボックスコライダーとの衝突判定を取る
-	std::vector<Wall*> walls = m_tank->GetWalls();
-	Vector3 hitPosition = Vector3::Zero;
-	for (auto& wall : walls)
-	{
-		float distance = 0.0f;
-		bool isHit = ray.Intersects(*wall->GetBoundingBox(), distance);
-		if (isHit)
-		{
-			// 衝突点計算
-			hitPosition = Vector3{ ray.position + ray.direction * distance };
-			// ヒットした距離が範囲外なら当たっていない
-			if (distance <= maxDistance)
-			{
-				mylib::DebugLog(hitPosition);
-			}
-			else
-			{
-				mylib::DebugLog("out of range");
-			}
-		}
-	}
 }
 
 // 描画処理
@@ -204,6 +182,39 @@ void TankCannon::Render()
 	
 	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();
+
+
+	if (m_tankType == Type::ENEMY) { return; }
+	// Rayを飛ばして着弾方向の表示
+	// Rayの距離設定
+	float maxDistance = 5.0f;
+	// Rayの作成
+	Ray ray{ this->GetMuzzlePosition(), matrix.Forward() };
+	// 壁のボックスコライダーとの衝突判定を取る
+	std::vector<Wall*> walls = m_tank->GetWalls();
+	Vector3 hitPosition = Vector3::Zero;
+	for (auto& wall : walls)
+	{
+		float distance = 0.0f;
+		bool isHit = ray.Intersects(*wall->GetBoundingBox(), distance);
+		// ヒットした距離が範囲外なら当たっていない
+		if (distance <= maxDistance && isHit)
+		{
+			// 衝突点計算
+			hitPosition = Vector3{ ray.position + ray.direction * distance };
+			mylib::DebugLog(hitPosition);
+			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
+			m_drawTexture->Render(hitPosition);
+		}
+		else
+		{
+			// 衝突点計算
+			hitPosition = Vector3{ ray.position + ray.direction * maxDistance };
+			mylib::DebugLog("out of range");
+			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
+			m_drawTexture->Render(hitPosition);
+		}
+	}
 }
 
 // 終了処理

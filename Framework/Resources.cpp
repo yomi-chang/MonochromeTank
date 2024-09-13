@@ -35,4 +35,21 @@ void Resources::LoadResource()
 
 	// 「弾」モデルをロードする
 	m_bulletModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\bullet.cmo", *m_graphics->GetFX());
+
+
+	//	テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\Target.png",
+		nullptr,
+		m_targetTexture.GetAddressOf()
+	);
+
+	//	テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\TargetLock.png",
+		nullptr,
+		m_targetLockTexture.GetAddressOf()
+	);
 }

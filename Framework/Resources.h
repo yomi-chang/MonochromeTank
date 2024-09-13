@@ -6,18 +6,14 @@
 class Resources
 {
 public:
-	// 車体モデルの取得
-	DirectX::Model* GetTankBodyModel() { return m_tankBodyModel.get(); }
-	// 砲塔モデルの取得
-	DirectX::Model* GetTankTurretModel() { return m_tankTurretModel.get(); }
-	// 砲身モデルの取得
-	DirectX::Model* GetTankCannonModel() { return m_tankCanonModel.get(); }
+	DirectX::Model* GetTankBodyModel() { return m_tankBodyModel.get(); }		// 車体モデル
+	DirectX::Model* GetTankTurretModel() { return m_tankTurretModel.get(); }	// 砲塔モデル
+	DirectX::Model* GetTankCannonModel() { return m_tankCanonModel.get(); }		// 砲身モデル
+	DirectX::Model* GetSkySphereModel() { return m_skySphereModel.get(); }		// 天球モデル
+	DirectX::Model* GetBulletModel() { return m_bulletModel.get(); }			// 弾モデル
 
-	// 天球モデルの取得
-	DirectX::Model* GetSkySphereModel() { return m_skySphereModel.get(); }
-
-	// 弾モデルの取得
-	DirectX::Model* GetBulletModel() { return m_bulletModel.get(); }
+	ID3D11ShaderResourceView* GetTargetTexture() { return m_targetTexture.Get(); }
+	ID3D11ShaderResourceView* GetTargetLockTexture() { return m_targetLockTexture.Get(); }
 
 public:
 	Resources(Resources&&) = default;
@@ -39,7 +35,10 @@ private:
 		m_tankTurretModel{},
 		m_tankCanonModel{},
 		m_skySphereModel{},
-		m_bulletModel {}
+		m_bulletModel {},
+
+		m_targetTexture{},
+		m_targetLockTexture{}
 	{
 	}
 
@@ -51,21 +50,23 @@ private:
 	// デバイス
 	ID3D11Device* m_device = m_graphics->GetDeviceResources()->GetD3DDevice();
 
+	// モデル==========================================================
 	// 戦車モデル
 	std::unique_ptr<DirectX::Model> m_tank;
-
 	// 車体モデル
 	std::unique_ptr<DirectX::Model> m_tankBodyModel;
-
 	// 砲塔モデル
 	std::unique_ptr<DirectX::Model> m_tankTurretModel;
-
 	// 砲身モデル
 	std::unique_ptr<DirectX::Model> m_tankCanonModel;
-
 	// 天球モデル
 	std::unique_ptr<DirectX::Model> m_skySphereModel;
-
 	// 弾モデル
 	std::unique_ptr<DirectX::Model> m_bulletModel;
+
+	// テクスチャ======================================================
+	// 照準テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_targetTexture;
+	// 照準ロックテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_targetLockTexture;
 };

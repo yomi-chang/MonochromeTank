@@ -5,6 +5,8 @@
 
 #include "Interface/ILeaf.h"
 
+class DrawTexture;
+
 class TankCannon : public ILeaf
 {
 private:
@@ -95,4 +97,7 @@ private:
 
 	// 敵かプレイヤーか
 	Type m_tankType;
+
+	// 照準表示
+	std::unique_ptr<DrawTexture> m_drawTexture;
 };

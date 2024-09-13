@@ -203,6 +203,7 @@
     <ClInclude Include="Game\Scene\SceneManager.h" />
     <ClInclude Include="Game\Scene\TitleScene.h" />
     <ClInclude Include="Game\Screen.h" />
+    <ClInclude Include="Game\UserInterface\DrawTexture.h" />
     <ClInclude Include="Game\UserInterface\EnemyHpGauge.h" />
     <ClInclude Include="Game\UserInterface\HpGauge.h" />
     <ClInclude Include="Interface\IBullet.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
     <ClCompile Include="Game\Scene\SceneManager.cpp" />
     <ClCompile Include="Game\Scene\TitleScene.cpp" />
+    <ClCompile Include="Game\UserInterface\DrawTexture.cpp" />
     <ClCompile Include="Game\UserInterface\EnemyHpGauge.cpp" />
     <ClCompile Include="Game\UserInterface\HpGauge.cpp" />
     <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp" />
