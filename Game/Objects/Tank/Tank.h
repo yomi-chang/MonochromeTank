@@ -8,6 +8,15 @@
 #include "Game/UserInterface/HpGauge.h"
 #include "Game/UserInterface/EnemyHpGauge.h"
 
+#include "Game/Objects/Stage/Wall.h"
+#include "Libraries/MyLib/FollowCamera.h"
+
+namespace mylib
+{
+	class FollowCamera;
+}
+class Wall;
+
 class Tank : public IComposite
 {
 public:
@@ -77,10 +86,21 @@ public:
 	// 現在選択されている弾の種類を渡す
 	BulletType GetBulletType() { return m_bulletType; }
 
-	// カメラのセット
-	//void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
+	// カメラ情報の受け取り
+	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 	// カメラの振動
-	//void ShakeCamera() { m_camera->StartShakeCamera(); };
+	void ShakeCamera() { m_camera->StartShakeCamera(); }
+
+	// 壁情報の受け取り
+	void SetWalls(std::vector<Wall*> walls)
+	{
+		for (Wall* wall : walls)
+		{
+			m_walls.push_back(wall);
+		}
+	}
+	// 壁情報の取得
+	std::vector<Wall*> GetWalls() { return m_walls; }
 
 public:
 	// コンストラクタ
@@ -135,6 +155,12 @@ private:
 	// 敵かプレイヤーか
 	Type m_tankType;
 
+	// カメラ
+	mylib::FollowCamera* m_camera;
+
+	// 壁
+	std::vector<Wall*> m_walls;
+
 private:
 	// 砲弾配列
 	std::vector<std::unique_ptr<IBullet>> m_bullets;	// 連射弾
@@ -163,6 +189,8 @@ private:
 	const float CANNONBALL_RELOAD_TIME = 1.0f;
 	float m_reloadCount;
 	bool m_isReload;
+	// リロードしている弾の種類
+	BulletType m_reloadBulletType;
 
 
 	//mylib::FollowCamera* m_camera;

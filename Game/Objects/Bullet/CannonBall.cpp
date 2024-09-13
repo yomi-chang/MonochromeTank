@@ -56,6 +56,7 @@ void CannonBall::Update(float time)
 	}
 	else if (m_bulletState == UNUSED)
 	{
+		// 経過時間のリセット
 		m_elapsedTime = 0.0f;
 		return;
 	}

@@ -3,7 +3,9 @@
 #include "Framework/Resources.h"
 #include "Framework/InputManager.h"
 
+#include "Game/Objects/Stage/Wall.h"
 #include "Libraries/MyLib/Math.h"
+#include "Libraries/MyLib/DebugLog.h"
 
 // コンストラクタ
 TankCannon::TankCannon(
@@ -54,6 +56,8 @@ void TankCannon::Update(
 	const float& currentAngleRL
 )
 {
+	using namespace DirectX::SimpleMath;
+
 	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// 現在の位置を更新する
@@ -106,6 +110,7 @@ void TankCannon::Update(
 						{
 							// 「砲弾」を発射する
 							Shoot(m_tank->GetCannonBall().get());
+							m_tank->ShakeCamera();
 						}
 						break;
 				}
@@ -142,6 +147,36 @@ void TankCannon::Update(
 			m_shotTimer = ENEMY_SHOT_INTERVAL;
 		}
 	}
+
+	// Rayを飛ばして着弾方向の表示
+	// Rayを飛ばす方向の計算
+	Matrix matrix = Matrix::CreateRotationX(m_cannonAngle) * Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle);
+	// Rayの距離設定
+	float maxDistance = 5.0f;
+	// Rayの作成
+	Ray ray {this->GetMuzzlePosition(), matrix.Forward()};
+	// 壁のボックスコライダーとの衝突判定を取る
+	std::vector<Wall*> walls = m_tank->GetWalls();
+	Vector3 hitPosition = Vector3::Zero;
+	for (auto& wall : walls)
+	{
+		float distance = 0.0f;
+		bool isHit = ray.Intersects(*wall->GetBoundingBox(), distance);
+		if (isHit)
+		{
+			// 衝突点計算
+			hitPosition = Vector3{ ray.position + ray.direction * distance };
+			// ヒットした距離が範囲外なら当たっていない
+			if (distance <= maxDistance)
+			{
+				mylib::DebugLog(hitPosition);
+			}
+			else
+			{
+				mylib::DebugLog("out of range");
+			}
+		}
+	}
 }
 
 // 描画処理
@@ -165,7 +200,7 @@ void TankCannon::Render()
 
 	// 照準の描画
 	Matrix matrix = Matrix::CreateRotationX(m_cannonAngle) * Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle);
-	m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward()}, DirectX::Colors::Red);
+	m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
 	
 	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();

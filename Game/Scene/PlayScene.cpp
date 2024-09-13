@@ -106,10 +106,10 @@ void PlayScene::Initialize()
 	m_collisionMesh->Initialize(device, context, L"Terrain");
 
 	// ステージの生成
-	m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 5.0f, 0.5f), Vector3(0.0f,2.5f,-20.0f)));
-	m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 5.0f, 0.5f), Vector3(0.0f, 2.5f, 20.0f)));
-	m_walls.emplace_back(std::make_unique<Wall>(Vector3(0.5f, 5.0f, 40.0f), Vector3(20.0f, 2.5f, 0.0f)));
-	m_walls.emplace_back(std::make_unique<Wall>(Vector3(0.5f, 5.0f, 40.0f), Vector3(-20.0f, 2.5f, 0.0f)));
+	m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 5.0f, 2.5f), Vector3(0.0f,2.5f,-20.0f)));
+	m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 5.0f, 2.5f), Vector3(0.0f, 2.5f, 20.0f)));
+	m_walls.emplace_back(std::make_unique<Wall>(Vector3(2.5f, 5.0f, 40.0f), Vector3(20.0f, 2.5f, 0.0f)));
+	m_walls.emplace_back(std::make_unique<Wall>(Vector3(2.5f, 5.0f, 40.0f), Vector3(-20.0f, 2.5f, 0.0f)));
 	for (auto& wall : m_walls)
 	{
 		// カメラとプレイヤーの情報を渡す
@@ -117,7 +117,15 @@ void PlayScene::Initialize()
 		wall->SetCamera(m_tpsCamera.get());
 	}
 
-	//m_playerTank->SetCamera(m_tpsCamera.get());
+	m_playerTank->SetCamera(m_tpsCamera.get());
+
+	// ポインタを取り出してからプレイヤーに渡す
+	std::vector<Wall*> wallPointers;
+	for (const auto& wall : m_walls) 
+	{
+		wallPointers.push_back(wall.get());
+	}
+	m_playerTank->SetWalls(wallPointers);
 }
 
 //---------------------------------------------------------

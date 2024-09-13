@@ -5,7 +5,6 @@
 #include "Framework/InputManager.h"
 
 #include "Libraries/MyLib/DebugLog.h"
-#include "Libraries/MyLib/FollowCamera.h"
 
 /// コンストラクタ
 Tank::Tank(
@@ -32,7 +31,9 @@ Tank::Tank(
 	m_otherTanks{},
 	m_bulletType{},
 	m_reloadCount{},
-	m_isReload{}
+	m_isReload{},
+	m_reloadBulletType{},
+	m_camera{}
 {
 }
 
@@ -60,9 +61,9 @@ void Tank::Initialize(Type type)
 	Attach(std::make_unique<TankArmor>(this, Vector3(0.0f, 0.5f, 0.0f), 0.0f));
 
 	// 連射弾配列を作成する
-	m_bullets.resize(10);
+	m_bullets.resize(20);
 	// 配列に連射弾を格納する
-	for (int index = 0; index < 10; index++)
+	for (int index = 0; index < 20; index++)
 	{
 		// 連射弾を生成する
 		m_bullets[index] = std::make_unique<Bullet>(IBullet::UNUSED);
@@ -96,6 +97,7 @@ void Tank::Initialize(Type type)
 
 	// 最初に発射できる弾を砲弾に設定する
 	m_bulletType = BulletType::CANNONBALL;
+	m_reloadBulletType = BulletType::CANNONBALL;
 }
 
 
@@ -267,9 +269,11 @@ void Tank::PlayerAction(float elapsedTime)
 			case BulletType::BULLET:
 				for (auto& bullet : m_bullets)
 				{
+					// 弾が1発でも使用されていたらリロード可能
 					if (bullet->GetBulletState() == IBullet::USED)
 					{
 						m_reloadCount = BULLET_RELOAD_TIME;
+						m_reloadBulletType = BulletType::BULLET;
 						m_isReload = true;
 						mylib::DebugLog("連射弾のリロード開始");
 						return;
@@ -280,6 +284,7 @@ void Tank::PlayerAction(float elapsedTime)
 				if (m_cannonBall->GetBulletState() == IBullet::USED)
 				{
 					m_reloadCount = CANNONBALL_RELOAD_TIME;
+					m_reloadBulletType = BulletType::CANNONBALL;
 					m_isReload = true;
 					mylib::DebugLog("砲弾のリロード開始");
 				}
@@ -298,7 +303,7 @@ void Tank::PlayerAction(float elapsedTime)
 		// リロード完了
 		if (m_reloadCount <= 0.0f)
 		{
-			switch (m_bulletType)
+			switch (m_reloadBulletType)
 			{
 				case Tank::BULLET:
 					for (auto& bullet : m_bullets)

@@ -1,11 +1,11 @@
 #pragma once
 #include "Game/Collider/BoxCollider.h"
-#include "Game/Objects/Tank/Tank.h"
 
 namespace mylib
 {
 	class FollowCamera;
 }
+class Tank;
 
 class Wall
 {
@@ -29,6 +29,9 @@ public:
 
 	// 終了処理
 	void Finalize();
+
+	// コライダーの取得
+	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
 
 private:
 	// ジオメトリックプリミティブ

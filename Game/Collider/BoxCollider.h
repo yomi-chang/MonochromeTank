@@ -4,7 +4,7 @@
 class BoxCollider
 {
 public:
-	DirectX::BoundingBox GetBoundingBox() { return m_boundingBox; }
+	DirectX::BoundingBox* GetBoundingBox() { return &m_boundingBox; }
 
 public:
 	// コンストラクタ

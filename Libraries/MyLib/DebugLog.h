@@ -6,4 +6,5 @@ namespace mylib
 	void DebugLog(std::string text, float value);
 	void DebugLog(std::string text, int value);
 	void DebugLog(std::string text);
+	void DebugLog(DirectX::SimpleMath::Vector3 position);
 }

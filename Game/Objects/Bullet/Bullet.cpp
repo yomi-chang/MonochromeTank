@@ -56,8 +56,9 @@ void Bullet::Update(float time)
 	{
 		return;
 	}
-	else if (m_bulletState == UNUSED)
+	else if(m_bulletState == UNUSED)
 	{
+		// ¶‘¶ŽžŠÔ‚ÌÝ’è
 		m_count = SURVIVAL_TIME;
 		return;
 	}
@@ -104,7 +105,7 @@ void Bullet::Render()
 void Bullet::DrawBullet()
 {
 	using namespace DirectX::SimpleMath;
-	 
+
 	Matrix view = m_graphics->GetViewMatrix();
 	Matrix proj = m_graphics->GetProjectionMatrix();
 

@@ -80,7 +80,7 @@ void mylib::FollowCamera::ShakeCamera(float elapsedTime)
 	if (!m_isShakeCamera) { return; }
 
 	m_shakeCount += elapsedTime;
-	m_eye.y += std::sinf(m_shakeCount * m_shakeSpeed) * m_shakeWidth;
+	m_eye.z += std::sinf(m_shakeCount * m_shakeSpeed) * m_shakeWidth;
 
 	if (m_shakeCount >= m_shakeTime)
 	{

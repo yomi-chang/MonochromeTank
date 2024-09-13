@@ -2,6 +2,7 @@
 #include "Game/Objects/Stage/Wall.h"
 #include "Framework/Graphics.h"
 #include "Libraries/MyLib/FollowCamera.h"
+#include "Game/Objects/Tank/Tank.h"
 
 #include "Libraries/MyLib/DebugLog.h"
 
@@ -48,7 +49,7 @@ void Wall::Render()
 	// ƒJƒƒ‰‚Æ‚Ì“–‚½‚è”»’è
 	if (m_collider->CheckTriggerCollider(m_camera->GetBoundingSphere()))
 	{
-		mylib::DebugLog("“–‚½‚Á‚½");
+		//mylib::DebugLog("“–‚½‚Á‚½");
 		//m_color.w = 0.9f;
 	}
 

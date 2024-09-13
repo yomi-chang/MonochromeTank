@@ -76,4 +76,7 @@ private:
 
 	// コライダー
 	std::unique_ptr<SphereCollider> m_collider;
+
+	// 装甲の耐久値
+	
 };
