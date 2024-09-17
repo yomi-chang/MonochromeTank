@@ -196,24 +196,28 @@ void TankCannon::Render()
 	for (auto& wall : walls)
 	{
 		float distance = 0.0f;
+		// 壁との衝突判定
 		bool isHit = ray.Intersects(*wall->GetBoundingBox(), distance);
-		// ヒットした距離が範囲外なら当たっていない
+		// 射程範囲外かつ当たっている
 		if (distance <= maxDistance && isHit)
 		{
 			// 衝突点計算
-			hitPosition = Vector3{ ray.position + ray.direction * distance };
+			hitPosition = Vector3{ ray.position + ray.direction * distance - ray.direction};
 			mylib::DebugLog(hitPosition);
+			// 赤い照準を出す
 			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
-			m_drawTexture->Render(hitPosition);
 		}
+		// 射程範囲外または当たっていない
 		else
 		{
-			// 衝突点計算
-			hitPosition = Vector3{ ray.position + ray.direction * maxDistance };
+			// 照準画像の表示場所計算
+			hitPosition = Vector3{ ray.position + ray.direction * maxDistance};
 			mylib::DebugLog("out of range");
+			// 黒い照準を出す
 			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
-			m_drawTexture->Render(hitPosition);
 		}
+		// 照準画像の表示
+		m_drawTexture->Render(hitPosition);
 	}
 }
 
