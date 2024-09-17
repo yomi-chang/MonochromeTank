@@ -13,8 +13,7 @@ Bullet::Bullet(IBullet::BulletState bulletState)
 	:
 	m_graphics{Graphics::GetInstance()},
 	m_position{},
-	m_angleUD(0.0f),
-	m_angleRL(0.0f),
+	m_angle{},
 	m_velocity{},
 	m_gravity(DirectX::SimpleMath::Vector3(0.0f, -9.8f, 0.0f)),
 	m_worldMatrix{},
@@ -63,10 +62,8 @@ void Bullet::Update(float time)
 		return;
 	}
 
-	// クォータニオンを生成する
-	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	// 速度を計算する
-	m_velocity = Vector3::Transform(SPEED, rotationQuat);
+	m_velocity = Vector3::Transform(SPEED,m_angle);
 	// 位置を計算する
 	m_position += m_velocity;
 	// コライダーの座標更新
@@ -88,9 +85,9 @@ void Bullet::Render()
 	using namespace DirectX::SimpleMath;
 
 	// モデル描画のためのワールド行列を計算する
-	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
+	//Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	m_worldMatrix = Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) *
-		Matrix::CreateFromQuaternion(rotationQuat) *
+		Matrix::CreateFromQuaternion(m_angle) *
 		Matrix::CreateTranslation(m_position);
 
 	// 砲弾が未使用か使用済みの場合は描画しない

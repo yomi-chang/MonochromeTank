@@ -137,7 +137,7 @@ void PlayScene::Update(float elapsedTime)
 
 	// íŽÔ‚ÌXVˆ—
 	Vector3 position(0.0f, 0.0f, 0.0f);
-	float angle = 0.0f;
+	Quaternion angle = Quaternion::Identity;
 	m_playerTank->Update(elapsedTime,position,angle);
 
 	for (auto& enemyTank : m_enemyTanks)
@@ -225,7 +225,6 @@ void PlayScene::Render()
 	debugString->AddString("PlayerTank");
 	debugString->AddString("x : %f", m_playerTank->GetTankPosition().x);
 	debugString->AddString("z : %f", m_playerTank->GetTankPosition().z);
-	debugString->AddString("angle : %f", DirectX::XMConvertToDegrees(m_playerTank->GetTankAngleRL()));
 	debugString->AddString(" ");
 	switch (m_playerTank->GetBulletType())
 	{

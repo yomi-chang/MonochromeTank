@@ -19,7 +19,7 @@ public:
 	TankTurret(
 		IComponent* parent,
 		const DirectX::SimpleMath::Vector3& initialPosition,
-		const float& initialAngleRL
+		const float& initialAngle
 	);
 
 	// デストラクタ
@@ -32,7 +32,7 @@ public:
 	void Update(
 		float elapsedTime,
 		const DirectX::SimpleMath::Vector3& currentPosition,
-		const float& currentAngleRL
+		const DirectX::SimpleMath::Quaternion& currentAngle
 	) override;
 
 	// 自身を描画しない描画処理
@@ -56,15 +56,12 @@ private:
 
 	// 初期座標
 	DirectX::SimpleMath::Vector3 m_initialPosition;
-
 	// 初期回転角
-	float m_initialAngle;
-
+	DirectX::SimpleMath::Quaternion m_initialAngle;
 	// 現在の座標
 	DirectX::SimpleMath::Vector3 m_currentPosition;
-
 	// 現在の回転角
-	float m_currentAngleRL;
+	DirectX::SimpleMath::Quaternion m_currentAngle;
 
 	// 自身が管理する戦車部品の配列
 	std::vector<std::unique_ptr<IComponent>> m_tankParts;
@@ -76,7 +73,7 @@ private:
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 
 	// 砲塔の角度
-	float m_turretAngle;
+	DirectX::SimpleMath::Quaternion m_turretAngle;
 
 	// 敵かプレイヤーか
 	Type m_tankType;

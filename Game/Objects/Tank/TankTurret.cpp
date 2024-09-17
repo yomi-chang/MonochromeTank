@@ -10,15 +10,15 @@
 TankTurret::TankTurret(
 	IComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
-	const float& initialAngleRL
+	const float& initialAngle
 )
 	:
 	m_parent{ parent },
 	m_graphics{Graphics::GetInstance()},
 	m_initialPosition{ initialPosition },
-	m_initialAngle{ initialAngleRL },
+	m_initialAngle(DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle)),
 	m_currentPosition{},
-	m_currentAngleRL{},
+	m_currentAngle{},
 	m_tankParts{},
 	m_model{},
 	m_worldMatrix{},
@@ -52,32 +52,45 @@ void TankTurret::Initialize(Type type)
 void TankTurret::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
-	const float& currentAngleRL
+	const DirectX::SimpleMath::Quaternion& currentAngle
 )
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
+	using namespace DirectX::SimpleMath;
 
 	// マウスステートの取得
 	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
 
 	if (m_tankType == Type::PLAYER)
 	{
-		// マウスの移動量を取得して回転させる
-		m_turretAngle -= static_cast<float>(mouseState.x) * 0.001f;
+		//// マウスの移動量を取得して回転させる
+		//float turretAngle = 0.0f;
+		//turretAngle += static_cast<float>(mouseState.x) * 0.0001f;
+		//m_turretAngle *= Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(turretAngle), 0.0f, 0.0f);
+		//// 回転の制限
+		//m_turretAngle.y = mylib::Clamp(m_turretAngle.y, TURRET_ANGLEUD_MIN, TURRET_ANGLEUD_MAX);
 
-		// 回転の制限
-		m_turretAngle = mylib::Clamp(m_turretAngle, TURRET_ANGLEUD_MIN, TURRET_ANGLEUD_MAX);
+		// マウスの移動からX軸回転角を計算
+		float rotationY = static_cast<float>(mouseState.x) * 0.001f;
+		// 現在の砲身角度をクォータニオンからオイラー角に変換
+		DirectX::SimpleMath::Vector3 eulerAngles = m_turretAngle.ToEuler();
+		// 砲身のX軸回転を更新
+		eulerAngles.y -= rotationY;
+		// X軸の回転範囲をクランプ（範囲制限）
+		eulerAngles.y = mylib::Clamp(eulerAngles.y, TURRET_ANGLEUD_MIN, TURRET_ANGLEUD_MAX);
+		// クランプされたオイラー角をクォータニオンに変換して適用
+		m_turretAngle = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(eulerAngles.y, eulerAngles.x, eulerAngles.z);
 	}
 
 	// 現在の位置の更新
-	m_currentPosition = currentPosition;
+	m_currentPosition = currentPosition + m_initialPosition;
 	// 現在の回転角の更新
-	m_currentAngleRL = currentAngleRL;
+	m_currentAngle = m_turretAngle * currentAngle * m_initialAngle;
 
 	// パーツの更新
 	for (auto& tankPart : m_tankParts)
 	{
-		tankPart->Update(elapsedTime, currentPosition, currentAngleRL + m_turretAngle);
+		tankPart->Update(elapsedTime, currentPosition, m_currentAngle);
 	}
 }
 
@@ -88,8 +101,8 @@ void TankTurret::Render()
 
 	// ワールド行列を生成する
 	m_worldMatrix = Matrix::CreateScale(0.5f) *
-		Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle + m_turretAngle) *
-		Matrix::CreateTranslation(m_currentPosition + m_initialPosition);
+		Matrix::CreateFromQuaternion(m_currentAngle) *
+		Matrix::CreateTranslation(m_currentPosition);
 
 	// プリミティブ描画を開始する
 	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());

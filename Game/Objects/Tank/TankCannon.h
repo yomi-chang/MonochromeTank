@@ -30,7 +30,7 @@ public:
 	TankCannon(
 		IComponent* parent,
 		const DirectX::SimpleMath::Vector3& initialPosition,
-		const float& initialAngleRL
+		const float& initialAngle
 	);
 
 	// ƒfƒXƒgƒ‰ƒNƒ^
@@ -43,7 +43,7 @@ public:
 	void Update(
 		float elapsedTime,
 		const DirectX::SimpleMath::Vector3& currentPosition,
-		const float& currentAngleRL
+		const DirectX::SimpleMath::Quaternion& currentAngle
 	);
 
 	// ©g‚ğ•`‰æ‚µ‚È‚¢•`‰æˆ—
@@ -64,15 +64,12 @@ private:
 
 	// ‰ŠúÀ•W
 	DirectX::SimpleMath::Vector3 m_initialPosition;
-
-	// ‰Šú‰ñ“]Šp
-	float m_initialAngle;
-
 	// Œ»İ‚ÌÀ•W
 	DirectX::SimpleMath::Vector3 m_currentPosition;
-
+	// ‰Šú‰ñ“]Šp
+	DirectX::SimpleMath::Quaternion m_initialAngle;
 	// Œ»İ‚Ì‰ñ“]Šp
-	float m_currentAngleRL;
+	DirectX::SimpleMath::Quaternion m_currentAngle;
 
 	// ©g‚ªŠÇ—‚·‚éíÔ•”•i‚Ì”z—ñ
 	std::vector<std::unique_ptr<IComponent>> m_tankParts;
@@ -84,7 +81,7 @@ private:
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 
 	// –Cg‚ÌŠp“x
-	float m_cannonAngle;
+	DirectX::SimpleMath::Quaternion m_cannonAngle;
 
 	// g—pÏ‚İ–C’e”
 	//int m_shotBulletNumber;

@@ -8,15 +8,15 @@
 TankBody::TankBody(
 	IComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
-	const float& initialAngleRL
+	const float& initialAngle
 )
 	:
 	m_parent{ parent },
 	m_graphics{Graphics::GetInstance()},
 	m_initialPosition{initialPosition},
-	m_initialAngle{initialAngleRL},
+	m_initialAngle(DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle)),
 	m_currentPosition{},
-	m_currentAngleRL{},
+	m_currentAngle{},
 	m_tankParts{},
 	m_model{},
 	m_worldMatrix{},
@@ -49,20 +49,20 @@ void TankBody::Initialize(Type type)
 void TankBody::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
-	const float& currentAngleRL
+	const DirectX::SimpleMath::Quaternion& currentAngle
 )
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// 現在の位置の更新
-	m_currentPosition = currentPosition;
+	m_currentPosition = currentPosition + m_initialPosition;
 	// 現在の回転角の更新
-	m_currentAngleRL = currentAngleRL;
+	m_currentAngle = currentAngle * m_initialAngle;
 
 	// パーツの更新
 	for (auto& tankPart : m_tankParts)
 	{
-		tankPart->Update(elapsedTime, currentPosition, currentAngleRL);
+		tankPart->Update(elapsedTime, currentPosition, currentAngle);
 	}
 }
 
@@ -73,8 +73,8 @@ void TankBody::Render()
 
 	// ワールド行列を生成する
 	m_worldMatrix = Matrix::CreateScale(0.5f) *
-		Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle) *
-		Matrix::CreateTranslation(m_currentPosition + m_initialPosition);
+		Matrix::CreateFromQuaternion(m_currentAngle) *
+		Matrix::CreateTranslation(m_currentPosition);
 
 	// プリミティブ描画を開始する
 	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());

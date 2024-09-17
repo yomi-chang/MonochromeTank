@@ -7,14 +7,13 @@
 const DirectX::SimpleMath::Vector3 CannonBall::SPEED(0.0f, 0.0f, -0.3f);
 
 // 砲弾にかかる重力を定義する
-const DirectX::SimpleMath::Vector3 CannonBall::GRAVITY(0.0f, -0.2f, 0.0f);
+const DirectX::SimpleMath::Vector3 CannonBall::GRAVITY(0.0f, -0.1f, 0.0f);
 
 // コンストラクタ
 CannonBall::CannonBall(IBullet::BulletState bulletState)
 	:
 	m_position{},
-	m_angleUD(0.0f),
-	m_angleRL(0.0f),
+	m_angle{},
 	m_velocity{},
 	m_worldMatrix{},
 	m_bulletState(bulletState),
@@ -64,11 +63,8 @@ void CannonBall::Update(float time)
 	// 経過時間を記録
 	m_elapsedTime += time;
 
-	// クォータニオンを生成する
-	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
-
 	// 速度を計算する（初速度）
-	Vector3 initialVelocity = Vector3::Transform(SPEED, rotationQuat);
+	Vector3 initialVelocity = Vector3::Transform(SPEED, m_angle);
 
 	// 速度に重力の影響を加えて位置を計算する
 	m_velocity = initialVelocity + (GRAVITY * m_elapsedTime);
@@ -90,9 +86,9 @@ void CannonBall::Render()
 	using namespace DirectX::SimpleMath;
 
 	// モデル描画のためのワールド行列を計算する
-	Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
+	//Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	m_worldMatrix = Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) *
-		Matrix::CreateFromQuaternion(rotationQuat) *
+		Matrix::CreateFromQuaternion(m_angle) *
 		Matrix::CreateTranslation(m_position);
 
 	// 砲弾が未使用か使用済みの場合は描画しない

@@ -10,15 +10,15 @@
 Tank::Tank(
 	IComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
-	const float& initialAngleRL
+	const float& initialAngle
 )
 	:
 	m_parent{ parent },
 	m_initialPosition{ initialPosition },
-	m_initialAngle{ initialAngleRL },
+	m_initialAngle(DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle)),
 	m_graphics{Graphics::GetInstance()},
 	m_currentPosition{},
-	m_currentAngleRL{},
+	m_currentAngle{},
 	m_tankParts{},
 	m_worldMatrix{},
 	m_bullets{},
@@ -105,7 +105,7 @@ void Tank::Initialize(Type type)
 void Tank::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
-	const float& currentAngleRL
+	const DirectX::SimpleMath::Quaternion& currentAngle
 )
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
@@ -146,7 +146,7 @@ void Tank::Update(
 	// パーツの更新
 	for (auto& tankPart : m_tankParts)
 	{
-		tankPart->Update(elapsedTime, m_currentPosition, m_currentAngleRL);
+		tankPart->Update(elapsedTime, m_currentPosition, m_currentAngle);
 	}
 
 	// ダメージ処理
@@ -229,29 +229,28 @@ void Tank::PlayerAction(float elapsedTime)
 	// マウスステートの取得
 	const auto& mouseTracker = InputManager::GetInstance()->GetMouseTracker();
 
-
 	// 速度の初期化
 	Vector3 tunkVelocity = Vector3::Zero;
 
 	// 前後移動
 	if (keyboardState.W)
 	{
-		tunkVelocity += Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle).Forward() * 0.05f;
+		tunkVelocity += Vector3::Transform(Vector3::Forward * elapsedTime * 3.0f, m_currentAngle);
 		m_currentPosition += tunkVelocity;
 	}
 	else if (keyboardState.S)
 	{
-		tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle).Forward() * 0.05f;
+		tunkVelocity += Vector3::Transform(Vector3::Backward * elapsedTime * 3.0f, m_currentAngle);
 		m_currentPosition += tunkVelocity;
 	}
 	// 左右回転
 	if (keyboardState.A)
 	{
-		m_currentAngleRL += DirectX::XMConvertToRadians(0.5f);
+		m_currentAngle *= Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(0.5f), 0.0f, 0.0f);
 	}
 	else if (keyboardState.D)
 	{
-		m_currentAngleRL -= DirectX::XMConvertToRadians(0.5f);
+		m_currentAngle *= Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(-0.5f), 0.0f, 0.0f);
 	}
 
 	// 弾の種類を変更
@@ -333,11 +332,11 @@ void Tank::EnemyAction()
 	Vector3 tunkVelocity = Vector3::Zero;
 
 	// プレイヤーの方向を向く m_otherTanks[0]はプレイヤー　ToDo:EnemyのAiクラスを作成
-	Vector3 delta = m_currentPosition - m_otherTanks[0]->GetTankPosition();
+	/*Vector3 delta = m_currentPosition - m_otherTanks[0]->GetTankPosition();
 	float angleRadians = atan2(delta.x, delta.z);
 	m_currentAngleRL = angleRadians;
 	tunkVelocity -= Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle).Forward() * 0.01f;
-	m_currentPosition += tunkVelocity;
+	m_currentPosition += tunkVelocity;*/
 }
 
 // 弾丸と戦車の当たり判定

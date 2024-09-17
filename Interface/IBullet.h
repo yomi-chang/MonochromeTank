@@ -13,14 +13,8 @@ public:
 	virtual DirectX::SimpleMath::Vector3 GetPosition() const = 0;
 	// Œ»İ‚ÌˆÊ’u‚ğİ’è‚·‚é
 	virtual void SetPosition(const DirectX::SimpleMath::Vector3& position) = 0;
-	// –C’eã‰º‰ñ“]Šp‚ğæ“¾‚·‚é 
-	virtual float GetAngleUD() const = 0;
-	// –C’eã‰º‰ñ“]Šp‚ğİ’è‚·‚é 
-	virtual void SetAngleUD(const float& angleUD) = 0;
-	// –C’e¶‰E‰ñ“]Šp‚ğæ“¾‚·‚é 
-	virtual float GetAngleRL() const = 0;
-	// –C’e¶‰E‰ñ“]Šp‚ğİ’è‚·‚é
-	virtual void SetAngleRL(const float& angleRL) = 0;
+	// –C’e‰ñ“]Šp‚Ìİ’è
+	virtual void SetAngle(const DirectX::SimpleMath::Quaternion& angle) = 0;
 	// –C’e‚ª”­Ë‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
 	virtual BulletState GetBulletState() const = 0;
 	// –C’e‚Ìó‘Ô‚ğİ’è‚·‚é

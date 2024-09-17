@@ -8,15 +8,15 @@
 TankArmor::TankArmor(
 	IComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
-	const float& initialAngleRL
+	const float& initialAngle
 )
 	:
 	m_parent{ parent },
 	m_graphics{Graphics::GetInstance()},
 	m_initialPosition{initialPosition},
-	m_initialAngle{initialAngleRL},
+	m_initialAngle(DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle)),
 	m_currentPosition{},
-	m_currentAngleRL{},
+	m_currentAngle{},
 	m_tankParts{},
 	m_model{},
 	m_worldMatrix{},
@@ -54,24 +54,18 @@ void TankArmor::Initialize(Type type)
 void TankArmor::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
-	const float& currentAngleRL
+	const DirectX::SimpleMath::Quaternion& currentAngle
 )
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// 現在の位置の更新
-	m_currentPosition = currentPosition;
+	m_currentPosition = currentPosition + m_initialPosition;
 	// 現在の回転角の更新
-	m_currentAngleRL = currentAngleRL;
-
-	// パーツの更新
-	for (auto& tankPart : m_tankParts)
-	{
-		tankPart->Update(elapsedTime, currentPosition, currentAngleRL);
-	}
+	m_currentAngle = currentAngle * m_initialAngle;
 
 	// コライダー座標の更新
-	m_collider->Update(m_currentPosition + m_initialPosition);
+	m_collider->Update(m_currentPosition);
 }
 
 // 描画処理
@@ -81,8 +75,8 @@ void TankArmor::Render()
 
 	// ワールド行列を生成する
 	m_worldMatrix = Matrix::CreateScale(0.5f) *
-		Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle) *
-		Matrix::CreateTranslation(m_currentPosition + m_initialPosition);
+		Matrix::CreateFromQuaternion(m_currentAngle) *
+		Matrix::CreateTranslation(m_currentPosition);
 
 	auto view = m_graphics->GetViewMatrix();
 	auto proj = m_graphics->GetProjectionMatrix();

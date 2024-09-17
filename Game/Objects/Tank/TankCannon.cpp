@@ -13,15 +13,15 @@
 TankCannon::TankCannon(
 	IComponent* parent,
 	const DirectX::SimpleMath::Vector3& initialPosition,
-	const float& initialAngleRL
+	const float& initialAngle
 )
 	:
 	m_parent{ parent },
 	m_graphics{Graphics::GetInstance()},
 	m_initialPosition{ initialPosition },
-	m_initialAngle{ initialAngleRL },
+	m_initialAngle(DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle)),
 	m_currentPosition{},
-	m_currentAngleRL{},
+	m_currentAngle{},
 	m_tankParts{},
 	m_model{},
 	m_worldMatrix{},
@@ -61,28 +61,36 @@ void TankCannon::Initialize(Type type)
 void TankCannon::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
-	const float& currentAngleRL
+	const DirectX::SimpleMath::Quaternion& currentAngle
 )
 {
 	using namespace DirectX::SimpleMath;
 
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// 現在の位置を更新する
-	m_currentPosition = currentPosition;
-	// 現在の回転角を更新する
-	m_currentAngleRL = currentAngleRL;
-
 	// マウスステートの取得
 	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
 
 	if (m_tankType == Type::PLAYER)
 	{
-		// マウスの移動量を取得して回転させる
-		m_cannonAngle -= static_cast<float>(mouseState.y) * 0.001f;
-
+		//マウスの移動量を取得して回転させる
+		//float cannonAngle = 0.0f;
+		//cannonAngle -= static_cast<float>(mouseState.y)/* * 0.001f*/;
+		//m_cannonAngle *= Quaternion::CreateFromYawPitchRoll(0.0f, DirectX::XMConvertToRadians(cannonAngle), 0.0f);
 		// 砲身の向きを制限する
-		m_cannonAngle = mylib::Clamp(m_cannonAngle, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
+		//m_cannonAngle.x = mylib::Clamp(m_cannonAngle.x, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
+
+		// マウスの移動からX軸回転角を計算
+		float rotationX = static_cast<float>(mouseState.y) * 0.001f;
+		// 現在の砲身角度をクォータニオンからオイラー角に変換
+		DirectX::SimpleMath::Vector3 eulerAngles = m_cannonAngle.ToEuler();
+		// 砲身のX軸回転を更新
+		eulerAngles.x -= rotationX;
+		// X軸の回転範囲をクランプ（範囲制限）
+		eulerAngles.x = mylib::Clamp(eulerAngles.x, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
+		// クランプされたオイラー角をクォータニオンに変換して適用
+		m_cannonAngle = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(eulerAngles.y, eulerAngles.x, eulerAngles.z);
+		
 
 		// 弾の発射
 		if (mouseState.leftButton)
@@ -155,6 +163,11 @@ void TankCannon::Update(
 			m_shotTimer = ENEMY_SHOT_INTERVAL;
 		}
 	}
+
+	// 現在の位置を更新する
+	m_currentPosition = currentPosition + m_initialPosition;
+	// 現在の回転角を更新する
+	m_currentAngle = currentAngle * m_initialAngle;
 }
 
 // 描画処理
@@ -164,10 +177,12 @@ void TankCannon::Render()
 
 	// ワールド行列を生成する
 	m_worldMatrix = Matrix::CreateScale(0.5f);
-	m_worldMatrix *= Matrix::CreateRotationX(m_cannonAngle);
+	//m_worldMatrix *= Matrix::CreateRotationX(m_cannonAngle);
+	
+	m_worldMatrix *= Matrix::CreateFromQuaternion(m_cannonAngle);
 	m_worldMatrix *= Matrix::CreateTranslation(Vector3(0.0f, 0.0f, -0.3f));
-	m_worldMatrix *= Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle);
-	m_worldMatrix *= Matrix::CreateTranslation(m_currentPosition + m_initialPosition);
+	m_worldMatrix *= Matrix::CreateFromQuaternion(m_currentAngle);
+	m_worldMatrix *= Matrix::CreateTranslation(m_currentPosition);
 	
 	// 「砲身」を描画する
 	m_graphics->DrawModel(m_model, m_worldMatrix);
@@ -177,8 +192,9 @@ void TankCannon::Render()
 	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 
 	// 照準の描画
-	Matrix matrix = Matrix::CreateRotationX(m_cannonAngle) * Matrix::CreateRotationY(m_currentAngleRL + m_initialAngle);
-	m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
+	Quaternion rotation = m_cannonAngle * m_currentAngle;
+	Matrix matrix = Matrix::CreateFromQuaternion(rotation);
+	//m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
 	
 	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();
@@ -202,23 +218,24 @@ void TankCannon::Render()
 		if (distance <= maxDistance && isHit)
 		{
 			// 衝突点計算
-			hitPosition = Vector3{ ray.position + ray.direction * distance - ray.direction};
+			hitPosition = Vector3{ ray.position + ray.direction * distance - ray.direction * 1.5f};
 			mylib::DebugLog(hitPosition);
 			// 赤い照準を出す
 			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
+			break;
 		}
 		// 射程範囲外または当たっていない
 		else
 		{
 			// 照準画像の表示場所計算
-			hitPosition = Vector3{ ray.position + ray.direction * maxDistance};
+			hitPosition = Vector3{ ray.position + ray.direction * maxDistance - ray.direction * 1.5f };
 			mylib::DebugLog("out of range");
 			// 黒い照準を出す
 			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
 		}
-		// 照準画像の表示
-		m_drawTexture->Render(hitPosition);
 	}
+	// 照準画像の表示
+	m_drawTexture->Render(hitPosition);
 }
 
 // 終了処理
@@ -232,10 +249,8 @@ void TankCannon::Shoot(IBullet* bullet)
 	bullet->SetPosition(this->GetMuzzlePosition());
 	// コライダー座標の更新
 	bullet->SetColliderPosition(this->GetMuzzlePosition());
-	// 「砲弾」初期左右角を設定する
-	bullet->SetAngleRL(m_currentAngleRL);
-	// 「砲弾」初期上下角を設定する
-	bullet->SetAngleUD(m_cannonAngle);
+	// 「砲弾」角度を設定する
+	bullet->SetAngle(m_currentAngle * m_cannonAngle);
 	// 「砲弾」を発射する
 	bullet->SetBulletState(IBullet::FLYING);
 }
@@ -245,15 +260,12 @@ DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 {
 	using namespace DirectX::SimpleMath;
 
-	Vector3 position = m_currentPosition + m_initialPosition;
-	float angle = m_currentAngleRL + m_initialAngle;
-
-	DirectX::SimpleMath::Matrix rotationX = DirectX::SimpleMath::Matrix::CreateRotationX(m_cannonAngle);
-	DirectX::SimpleMath::Matrix rotationY = DirectX::SimpleMath::Matrix::CreateRotationY(angle);
-	DirectX::SimpleMath::Matrix combinedRotation = rotationX * rotationY;
-
+	// 砲身の先端に対するオフセットベクトル
 	DirectX::SimpleMath::Vector3 muzzleOffset = DirectX::SimpleMath::Vector3(0.0f, 0.0f, -0.8f);
 
-	// 軸の位置に回転を適用して砲身の先端の座標を求める
-	return DirectX::SimpleMath::Vector3::Transform(muzzleOffset, combinedRotation) + position;
+	// Quaternion から Matrix を作成して Transform を適用
+	Matrix rotationMatrix = Matrix::CreateFromQuaternion(m_cannonAngle * m_currentAngle);
+
+	// 回転をオフセットに適用し、砲身の先端座標を計算
+	return Vector3::Transform(muzzleOffset, rotationMatrix) + m_currentPosition;
 }
