@@ -126,6 +126,9 @@ void PlayScene::Initialize()
 		wallPointers.push_back(wall.get());
 	}
 	m_playerTank->SetWalls(wallPointers);
+
+	test = std::make_unique<PlayerTank>();
+	test->Initialize();
 }
 
 //---------------------------------------------------------
@@ -165,6 +168,8 @@ void PlayScene::Update(float elapsedTime)
 		this->ChangeCameraType();
 		//m_tpsCamera->StartShakeCamera();
 	}
+
+	test->Update(elapsedTime);
 }
 
 //---------------------------------------------------------
@@ -216,6 +221,8 @@ void PlayScene::Render()
 		enemyTank->Render();
 	}
 	m_playerTank->Render();
+
+	test->Render();
 
 	// デバッグ情報を「DebugString」で表示する
 #ifdef _DEBUG

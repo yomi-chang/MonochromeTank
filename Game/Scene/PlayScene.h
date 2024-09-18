@@ -10,6 +10,8 @@
 #include "Game/Objects/Other/SkySphere.h"
 #include "Game/Objects/Stage/Wall.h"
 
+#include "Game/Objects/NewTank/PlayerTank.h"
+
 namespace mylib
 {
 	class DebugCamera;
@@ -58,6 +60,8 @@ private:
 
 	// ステージ
 	std::vector<std::unique_ptr<Wall>> m_walls;
+
+	std::unique_ptr<PlayerTank> test;
 
 public:
 	PlayScene();

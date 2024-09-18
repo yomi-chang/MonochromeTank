@@ -63,23 +63,14 @@ void TankTurret::Update(
 
 	if (m_tankType == Type::PLAYER)
 	{
-		//// マウスの移動量を取得して回転させる
-		//float turretAngle = 0.0f;
-		//turretAngle += static_cast<float>(mouseState.x) * 0.0001f;
-		//m_turretAngle *= Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(turretAngle), 0.0f, 0.0f);
-		//// 回転の制限
-		//m_turretAngle.y = mylib::Clamp(m_turretAngle.y, TURRET_ANGLEUD_MIN, TURRET_ANGLEUD_MAX);
-
-		// マウスの移動からX軸回転角を計算
-		float rotationY = static_cast<float>(mouseState.x) * 0.001f;
-		// 現在の砲身角度をクォータニオンからオイラー角に変換
-		DirectX::SimpleMath::Vector3 eulerAngles = m_turretAngle.ToEuler();
-		// 砲身のX軸回転を更新
-		eulerAngles.y -= rotationY;
-		// X軸の回転範囲をクランプ（範囲制限）
-		eulerAngles.y = mylib::Clamp(eulerAngles.y, TURRET_ANGLEUD_MIN, TURRET_ANGLEUD_MAX);
-		// クランプされたオイラー角をクォータニオンに変換して適用
-		m_turretAngle = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(eulerAngles.y, eulerAngles.x, eulerAngles.z);
+		// 回転させる量
+		float rotationValue = static_cast<float>(mouseState.x) * 0.001f;
+		// 現在の砲身角度をクォータニオンからオイラー角に変換して回転量を加える
+		float eulerAngle = m_turretAngle.ToEuler().y - rotationValue;
+		// 砲塔の回転を制限する
+		eulerAngle = mylib::Clamp(eulerAngle, TURRET_ANGLEUD_MIN, TURRET_ANGLEUD_MAX);
+		// オイラー角をクォータニオンに変換して適用
+		m_turretAngle = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(eulerAngle, 0.0f,0.0f);
 	}
 
 	// 現在の位置の更新

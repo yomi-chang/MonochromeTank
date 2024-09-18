@@ -73,24 +73,15 @@ void TankCannon::Update(
 
 	if (m_tankType == Type::PLAYER)
 	{
-		//マウスの移動量を取得して回転させる
-		//float cannonAngle = 0.0f;
-		//cannonAngle -= static_cast<float>(mouseState.y)/* * 0.001f*/;
-		//m_cannonAngle *= Quaternion::CreateFromYawPitchRoll(0.0f, DirectX::XMConvertToRadians(cannonAngle), 0.0f);
-		// 砲身の向きを制限する
-		//m_cannonAngle.x = mylib::Clamp(m_cannonAngle.x, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
+		// 回転させる量
+		float rotationValue = static_cast<float>(mouseState.y) * 0.001f;
+		// 現在の砲身角度をクォータニオンからオイラー角に変換して回転量を加える
+		float eulerAngle = m_cannonAngle.ToEuler().x - rotationValue;
+		// 砲塔の回転を制限する
+		eulerAngle = mylib::Clamp(eulerAngle, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
+		// オイラー角をクォータニオンに変換して適用
+		m_cannonAngle = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(0.0f, eulerAngle, 0.0f);
 
-		// マウスの移動からX軸回転角を計算
-		float rotationX = static_cast<float>(mouseState.y) * 0.001f;
-		// 現在の砲身角度をクォータニオンからオイラー角に変換
-		DirectX::SimpleMath::Vector3 eulerAngles = m_cannonAngle.ToEuler();
-		// 砲身のX軸回転を更新
-		eulerAngles.x -= rotationX;
-		// X軸の回転範囲をクランプ（範囲制限）
-		eulerAngles.x = mylib::Clamp(eulerAngles.x, CANON_ANGLEUD_MIN, CANON_ANGLEUD_MAX);
-		// クランプされたオイラー角をクォータニオンに変換して適用
-		m_cannonAngle = DirectX::SimpleMath::Quaternion::CreateFromYawPitchRoll(eulerAngles.y, eulerAngles.x, eulerAngles.z);
-		
 
 		// 弾の発射
 		if (mouseState.leftButton)
@@ -218,7 +209,7 @@ void TankCannon::Render()
 		if (distance <= maxDistance && isHit)
 		{
 			// 衝突点計算
-			hitPosition = Vector3{ ray.position + ray.direction * distance - ray.direction * 1.5f};
+			hitPosition = Vector3{ ray.position + ray.direction * distance - ray.direction};
 			mylib::DebugLog(hitPosition);
 			// 赤い照準を出す
 			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
@@ -228,8 +219,8 @@ void TankCannon::Render()
 		else
 		{
 			// 照準画像の表示場所計算
-			hitPosition = Vector3{ ray.position + ray.direction * maxDistance - ray.direction * 1.5f };
-			mylib::DebugLog("out of range");
+			hitPosition = Vector3{ ray.position + ray.direction * maxDistance - ray.direction};
+			//mylib::DebugLog("out of range");
 			// 黒い照準を出す
 			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
 		}

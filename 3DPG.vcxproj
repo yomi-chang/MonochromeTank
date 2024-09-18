@@ -190,6 +190,11 @@
     <ClInclude Include="Game\Collider\SphereCollider.h" />
     <ClInclude Include="Game\Objects\Bullet\Bullet.h" />
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
+    <ClInclude Include="Game\Objects\NewTank\NewTankBase\NewTank.h" />
+    <ClInclude Include="Game\Objects\NewTank\NewTankBase\NewTankBody.h" />
+    <ClInclude Include="Game\Objects\NewTank\NewTankBase\NewTankCannon.h" />
+    <ClInclude Include="Game\Objects\NewTank\NewTankBase\NewTankTurret.h" />
+    <ClInclude Include="Game\Objects\NewTank\PlayerTank.h" />
     <ClInclude Include="Game\Objects\Other\SkySphere.h" />
     <ClInclude Include="Game\Objects\Stage\Wall.h" />
     <ClInclude Include="Game\Objects\Tank\Tank.h" />
@@ -210,6 +215,7 @@
     <ClInclude Include="Interface\IComposite.h" />
     <ClInclude Include="Interface\ILeaf.h" />
     <ClInclude Include="Interface\IComponent.h" />
+    <ClInclude Include="Interface\IObject.h" />
     <ClInclude Include="Libraries\Microsoft\DebugDraw.h" />
     <ClInclude Include="Libraries\MyLib\CollisionMesh.h" />
     <ClInclude Include="Libraries\MyLib\DebugCamera.h" />
@@ -232,6 +238,11 @@
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
     <ClCompile Include="Game\Objects\Bullet\Bullet.cpp" />
     <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
+    <ClCompile Include="Game\Objects\NewTank\NewTankBase\NewTank.cpp" />
+    <ClCompile Include="Game\Objects\NewTank\NewTankBase\NewTankBody.cpp" />
+    <ClCompile Include="Game\Objects\NewTank\NewTankBase\NewTankCannon.cpp" />
+    <ClCompile Include="Game\Objects\NewTank\NewTankBase\NewTankTurret.cpp" />
+    <ClCompile Include="Game\Objects\NewTank\PlayerTank.cpp" />
     <ClCompile Include="Game\Objects\Other\SkySphere.cpp" />
     <ClCompile Include="Game\Objects\Stage\Wall.cpp" />
     <ClCompile Include="Game\Objects\Tank\Tank.cpp" />

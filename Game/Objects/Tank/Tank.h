@@ -32,9 +32,6 @@ public:
 	DirectX::SimpleMath::Vector3 GetTankPosition() { return m_currentPosition; }
 	// íÔÀ•W‚ğ“ü‚ê‚é
 	void SetTankPosition(DirectX::SimpleMath::Vector3 position) { m_currentPosition = position; }
-
-	
-	//float GetTankAngleRL() { return m_currentAngleRL; }
 	
 	// íÔ‚ÌŒü‚«‚Ìæ“¾
 	DirectX::SimpleMath::Quaternion GetTankAngle() { return m_currentAngle; }
