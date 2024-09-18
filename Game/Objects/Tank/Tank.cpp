@@ -58,7 +58,7 @@ void Tank::Initialize(Type type)
 	// Ô‘Ì‚Ì¶¬
 	Attach(std::make_unique<TankBody>(this, Vector3(0.0f, 0.5f, 0.0f), 0.0f));
 	// ‘•b‚Ì¶¬
-	Attach(std::make_unique<TankArmor>(this, Vector3(0.0f, 0.5f, 0.0f), 0.0f));
+	//Attach(std::make_unique<TankArmor>(this, Vector3(0.0f, 0.5f, 0.0f), 0.0f));
 
 	// ˜AË’e”z—ñ‚ğì¬‚·‚é
 	m_bullets.resize(20);

@@ -36,8 +36,12 @@ void NewTank::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	// 車体の生成
+	// 車体の生成(地面から0.5f高い座標に生成)
 	Attach(std::make_unique<NewTankBody>(this,Vector3(0.0f, 0.5f, 0.0f), 0.0f));
+
+	// 現在位置の更新
+	m_currentPosition = m_initialPosition;
+	m_currentAngle = m_initialAngle;
 }
 
 //---------------------------------------------------------
@@ -45,10 +49,6 @@ void NewTank::Initialize()
 //---------------------------------------------------------
 void NewTank::Update(float elapsedTime)
 {
-	// 現在位置の更新
-	m_currentPosition = m_initialPosition;
-	m_currentAngle = m_initialAngle;
-
 	// 部品の更新
 	for (auto& part : m_tankParts)
 	{

@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "FollowCamera.h"
 #include "Game/Screen.h"
-#include "Game/Objects/Tank/Tank.h"
+#include "Game/Objects/NewTank/PlayerTank.h"
 #include <cassert>
 
 //-------------------------------------------------------------------
@@ -31,7 +31,7 @@ mylib::FollowCamera::FollowCamera()
 // 初期化する
 //-------------------------------------------------------------------
 
-void mylib::FollowCamera::Initialize(Tank* tank)
+void mylib::FollowCamera::Initialize(PlayerTank* tank)
 {
 	// 自機情報の受け取り
 	m_tank = tank;
@@ -51,9 +51,9 @@ void mylib::FollowCamera::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	m_followUpTargetPosition = m_tank->GetTankPosition();
+	m_followUpTargetPosition = m_tank->GetPosition();
 	//float tankAngleRL = m_tank->GetTankAngleRL();
-	m_followUpTargetQuaternion = m_tank->GetTankAngle();
+	m_followUpTargetQuaternion = m_tank->GetAngle();
 
 	// 基準になる「eye」を計算する
 	DirectX::SimpleMath::Vector3 eye{ 0.0f, HEIGHT, DISTANCE };

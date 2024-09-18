@@ -1,31 +1,19 @@
 #pragma once
 #include "Interface/IObject.h"
-#include "Libraries/MyLib/FollowCamera.h"
+#include "Game/Collider/SphereCollider.h"
 
 class NewTank;
 class SphereCollider;
-class HpGauge;
 
-class Wall;
-namespace mylib
+class PlayerTank;
+class EnemyHpGauge;
+
+class SimpleTank : IObject
 {
-	class FollowCamera;
-}
-
-class PlayerTank : IObject
-{
-private:
-	// 砲塔の回転制限
-	const float TURRET_ANGLE_MIN = DirectX::XMConvertToRadians(-90.0f);
-	const float TURRET_ANGLE_MAX = DirectX::XMConvertToRadians(90.0f);
-	// 砲身の回転制限
-	const float CANNON_ANGLE_MIN = DirectX::XMConvertToRadians(-10.0f);
-	const float CANNON_ANGLE_MAX = DirectX::XMConvertToRadians(15.0f);
-
 public:
-	PlayerTank();
+	SimpleTank();
 
-	~PlayerTank()override;
+	~SimpleTank() override;
 
 	void Initialize()override;
 
@@ -34,7 +22,7 @@ public:
 		float elapsedTime,
 		const DirectX::SimpleMath::Vector3& currentPosition,
 		const DirectX::SimpleMath::Quaternion& currentAngle
-	)override{};
+	)override {};
 
 	void Render()override;
 	void Finalize()override;
@@ -52,35 +40,27 @@ private:
 	// コライダー
 	std::unique_ptr<SphereCollider> m_collider;
 	// HPゲージ
-	std::unique_ptr<HpGauge> m_hpGauge;
+	std::unique_ptr<EnemyHpGauge> m_hpGauge;
 	// ダメージ
-	float m_damege;
+	float m_damage;
 
 private:
-	void KeyBoardEvent(float elapsedTime);
-	// 移動処理
-	void Move(float elapsedTime);
-
-	// 回転処理
-	void RotateTurretCannon();
+	// プレイヤーの情報
+	PlayerTank* m_playerTank;
 
 public:
-	// 壁情報の受け取り
-	void SetWalls(std::vector<Wall*> walls);
-
 	// 座標の取得
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; }
 	// 回転角の取得
 	DirectX::SimpleMath::Quaternion GetAngle() { return m_angle; }
-
-	// 座標の受け取り
-	void SetPosition(DirectX::SimpleMath::Vector3 position);
-
 	// コライダーの取得
 	DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
+	// プレイヤーの情報の受け取り
+	void SetPlayerTank(PlayerTank* tank) { m_playerTank = tank; }
 
-	//// 「連射弾」を参照する
-	//std::vector<std::unique_ptr<IBullet>>& GetBullets();
-	//// 「砲弾」を参照する
-	//std::unique_ptr<IBullet>& GetCannonBall();
+private:
+	// 戦車と砲弾の衝突判定を行う
+	void DetectCollisionTankAndBullets();
+	// 戦車と戦車の衝突判定を行う
+	void DetectCollisionTankAndOtherTanks();
 };

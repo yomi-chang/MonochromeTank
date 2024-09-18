@@ -3,10 +3,9 @@
 	@brief	後追いカメラクラス、ばね付き
 */
 #pragma once
-//#include "Game/Objects/Tank/Tank.h"
 #include "Game/Collider/SphereCollider.h"
 
-class Tank;
+class PlayerTank;
 
 namespace mylib
 {
@@ -33,7 +32,7 @@ namespace mylib
 		DirectX::SimpleMath::Quaternion m_followUpTargetQuaternion;
 
 		// 自機
-		Tank* m_tank;
+		PlayerTank* m_tank;
 
 		// コライダー
 		std::unique_ptr<SphereCollider> m_collider;
@@ -60,7 +59,7 @@ namespace mylib
 		FollowCamera();
 		~FollowCamera() = default;
 
-		void Initialize(Tank* tank);
+		void Initialize(PlayerTank* tank);
 
 		void Update(float elapsedTime);
 

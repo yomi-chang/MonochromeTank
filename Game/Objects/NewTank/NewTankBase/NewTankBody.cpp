@@ -45,16 +45,14 @@ void NewTankBody::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	// 砲塔の生成
-	Attach(std::make_unique<NewTankTurret>(m_tank,Vector3(0.0f, 0.75f, 0.0f), 0.0f));
+	// 砲塔の生成(車体の中心から0.3f高い座標に生成)
+	Attach(std::make_unique<NewTankTurret>(m_tank,Vector3(0.0f, 0.3f, 0.0f), 0.0f));
 
 	// モデルの取得
 	m_model = Resources::GetInstance()->GetTankBodyModel();
 
 	// 戦車に車体情報を渡す
 	m_tank->SetBody(this);
-
-	m_currentAngle = m_initialAngle;
 }
 
 //---------------------------------------------------------
@@ -67,7 +65,8 @@ void NewTankBody::Update(
 )
 {
 	// 現在位置の更新
-	m_currentPosition = currentPosition /*+ m_initialPosition*/ + m_velocity;
+	m_currentPosition = currentPosition + m_initialPosition + m_velocity;
+	// 現在回転角の更新
 	m_currentAngle = currentAngle * m_initialAngle * m_bodyAngle;
 
 	// 部品の更新
@@ -87,7 +86,7 @@ void NewTankBody::Render()
 	// ワールド行列の生成
 	m_worldMatrix = Matrix::CreateScale(0.5f) *
 		Matrix::CreateFromQuaternion(m_currentAngle) *
-		Matrix::CreateTranslation(m_currentPosition + m_initialPosition);
+		Matrix::CreateTranslation(m_currentPosition);
 
 	// 「車体」の描画
 	m_graphics->DrawModel(m_model, m_worldMatrix);

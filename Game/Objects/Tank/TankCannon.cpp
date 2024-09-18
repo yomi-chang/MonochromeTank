@@ -210,7 +210,7 @@ void TankCannon::Render()
 		{
 			// Õ“Ë“_ŒvŽZ
 			hitPosition = Vector3{ ray.position + ray.direction * distance - ray.direction};
-			mylib::DebugLog(hitPosition);
+			//mylib::DebugLog(hitPosition);
 			// Ô‚¢Æ€‚ðo‚·
 			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
 			break;

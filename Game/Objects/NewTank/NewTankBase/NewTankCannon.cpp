@@ -2,6 +2,9 @@
 #include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
 #include "Game/Objects/NewTank/NewTankBase/NewTank.h"
 
+#include "Game/UserInterface/DrawTexture.h"
+#include "Game/Objects/Stage/Wall.h"
+
 #include "Game/Objects/Bullet/Bullet.h"
 #include "Game/Objects/Bullet/CannonBall.h"
 
@@ -29,6 +32,7 @@ NewTankCannon::NewTankCannon(
 	m_reloadCount{},
 	m_isReload{},
 	m_reloadBulletType{},
+	m_drawTexture{},
 	m_tank{}
 {
 	// グラフィックスの取得
@@ -70,6 +74,11 @@ void NewTankCannon::Initialize()
 	m_cannonBall = std::make_unique<CannonBall>(IBullet::UNUSED);
 	m_cannonBall->Initialize();
 
+	// テクスチャ描画クラスの生成
+	m_drawTexture = std::make_unique<DrawTexture>();
+	// 初期画像読み込み
+	m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
+
 	// 最初に発射できる弾を砲弾に設定する
 	m_bulletType = BulletType::CANNONBALL;
 	m_reloadBulletType = BulletType::CANNONBALL;
@@ -84,13 +93,6 @@ void NewTankCannon::Update(
 	const DirectX::SimpleMath::Quaternion& currentAngle
 )
 {
-	if (m_shotTimer > 0.0f)
-	{
-		// タイマーを減らす
-		m_shotTimer -= elapsedTime;
-	}
-
-
 	// 現在位置の更新
 	m_currentPosition = currentPosition + m_initialPosition;
 	m_currentAngle = currentAngle * m_initialAngle;
@@ -101,6 +103,15 @@ void NewTankCannon::Update(
 		bullet->Update(elapsedTime);
 	}
 	m_cannonBall->Update(elapsedTime);
+
+	// タイマーを減らす
+	if (m_shotTimer > 0.0f)
+	{
+		m_shotTimer -= elapsedTime;
+	}
+
+	// リロード処理
+	Reload(elapsedTime);
 }
 
 //---------------------------------------------------------
@@ -126,6 +137,9 @@ void NewTankCannon::Render()
 
 	// 「砲身」の描画
 	m_graphics->DrawModel(m_model, m_worldMatrix);
+
+	// 照準の描画
+	DisplaySight();
 }
 
 //---------------------------------------------------------
@@ -207,6 +221,84 @@ void NewTankCannon::ChangeBullet()
 	m_bulletType = (m_bulletType == BulletType::CANNONBALL) ? BulletType::BULLET : BulletType::CANNONBALL;
 }
 
+
+//---------------------------------------------------------
+// リロード開始
+//---------------------------------------------------------
+void NewTankCannon::StartReload()
+{
+	// リロード開始
+	if (m_isReload)
+		return;
+
+	// どの弾をリロードするか
+	switch (m_bulletType)
+	{
+		// 連射弾
+		case BulletType::BULLET:
+			for (auto& bullet : m_bullets)
+			{
+				// 弾が1発でも使用されていたらリロード可能
+				if (bullet->GetBulletState() == IBullet::USED)
+				{
+					m_reloadCount = BULLET_RELOAD_TIME;
+					m_reloadBulletType = BulletType::BULLET;
+					m_isReload = true;
+					mylib::DebugLog("連射弾のリロード開始");
+					return;
+				}
+			}
+			break;
+		// 砲弾
+		case BulletType::CANNONBALL:
+			if (m_cannonBall->GetBulletState() == IBullet::USED)
+			{
+				m_reloadCount = CANNONBALL_RELOAD_TIME;
+				m_reloadBulletType = BulletType::CANNONBALL;
+				m_isReload = true;
+				mylib::DebugLog("砲弾のリロード開始");
+			}
+			break;
+		default:
+			break;
+	}
+}
+
+
+//---------------------------------------------------------
+// リロード処理
+//---------------------------------------------------------
+void NewTankCannon::Reload(float elapsedTime)
+{
+	// リロード中でないなら早期リターン
+	if (!m_isReload)
+		return;
+
+	// カウントダウン
+	m_reloadCount -= elapsedTime;
+
+	// リロード完了
+	if (m_reloadCount <= 0.0f)
+	{
+		switch (m_reloadBulletType)
+		{
+			case BulletType::BULLET:
+				for (auto& bullet : m_bullets)
+				{
+					bullet->SetBulletState(IBullet::UNUSED);
+				}
+				break;
+			case BulletType::CANNONBALL:
+				m_cannonBall->SetBulletState(IBullet::UNUSED);
+				break;
+			default:
+				break;
+		}
+
+		m_isReload = false;
+	}
+}
+
 //---------------------------------------------------------
 // 砲身の先端座標取得
 //---------------------------------------------------------
@@ -220,4 +312,60 @@ DirectX::SimpleMath::Vector3 NewTankCannon::GetMuzzlePosition()
 	Matrix rotationMatrix = Matrix::CreateFromQuaternion(m_cannonAngle * m_currentAngle);
 	// 回転をオフセットに適用し、砲身の先端座標を計算
 	return Vector3::Transform(muzzleOffset, rotationMatrix) + m_currentPosition;
+}
+
+//---------------------------------------------------------
+// 照準の表示
+//---------------------------------------------------------
+void NewTankCannon::DisplaySight()
+{
+	using namespace DirectX::SimpleMath;
+
+	// プリミティブ描画を開始する
+	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+
+	// 照準の描画
+	Quaternion rotation = m_cannonAngle * m_currentAngle;
+	Matrix matrix = Matrix::CreateFromQuaternion(rotation);
+	m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
+
+	// プリミティブ描画を終了する
+	m_graphics->DrawPrimitiveEnd();
+
+
+	// Rayを飛ばして着弾方向の表示
+	// Rayの距離設定
+	float maxDistance = 5.0f;
+	// Rayの作成
+	Ray ray{ this->GetMuzzlePosition(), matrix.Forward() };
+	// 壁のボックスコライダーとの衝突判定を取る
+	Vector3 hitPosition = Vector3::Zero;
+	for (auto& wall : m_walls)
+	{
+		float distance = 0.0f;
+		// 壁との衝突判定
+		bool isHit = ray.Intersects(*wall->GetBoundingBox(), distance);
+		
+		// 射程範囲外かつ当たっている
+		if (distance <= maxDistance && isHit)
+		{
+			// 衝突点計算
+			hitPosition = Vector3{ ray.position + ray.direction * distance - ray.direction };
+			//mylib::DebugLog(hitPosition);
+			// 赤い照準を出す
+			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
+			break;
+		}
+		// 射程範囲外または当たっていない
+		else
+		{
+			// 照準画像の表示場所計算
+			hitPosition = Vector3{ ray.position + ray.direction * maxDistance - ray.direction };
+			//mylib::DebugLog("out of range");
+			// 黒い照準を出す
+			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
+		}
+	}
+	// 照準画像の表示
+	m_drawTexture->Render(hitPosition);
 }

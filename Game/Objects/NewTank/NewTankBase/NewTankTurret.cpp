@@ -44,8 +44,8 @@ void NewTankTurret::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	// 砲身の生成
-	Attach(std::make_unique<NewTankCannon>(m_tank, Vector3(0.0f, 0.75f, 0.0f), 0.0f));
+	// 砲身の生成(砲塔と同じ高さに生成)
+	Attach(std::make_unique<NewTankCannon>(m_tank, Vector3(0.0f, 0.0f, 0.0f), 0.0f));
 
 	// モデルの取得
 	m_model = Resources::GetInstance()->GetTankTurretModel();
@@ -65,12 +65,12 @@ void NewTankTurret::Update(
 {
 	// 現在位置の更新
 	m_currentPosition = currentPosition + m_initialPosition;
-	m_currentAngle = m_turretAngle * currentAngle * m_initialAngle;
+	m_currentAngle =  currentAngle * m_initialAngle * m_turretAngle;
 
 	// 部品の更新
 	for (auto& part : m_tankParts)
 	{
-		part->Update(elapsedTime, currentPosition, m_currentAngle);
+		part->Update(elapsedTime, m_currentPosition, m_currentAngle);
 	}
 }
 

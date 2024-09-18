@@ -32,10 +32,12 @@ PlayScene::PlayScene()
 	m_projection{},
 	m_isChangeScene{},
 	m_skySphere{},
-	m_playerTank{},
+	//m_playerTank{},
 	m_collisionMesh{},
 	m_enemyTanks{},
-	m_walls{}
+	m_walls{},
+	m_tank{},
+	m_enemy{}
 {
 }
 
@@ -81,8 +83,17 @@ void PlayScene::Initialize()
 	m_skySphere = std::make_unique<SkySphere>();
 
 	// 戦車
-	m_playerTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f,5.0f), 0.0f);
-	m_playerTank->Initialize(IComponent::Type::PLAYER);
+	//m_playerTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f,5.0f), 0.0f);
+	//m_playerTank->Initialize(IComponent::Type::PLAYER);
+
+	// 新しい戦車の生成
+	m_tank = std::make_unique<PlayerTank>();
+	m_tank->Initialize();
+
+	// 敵戦車
+	m_enemy = std::make_unique<SimpleTank>();
+	m_enemy->Initialize();
+	m_enemy->SetPlayerTank(m_tank.get());
 
 	//敵戦車
 	m_enemyTanks.emplace_back(std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f)));
@@ -91,15 +102,15 @@ void PlayScene::Initialize()
 	{
 		// 敵にプレイヤー戦車情報を渡す
 		enemyTank->Initialize(IComponent::Type::ENEMY);
-		enemyTank->SetOtherTank(m_playerTank.get());
+		//enemyTank->SetOtherTank(m_playerTank.get());
 
 		// プレイヤーに敵戦車情報を渡す
-		m_playerTank->SetOtherTank(enemyTank.get());
+		//m_playerTank->SetOtherTank(enemyTank.get());
 	}
 
 	// TPSカメラの生成
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
-	m_tpsCamera->Initialize(m_playerTank.get());
+	m_tpsCamera->Initialize(m_tank.get());
 
 	// コリジョンメッシュを生成する
 	m_collisionMesh = std::make_unique<mylib::CollisionMesh>();
@@ -113,11 +124,11 @@ void PlayScene::Initialize()
 	for (auto& wall : m_walls)
 	{
 		// カメラとプレイヤーの情報を渡す
-		wall->SetPlayer(m_playerTank.get());
+		wall->SetPlayer(m_tank.get());
 		wall->SetCamera(m_tpsCamera.get());
 	}
 
-	m_playerTank->SetCamera(m_tpsCamera.get());
+	//m_playerTank->SetCamera(m_tpsCamera.get());
 
 	// ポインタを取り出してからプレイヤーに渡す
 	std::vector<Wall*> wallPointers;
@@ -125,10 +136,10 @@ void PlayScene::Initialize()
 	{
 		wallPointers.push_back(wall.get());
 	}
-	m_playerTank->SetWalls(wallPointers);
+	//m_playerTank->SetWalls(wallPointers);
 
-	test = std::make_unique<PlayerTank>();
-	test->Initialize();
+	// 戦車に壁情報を渡す
+	m_tank->SetWalls(wallPointers);
 }
 
 //---------------------------------------------------------
@@ -138,21 +149,30 @@ void PlayScene::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// 戦車の更新処理
+	// 新しい戦車の更新
+	m_tank->Update(elapsedTime);
+
+	m_enemy->Update(elapsedTime);
+
 	Vector3 position(0.0f, 0.0f, 0.0f);
 	Quaternion angle = Quaternion::Identity;
-	m_playerTank->Update(elapsedTime,position,angle);
+	//m_playerTank->Update(elapsedTime,position,angle);
 
 	for (auto& enemyTank : m_enemyTanks)
 	{
 		enemyTank->Update(elapsedTime, position, angle);
 
 		// プレイヤーか敵の体力のどちらかの体力が0ならリザルトへ
-		if (enemyTank->GetDead() ||
-			m_playerTank->GetDead())
+		if (enemyTank->GetDead()/* ||
+			m_playerTank->GetDead()*/)
 		{
 			m_isChangeScene = true;
 		}
+	}
+
+	for (const auto& wall : m_walls)
+	{
+		wall->Update();
 	}
 
 	// フォローカメラを更新する
@@ -160,6 +180,8 @@ void PlayScene::Update(float elapsedTime)
 
 	// デバッグカメラを更新する
 	m_debugCamera->Update();
+
+
 
 	// Cキーを押すことでデバッグカメラとTPSカメラを切り替える
 	const auto& keyboardTracker = InputManager::GetInstance()->GetKeyboardTracker();
@@ -169,7 +191,7 @@ void PlayScene::Update(float elapsedTime)
 		//m_tpsCamera->StartShakeCamera();
 	}
 
-	test->Update(elapsedTime);
+	
 }
 
 //---------------------------------------------------------
@@ -220,13 +242,15 @@ void PlayScene::Render()
 	{
 		enemyTank->Render();
 	}
-	m_playerTank->Render();
+	//m_playerTank->Render();
 
-	test->Render();
+	// 新しい戦車の描画
+	m_tank->Render();
+	m_enemy->Render();
 
 	// デバッグ情報を「DebugString」で表示する
 #ifdef _DEBUG
-	auto debugString = m_graphics->GetDebugString();
+	/*auto debugString = m_graphics->GetDebugString();
 	debugString->AddString("Play Scene");
 	debugString->AddString(" ");
 	debugString->AddString("PlayerTank");
@@ -244,7 +268,7 @@ void PlayScene::Render()
 			debugString->AddString("value : %d", m_playerTank->GetCannonBallValue());
 		default:
 			break;
-	}
+	}*/
 #endif
 }
 

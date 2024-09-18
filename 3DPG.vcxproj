@@ -190,6 +190,7 @@
     <ClInclude Include="Game\Collider\SphereCollider.h" />
     <ClInclude Include="Game\Objects\Bullet\Bullet.h" />
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
+    <ClInclude Include="Game\Objects\NewTank\EnemyTanks\SimpleTank.h" />
     <ClInclude Include="Game\Objects\NewTank\NewTankBase\NewTank.h" />
     <ClInclude Include="Game\Objects\NewTank\NewTankBase\NewTankBody.h" />
     <ClInclude Include="Game\Objects\NewTank\NewTankBase\NewTankCannon.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
     <ClCompile Include="Game\Objects\Bullet\Bullet.cpp" />
     <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
+    <ClCompile Include="Game\Objects\NewTank\EnemyTanks\SimpleTank.cpp" />
     <ClCompile Include="Game\Objects\NewTank\NewTankBase\NewTank.cpp" />
     <ClCompile Include="Game\Objects\NewTank\NewTankBase\NewTankBody.cpp" />
     <ClCompile Include="Game\Objects\NewTank\NewTankBase\NewTankCannon.cpp" />

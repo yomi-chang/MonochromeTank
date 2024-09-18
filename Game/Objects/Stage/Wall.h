@@ -5,12 +5,12 @@ namespace mylib
 {
 	class FollowCamera;
 }
-class Tank;
+class PlayerTank;
 
 class Wall
 {
 public:
-	void SetPlayer(Tank* player) { m_player = player; }
+	void SetPlayer(PlayerTank* tank) { m_playerTank = tank; }
 
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 
@@ -23,6 +23,9 @@ public:
 
 	// デストラクタ
 	~Wall();
+
+	// 更新処理
+	void Update();
 
 	// 描画処理
 	void Render();
@@ -44,7 +47,7 @@ private:
 	std::unique_ptr<BoxCollider> m_collider;
 
 	// プレイヤー
-	Tank* m_player;
+	PlayerTank* m_playerTank;
 
 	// カメラ
 	mylib::FollowCamera* m_camera;

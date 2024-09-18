@@ -50,9 +50,11 @@ private:
 public:
 	// Šp“x‚Ìæ“¾
 	DirectX::SimpleMath::Quaternion GetAngle(){ return m_currentAngle; }
-
 	// À•W‚Ìæ“¾
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_currentPosition; }
+
+	// À•W‚Ìó‚¯æ‚è
+	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_currentPosition = position; }
 
 	// ˆÚ“®ˆ—
 	void Move(DirectX::SimpleMath::Vector3 velocity);

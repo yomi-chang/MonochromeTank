@@ -2,7 +2,7 @@
 #include "Game/Objects/Stage/Wall.h"
 #include "Framework/Graphics.h"
 #include "Libraries/MyLib/FollowCamera.h"
-#include "Game/Objects/Tank/Tank.h"
+#include "Game/Objects/NewTank/PlayerTank.h"
 
 #include "Libraries/MyLib/DebugLog.h"
 
@@ -37,15 +37,20 @@ Wall::~Wall()
 {
 }
 
-// 描画処理
-void Wall::Render()
+// 更新処理
+void Wall::Update()
 {
 	// プレイヤーとの当たり判定
-	m_player->SetTankPosition(m_player->GetTankPosition() + m_collider->CheckCollisionCollider(m_player->GetBoundingSphere()));
+	m_playerTank->SetPosition(m_playerTank->GetPosition() + m_collider->CheckCollisionCollider(m_playerTank->GetBoundingSphere()));
 
 	// カメラとの当たり判定
 	m_camera->SetEyePosition(m_camera->GetEyePosition() + m_collider->CheckCollisionCollider(m_camera->GetBoundingSphere()));
 
+}
+
+// 描画処理
+void Wall::Render()
+{
 	// カメラとの当たり判定
 	if (m_collider->CheckTriggerCollider(m_camera->GetBoundingSphere()))
 	{

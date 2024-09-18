@@ -7,6 +7,7 @@
 #include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
 
 #include "Game/Collider/SphereCollider.h"
+#include "Game/UserInterface/HpGauge.h"
 
 #include "Framework/InputManager.h"
 #include "Libraries/MyLib/Math.h"
@@ -26,18 +27,74 @@ void PlayerTank::Initialize()
 
 	// 戦車の生成
 	Vector3 initialPosition = Vector3::Zero;
-
 	m_tank = std::make_unique<NewTank>(initialPosition, 0.0f);
 	m_tank->Initialize();
 
 	// コライダーの作成
 	m_collider = std::make_unique<SphereCollider>();
-	m_collider->CreateBoundingSphere(initialPosition, 1.0f);
+	m_collider->CreateBoundingSphere(m_tank->GetBody()->GetPosition(), 1.0f);
+
+	// HPゲージの作成
+	m_hpGauge = std::make_unique<HpGauge>();
+	m_hpGauge->Initialize(Vector2{ 200,50 });
 }
 
 void PlayerTank::Update(float elapsedTime)
 {
+	KeyBoardEvent(elapsedTime);
+
+	// 戦車の更新
+	m_tank->Update(elapsedTime);
+
+	// 座標と回転角の更新
+	m_position = m_tank->GetBody()->GetPosition();
+	m_angle = m_tank->GetBody()->GetAngle();
+
+	// コライダーの更新
+	m_collider->Update(m_position);
+
+	// ダメージの初期化
+	m_damege = 0.0f;
+	// 衝突判定
+	// ダメージ処理
+	m_hpGauge->Damage(m_damege);
+}
+
+void PlayerTank::Render()
+{
+	// 戦車の描画
+	m_tank->Render();
+
+	// コライダーの描画
+	m_collider->Render();
+
+	// HPゲージ
+	m_hpGauge->Render();
+}
+
+void PlayerTank::Finalize()
+{
+}
+
+void PlayerTank::Attach(std::unique_ptr<IObject> parts)
+{
+}
+
+void PlayerTank::Detach(std::unique_ptr<IObject> parts)
+{
+}
+
+
+// キーボードイベント
+void PlayerTank::KeyBoardEvent(float elapsedTime)
+{
+	using namespace DirectX::SimpleMath;
+	using namespace DirectX;
+
+	// 移動処理
 	Move(elapsedTime);
+
+	// 砲塔と砲身の回転
 	RotateTurretCannon();
 
 	// 弾の発射
@@ -54,32 +111,12 @@ void PlayerTank::Update(float elapsedTime)
 		m_tank->GetCannon()->ChangeBullet();
 	}
 
-	// 戦車の更新
-	m_tank->Update(elapsedTime);
-
-	// コライダーの更新
-	m_collider->Update(m_tank->GetBody()->GetPosition());
-}
-
-void PlayerTank::Render()
-{
-	// 戦車の描画
-	m_tank->Render();
-
-	// コライダーの描画
-	m_collider->Render();
-}
-
-void PlayerTank::Finalize()
-{
-}
-
-void PlayerTank::Attach(std::unique_ptr<IObject> parts)
-{
-}
-
-void PlayerTank::Detach(std::unique_ptr<IObject> parts)
-{
+	// リロード
+	const auto& mouseTracker = InputManager::GetInstance()->GetMouseTracker();
+	if (mouseTracker->rightButton == mouseTracker->PRESSED)
+	{
+		m_tank->GetCannon()->StartReload();
+	}
 }
 
 // 移動処理
@@ -136,3 +173,23 @@ void PlayerTank::RotateTurretCannon()
 	// 回転情報を砲身に伝える
 	m_tank->GetCannon()->RotateCannon(eulerAngle);
 }
+
+void PlayerTank::SetWalls(std::vector<Wall*> walls)
+{
+	m_tank->GetCannon()->SetWalls(walls);
+}
+
+void PlayerTank::SetPosition(DirectX::SimpleMath::Vector3 position)
+{
+	m_tank->GetBody()->SetPosition(position);
+}
+
+//std::vector<std::unique_ptr<IBullet>>& PlayerTank::GetBullets()
+//{
+//	return m_tank->GetCannon()->GetBullets();
+//}
+//
+//std::unique_ptr<IBullet>& PlayerTank::GetCannonBall()
+//{
+//	return m_tank->GetCannon()->GetCannonBall();
+//}

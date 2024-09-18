@@ -11,6 +11,7 @@
 #include "Game/Objects/Stage/Wall.h"
 
 #include "Game/Objects/NewTank/PlayerTank.h"
+#include "Game/Objects/NewTank/EnemyTanks/SimpleTank.h"
 
 namespace mylib
 {
@@ -52,7 +53,7 @@ private:
 
 	// ゲームオブジェクト
 	std::unique_ptr<SkySphere> m_skySphere;
-	std::unique_ptr<Tank> m_playerTank;
+	//std::unique_ptr<Tank> m_playerTank;
 	std::vector<std::unique_ptr<Tank>> m_enemyTanks;
 	
 	// コリジョンメッシュ
@@ -61,7 +62,10 @@ private:
 	// ステージ
 	std::vector<std::unique_ptr<Wall>> m_walls;
 
-	std::unique_ptr<PlayerTank> test;
+	// プレイヤーの戦車
+	std::unique_ptr<PlayerTank> m_tank;
+	// 敵戦車
+	std::unique_ptr<SimpleTank> m_enemy;
 
 public:
 	PlayScene();

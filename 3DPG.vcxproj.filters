@@ -108,6 +108,7 @@
     <ClInclude Include="Game\Objects\NewTank\NewTankBase\NewTankCannon.h" />
     <ClInclude Include="Game\Objects\NewTank\NewTankBase\NewTankTurret.h" />
     <ClInclude Include="Game\Objects\NewTank\PlayerTank.h" />
+    <ClInclude Include="Game\Objects\NewTank\EnemyTanks\SimpleTank.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -162,6 +163,7 @@
     <ClCompile Include="Game\Objects\NewTank\NewTankBase\NewTankCannon.cpp" />
     <ClCompile Include="Game\Objects\NewTank\NewTankBase\NewTankTurret.cpp" />
     <ClCompile Include="Game\Objects\NewTank\PlayerTank.cpp" />
+    <ClCompile Include="Game\Objects\NewTank\EnemyTanks\SimpleTank.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

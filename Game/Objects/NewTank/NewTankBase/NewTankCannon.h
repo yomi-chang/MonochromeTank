@@ -3,6 +3,8 @@
 #include "Interface/IBullet.h"
 
 class NewTank;
+class Wall;
+class DrawTexture;
 
 class NewTankCannon : public IObject
 {
@@ -70,7 +72,10 @@ private:
 	BulletType m_reloadBulletType;						// リロードしている弾の種類
 	float m_shotTimer;									// 砲弾発射タイマー
 	
-	NewTank* m_tank;
+	std::unique_ptr<DrawTexture> m_drawTexture;			// 画像の描画
+	std::vector<Wall*> m_walls;							// 壁
+
+	NewTank* m_tank;									// 戦車情報
 
 
 public:
@@ -89,6 +94,31 @@ public:
 	// 発射する弾の変更
 	void ChangeBullet();
 
+	// リロード
+	void StartReload();
+
+	// 壁情報の受け取り
+	void SetWalls(std::vector<Wall*> walls)
+	{
+		for (Wall* wall : walls)
+		{
+			m_walls.emplace_back(wall);
+		}
+	}
+
+	// 「連射弾」を参照する
+	//std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
+
+	// 「砲弾」を参照する
+	//std::unique_ptr<IBullet>& GetCannonBall() { return m_cannonBall; }
+
+private:
+	// 照準の表示
+	void DisplaySight();
+
 	// 銃口の座標を取得する
 	DirectX::SimpleMath::Vector3 GetMuzzlePosition();
+
+	// リロード処理
+	void Reload(float elapsedTime);
 };
