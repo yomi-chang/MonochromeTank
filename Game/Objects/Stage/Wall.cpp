@@ -37,20 +37,17 @@ Wall::~Wall()
 {
 }
 
-// 更新処理
-void Wall::Update()
+// 描画処理
+void Wall::Render()
 {
+
 	// プレイヤーとの当たり判定
-	m_playerTank->SetPosition(m_playerTank->GetPosition() + m_collider->CheckCollisionCollider(m_playerTank->GetBoundingSphere()));
+	//m_playerTank->SetPosition(/*m_playerTank->GetPosition() + */m_collider->CheckCollisionCollider(m_playerTank->GetBoundingSphere()));
+	m_playerTank->SetPosition(m_collider->CheckCollisionCollider(m_playerTank->GetBoundingSphere()));
 
 	// カメラとの当たり判定
 	m_camera->SetEyePosition(m_camera->GetEyePosition() + m_collider->CheckCollisionCollider(m_camera->GetBoundingSphere()));
 
-}
-
-// 描画処理
-void Wall::Render()
-{
 	// カメラとの当たり判定
 	if (m_collider->CheckTriggerCollider(m_camera->GetBoundingSphere()))
 	{

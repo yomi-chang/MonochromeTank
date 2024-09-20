@@ -181,7 +181,7 @@ void PlayerTank::SetWalls(std::vector<Wall*> walls)
 
 void PlayerTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 {
-	m_tank->GetBody()->SetPosition(position);
+	m_tank->GetBody()->SetCollisionVel(position);
 }
 
 //std::vector<std::unique_ptr<IBullet>>& PlayerTank::GetBullets()

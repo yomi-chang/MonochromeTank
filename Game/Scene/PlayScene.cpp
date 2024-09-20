@@ -170,11 +170,6 @@ void PlayScene::Update(float elapsedTime)
 		}
 	}
 
-	for (const auto& wall : m_walls)
-	{
-		wall->Update();
-	}
-
 	// フォローカメラを更新する
 	m_tpsCamera->Update(elapsedTime);
 

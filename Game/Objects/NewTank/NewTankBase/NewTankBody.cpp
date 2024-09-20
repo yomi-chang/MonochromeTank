@@ -22,7 +22,8 @@ NewTankBody::NewTankBody(
 	m_model{},
 	m_bodyAngle{},
 	m_velocity{},
-	m_tank{}
+	m_tank{},
+	m_collisionVel{}
 {
 	// グラフィックスの取得
 	m_graphics = Graphics::GetInstance();
@@ -64,10 +65,15 @@ void NewTankBody::Update(
 	const DirectX::SimpleMath::Quaternion& currentAngle
 )
 {
+	mylib::DebugLog(m_collisionVel);
+
 	// 現在位置の更新
-	m_currentPosition = currentPosition + m_initialPosition + m_velocity;
+	m_currentPosition = currentPosition + m_initialPosition + m_velocity + m_collisionVel;
 	// 現在回転角の更新
 	m_currentAngle = currentAngle * m_initialAngle * m_bodyAngle;
+
+	// 衝突の移動量のリセット
+	m_collisionVel = DirectX::SimpleMath::Vector3::Zero;
 
 	// 部品の更新
 	for (auto& part : m_tankParts)

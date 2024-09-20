@@ -47,11 +47,23 @@ private:
 	DirectX::SimpleMath::Vector3 m_velocity;
 	NewTank* m_tank;
 
+	DirectX::SimpleMath::Vector3 m_collisionVel;
+
 public:
 	// Šp“x‚Ìæ“¾
 	DirectX::SimpleMath::Quaternion GetAngle(){ return m_currentAngle; }
 	// À•W‚Ìæ“¾
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_currentPosition; }
+
+	void SetCollisionVel(DirectX::SimpleMath::Vector3 vel) 
+	{
+		if (vel == DirectX::SimpleMath::Vector3::Zero)
+			return;
+
+		m_collisionVel += vel;
+	}
+
+	DirectX::SimpleMath::Vector3 GetVelocity() { return m_velocity; }
 
 	// À•W‚Ìó‚¯æ‚è
 	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_currentPosition = position; }
