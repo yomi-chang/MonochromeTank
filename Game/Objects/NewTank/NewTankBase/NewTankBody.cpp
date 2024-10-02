@@ -21,7 +21,6 @@ NewTankBody::NewTankBody(
 	m_worldMatrix{},
 	m_model{},
 	m_bodyAngle{},
-	m_velocity{},
 	m_tank{},
 	m_collisionVel{}
 {
@@ -54,6 +53,9 @@ void NewTankBody::Initialize()
 
 	// 戦車に車体情報を渡す
 	m_tank->SetBody(this);
+
+	// 初期座標の確定
+	m_currentPosition = m_initialPosition + m_tank->GetInitialPosition();
 }
 
 //---------------------------------------------------------
@@ -67,13 +69,8 @@ void NewTankBody::Update(
 {
 	mylib::DebugLog(m_collisionVel);
 
-	// 現在位置の更新
-	m_currentPosition = currentPosition + m_initialPosition + m_velocity + m_collisionVel;
 	// 現在回転角の更新
 	m_currentAngle = currentAngle * m_initialAngle * m_bodyAngle;
-
-	// 衝突の移動量のリセット
-	m_collisionVel = DirectX::SimpleMath::Vector3::Zero;
 
 	// 部品の更新
 	for (auto& part : m_tankParts)
@@ -135,7 +132,7 @@ void NewTankBody::Detach(std::unique_ptr<IObject> part)
 void NewTankBody::Move(DirectX::SimpleMath::Vector3 velocity)
 {
 	// 速度の加算
-	m_velocity += velocity;
+	m_currentPosition += velocity;
 }
 
 //---------------------------------------------------------

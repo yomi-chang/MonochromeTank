@@ -61,4 +61,7 @@ public:
 	NewTankTurret* GetTurret() { return m_turret; }
 	// –Cgî•ñ‚Ìó‚¯æ‚è
 	NewTankCannon* GetCannon() { return m_cannon; }
+
+	// ‰ŠúÀ•W‚Ìó‚¯æ‚è
+	DirectX::SimpleMath::Vector3 GetInitialPosition(){ return m_initialPosition; }
 };

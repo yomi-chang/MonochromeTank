@@ -43,7 +43,7 @@ void Wall::Render()
 
 	// プレイヤーとの当たり判定
 	//m_playerTank->SetPosition(/*m_playerTank->GetPosition() + */m_collider->CheckCollisionCollider(m_playerTank->GetBoundingSphere()));
-	m_playerTank->SetPosition(m_collider->CheckCollisionCollider(m_playerTank->GetBoundingSphere()));
+	m_playerTank->SetPosition(m_collider->CheckCollisionCollider(m_playerTank->GetBoundingBox()));
 
 	// カメラとの当たり判定
 	m_camera->SetEyePosition(m_camera->GetEyePosition() + m_collider->CheckCollisionCollider(m_camera->GetBoundingSphere()));

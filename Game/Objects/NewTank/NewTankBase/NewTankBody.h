@@ -44,7 +44,6 @@ private:
 	DirectX::Model* m_model;								// モデル
 
 	DirectX::SimpleMath::Quaternion m_bodyAngle;
-	DirectX::SimpleMath::Vector3 m_velocity;
 	NewTank* m_tank;
 
 	DirectX::SimpleMath::Vector3 m_collisionVel;
@@ -55,15 +54,15 @@ public:
 	// 座標の取得
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_currentPosition; }
 
+	// 押し戻しベクトルの設定
 	void SetCollisionVel(DirectX::SimpleMath::Vector3 vel) 
 	{
+		// 押し戻しのベクトルが0なら処理を行わない
 		if (vel == DirectX::SimpleMath::Vector3::Zero)
 			return;
 
-		m_collisionVel += vel;
+		m_currentPosition += vel;
 	}
-
-	DirectX::SimpleMath::Vector3 GetVelocity() { return m_velocity; }
 
 	// 座標の受け取り
 	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_currentPosition = position; }

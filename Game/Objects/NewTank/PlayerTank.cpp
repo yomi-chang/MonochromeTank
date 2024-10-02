@@ -6,7 +6,7 @@
 #include "Game/Objects/NewTank/NewTankBase/NewTankTurret.h"
 #include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
 
-#include "Game/Collider/SphereCollider.h"
+#include "Game/Collider/BoxCollider.h"
 #include "Game/UserInterface/HpGauge.h"
 
 #include "Framework/InputManager.h"
@@ -31,8 +31,8 @@ void PlayerTank::Initialize()
 	m_tank->Initialize();
 
 	// コライダーの作成
-	m_collider = std::make_unique<SphereCollider>();
-	m_collider->CreateBoundingSphere(m_tank->GetBody()->GetPosition(), 1.0f);
+	m_collider = std::make_unique<BoxCollider>();
+	m_collider->CreateBoundingBox(m_tank->GetBody()->GetPosition(), Vector3(1.2f, 1.2f, 1.2f));
 
 	// HPゲージの作成
 	m_hpGauge = std::make_unique<HpGauge>();
@@ -41,6 +41,7 @@ void PlayerTank::Initialize()
 
 void PlayerTank::Update(float elapsedTime)
 {
+	// キー入力の処理
 	KeyBoardEvent(elapsedTime);
 
 	// 戦車の更新
@@ -55,7 +56,7 @@ void PlayerTank::Update(float elapsedTime)
 
 	// ダメージの初期化
 	m_damege = 0.0f;
-	// 衝突判定
+
 	// ダメージ処理
 	m_hpGauge->Damage(m_damege);
 }

@@ -112,9 +112,9 @@ void SimpleTank::DetectCollisionTankAndBullets()
 // íŽÔ‚ÆíŽÔ‚ÌÕ“Ë”»’è‚ðs‚¤
 void SimpleTank::DetectCollisionTankAndOtherTanks()
 {
-	if (m_collider->CheckTriggerCollider(m_playerTank->GetBoundingSphere()))
-	{
-		m_position += m_collider->CheckCollisionCollider(m_playerTank->GetBoundingSphere());
-		//m_damage += 0.0001f;
-	}
+	//if (m_collider->CheckTriggerCollider(m_playerTank->GetBoundingSphere()))
+	//{
+	//	m_position += m_collider->CheckCollisionCollider(m_playerTank->GetBoundingSphere());
+	//	//m_damage += 0.0001f;
+	//}
 }
