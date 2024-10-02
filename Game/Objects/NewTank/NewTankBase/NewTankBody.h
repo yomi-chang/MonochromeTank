@@ -55,14 +55,7 @@ public:
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_currentPosition; }
 
 	// 押し戻しベクトルの設定
-	void SetCollisionVel(DirectX::SimpleMath::Vector3 vel) 
-	{
-		// 押し戻しのベクトルが0なら処理を行わない
-		if (vel == DirectX::SimpleMath::Vector3::Zero)
-			return;
-
-		m_currentPosition += vel;
-	}
+	void SetCollisionVel(DirectX::SimpleMath::Vector3 vel) { m_currentPosition += vel;}
 
 	// 座標の受け取り
 	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_currentPosition = position; }

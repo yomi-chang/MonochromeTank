@@ -32,8 +32,8 @@ void SimpleTank::Initialize()
 	m_tank->Initialize();
 
 	// ƒRƒ‰ƒCƒ_[‚Ìì¬
-	m_collider = std::make_unique<SphereCollider>();
-	m_collider->CreateBoundingSphere(m_tank->GetBody()->GetPosition(), 1.0f);
+	m_collider = std::make_unique<BoxCollider>();
+	m_collider->CreateBoundingBox(m_tank->GetBody()->GetPosition(), Vector3(1.2f, 1.2f, 1.2f));
 
 	// “G‘Ì—ÍƒQ[ƒW‚ğ¶¬
 	m_hpGauge = std::make_unique<EnemyHpGauge>();
@@ -88,33 +88,30 @@ void SimpleTank::Detach(std::unique_ptr<IObject> parts)
 // íÔ‚Æ’e‚ÌÕ“Ë”»’è
 void SimpleTank::DetectCollisionTankAndBullets()
 {
-	//// ’eŠÛ‚ÆíÔ‚Ì“–‚½‚è”»’è
-	//// ˜AË’e
-	//for (auto& bullet : m_playerTank->GetBullets())
-	//{
-	//	// ’eŠÛ‚ª”ò‚ñ‚Å‚¢‚éA‚©‚Â“–‚½‚Á‚Ä‚¢‚é‚È‚ç
-	//	if (bullet->GetBulletState() == IBullet::FLYING &&
-	//		m_collider->CheckTriggerCollider(bullet->GetBoundingSphere()))
-	//	{
-	//		bullet->SetBulletState(IBullet::USED);
-	//		m_damage += 0.5f;
-	//	}
-	//}
-	//// –C’e
-	//if (m_playerTank->GetCannonBall()->GetBulletState() == IBullet::FLYING &&
-	//	m_collider->CheckTriggerCollider(m_playerTank->GetCannonBall()->GetBoundingSphere()))
-	//{
-	//	m_playerTank->GetCannonBall()->SetBulletState(IBullet::USED);
-	//	m_damage += 3.0f;
-	//}
+	// ’eŠÛ‚ÆíÔ‚Ì“–‚½‚è”»’è
+	// ˜AË’e
+	for (auto& bullet : m_playerTank->GetTankCannon()->GetBullets())
+	{
+		// ’eŠÛ‚ª”ò‚ñ‚Å‚¢‚éA‚©‚Â“–‚½‚Á‚Ä‚¢‚é‚È‚ç
+		if (bullet->GetBulletState() == IBullet::FLYING &&
+			m_collider->CheckTriggerCollider(bullet->GetBoundingSphere()))
+		{
+			bullet->SetBulletState(IBullet::USED);
+			m_damage += 0.5f;
+		}
+	}
+	// –C’e
+	if (m_playerTank->GetTankCannon()->GetCannonBall()->GetBulletState() == IBullet::FLYING &&
+		m_collider->CheckTriggerCollider(m_playerTank->GetTankCannon()->GetCannonBall()->GetBoundingSphere()))
+	{
+		m_playerTank->GetTankCannon()->GetCannonBall()->SetBulletState(IBullet::USED);
+		m_damage += 3.0f;
+	}
 }
 
 // íÔ‚ÆíÔ‚ÌÕ“Ë”»’è‚ğs‚¤
 void SimpleTank::DetectCollisionTankAndOtherTanks()
 {
-	//if (m_collider->CheckTriggerCollider(m_playerTank->GetBoundingSphere()))
-	//{
-	//	m_position += m_collider->CheckCollisionCollider(m_playerTank->GetBoundingSphere());
-	//	//m_damage += 0.0001f;
-	//}
+	// ƒvƒŒƒCƒ„[‚ÌíÔ‚ğ‰Ÿ‚µ–ß‚·
+	m_playerTank->SetPosition(m_collider->CheckCollisionCollider(m_playerTank->GetBoundingBox()));
 }

@@ -1,9 +1,9 @@
 #pragma once
 #include "Interface/IObject.h"
-#include "Game/Collider/SphereCollider.h"
+#include "Game/Collider/BoxCollider.h"
 
 class NewTank;
-class SphereCollider;
+class BoxCollider;
 
 class PlayerTank;
 class EnemyHpGauge;
@@ -38,7 +38,7 @@ private:
 	// 戦車
 	std::unique_ptr<NewTank> m_tank;
 	// コライダー
-	std::unique_ptr<SphereCollider> m_collider;
+	std::unique_ptr<BoxCollider> m_collider;
 	// HPゲージ
 	std::unique_ptr<EnemyHpGauge> m_hpGauge;
 	// ダメージ
@@ -54,7 +54,9 @@ public:
 	// 回転角の取得
 	DirectX::SimpleMath::Quaternion GetAngle() { return m_angle; }
 	// コライダーの取得
-	DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
+	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
+	
+	
 	// プレイヤーの情報の受け取り
 	void SetPlayerTank(PlayerTank* tank) { m_playerTank = tank; }
 

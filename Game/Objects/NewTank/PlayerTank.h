@@ -3,6 +3,8 @@
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Game/Collider/BoxCollider.h"
 
+#include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
+
 class NewTank;
 class BoxCollider;
 class HpGauge;
@@ -79,6 +81,10 @@ public:
 
 	// コライダーの取得
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
+
+	// 砲身の取得
+	NewTankCannon* GetTankCannon();
+	
 
 	//// 「連射弾」を参照する
 	//std::vector<std::unique_ptr<IBullet>>& GetBullets();

@@ -185,12 +185,5 @@ void PlayerTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 	m_tank->GetBody()->SetCollisionVel(position);
 }
 
-//std::vector<std::unique_ptr<IBullet>>& PlayerTank::GetBullets()
-//{
-//	return m_tank->GetCannon()->GetBullets();
-//}
-//
-//std::unique_ptr<IBullet>& PlayerTank::GetCannonBall()
-//{
-//	return m_tank->GetCannon()->GetCannonBall();
-//}
+// –Cg‚ÌŽæ“¾
+NewTankCannon* PlayerTank::GetTankCannon() { return m_tank->GetCannon(); }

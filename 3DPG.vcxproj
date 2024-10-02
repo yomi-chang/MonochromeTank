@@ -185,7 +185,6 @@
     <ClInclude Include="Framework\InputManager.h" />
     <ClInclude Include="Framework\Resources.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="Game\AI\EnemyTankAi.h" />
     <ClInclude Include="Game\Collider\BoxCollider.h" />
     <ClInclude Include="Game\Collider\SphereCollider.h" />
     <ClInclude Include="Game\Objects\Bullet\Bullet.h" />
@@ -234,7 +233,6 @@
     <ClCompile Include="Framework\InputManager.cpp" />
     <ClCompile Include="Framework\Resources.cpp" />
     <ClCompile Include="Game.cpp" />
-    <ClCompile Include="Game\AI\EnemyTankAi.cpp" />
     <ClCompile Include="Game\Collider\BoxCollider.cpp" />
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
     <ClCompile Include="Game\Objects\Bullet\Bullet.cpp" />

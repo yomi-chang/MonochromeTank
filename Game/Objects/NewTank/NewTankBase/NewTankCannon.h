@@ -107,10 +107,10 @@ public:
 	}
 
 	// 「連射弾」を参照する
-	//std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
+	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
 
 	// 「砲弾」を参照する
-	//std::unique_ptr<IBullet>& GetCannonBall() { return m_cannonBall; }
+	std::unique_ptr<IBullet>& GetCannonBall() { return m_cannonBall; }
 
 private:
 	// 照準の表示

@@ -93,7 +93,6 @@
     <ClInclude Include="Interface\ILeaf.h" />
     <ClInclude Include="Game\UserInterface\HpGauge.h" />
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
-    <ClInclude Include="Game\AI\EnemyTankAi.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
     <ClInclude Include="Framework\InputManager.h" />
     <ClInclude Include="Libraries\MyLib\Math.h" />
@@ -149,7 +148,6 @@
     <ClCompile Include="Game\Collider\BoxCollider.cpp" />
     <ClCompile Include="Game\UserInterface\HpGauge.cpp" />
     <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
-    <ClCompile Include="Game\AI\EnemyTankAi.cpp" />
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
     <ClCompile Include="Framework\InputManager.cpp" />
     <ClCompile Include="Libraries\MyLib\Math.cpp" />

@@ -32,9 +32,7 @@ PlayScene::PlayScene()
 	m_projection{},
 	m_isChangeScene{},
 	m_skySphere{},
-	//m_playerTank{},
 	m_collisionMesh{},
-	m_enemyTanks{},
 	m_walls{},
 	m_tank{},
 	m_enemy{}
@@ -95,19 +93,6 @@ void PlayScene::Initialize()
 	m_enemy->Initialize();
 	m_enemy->SetPlayerTank(m_tank.get());
 
-	//敵戦車
-	m_enemyTanks.emplace_back(std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f)));
-	//m_enemyTanks.emplace_back(std::make_unique<Tank>(nullptr, Vector3(10.0f, 0.0f, -10.0f), DirectX::XMConvertToRadians(180.0f)));
-	for (auto& enemyTank : m_enemyTanks)
-	{
-		// 敵にプレイヤー戦車情報を渡す
-		enemyTank->Initialize(IComponent::Type::ENEMY);
-		//enemyTank->SetOtherTank(m_playerTank.get());
-
-		// プレイヤーに敵戦車情報を渡す
-		//m_playerTank->SetOtherTank(enemyTank.get());
-	}
-
 	// TPSカメラの生成
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
 	m_tpsCamera->Initialize(m_tank.get());
@@ -158,35 +143,18 @@ void PlayScene::Update(float elapsedTime)
 	Quaternion angle = Quaternion::Identity;
 	//m_playerTank->Update(elapsedTime,position,angle);
 
-	for (auto& enemyTank : m_enemyTanks)
-	{
-		enemyTank->Update(elapsedTime, position, angle);
-
-		// プレイヤーか敵の体力のどちらかの体力が0ならリザルトへ
-		if (enemyTank->GetDead()/* ||
-			m_playerTank->GetDead()*/)
-		{
-			m_isChangeScene = true;
-		}
-	}
-
 	// フォローカメラを更新する
 	m_tpsCamera->Update(elapsedTime);
 
 	// デバッグカメラを更新する
 	m_debugCamera->Update();
 
-
-
 	// Cキーを押すことでデバッグカメラとTPSカメラを切り替える
 	const auto& keyboardTracker = InputManager::GetInstance()->GetKeyboardTracker();
 	if (keyboardTracker->IsKeyPressed(DirectX::Keyboard::C))
 	{
 		this->ChangeCameraType();
-		//m_tpsCamera->StartShakeCamera();
 	}
-
-	
 }
 
 //---------------------------------------------------------
@@ -232,14 +200,7 @@ void PlayScene::Render()
 		wall->Render();
 	}
 
-	//戦車の描画
-	for (auto& enemyTank : m_enemyTanks)
-	{
-		enemyTank->Render();
-	}
-	//m_playerTank->Render();
-
-	// 新しい戦車の描画
+	// 戦車の描画
 	m_tank->Render();
 	m_enemy->Render();
 

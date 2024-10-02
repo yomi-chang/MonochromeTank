@@ -6,7 +6,6 @@
 #include "IScene.h"
 
 #include "Framework/Graphics.h"
-#include "Game/Objects/Tank/Tank.h"
 #include "Game/Objects/Other/SkySphere.h"
 #include "Game/Objects/Stage/Wall.h"
 
@@ -54,7 +53,6 @@ private:
 	// ゲームオブジェクト
 	std::unique_ptr<SkySphere> m_skySphere;
 	//std::unique_ptr<Tank> m_playerTank;
-	std::vector<std::unique_ptr<Tank>> m_enemyTanks;
 	
 	// コリジョンメッシュ
 	std::unique_ptr<mylib::CollisionMesh> m_collisionMesh;
