@@ -32,7 +32,7 @@ void PlayerTank::Initialize()
 
 	// コライダーの作成
 	m_collider = std::make_unique<BoxCollider>();
-	m_collider->CreateBoundingBox(m_tank->GetBody()->GetPosition(), Vector3(1.2f, 1.2f, 1.2f));
+	m_collider->CreateBoundingBox(m_tank->GetPosition(), Vector3(1.2f, 1.2f, 1.2f));
 
 	// HPゲージの作成
 	m_hpGauge = std::make_unique<HpGauge>();
@@ -48,8 +48,8 @@ void PlayerTank::Update(float elapsedTime)
 	m_tank->Update(elapsedTime);
 
 	// 座標と回転角の更新
-	m_position = m_tank->GetBody()->GetPosition();
-	m_angle = m_tank->GetBody()->GetAngle();
+	m_position = m_tank->GetPosition();
+	m_angle = m_tank->GetAngle();
 
 	// コライダーの更新
 	m_collider->Update(m_position);
@@ -132,13 +132,12 @@ void PlayerTank::Move(float elapsedTime)
 	// 変数宣言
 	Vector3 velocity = Vector3::Zero;
 	float speed = elapsedTime * 3.0f;
-	Quaternion angle = Quaternion::Identity;
 
 	// 前後移動
 	if (keyboardState.W)
-		velocity += Vector3::Transform(Vector3::Forward * speed, m_tank->GetBody()->GetAngle());
+		velocity += Vector3::Transform(Vector3::Forward * speed, m_tank->GetAngle());
 	else if (keyboardState.S)
-		velocity += Vector3::Transform(Vector3::Backward * speed, m_tank->GetBody()->GetAngle());
+		velocity += Vector3::Transform(Vector3::Backward * speed, m_tank->GetAngle());
 
 	// 移動させる
 	m_tank->GetBody()->Move(velocity);
@@ -159,7 +158,7 @@ void PlayerTank::RotateTurretCannon()
 	// 砲塔の回転量
 	float rotationY = static_cast<float>(mouseState.x) * 0.001f;
 	// 砲塔角度をオイラー角に変換
-	float eulerAngle = m_tank->GetTurret()->GetTurretAngle().ToEuler().y - rotationY;
+	float eulerAngle = m_tank->GetTurretAngle().ToEuler().y - rotationY;
 	// 砲塔回転の制限
 	eulerAngle = mylib::Clamp(eulerAngle, TURRET_ANGLE_MIN, TURRET_ANGLE_MAX);
 	// 回転情報を砲塔に伝える
@@ -168,7 +167,7 @@ void PlayerTank::RotateTurretCannon()
 	// 砲身の回転量
 	float rotationX = static_cast<float>(mouseState.y) * 0.001f;
 	// 砲身角度をオイラー角に変換(受け取った値を変換)
-	eulerAngle = m_tank->GetCannon()->GetCannonAngle().ToEuler().x - rotationX;
+	eulerAngle = m_tank->GetCannonAngle().ToEuler().x - rotationX;
 	// 砲身回転の制限
 	eulerAngle = mylib::Clamp(eulerAngle, CANNON_ANGLE_MIN, CANNON_ANGLE_MAX);
 	// 回転情報を砲身に伝える

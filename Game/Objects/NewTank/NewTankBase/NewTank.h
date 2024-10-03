@@ -1,6 +1,10 @@
 #pragma once
 #include "Interface/IObject.h"
 
+#include "Game/Objects/NewTank/NewTankBase/NewTankBody.h"
+#include "Game/Objects/NewTank/NewTankBase/NewTankTurret.h"
+#include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
+
 class NewTankBody;
 class NewTankTurret;
 class NewTankCannon;
@@ -64,4 +68,13 @@ public:
 
 	// ‰ŠúÀ•W‚ÌŽó‚¯Žæ‚è
 	DirectX::SimpleMath::Vector3 GetInitialPosition(){ return m_initialPosition; }
+
+	// íŽÔÀ•W‚ÌŽó‚¯Žæ‚è
+	DirectX::SimpleMath::Vector3 GetPosition() { return m_body->GetPosition(); }
+	// íŽÔ‚ÌŠp“x‚ÌŽó‚¯Žæ‚è
+	DirectX::SimpleMath::Quaternion GetAngle() { return m_body->GetAngle(); }
+	// –C“ƒŠp“x‚ÌŽó‚¯Žæ‚è
+	DirectX::SimpleMath::Quaternion GetTurretAngle() { return m_turret->GetTurretAngle(); }
+	// –CgŠp“x‚ÌŽó‚¯Žæ‚è
+	DirectX::SimpleMath::Quaternion GetCannonAngle() { return m_cannon->GetCannonAngle(); }
 };

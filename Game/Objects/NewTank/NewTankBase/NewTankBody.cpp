@@ -67,8 +67,6 @@ void NewTankBody::Update(
 	const DirectX::SimpleMath::Quaternion& currentAngle
 )
 {
-	mylib::DebugLog(m_collisionVel);
-
 	// Œ»İ‰ñ“]Šp‚ÌXV
 	m_currentAngle = currentAngle * m_initialAngle * m_bodyAngle;
 

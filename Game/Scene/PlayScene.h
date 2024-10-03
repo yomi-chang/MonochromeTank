@@ -5,12 +5,11 @@
 #pragma once
 #include "IScene.h"
 
-#include "Framework/Graphics.h"
-#include "Game/Objects/Other/SkySphere.h"
-#include "Game/Objects/Stage/Wall.h"
-
-#include "Game/Objects/NewTank/PlayerTank.h"
-#include "Game/Objects/NewTank/EnemyTanks/SimpleTank.h"
+class Graphics;
+class SkySphere;
+class Wall;
+class PlayerTank;
+class SimpleTank;
 
 namespace mylib
 {
@@ -23,6 +22,7 @@ class PlayScene final :
 	public IScene
 {
 private:
+	// カメラの種類
 	enum CameraType
 	{
 		TPS,
@@ -30,40 +30,23 @@ private:
 	};
 
 private:
-	// グラフィックス
-	Graphics* m_graphics;
+	Graphics* m_graphics;									// グラフィックス
 
-	// デバッグカメラ
-	std::unique_ptr<mylib::DebugCamera> m_debugCamera;
+	bool m_isChangeScene;									// シーンチェンジフラグ
 
-	// 追従カメラ
-	std::unique_ptr<mylib::FollowCamera> m_tpsCamera;
+	// カメラ関係
+	std::unique_ptr<mylib::DebugCamera> m_debugCamera;		// デバッグカメラ
+	std::unique_ptr<mylib::FollowCamera> m_tpsCamera;		// 追従カメラ
+	CameraType m_cameraType;								// カメラタイプ
 
-	// カメラタイプ
-	CameraType m_cameraType;
+	// オブジェクト
+	std::unique_ptr<PlayerTank> m_player;					// プレイヤー
+	std::unique_ptr<SkySphere> m_skySphere;					// 天球
+	std::vector<std::unique_ptr<Wall>> m_walls;				// ステージ
 
-	// 射影行列
-	DirectX::SimpleMath::Matrix m_projection;
+	std::unique_ptr<mylib::CollisionMesh> m_collisionMesh;	// コリジョンメッシュ
 
-	// シーンチェンジフラグ
-	bool m_isChangeScene;
-
-	DirectX::SimpleMath::Vector3 m_velocity;
-
-	// ゲームオブジェクト
-	std::unique_ptr<SkySphere> m_skySphere;
-	//std::unique_ptr<Tank> m_playerTank;
-	
-	// コリジョンメッシュ
-	std::unique_ptr<mylib::CollisionMesh> m_collisionMesh;
-
-	// ステージ
-	std::vector<std::unique_ptr<Wall>> m_walls;
-
-	// プレイヤーの戦車
-	std::unique_ptr<PlayerTank> m_tank;
-	// 敵戦車
-	std::unique_ptr<SimpleTank> m_enemy;
+	std::unique_ptr<SimpleTank> m_enemy;					// 敵戦車
 
 public:
 	PlayScene();

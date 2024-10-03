@@ -5,15 +5,24 @@
 #include "pch.h"
 #include "PlayScene.h"
 #include "DeviceResources.h"
+
+#include "Framework/Graphics.h"
+#include "Framework/InputManager.h"
+#include "Framework/Resources.h"
+
 #include "Libraries/MyLib/DebugCamera.h"
 #include "Libraries/MyLib/DebugString.h"
-#include "Libraries/Microsoft/DebugDraw.h"
-#include "Libraries/MyLib/MemoryLeakDetector.h"
-#include "Framework/Resources.h"
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Libraries/MyLib/CollisionMesh.h"
+#include "Libraries/Microsoft/DebugDraw.h"
+#include "Libraries/MyLib/MemoryLeakDetector.h"
+
 #include "Interface/IComponent.h"
-#include "Framework/InputManager.h"
+
+#include "Game/Objects/Other/SkySphere.h"
+#include "Game/Objects/Stage/Wall.h"
+#include "Game/Objects/NewTank/PlayerTank.h"
+#include "Game/Objects/NewTank/EnemyTanks/SimpleTank.h"
 
 #include <cassert>
 
@@ -29,12 +38,11 @@ PlayScene::PlayScene()
 	m_debugCamera{},
 	m_tpsCamera{},
 	m_cameraType{CameraType::TPS},
-	m_projection{},
 	m_isChangeScene{},
 	m_skySphere{},
 	m_collisionMesh{},
 	m_walls{},
-	m_tank{},
+	m_player{},
 	m_enemy{}
 {
 }
@@ -52,6 +60,8 @@ PlayScene::~PlayScene()
 //---------------------------------------------------------
 void PlayScene::Initialize()
 {
+	using namespace DirectX::SimpleMath;
+
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	//auto states = m_graphics->GetCommonStates();
@@ -62,14 +72,15 @@ void PlayScene::Initialize()
 	m_debugCamera->Initialize(rect.right, rect.bottom);
 
 	// 射影行列を作成する
-	m_projection = SimpleMath::Matrix::CreatePerspectiveFieldOfView(
+	Matrix projection;
+	projection = Matrix::CreatePerspectiveFieldOfView(
 		XMConvertToRadians(45.0f),
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
 		0.1f, 1000.0f
 	);
 	
 	// 射影行列を設定する
-	m_graphics->SetProjectionMatrix(m_projection);
+	m_graphics->SetProjectionMatrix(projection);
 
 	// モデルの読み込み(GameClassの方がいいかも)
 	Resources::GetInstance()->LoadResource();
@@ -85,17 +96,17 @@ void PlayScene::Initialize()
 	//m_playerTank->Initialize(IComponent::Type::PLAYER);
 
 	// 新しい戦車の生成
-	m_tank = std::make_unique<PlayerTank>();
-	m_tank->Initialize();
+	m_player = std::make_unique<PlayerTank>();
+	m_player->Initialize();
 
 	// 敵戦車
 	m_enemy = std::make_unique<SimpleTank>();
 	m_enemy->Initialize();
-	m_enemy->SetPlayerTank(m_tank.get());
+	m_enemy->SetPlayerTank(m_player.get());
 
 	// TPSカメラの生成
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
-	m_tpsCamera->Initialize(m_tank.get());
+	m_tpsCamera->Initialize(m_player.get());
 
 	// コリジョンメッシュを生成する
 	m_collisionMesh = std::make_unique<mylib::CollisionMesh>();
@@ -109,11 +120,9 @@ void PlayScene::Initialize()
 	for (auto& wall : m_walls)
 	{
 		// カメラとプレイヤーの情報を渡す
-		wall->SetPlayer(m_tank.get());
+		wall->SetPlayer(m_player.get());
 		wall->SetCamera(m_tpsCamera.get());
 	}
-
-	//m_playerTank->SetCamera(m_tpsCamera.get());
 
 	// ポインタを取り出してからプレイヤーに渡す
 	std::vector<Wall*> wallPointers;
@@ -121,10 +130,8 @@ void PlayScene::Initialize()
 	{
 		wallPointers.push_back(wall.get());
 	}
-	//m_playerTank->SetWalls(wallPointers);
-
 	// 戦車に壁情報を渡す
-	m_tank->SetWalls(wallPointers);
+	m_player->SetWalls(wallPointers);
 }
 
 //---------------------------------------------------------
@@ -135,7 +142,7 @@ void PlayScene::Update(float elapsedTime)
 	UNREFERENCED_PARAMETER(elapsedTime);
 
 	// 新しい戦車の更新
-	m_tank->Update(elapsedTime);
+	m_player->Update(elapsedTime);
 
 	m_enemy->Update(elapsedTime);
 
@@ -203,7 +210,7 @@ void PlayScene::Render()
 	}
 
 	// 戦車の描画
-	m_tank->Render();
+	m_player->Render();
 	m_enemy->Render();
 
 	// デバッグ情報を「DebugString」で表示する

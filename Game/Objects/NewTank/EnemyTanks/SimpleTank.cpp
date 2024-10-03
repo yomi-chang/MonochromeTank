@@ -15,8 +15,6 @@
 #include "Libraries/MyLib/DebugLog.h"
 
 SimpleTank::SimpleTank()
-	:
-	m_isDead{}
 {
 }
 
@@ -35,7 +33,7 @@ void SimpleTank::Initialize()
 
 	// コライダーの作成
 	m_collider = std::make_unique<BoxCollider>();
-	m_collider->CreateBoundingBox(m_tank->GetBody()->GetPosition(), Vector3(1.2f, 1.2f, 1.2f));
+	m_collider->CreateBoundingBox(m_tank->GetPosition(), Vector3(1.2f, 1.2f, 1.2f));
 
 	// 敵体力ゲージを生成
 	m_hpGauge = std::make_unique<EnemyHpGauge>();
@@ -44,12 +42,19 @@ void SimpleTank::Initialize()
 
 void SimpleTank::Update(float elapsedTime)
 {
+	using namespace DirectX::SimpleMath;
+
+	// プレイヤーの方向を向く処理 ToDo：今はすぐプレイヤーの方向に向いてしまうので徐々に向けるようにする
+	Vector3 delta = m_playerTank->GetPosition() - m_position;
+	float angleRadians = atan2(delta.x, delta.z);
+	m_tank->GetTurret()->RotateTurret(angleRadians);
+
 	// 戦車の更新
 	m_tank->Update(elapsedTime);
 
 	// 座標と回転角の更新
-	m_position = m_tank->GetBody()->GetPosition();
-	m_angle = m_tank->GetBody()->GetAngle();
+	m_position = m_tank->GetPosition();
+	m_angle = m_tank->GetAngle();
 
 	// コライダーの更新
 	m_collider->Update(m_position);
