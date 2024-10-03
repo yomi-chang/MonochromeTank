@@ -43,6 +43,8 @@ private:
 	std::unique_ptr<EnemyHpGauge> m_hpGauge;
 	// ダメージ
 	float m_damage;
+	// 死亡しているかどうか
+	bool m_isDead;
 
 private:
 	// プレイヤーの情報
@@ -55,6 +57,8 @@ public:
 	DirectX::SimpleMath::Quaternion GetAngle() { return m_angle; }
 	// コライダーの取得
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
+	// 死亡情報を渡す
+	bool GetDead();
 	
 	
 	// プレイヤーの情報の受け取り

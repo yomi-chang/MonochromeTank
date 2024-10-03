@@ -15,6 +15,8 @@
 #include "Libraries/MyLib/DebugLog.h"
 
 SimpleTank::SimpleTank()
+	:
+	m_isDead{}
 {
 }
 
@@ -83,6 +85,17 @@ void SimpleTank::Attach(std::unique_ptr<IObject> parts)
 
 void SimpleTank::Detach(std::unique_ptr<IObject> parts)
 {
+}
+
+// Ž€–Sî•ñ‚ð“n‚·
+bool SimpleTank::GetDead()
+{
+	// ‘Ì—Í‚ª0‚È‚çŽ€–S”»’è
+	if (m_hpGauge->GetHp() <= 0.0f)
+	{
+		return true;
+	}
+	return false;
 }
 
 // íŽÔ‚Æ’e‚ÌÕ“Ë”»’è

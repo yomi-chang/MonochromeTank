@@ -139,10 +139,6 @@ void PlayScene::Update(float elapsedTime)
 
 	m_enemy->Update(elapsedTime);
 
-	Vector3 position(0.0f, 0.0f, 0.0f);
-	Quaternion angle = Quaternion::Identity;
-	//m_playerTank->Update(elapsedTime,position,angle);
-
 	// フォローカメラを更新する
 	m_tpsCamera->Update(elapsedTime);
 
@@ -154,6 +150,12 @@ void PlayScene::Update(float elapsedTime)
 	if (keyboardTracker->IsKeyPressed(DirectX::Keyboard::C))
 	{
 		this->ChangeCameraType();
+	}
+
+	// 敵を全て倒していたらリザルトシーンへ
+	if (m_enemy->GetDead())
+	{
+		m_isChangeScene = true;
 	}
 }
 
