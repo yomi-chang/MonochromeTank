@@ -24,6 +24,8 @@
 #include "Game/Objects/NewTank/PlayerTank.h"
 #include "Game/Objects/NewTank/EnemyTanks/SimpleTank.h"
 
+#include "Game/Objects/Stage/StageManager.h"
+
 #include <cassert>
 
 using namespace DirectX;
@@ -43,7 +45,8 @@ PlayScene::PlayScene()
 	m_collisionMesh{},
 	m_walls{},
 	m_player{},
-	m_enemy{}
+	m_enemy{},
+	m_stageManager{}
 {
 }
 
@@ -132,6 +135,10 @@ void PlayScene::Initialize()
 	}
 	// 戦車に壁情報を渡す
 	m_player->SetWalls(wallPointers);
+
+	// ステージマネージャーの生成
+	m_stageManager = std::make_unique<StageManager>();
+	m_stageManager->Initialize(m_player.get(), m_tpsCamera.get());
 }
 
 //---------------------------------------------------------
@@ -204,10 +211,11 @@ void PlayScene::Render()
 	);
 
 	// ステージの描画
-	for (auto& wall : m_walls)
+	/*for (auto& wall : m_walls)
 	{
 		wall->Render();
-	}
+	}*/
+	m_stageManager->Render();
 
 	// 戦車の描画
 	m_player->Render();

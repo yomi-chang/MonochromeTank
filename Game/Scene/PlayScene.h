@@ -10,6 +10,7 @@ class SkySphere;
 class Wall;
 class PlayerTank;
 class SimpleTank;
+class StageManager;
 
 namespace mylib
 {
@@ -47,6 +48,9 @@ private:
 	std::unique_ptr<mylib::CollisionMesh> m_collisionMesh;	// コリジョンメッシュ
 
 	std::unique_ptr<SimpleTank> m_enemy;					// 敵戦車
+
+	// マネージャー
+	std::unique_ptr<StageManager> m_stageManager;			// ステージマネージャー
 
 public:
 	PlayScene();

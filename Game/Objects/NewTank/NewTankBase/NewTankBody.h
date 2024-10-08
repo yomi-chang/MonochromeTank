@@ -43,10 +43,8 @@ private:
 	DirectX::SimpleMath::Matrix m_worldMatrix;				// ワールド行列
 	DirectX::Model* m_model;								// モデル
 
-	DirectX::SimpleMath::Quaternion m_bodyAngle;
-	NewTank* m_tank;
-
-	DirectX::SimpleMath::Vector3 m_collisionVel;
+	DirectX::SimpleMath::Quaternion m_bodyAngle;			// 車体の回転角
+	NewTank* m_tank;										// 親の情報
 
 public:
 	// 角度の取得

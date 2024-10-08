@@ -32,7 +32,9 @@ void PlayerTank::Initialize()
 
 	// コライダーの作成
 	m_collider = std::make_unique<BoxCollider>();
-	m_collider->CreateBoundingBox(m_tank->GetPosition(), Vector3(1.2f, 1.2f, 1.2f));
+	m_position = m_tank->GetPosition();
+	m_position.y += COLLIDER_POSITION;
+	m_collider->CreateBoundingBox(m_position, Vector3(1.2f, 1.0f, 1.2f));
 
 	// HPゲージの作成
 	m_hpGauge = std::make_unique<HpGauge>();
@@ -47,12 +49,16 @@ void PlayerTank::Update(float elapsedTime)
 	// 戦車の更新
 	m_tank->Update(elapsedTime);
 
+	
+
+	// コライダーの更新
+	m_position = m_tank->GetPosition();
+	m_position.y += COLLIDER_POSITION;
+	m_collider->Update(m_position);
+
 	// 座標と回転角の更新
 	m_position = m_tank->GetPosition();
 	m_angle = m_tank->GetAngle();
-
-	// コライダーの更新
-	m_collider->Update(m_position);
 
 	// ダメージの初期化
 	m_damege = 0.0f;

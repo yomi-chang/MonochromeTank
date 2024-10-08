@@ -33,7 +33,7 @@ Graphics::Graphics()
 	m_projection{},						// 射影行列
 	m_device{},							// デバイス
 	m_context{},						// デバイスコンテキスト
-	m_debugString{}
+	m_debugString{}						// デバッグストリング
 {
 	// デバイスリソースのインスタンスを生成する
 	m_deviceResources = std::make_unique<DX::DeviceResources>();

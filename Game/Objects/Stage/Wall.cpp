@@ -15,7 +15,7 @@ Wall::Wall(
 	:
 	m_camera{},
 	m_graphics{ Graphics::GetInstance() },
-	m_color{ static_cast<DirectX::SimpleMath::Vector4>(Colors::Silver) }
+	m_color{ static_cast<DirectX::SimpleMath::Vector4>(Colors::DimGray) }
 {
 	using namespace DirectX::SimpleMath;
 
@@ -42,18 +42,17 @@ void Wall::Render()
 {
 
 	// プレイヤーとの当たり判定
-	//m_playerTank->SetPosition(/*m_playerTank->GetPosition() + */m_collider->CheckCollisionCollider(m_playerTank->GetBoundingSphere()));
 	m_playerTank->SetPosition(m_collider->CheckCollisionCollider(m_playerTank->GetBoundingBox()));
 
 	// カメラとの当たり判定
 	m_camera->SetEyePosition(m_camera->GetEyePosition() + m_collider->CheckCollisionCollider(m_camera->GetBoundingSphere()));
 
 	// カメラとの当たり判定
-	if (m_collider->CheckTriggerCollider(m_camera->GetBoundingSphere()))
+	/*if (m_collider->CheckTriggerCollider(m_camera->GetBoundingSphere()))
 	{
-		//mylib::DebugLog("当たった");
-		//m_color.w = 0.9f;
-	}
+		mylib::DebugLog("当たった");
+		m_color.w = 0.9f;
+	}*/
 
 	auto view = m_graphics->GetViewMatrix();
 	auto proj = m_graphics->GetProjectionMatrix();

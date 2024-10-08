@@ -21,8 +21,7 @@ NewTankBody::NewTankBody(
 	m_worldMatrix{},
 	m_model{},
 	m_bodyAngle{},
-	m_tank{},
-	m_collisionVel{}
+	m_tank{}
 {
 	// グラフィックスの取得
 	m_graphics = Graphics::GetInstance();

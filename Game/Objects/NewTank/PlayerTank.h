@@ -25,6 +25,9 @@ private:
 	const float CANNON_ANGLE_MIN = DirectX::XMConvertToRadians(-10.0f);
 	const float CANNON_ANGLE_MAX = DirectX::XMConvertToRadians(15.0f);
 
+	const DirectX::SimpleMath::Vector3 COLLIDER_SIZE = DirectX::SimpleMath::Vector3(1.2f, 1.0f, 1.2f);
+	const float COLLIDER_POSITION = 0.25f;
+
 public:
 	PlayerTank();
 
