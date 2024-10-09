@@ -7,7 +7,9 @@
 
 using namespace DirectX;
 
+//---------------------------------------------------------
 // コンストラクタ
+//---------------------------------------------------------
 DrawTexture::DrawTexture()
 	:
 	m_graphics{Graphics::GetInstance()},
@@ -34,12 +36,16 @@ DrawTexture::DrawTexture()
 	);
 }
 
+//---------------------------------------------------------
 // デストラクタ
+//---------------------------------------------------------
 DrawTexture::~DrawTexture()
 {
 }
 
+//---------------------------------------------------------
 // 描画処理
+//---------------------------------------------------------
 void DrawTexture::Render(DirectX::SimpleMath::Vector3 position)
 {
 	using namespace DirectX::SimpleMath;

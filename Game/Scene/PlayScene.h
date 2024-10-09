@@ -6,8 +6,6 @@
 #include "IScene.h"
 
 class Graphics;
-class SkySphere;
-class Wall;
 class PlayerTank;
 class SimpleTank;
 class StageManager;
@@ -16,7 +14,6 @@ namespace mylib
 {
 	class DebugCamera;
 	class FollowCamera;
-	class CollisionMesh;
 }
 
 class PlayScene final :
@@ -42,12 +39,9 @@ private:
 
 	// オブジェクト
 	std::unique_ptr<PlayerTank> m_player;					// プレイヤー
-	std::unique_ptr<SkySphere> m_skySphere;					// 天球
-	std::vector<std::unique_ptr<Wall>> m_walls;				// ステージ
+	//std::unique_ptr<SimpleTank> m_enemy;					// 敵戦車
 
-	std::unique_ptr<mylib::CollisionMesh> m_collisionMesh;	// コリジョンメッシュ
-
-	std::unique_ptr<SimpleTank> m_enemy;					// 敵戦車
+	std::vector<std::unique_ptr<SimpleTank>> m_enemies;		// 敵戦車(配列管理)
 
 	// マネージャー
 	std::unique_ptr<StageManager> m_stageManager;			// ステージマネージャー

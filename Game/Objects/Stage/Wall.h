@@ -20,38 +20,25 @@ public:
 		DirectX::SimpleMath::Vector3 scale,
 		DirectX::SimpleMath::Vector3 movePosition
 	);
-
 	// デストラクタ
 	~Wall();
-
 	// 描画処理
 	void Render();
-
 	// 終了処理
 	void Finalize();
-
 	// コライダーの取得
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
 
 private:
-	// ジオメトリックプリミティブ
-	std::unique_ptr<DirectX::GeometricPrimitive> m_model;
+	std::unique_ptr<DirectX::GeometricPrimitive> m_model;		// ジオメトリックプリミティブ
+	DirectX::SimpleMath::Matrix m_world;						// ワールド座標	
+	std::unique_ptr<BoxCollider> m_collider;					// ボックスコライダー
+	PlayerTank* m_playerTank;									// プレイヤー
+	mylib::FollowCamera* m_camera;								// カメラ
+	Graphics* m_graphics;										// グラフィックス	
+	DirectX::SimpleMath::Vector4 m_color;						// カラー
 
-	// ワールド座標
-	DirectX::SimpleMath::Matrix m_world;
-
-	// ボックスコライダー
-	std::unique_ptr<BoxCollider> m_collider;
-
-	// プレイヤー
-	PlayerTank* m_playerTank;
-
-	// カメラ
-	mylib::FollowCamera* m_camera;
-
-	// グラフィックス
-	Graphics* m_graphics;
-
-	// カラー
-	DirectX::SimpleMath::Vector4 m_color;
+private:
+	// 衝突判定
+	void DetectCollision();
 };

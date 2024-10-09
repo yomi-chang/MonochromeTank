@@ -327,7 +327,7 @@ void NewTankCannon::DisplaySight()
 	// 照準の描画
 	Quaternion rotation = m_cannonAngle * m_currentAngle;
 	Matrix matrix = Matrix::CreateFromQuaternion(rotation);
-	m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
+	//m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
 
 	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();
@@ -335,7 +335,7 @@ void NewTankCannon::DisplaySight()
 
 	// Rayを飛ばして着弾方向の表示
 	// Rayの距離設定
-	float maxDistance = 5.0f;
+	float maxDistance = 10.0f;
 	// Rayの作成
 	Ray ray{ this->GetMuzzlePosition(), matrix.Forward() };
 	// 壁のボックスコライダーとの衝突判定を取る
@@ -351,7 +351,6 @@ void NewTankCannon::DisplaySight()
 		{
 			// 衝突点計算
 			hitPosition = Vector3{ ray.position + ray.direction * distance - ray.direction };
-			//mylib::DebugLog(hitPosition);
 			// 赤い照準を出す
 			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
 			break;
@@ -361,7 +360,6 @@ void NewTankCannon::DisplaySight()
 		{
 			// 照準画像の表示場所計算
 			hitPosition = Vector3{ ray.position + ray.direction * maxDistance - ray.direction };
-			//mylib::DebugLog("out of range");
 			// 黒い照準を出す
 			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
 		}

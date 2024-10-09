@@ -7,7 +7,7 @@
 const DirectX::SimpleMath::Vector3 CannonBall::SPEED(0.0f, 0.0f, -0.3f);
 
 // 砲弾にかかる重力を定義する
-const DirectX::SimpleMath::Vector3 CannonBall::GRAVITY(0.0f, -0.1f, 0.0f);
+const DirectX::SimpleMath::Vector3 CannonBall::GRAVITY(0.0f, -0.05f, 0.0f);
 
 // コンストラクタ
 CannonBall::CannonBall(IBullet::BulletState bulletState)

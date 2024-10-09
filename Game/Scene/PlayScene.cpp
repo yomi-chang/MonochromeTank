@@ -13,7 +13,6 @@
 #include "Libraries/MyLib/DebugCamera.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/FollowCamera.h"
-#include "Libraries/MyLib/CollisionMesh.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 
@@ -41,11 +40,8 @@ PlayScene::PlayScene()
 	m_tpsCamera{},
 	m_cameraType{CameraType::TPS},
 	m_isChangeScene{},
-	m_skySphere{},
-	m_collisionMesh{},
-	m_walls{},
 	m_player{},
-	m_enemy{},
+	m_enemies{},
 	m_stageManager{}
 {
 }
@@ -91,50 +87,28 @@ void PlayScene::Initialize()
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 
-	// 天球
-	m_skySphere = std::make_unique<SkySphere>();
-
 	// 戦車
 	//m_playerTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f,5.0f), 0.0f);
 	//m_playerTank->Initialize(IComponent::Type::PLAYER);
 
-	// 新しい戦車の生成
+	// プレイヤー戦車の生成
 	m_player = std::make_unique<PlayerTank>();
 	m_player->Initialize();
 
 	// 敵戦車
-	m_enemy = std::make_unique<SimpleTank>();
-	m_enemy->Initialize();
-	m_enemy->SetPlayerTank(m_player.get());
+	m_enemies.push_back(std::make_unique<SimpleTank>(Vector3{ -5.0f, 0.2f, -10.0f }));
+	m_enemies.push_back(std::make_unique<SimpleTank>(Vector3{ 5.0f, 0.2f, -10.0f }));
+	for (auto& enemy : m_enemies)
+	{
+		enemy->Initialize();
+		enemy->SetPlayerTank(m_player.get());
+	}
+
+
 
 	// TPSカメラの生成
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
 	m_tpsCamera->Initialize(m_player.get());
-
-	// コリジョンメッシュを生成する
-	m_collisionMesh = std::make_unique<mylib::CollisionMesh>();
-	m_collisionMesh->Initialize(device, context, L"Terrain");
-
-	// ステージの生成
-	m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 5.0f, 2.5f), Vector3(0.0f,2.5f,-20.0f)));
-	m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 5.0f, 2.5f), Vector3(0.0f, 2.5f, 20.0f)));
-	m_walls.emplace_back(std::make_unique<Wall>(Vector3(2.5f, 5.0f, 40.0f), Vector3(20.0f, 2.5f, 0.0f)));
-	m_walls.emplace_back(std::make_unique<Wall>(Vector3(2.5f, 5.0f, 40.0f), Vector3(-20.0f, 2.5f, 0.0f)));
-	for (auto& wall : m_walls)
-	{
-		// カメラとプレイヤーの情報を渡す
-		wall->SetPlayer(m_player.get());
-		wall->SetCamera(m_tpsCamera.get());
-	}
-
-	// ポインタを取り出してからプレイヤーに渡す
-	std::vector<Wall*> wallPointers;
-	for (const auto& wall : m_walls) 
-	{
-		wallPointers.push_back(wall.get());
-	}
-	// 戦車に壁情報を渡す
-	m_player->SetWalls(wallPointers);
 
 	// ステージマネージャーの生成
 	m_stageManager = std::make_unique<StageManager>();
@@ -148,10 +122,14 @@ void PlayScene::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// 新しい戦車の更新
+	// 戦車の更新
 	m_player->Update(elapsedTime);
 
-	m_enemy->Update(elapsedTime);
+	// 敵戦車の更新
+	for (auto& enemy : m_enemies)
+	{
+		enemy->Update(elapsedTime);
+	}
 
 	// フォローカメラを更新する
 	m_tpsCamera->Update(elapsedTime);
@@ -166,10 +144,13 @@ void PlayScene::Update(float elapsedTime)
 		this->ChangeCameraType();
 	}
 
-	// 敵を全て倒していたらリザルトシーンへ
-	if (m_enemy->GetDead())
+	// 敵を全て倒していたらリザルトシーンへ ToDo:現在1体倒したら終わるので修正する
+	for (auto& enemy : m_enemies)
 	{
-		m_isChangeScene = true;
+		if (enemy->GetDead())
+		{
+			m_isChangeScene = true;
+		}
 	}
 }
 
@@ -200,26 +181,17 @@ void PlayScene::Render()
 	}
 	Graphics::GetInstance()->SetViewMatrix(view);
 
-	// 天球の描画
-	m_skySphere->Render();
-
-	// メッシュを描画する
-	m_collisionMesh->Draw(
-		context, states,
-		Graphics::GetInstance()->GetViewMatrix(),
-		Graphics::GetInstance()->GetProjectionMatrix()
-	);
-
 	// ステージの描画
-	/*for (auto& wall : m_walls)
-	{
-		wall->Render();
-	}*/
 	m_stageManager->Render();
 
 	// 戦車の描画
 	m_player->Render();
-	m_enemy->Render();
+
+	// 敵の描画
+	for (auto& enemy : m_enemies)
+	{
+		enemy->Render();
+	}
 
 	// デバッグ情報を「DebugString」で表示する
 #ifdef _DEBUG

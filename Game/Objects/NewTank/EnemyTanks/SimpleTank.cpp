@@ -14,8 +14,12 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/DebugLog.h"
 
-SimpleTank::SimpleTank()
+SimpleTank::SimpleTank(
+	DirectX::SimpleMath::Vector3 position
+)
 {
+	// 座標の受け取り
+	m_position = position;
 }
 
 SimpleTank::~SimpleTank()
@@ -27,8 +31,7 @@ void SimpleTank::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	// 戦車の生成
-	Vector3 initialPosition = Vector3{ 0.0f, 0.0f, -10.0f };
-	m_tank = std::make_unique<NewTank>(initialPosition, DirectX::XMConvertToRadians(180.0f));
+	m_tank = std::make_unique<NewTank>(m_position, DirectX::XMConvertToRadians(180.0f));
 	m_tank->Initialize();
 
 	// コライダーの作成

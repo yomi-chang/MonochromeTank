@@ -7,7 +7,10 @@
 #include "Libraries/MyLib/DebugLog.h"
 
 using namespace DirectX;
+
+//---------------------------------------------------------
 // コンストラクタ
+//---------------------------------------------------------
 Wall::Wall(
 	DirectX::SimpleMath::Vector3 scale,
 	DirectX::SimpleMath::Vector3 movePosition
@@ -37,34 +40,46 @@ Wall::~Wall()
 {
 }
 
+//---------------------------------------------------------
 // 描画処理
+//---------------------------------------------------------
 void Wall::Render()
 {
+	// 当たり判定の処理
+	DetectCollision();
+
+	auto view = m_graphics->GetViewMatrix();
+	auto proj = m_graphics->GetProjectionMatrix();
+
+	// コライダーの描画
+	m_collider->Render(DirectX::Colors::Black);
+
+	// 壁の描画
+	m_model->Draw(m_world, view, proj, m_color);
+}
+
+//---------------------------------------------------------
+// 終了処理
+//---------------------------------------------------------
+void Wall::Finalize()
+{
+}
+
+//---------------------------------------------------------
+// 衝突判定
+//---------------------------------------------------------
+void Wall::DetectCollision()
+{
+	// 何にも触れていない場合は早期リターン
+	if (!m_collider->CheckTriggerCollider(m_playerTank->GetBoundingBox()) &&
+		!m_collider->CheckTriggerCollider(m_camera->GetBoundingSphere()))
+	{
+		return;
+	}
 
 	// プレイヤーとの当たり判定
 	m_playerTank->SetPosition(m_collider->CheckCollisionCollider(m_playerTank->GetBoundingBox()));
 
 	// カメラとの当たり判定
 	m_camera->SetEyePosition(m_camera->GetEyePosition() + m_collider->CheckCollisionCollider(m_camera->GetBoundingSphere()));
-
-	// カメラとの当たり判定
-	/*if (m_collider->CheckTriggerCollider(m_camera->GetBoundingSphere()))
-	{
-		mylib::DebugLog("当たった");
-		m_color.w = 0.9f;
-	}*/
-
-	auto view = m_graphics->GetViewMatrix();
-	auto proj = m_graphics->GetProjectionMatrix();
-
-	// コライダーの描画
-	m_collider->Render(DirectX::Colors::White);
-
-	// 壁の描画
-	m_model->Draw(m_world, view, proj, m_color);
-}
-
-// 終了処理
-void Wall::Finalize()
-{
 }

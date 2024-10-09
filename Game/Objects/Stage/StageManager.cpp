@@ -9,6 +9,11 @@
 #include "Game/Objects/Stage/Wall.h"
 #include "Game/Objects/Other/SkySphere.h"
 
+#include "Game/Objects/NewTank/PlayerTank.h"
+
+//---------------------------------------------------------
+// コンストラクタ
+//---------------------------------------------------------
 StageManager::StageManager()
 	:
 	m_walls{},
@@ -16,6 +21,9 @@ StageManager::StageManager()
 {
 }
 
+//---------------------------------------------------------
+// 初期化処理
+//---------------------------------------------------------
 void StageManager::Initialize(
 	PlayerTank* tank,
 	mylib::FollowCamera* camera
@@ -36,8 +44,20 @@ void StageManager::Initialize(
 		wall->SetPlayer(tank);
 		wall->SetCamera(camera);
 	}
+
+	// 壁情報をステージに渡す
+	std::vector<Wall*> wallPointers;
+	for (const auto& wall : m_walls)
+	{
+		wallPointers.push_back(wall.get());
+	}
+	// 戦車に壁情報を渡す
+	tank->SetWalls(wallPointers);
 }
 
+//---------------------------------------------------------
+// 描画処理
+//---------------------------------------------------------
 void StageManager::Render()
 {
 	// 天球の描画
@@ -50,6 +70,9 @@ void StageManager::Render()
 	}
 }
 
+//---------------------------------------------------------
+// CSVファイルの読み込み
+//---------------------------------------------------------
 void StageManager::LoadFile()
 {
 	std::string str[STAGESIZE];
@@ -81,7 +104,9 @@ void StageManager::LoadFile()
 	}
 }
 
+//---------------------------------------------------------
 // ステージの生成
+//---------------------------------------------------------
 void StageManager::CreateStage()
 {
 	using namespace DirectX::SimpleMath;
@@ -99,7 +124,7 @@ void StageManager::CreateStage()
 				case 0:		// 情報がない場合
 					continue;
 				case 1:		// 壁
-					m_walls.emplace_back(std::make_unique<Wall>(Vector3::One,Vector3(x - (STAGESIZE / 2),1.0f,y - (STAGESIZE / 2))));
+					m_walls.emplace_back(std::make_unique<Wall>(Vector3::One, Vector3(x - (STAGESIZE / 2), 1.0f, y - (STAGESIZE / 2))));
 				default:
 					break;
 			}

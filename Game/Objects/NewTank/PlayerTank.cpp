@@ -13,14 +13,23 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/DebugLog.h"
 
+//---------------------------------------------------------
+// コンストラクタ
+//---------------------------------------------------------
 PlayerTank::PlayerTank()
 {
 }
 
+//---------------------------------------------------------
+// デストラクタ
+//---------------------------------------------------------
 PlayerTank::~PlayerTank()
 {
 }
 
+//---------------------------------------------------------
+// 初期化処理
+//---------------------------------------------------------
 void PlayerTank::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -41,6 +50,9 @@ void PlayerTank::Initialize()
 	m_hpGauge->Initialize(Vector2{ 200,50 });
 }
 
+//---------------------------------------------------------
+// 更新処理
+//---------------------------------------------------------
 void PlayerTank::Update(float elapsedTime)
 {
 	// キー入力の処理
@@ -48,8 +60,6 @@ void PlayerTank::Update(float elapsedTime)
 
 	// 戦車の更新
 	m_tank->Update(elapsedTime);
-
-	
 
 	// コライダーの更新
 	m_position = m_tank->GetPosition();
@@ -67,18 +77,24 @@ void PlayerTank::Update(float elapsedTime)
 	m_hpGauge->Damage(m_damege);
 }
 
+//---------------------------------------------------------
+// 描画処理
+//---------------------------------------------------------
 void PlayerTank::Render()
 {
-	// 戦車の描画
-	m_tank->Render();
-
 	// コライダーの描画
 	m_collider->Render();
 
 	// HPゲージ
 	m_hpGauge->Render();
+
+	// 戦車の描画
+	m_tank->Render();
 }
 
+//---------------------------------------------------------
+// 終了処理
+//---------------------------------------------------------
 void PlayerTank::Finalize()
 {
 }
@@ -92,7 +108,9 @@ void PlayerTank::Detach(std::unique_ptr<IObject> parts)
 }
 
 
+//---------------------------------------------------------
 // キーボードイベント
+//---------------------------------------------------------
 void PlayerTank::KeyBoardEvent(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -126,7 +144,9 @@ void PlayerTank::KeyBoardEvent(float elapsedTime)
 	}
 }
 
+//---------------------------------------------------------
 // 移動処理
+//---------------------------------------------------------
 void PlayerTank::Move(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -155,7 +175,9 @@ void PlayerTank::Move(float elapsedTime)
 		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(XMConvertToRadians(-0.5f), 0.0f, 0.0f));
 }
 
+//---------------------------------------------------------
 // 砲塔と砲身の回転
+//---------------------------------------------------------
 void PlayerTank::RotateTurretCannon()
 {
 	// マウスステートの取得
@@ -180,15 +202,23 @@ void PlayerTank::RotateTurretCannon()
 	m_tank->GetCannon()->RotateCannon(eulerAngle);
 }
 
+//---------------------------------------------------------
+// 壁情報の受け渡し
+//---------------------------------------------------------
 void PlayerTank::SetWalls(std::vector<Wall*> walls)
 {
 	m_tank->GetCannon()->SetWalls(walls);
 }
 
+//---------------------------------------------------------
+// 座標の受け渡し
+//---------------------------------------------------------
 void PlayerTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 {
 	m_tank->GetBody()->SetCollisionVel(position);
 }
 
-// 砲身の取得
+//---------------------------------------------------------
+// 砲身情報の取得
+//---------------------------------------------------------
 NewTankCannon* PlayerTank::GetTankCannon() { return m_tank->GetCannon(); }

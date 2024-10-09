@@ -11,7 +11,9 @@ class EnemyHpGauge;
 class SimpleTank : IObject
 {
 public:
-	SimpleTank();
+	SimpleTank(
+		DirectX::SimpleMath::Vector3 position
+	);
 
 	~SimpleTank() override;
 
