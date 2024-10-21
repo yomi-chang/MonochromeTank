@@ -10,7 +10,7 @@ NewTank::NewTank(
 	const float& initialAngle
 )
 	:
-	m_graphics{},
+	m_graphics{ Graphics::GetInstance() },
 	m_initialPosition{initialPosition},
 	m_initialAngle{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
 	m_currentPosition{},
@@ -18,8 +18,6 @@ NewTank::NewTank(
 	m_tankParts{},
 	m_worldMatrix{}
 {
-	// グラフィックスの受け取り
-	m_graphics = Graphics::GetInstance();
 }
 
 //---------------------------------------------------------

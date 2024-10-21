@@ -4,8 +4,6 @@
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Game/Objects/NewTank/PlayerTank.h"
 
-#include "Libraries/MyLib/DebugLog.h"
-
 using namespace DirectX;
 
 //---------------------------------------------------------

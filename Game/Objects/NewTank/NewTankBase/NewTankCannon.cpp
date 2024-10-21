@@ -17,7 +17,7 @@ NewTankCannon::NewTankCannon(
 	const float& initialAngle
 )
 	:
-	m_graphics{},
+	m_graphics{ m_graphics = Graphics::GetInstance() },
 	m_initialPosition{ initialPosition },
 	m_initialAngle{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
 	m_currentPosition{},
@@ -35,9 +35,6 @@ NewTankCannon::NewTankCannon(
 	m_drawTexture{},
 	m_tank{}
 {
-	// グラフィックスの取得
-	m_graphics = Graphics::GetInstance();
-
 	// 戦車情報の受け取り
 	m_tank = tank;
 }

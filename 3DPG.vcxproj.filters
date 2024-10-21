@@ -108,6 +108,10 @@
     <ClInclude Include="Game\Objects\NewTank\PlayerTank.h" />
     <ClInclude Include="Game\Objects\NewTank\EnemyTanks\SimpleTank.h" />
     <ClInclude Include="Game\Objects\Stage\StageManager.h" />
+    <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
+    <ClInclude Include="Game\UserInterface\UserInterface.h" />
+    <ClInclude Include="Game\UserInterface\Magazine.h" />
+    <ClInclude Include="Libraries\Microsoft\ReadData.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -162,6 +166,9 @@
     <ClCompile Include="Game\Objects\NewTank\PlayerTank.cpp" />
     <ClCompile Include="Game\Objects\NewTank\EnemyTanks\SimpleTank.cpp" />
     <ClCompile Include="Game\Objects\Stage\StageManager.cpp" />
+    <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
+    <ClCompile Include="Game\UserInterface\UserInterface.cpp" />
+    <ClCompile Include="Game\UserInterface\Magazine.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -62,22 +62,61 @@ public:
 	// プリミティブ描画を終了する
 	void DrawPrimitiveEnd();
 	// 線分を描画する(XZ平面)
-	void DrawLine(const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& vector, const DirectX::FXMVECTOR& color);
+	void DrawLine(
+		const DirectX::SimpleMath::Vector2& position,
+		const DirectX::SimpleMath::Vector2& vector,
+		const DirectX::FXMVECTOR& color
+	);
 	// 線分を描画する
-	void DrawLine(const DirectX::SimpleMath::Vector3& position, const DirectX::SimpleMath::Vector3& vector, const DirectX::FXMVECTOR& color);
+	void DrawLine(
+		const DirectX::SimpleMath::Vector3& position,
+		const DirectX::SimpleMath::Vector3& vector,
+		const DirectX::FXMVECTOR& color
+	);
 	// ベクトルを描画する(XZ平面)
-	void DrawVector(const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& vector, const DirectX::FXMVECTOR& color);
-	void DrawVector(const DirectX::SimpleMath::Vector3& position, const DirectX::SimpleMath::Vector3& vector, const DirectX::FXMVECTOR& color);
+	void DrawVector(
+		const DirectX::SimpleMath::Vector2& position,
+		const DirectX::SimpleMath::Vector2& vector,
+		const DirectX::FXMVECTOR& color
+	);
+	void DrawVector(
+		const DirectX::SimpleMath::Vector3& position,
+		const DirectX::SimpleMath::Vector3& vector,
+		const DirectX::FXMVECTOR& color
+	);
 
 	// 円を描画する(XZ平面)
-	void DrawCircle(const DirectX::SimpleMath::Vector2& center, const float& radius, const DirectX::FXMVECTOR& m_color = DirectX::Colors::White, const int& split = 32);
+	void DrawCircle(
+		const DirectX::SimpleMath::Vector2& center,
+		const float& radius, const DirectX::FXMVECTOR& m_color = DirectX::Colors::White,
+		const int& split = 32
+	);
 	// 円を描画する
-	void DrawCircle(const DirectX::SimpleMath::Vector3& center, const float& radius, const DirectX::FXMVECTOR& m_color = DirectX::Colors::White, const int& split = 32);
+	void DrawCircle(
+		const DirectX::SimpleMath::Vector3& center,
+		const float& radius, const DirectX::FXMVECTOR& m_color = DirectX::Colors::White,
+		const int& split = 32
+	);
 	// 矩形を描画する
-	void DrawQuad(const DirectX::VertexPositionColor& vector1, const DirectX::VertexPositionColor& vector2, const DirectX::VertexPositionColor& vector3, const DirectX::VertexPositionColor& vector4);
-	void DrawQuad(const DirectX::FXMVECTOR& point1, const DirectX::FXMVECTOR& point2, const DirectX::FXMVECTOR& point3, const DirectX::FXMVECTOR& point4, const DirectX::HXMVECTOR& color);
+	void DrawQuad(
+		const DirectX::VertexPositionColor& vector1,
+		const DirectX::VertexPositionColor& vector2,
+		const DirectX::VertexPositionColor& vector3,
+		const DirectX::VertexPositionColor& vector4
+	);
+	void DrawQuad(
+		const DirectX::FXMVECTOR& point1,
+		const DirectX::FXMVECTOR& point2,
+		const DirectX::FXMVECTOR& point3,
+		const DirectX::FXMVECTOR& point4,
+		const DirectX::HXMVECTOR& color
+	);
 	// モデルを描画する
-	void DrawModel(const DirectX::Model* model, const DirectX::SimpleMath::Matrix& world, const bool& depthBuffer = true);
+	void DrawModel(
+		const DirectX::Model* model,
+		const DirectX::SimpleMath::Matrix& world,
+		const bool& depthBuffer = true
+	);
 
 private:
 	// コンストラクタ

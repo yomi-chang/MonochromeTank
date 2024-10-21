@@ -97,7 +97,10 @@ void Graphics::DrawString(const float& x, const float& y, const wchar_t* str)
 }
 
 // ƒvƒŠƒ~ƒeƒBƒu•`‰æ‚ðŠJŽn‚·‚é
-void Graphics::DrawPrimitiveBegin(const DirectX::SimpleMath::Matrix& view, const DirectX::SimpleMath::Matrix& projection)
+void Graphics::DrawPrimitiveBegin(
+	const DirectX::SimpleMath::Matrix& view,
+	const DirectX::SimpleMath::Matrix& projection
+)
 {
 	// ƒuƒŒƒ“ƒfƒBƒ“ƒOó‘Ô‚ðÝ’è‚·‚é
 	m_context->OMSetBlendState(m_commonStates->Opaque(), nullptr, 0xFFFFFFFF);
@@ -130,12 +133,16 @@ void Graphics::DrawPrimitiveEnd()
 }
 
 // ü•ª‚ð•`‰æ‚·‚é(XZ•½–Ê)
-void Graphics::DrawLine(const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& vector, const DirectX::FXMVECTOR& color)
+void Graphics::DrawLine(
+	const DirectX::SimpleMath::Vector2& position,
+	const DirectX::SimpleMath::Vector2& vector,
+	const DirectX::FXMVECTOR& color
+)
 {
 	// ’¸“_ƒJƒ‰[‚ðÝ’è‚·‚é
 	DirectX::VertexPositionColor vertex[2] =
 	{
-		{ DirectX::SimpleMath::Vector3(position.x, 0.0f, position.y), color },
+		{ DirectX::SimpleMath::Vector3(position.x, 0.0f, position.y), color  },
 		{ DirectX::SimpleMath::Vector3(position.x + vector.x, 0.0f, position.y + vector.y), color }
 	};
 	// ü•ª‚ð•`‰æ‚·‚é
@@ -143,7 +150,11 @@ void Graphics::DrawLine(const DirectX::SimpleMath::Vector2& position, const Dire
 }
 
 // ü•ª‚ð•`‰æ‚·‚é
-void Graphics::DrawLine(const DirectX::SimpleMath::Vector3& position, const DirectX::SimpleMath::Vector3& vector, const DirectX::FXMVECTOR& color)
+void Graphics::DrawLine(
+	const DirectX::SimpleMath::Vector3& position,
+	const DirectX::SimpleMath::Vector3& vector,
+	const DirectX::FXMVECTOR& color
+)
 {
 	// ’¸“_ƒJƒ‰[‚ðÝ’è‚·‚é
 	DirectX::VertexPositionColor vertex[2] =
@@ -156,7 +167,11 @@ void Graphics::DrawLine(const DirectX::SimpleMath::Vector3& position, const Dire
 }
 
 // ƒxƒNƒgƒ‹‚ð•`‰æ‚·‚é(XZ•½–Ê)
-void Graphics::DrawVector(const DirectX::SimpleMath::Vector2& position, const DirectX::SimpleMath::Vector2& vector, const DirectX::FXMVECTOR& color)
+void Graphics::DrawVector(
+	const DirectX::SimpleMath::Vector2& position,
+	const DirectX::SimpleMath::Vector2& vector,
+	const DirectX::FXMVECTOR& color
+)
 {
 	using namespace DirectX::SimpleMath;
 	const float cosTheta = cosf(DirectX::XMConvertToRadians(20.0f));
@@ -181,7 +196,11 @@ void Graphics::DrawVector(const DirectX::SimpleMath::Vector2& position, const Di
 }
 
 // ƒxƒNƒgƒ‹‚ð•`‰æ‚·‚é
-void Graphics::DrawVector(const DirectX::SimpleMath::Vector3& position, const DirectX::SimpleMath::Vector3& vector, const DirectX::FXMVECTOR& color)
+void Graphics::DrawVector(
+	const DirectX::SimpleMath::Vector3& position,
+	const DirectX::SimpleMath::Vector3& vector,
+	const DirectX::FXMVECTOR& color
+)
 {
 	using namespace DirectX::SimpleMath;
 	const float cosTheta = cosf(DirectX::XMConvertToRadians(20.0f));
@@ -206,7 +225,11 @@ void Graphics::DrawVector(const DirectX::SimpleMath::Vector3& position, const Di
 }
 
 // ‰~‚ð•`‰æ‚·‚é(XZ•½–Ê)
-void Graphics::DrawCircle(	const DirectX::SimpleMath::Vector2& center, const float& radius, const DirectX::FXMVECTOR& color, const int& split)
+void Graphics::DrawCircle(
+	const DirectX::SimpleMath::Vector2& center,
+	const float& radius, const DirectX::FXMVECTOR& color,
+	const int& split
+)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -228,7 +251,12 @@ void Graphics::DrawCircle(	const DirectX::SimpleMath::Vector2& center, const flo
 }
 
 // ‰~‚ð•`‰æ‚·‚é
-void Graphics::DrawCircle(const DirectX::SimpleMath::Vector3& center, const float& radius, const DirectX::FXMVECTOR& color, const int& split)
+void Graphics::DrawCircle(
+	const DirectX::SimpleMath::Vector3& center,
+	const float& radius,
+	const DirectX::FXMVECTOR& color,
+	const int& split
+)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -250,7 +278,11 @@ void Graphics::DrawCircle(const DirectX::SimpleMath::Vector3& center, const floa
 }
 
 // ‹éŒ`‚ð•`‰æ‚·‚é
-void Graphics::DrawQuad(const DirectX::VertexPositionColor & v1, const DirectX::VertexPositionColor & v2, const DirectX::VertexPositionColor & v3, const DirectX::VertexPositionColor & v4)
+void Graphics::DrawQuad(
+	const DirectX::VertexPositionColor& v1,
+	const DirectX::VertexPositionColor& v2,
+	const DirectX::VertexPositionColor& v3,
+	const DirectX::VertexPositionColor& v4)
 {
 	// ‹éŒ`‚ð•`‰æ‚·‚é
 	m_primitiveBatch->DrawQuad(v1, v2, v3, v4);
@@ -282,7 +314,11 @@ void Graphics::DrawQuad(
 }
 
 // ƒ‚ƒfƒ‹‚ð•`‰æ‚·‚é
-void Graphics::DrawModel(const DirectX::Model* model, const DirectX::SimpleMath::Matrix& world, const bool& depthBuffer)
+void Graphics::DrawModel(
+	const DirectX::Model* model,
+	const DirectX::SimpleMath::Matrix& world,
+	const bool& depthBuffer
+)
 {
 	if (depthBuffer)
 	{

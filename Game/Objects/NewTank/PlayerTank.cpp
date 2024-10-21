@@ -17,6 +17,13 @@
 // コンストラクタ
 //---------------------------------------------------------
 PlayerTank::PlayerTank()
+	:
+	m_position{},
+	m_angle{},
+	m_tank{},
+	m_collider{},
+	m_hpGauge{},
+	m_damage{}
 {
 }
 
@@ -71,10 +78,10 @@ void PlayerTank::Update(float elapsedTime)
 	m_angle = m_tank->GetAngle();
 
 	// ダメージの初期化
-	m_damege = 0.0f;
+	m_damage = 0.0f;
 
 	// ダメージ処理
-	m_hpGauge->Damage(m_damege);
+	m_hpGauge->Damage(m_damage);
 }
 
 //---------------------------------------------------------

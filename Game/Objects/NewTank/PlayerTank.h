@@ -60,31 +60,27 @@ private:
 	// HPゲージ
 	std::unique_ptr<HpGauge> m_hpGauge;
 	// ダメージ
-	float m_damege;
+	float m_damage;
 
 private:
+	// キーボードイベント
 	void KeyBoardEvent(float elapsedTime);
 	// 移動処理
 	void Move(float elapsedTime);
-
 	// 回転処理
 	void RotateTurretCannon();
 
 public:
 	// 壁情報の受け取り
 	void SetWalls(std::vector<Wall*> walls);
-
 	// 座標の取得
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; }
-	// 回転角の取得
-	DirectX::SimpleMath::Quaternion GetAngle() { return m_angle; }
-
 	// 座標の受け取り
 	void SetPosition(DirectX::SimpleMath::Vector3 position);
-
+	// 回転角の取得
+	DirectX::SimpleMath::Quaternion GetAngle() { return m_angle; }
 	// コライダーの取得
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
-
 	// 砲身の取得
 	NewTankCannon* GetTankCannon();
 };

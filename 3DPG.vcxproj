@@ -212,12 +212,16 @@
     <ClInclude Include="Game\UserInterface\DrawTexture.h" />
     <ClInclude Include="Game\UserInterface\EnemyHpGauge.h" />
     <ClInclude Include="Game\UserInterface\HpGauge.h" />
+    <ClInclude Include="Game\UserInterface\Magazine.h" />
+    <ClInclude Include="Game\UserInterface\UserInterface.h" />
     <ClInclude Include="Interface\IBullet.h" />
     <ClInclude Include="Interface\IComposite.h" />
     <ClInclude Include="Interface\ILeaf.h" />
     <ClInclude Include="Interface\IComponent.h" />
     <ClInclude Include="Interface\IObject.h" />
     <ClInclude Include="Libraries\Microsoft\DebugDraw.h" />
+    <ClInclude Include="Libraries\Microsoft\ReadData.h" />
+    <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Libraries\MyLib\DebugCamera.h" />
     <ClInclude Include="Libraries\MyLib\DebugLog.h" />
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
@@ -258,7 +262,10 @@
     <ClCompile Include="Game\UserInterface\DrawTexture.cpp" />
     <ClCompile Include="Game\UserInterface\EnemyHpGauge.cpp" />
     <ClCompile Include="Game\UserInterface\HpGauge.cpp" />
+    <ClCompile Include="Game\UserInterface\Magazine.cpp" />
+    <ClCompile Include="Game\UserInterface\UserInterface.cpp" />
     <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp" />
+    <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugCamera.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugLog.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />

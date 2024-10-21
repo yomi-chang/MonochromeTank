@@ -18,7 +18,7 @@ using namespace DirectX::SimpleMath;
 //---------------------------------------------------------
 ResultScene::ResultScene()
 	:
-	m_graphics{ Graphics::GetInstance()},
+	m_graphics{Graphics::GetInstance()},
 	m_spriteBatch{},
 	m_spriteFont{},
 	m_texture{},

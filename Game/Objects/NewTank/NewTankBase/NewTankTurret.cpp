@@ -12,7 +12,7 @@ NewTankTurret::NewTankTurret(
 	const float& initialAngle
 )
 	:
-	m_graphics{},
+	m_graphics{ m_graphics = Graphics::GetInstance() },
 	m_initialPosition{ initialPosition },
 	m_initialAngle{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
 	m_currentPosition{},
@@ -23,9 +23,6 @@ NewTankTurret::NewTankTurret(
 	m_turretAngle{},
 	m_tank{}
 {
-	// グラフィックスの取得
-	m_graphics = Graphics::GetInstance();
-
 	// 戦車情報の受け取り
 	m_tank = tank;
 }
