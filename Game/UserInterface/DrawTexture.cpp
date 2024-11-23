@@ -15,10 +15,12 @@ DrawTexture::DrawTexture()
 	m_graphics{Graphics::GetInstance()},
 	m_inputLayout{ m_graphics->GetInputLayout() },
 	m_batchEffect{},
-	m_batch{},
+	m_primitiveBatch{},
 	m_texture{},
 	m_states { m_graphics->GetCommonStates()}
 {
+	using namespace DirectX;
+
 	// エフェクト作成
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
 	m_batchEffect = std::make_unique<AlphaTestEffect>(device);
@@ -34,6 +36,10 @@ DrawTexture::DrawTexture()
 		VertexPositionTexture::InputElementCount,
 		shaderByteCode, byteCodeLength, m_inputLayout.GetAddressOf()
 	);
+
+	// プリミティブバッチ作成
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 }
 
 //---------------------------------------------------------
@@ -54,8 +60,7 @@ void DrawTexture::Render(DirectX::SimpleMath::Vector3 position)
 	auto view = m_graphics->GetViewMatrix();
 	auto proj = m_graphics->GetProjectionMatrix();
 
-	// プリミティブバッチ作成
-	m_batch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
+	
 
 	//  頂点情報
 	VertexPositionTexture vertex[4] =
@@ -100,9 +105,9 @@ void DrawTexture::Render(DirectX::SimpleMath::Vector3 position)
 	context->IASetInputLayout(m_inputLayout.Get());
 
 	//	半透明部分を描画 
-	m_batch->Begin();
-	m_batch->DrawQuad(vertex[0], vertex[1], vertex[2], vertex[3]);
-	m_batch->End();
+	m_primitiveBatch->Begin();
+	m_primitiveBatch->DrawQuad(vertex[0], vertex[1], vertex[2], vertex[3]);
+	m_primitiveBatch->End();
 }
 
 

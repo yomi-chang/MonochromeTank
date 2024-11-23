@@ -10,6 +10,8 @@ class PlayerTank;
 class SimpleTank;
 class StageManager;
 
+class Magazine;
+
 namespace mylib
 {
 	class DebugCamera;
@@ -46,6 +48,8 @@ private:
 	// マネージャー
 	std::unique_ptr<StageManager> m_stageManager;			// ステージマネージャー
 
+	// 残弾数UI
+	std::unique_ptr<Magazine> m_magazine;
 public:
 	PlayScene();
 	~PlayScene() override;

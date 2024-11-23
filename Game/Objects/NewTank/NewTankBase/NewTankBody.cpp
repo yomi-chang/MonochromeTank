@@ -42,7 +42,7 @@ void NewTankBody::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	// 砲塔の生成(車体の中心から0.3f高い座標に生成)
-	Attach(std::make_unique<NewTankTurret>(m_tank,Vector3(0.0f, 0.3f, 0.0f), 0.0f));
+	Attach(std::make_unique<NewTankTurret>(m_tank,Vector3(0.0f, 0.0f, 0.0f), 0.0f));
 
 	// モデルの取得
 	m_model = Resources::GetInstance()->GetTankBodyModel();
@@ -81,7 +81,7 @@ void NewTankBody::Render()
 	using namespace DirectX::SimpleMath;
 
 	// ワールド行列の生成
-	m_worldMatrix = Matrix::CreateScale(0.5f) *
+	m_worldMatrix = Matrix::CreateScale(0.09f) *
 		Matrix::CreateFromQuaternion(m_currentAngle) *
 		Matrix::CreateTranslation(m_currentPosition);
 

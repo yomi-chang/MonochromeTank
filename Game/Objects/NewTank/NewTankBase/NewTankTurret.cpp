@@ -79,7 +79,7 @@ void NewTankTurret::Render()
 	using namespace DirectX::SimpleMath;
 
 	// ƒ[ƒ‹ƒhs—ñ‚Ì¶¬
-	m_worldMatrix = Matrix::CreateScale(0.5f) *
+	m_worldMatrix = Matrix::CreateScale(0.09f) *
 		Matrix::CreateFromQuaternion(m_currentAngle) *
 		Matrix::CreateTranslation(m_currentPosition);
 

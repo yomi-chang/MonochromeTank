@@ -19,8 +19,8 @@ class PlayerTank : IObject
 {
 private:
 	// 砲塔の回転制限
-	const float TURRET_ANGLE_MIN = DirectX::XMConvertToRadians(-25.0f);
-	const float TURRET_ANGLE_MAX = DirectX::XMConvertToRadians(25.0f);
+	const float TURRET_ANGLE_MIN = DirectX::XMConvertToRadians(-35.0f);
+	const float TURRET_ANGLE_MAX = DirectX::XMConvertToRadians(35.0f);
 	// 砲身の回転制限
 	const float CANNON_ANGLE_MIN = DirectX::XMConvertToRadians(-7.5f);
 	const float CANNON_ANGLE_MAX = DirectX::XMConvertToRadians(7.5f);
@@ -61,6 +61,8 @@ private:
 	std::unique_ptr<HpGauge> m_hpGauge;
 	// ダメージ
 	float m_damage;
+	// カメラ
+	mylib::FollowCamera* m_camera;
 
 private:
 	// キーボードイベント
@@ -83,4 +85,6 @@ public:
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
 	// 砲身の取得
 	NewTankCannon* GetTankCannon();
+	// カメラ情報の受け取り
+	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 };

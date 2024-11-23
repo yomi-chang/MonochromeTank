@@ -22,13 +22,13 @@ void Resources::LoadResource()
 	m_graphics->GetFX()->SetDirectory(L"Resources\\Models");
 
 	// 「車体」モデルをロードする
-	m_tankBodyModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\TankBody.cmo", *m_graphics->GetFX());
+	m_tankBodyModel = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\TankBody.sdkmesh", *m_graphics->GetFX());
 
 	// 「砲塔」モデルをロードする
-	m_tankTurretModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\TankTurret.cmo", *m_graphics->GetFX());
+	m_tankTurretModel = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\TankTurret.sdkmesh", *m_graphics->GetFX());
 
 	// 「砲塔」モデルをロードする
-	m_tankCanonModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\TankCanon.cmo", *m_graphics->GetFX());
+	m_tankCanonModel = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\TankCannon.sdkmesh", *m_graphics->GetFX());
 
 	// 「天球」モデルをロードする
 	//m_skySphereModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\SkySphereWilderness.cmo", *m_graphics->GetFX());
@@ -38,7 +38,7 @@ void Resources::LoadResource()
 	m_bulletModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\bullet.cmo", *m_graphics->GetFX());
 
 
-	//	テクスチャのロード 
+	//	照準テクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\Target.png",
@@ -46,11 +46,35 @@ void Resources::LoadResource()
 		m_targetTexture.GetAddressOf()
 	);
 
-	//	テクスチャのロード 
+	//	照準ロックテクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\TargetLock.png",
 		nullptr,
 		m_targetLockTexture.GetAddressOf()
+	);
+
+	//	砲弾テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\CannonBall.png",
+		nullptr,
+		m_cannonBallTexture.GetAddressOf()
+	);
+
+	//	通常弾テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\Bullet.png",
+		nullptr,
+		m_bulletTexture.GetAddressOf()
+	);
+
+	// 丸影テクスチャのロード
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\Shadow.png",
+		nullptr,
+		m_shadowTexture.GetAddressOf()
 	);
 }

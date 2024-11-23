@@ -58,7 +58,7 @@ private:
 	// プリミティブバッチ
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>> m_batch;
 	//コモンステート
-	DirectX::CommonStates* m_states;
+	//DirectX::CommonStates* m_states;
 	// テクスチャハンドル
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 	Microsoft::WRL::ComPtr<ID3D11Resource> m_res;
@@ -86,8 +86,9 @@ public:
 	~UserInterface();
 
 	// 画像の読み込み
-	void LoadTexture(const wchar_t* path);
-		
+	//void LoadTexture(const wchar_t* path);
+	void LoadTexture(Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> texture);
+
 	void Create(
 		const wchar_t* path,
 		DirectX::SimpleMath::Vector2 position,

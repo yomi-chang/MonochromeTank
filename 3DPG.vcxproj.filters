@@ -112,6 +112,7 @@
     <ClInclude Include="Game\UserInterface\UserInterface.h" />
     <ClInclude Include="Game\UserInterface\Magazine.h" />
     <ClInclude Include="Libraries\Microsoft\ReadData.h" />
+    <ClInclude Include="Libraries\Microsoft\RenderTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -169,6 +170,7 @@
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Game\UserInterface\UserInterface.cpp" />
     <ClCompile Include="Game\UserInterface\Magazine.cpp" />
+    <ClCompile Include="Libraries\Microsoft\RenderTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -186,5 +188,11 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="ClassDiagram.cd" />
+    <None Include="Game\Shader\Ui.hlsli" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Game\Shader\UiPS.hlsl" />
+    <FxCompile Include="Game\Shader\UiVS.hlsl" />
+    <FxCompile Include="Game\Shader\UiGS.hlsl" />
   </ItemGroup>
 </Project>

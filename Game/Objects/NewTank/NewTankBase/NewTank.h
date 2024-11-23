@@ -47,9 +47,20 @@ private:
 	std::vector<std::unique_ptr<IObject>> m_tankParts;		// 自身が管理する戦車部品の配列
 	DirectX::SimpleMath::Matrix m_worldMatrix;				// ワールド行列
 
+	// 各パーツ
 	NewTankBody* m_body;
 	NewTankTurret* m_turret;
 	NewTankCannon* m_cannon;
+
+	// 影描画用
+	// 影用ポリゴン
+	DirectX::VertexPositionTexture m_vertices[4];
+	// プリミティブバッチ
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_primitiveBatch;
+	// 入力レイアウト
+	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
+	//	エフェクト 
+	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 
 public:
 	// 車体情報の受け取り
@@ -77,4 +88,5 @@ public:
 	DirectX::SimpleMath::Quaternion GetTurretAngle() { return m_turret->GetTurretAngle(); }
 	// 砲身角度の受け取り
 	DirectX::SimpleMath::Quaternion GetCannonAngle() { return m_cannon->GetCannonAngle(); }
+	// 残り弾数の取得
 };

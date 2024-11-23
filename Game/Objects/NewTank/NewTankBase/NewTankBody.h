@@ -63,4 +63,8 @@ public:
 
 	// ‰ñ“]ˆ—
 	void Rotate(DirectX::SimpleMath::Quaternion angle);
+
+private:
+	// ‰e‚Ì•`‰æ
+	//void DrawShadow();
 };

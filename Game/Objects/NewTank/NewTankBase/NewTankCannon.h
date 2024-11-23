@@ -112,6 +112,9 @@ public:
 	// 「砲弾」を参照する
 	std::unique_ptr<IBullet>& GetCannonBall() { return m_cannonBall; }
 
+	// 現在の弾情報を渡す
+	BulletType GetCurrentBullet() { return m_bulletType; }
+
 private:
 	// 照準の表示
 	void DisplaySight();
@@ -121,4 +124,8 @@ private:
 
 	// リロード処理
 	void Reload(float elapsedTime);
+
+private:
+	// デバッグ用モデル
+	std::unique_ptr<DirectX::GeometricPrimitive> m_box;
 };

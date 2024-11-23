@@ -27,7 +27,7 @@ private:
 	std::unique_ptr<DirectX::AlphaTestEffect> m_batchEffect;
 
 	//	プリミティブバッチ 
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_batch;
+	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_primitiveBatch;
 
 	// テクスチャハンドル 
 	ID3D11ShaderResourceView* m_texture;

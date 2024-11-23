@@ -79,6 +79,11 @@ void NewTankCannon::Initialize()
 	// 最初に発射できる弾を砲弾に設定する
 	m_bulletType = BulletType::CANNONBALL;
 	m_reloadBulletType = BulletType::CANNONBALL;
+
+
+	// デバッグ用モデルの描画
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	m_box = DirectX::GeometricPrimitive::CreateBox(context, DirectX::SimpleMath::Vector3(0.1f,0.1f,0.1f));
 }
 
 //---------------------------------------------------------
@@ -126,9 +131,9 @@ void NewTankCannon::Render()
 	m_cannonBall->Render();
 
 	// ワールド行列の生成
-	m_worldMatrix = Matrix::CreateScale(0.5f) *
+	m_worldMatrix = Matrix::CreateScale(0.09f) *
 		Matrix::CreateFromQuaternion(m_cannonAngle) *
-		Matrix::CreateTranslation(Vector3(0.0f, 0.0f, -0.3f)) *
+		Matrix::CreateTranslation(Vector3(0.0f, 0.0f, -0.0f)) *
 		Matrix::CreateFromQuaternion(m_currentAngle) *
 		Matrix::CreateTranslation(m_currentPosition);
 
@@ -137,6 +142,12 @@ void NewTankCannon::Render()
 
 	// 照準の描画
 	DisplaySight();
+
+	// デバッグ用のモデルの描画(消しておく)
+	auto view = m_graphics->GetViewMatrix();
+	auto proj = m_graphics->GetProjectionMatrix();
+	Matrix boxMatrix = Matrix::CreateTranslation(this->GetMuzzlePosition());
+	//m_box->Draw(boxMatrix, view, proj, DirectX::Colors::Red);
 }
 
 //---------------------------------------------------------
@@ -304,7 +315,7 @@ DirectX::SimpleMath::Vector3 NewTankCannon::GetMuzzlePosition()
 	using namespace DirectX::SimpleMath;
 
 	// 砲身の先端に対するオフセットベクトル
-	DirectX::SimpleMath::Vector3 muzzleOffset = DirectX::SimpleMath::Vector3(0.0f, 0.0f, -0.8f);
+	DirectX::SimpleMath::Vector3 muzzleOffset = DirectX::SimpleMath::Vector3(0.0f, 0.5f, -0.8f);
 	// Quaternion から Matrix を作成して Transform を適用
 	Matrix rotationMatrix = Matrix::CreateFromQuaternion(m_cannonAngle * m_currentAngle);
 	// 回転をオフセットに適用し、砲身の先端座標を計算

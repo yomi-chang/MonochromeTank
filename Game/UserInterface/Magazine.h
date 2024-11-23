@@ -1,4 +1,5 @@
 #pragma once
+#include"Libraries/Microsoft/RenderTexture.h"
 
 // 前方宣言
 class Graphics;
@@ -17,13 +18,13 @@ private:
 	// ピクセルシェーダ
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 	// テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
-	// プリミティブバッチ 
-	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_batch;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_bulletTexture;
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_cannonTexture;
 
-	// スプライトバッチ
-	DirectX::SpriteBatch* m_spriteBatch;
+	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_renderTargetView;
 
+	std::unique_ptr<DX::RenderTexture> m_backBuffer;
+	
 public:
 	// コンストラクタ
 	Magazine();
@@ -31,12 +32,13 @@ public:
 	~Magazine() = default;
 	// 初期化処理
 	void Initialize();
-	// 更新処理
-	void Update();
 	// 描画処理
 	void Render();
 
 private:
 	// シェーダの読み込み
 	void LoadShader();
+
+	// テクスチャの読み込み
+	void LoadTexture();
 };

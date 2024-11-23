@@ -6,6 +6,8 @@
 #include "Game/Objects/NewTank/NewTankBase/NewTankTurret.h"
 #include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
 
+#include "Interface/IBullet.h"
+
 #include "Game/Collider/BoxCollider.h"
 #include "Game/UserInterface/HpGauge.h"
 
@@ -133,6 +135,11 @@ void PlayerTank::KeyBoardEvent(float elapsedTime)
 	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
 	if (mouseState.leftButton)
 	{
+		// –C’e‚ª”­ŽË‚³‚ê‚½‚Æ‚«‚Ì‚ÝƒJƒƒ‰‚ð—h‚ç‚·
+		if (m_tank->GetCannon()->GetCurrentBullet() == NewTankCannon::BulletType::CANNONBALL &&
+			m_tank->GetCannon()->GetCannonBall()->GetBulletState() == IBullet::UNUSED)
+			m_camera->StartShakeCamera(25.0f, 0.05f, 0.5f);
+
 		m_tank->GetCannon()->Shoot();
 	}
 

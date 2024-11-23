@@ -111,12 +111,15 @@ void StageManager::CreateStage()
 {
 	using namespace DirectX::SimpleMath;
 
+	// 土台の作成
+	m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 1.0f, 40.0f), Vector3::Zero));
+
 	for (int y = 0; y < STAGESIZE; y++)
 	{
 		for (int x = 0; x < STAGESIZE; x++)
 		{
 			// 土台の描画
-			m_walls.emplace_back(std::make_unique<Wall>(Vector3::One, Vector3(x - (STAGESIZE / 2), 0.0f, y - (STAGESIZE / 2))));
+			//m_walls.emplace_back(std::make_unique<Wall>(Vector3::One, Vector3(x - (STAGESIZE / 2), 0.0f, y - (STAGESIZE / 2))));
 
 			// 数値に応じたオブジェクトの生成
 			switch (m_data[y][x])

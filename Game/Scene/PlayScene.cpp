@@ -23,6 +23,8 @@
 #include "Game/Objects/NewTank/PlayerTank.h"
 #include "Game/Objects/NewTank/EnemyTanks/SimpleTank.h"
 
+#include "Game/UserInterface/Magazine.h"
+
 #include "Game/Objects/Stage/StageManager.h"
 
 #include <cassert>
@@ -104,8 +106,6 @@ void PlayScene::Initialize()
 		enemy->SetPlayerTank(m_player.get());
 	}
 
-
-
 	// TPSカメラの生成
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
 	m_tpsCamera->Initialize(m_player.get());
@@ -113,6 +113,13 @@ void PlayScene::Initialize()
 	// ステージマネージャーの生成
 	m_stageManager = std::make_unique<StageManager>();
 	m_stageManager->Initialize(m_player.get(), m_tpsCamera.get());
+
+	// UI関係
+	m_magazine = std::make_unique<Magazine>();
+	m_magazine->Initialize();
+
+	// カメラ情報を渡す
+	m_player->SetCamera(m_tpsCamera.get());
 }
 
 //---------------------------------------------------------
@@ -192,6 +199,9 @@ void PlayScene::Render()
 	{
 		enemy->Render();
 	}
+
+	// UI関係
+	m_magazine->Render();
 
 	// デバッグ情報を「DebugString」で表示する
 #ifdef _DEBUG

@@ -12,8 +12,11 @@ public:
 	DirectX::Model* GetSkySphereModel() { return m_skySphereModel.get(); }		// 天球モデル
 	DirectX::Model* GetBulletModel() { return m_bulletModel.get(); }			// 弾モデル
 
-	ID3D11ShaderResourceView* GetTargetTexture() { return m_targetTexture.Get(); }
-	ID3D11ShaderResourceView* GetTargetLockTexture() { return m_targetLockTexture.Get(); }
+	ID3D11ShaderResourceView* GetTargetTexture() { return m_targetTexture.Get(); }			// 照準テクスチャ
+	ID3D11ShaderResourceView* GetTargetLockTexture() { return m_targetLockTexture.Get(); }	// 照準ロックテクスチャ
+	ID3D11ShaderResourceView* GetCannonBallTexture() { return m_cannonBallTexture.Get(); }	// 砲弾テクスチャ
+	ID3D11ShaderResourceView* GetBulletTexture() { return m_bulletTexture.Get(); }			// 通常弾テクスチャ
+	ID3D11ShaderResourceView* GetShadowTexture() { return m_shadowTexture.Get(); }			// 丸影テクスチャ
 
 public:
 	Resources(Resources&&) = default;
@@ -38,7 +41,10 @@ private:
 		m_bulletModel {},
 
 		m_targetTexture{},
-		m_targetLockTexture{}
+		m_targetLockTexture{},
+		m_bulletTexture{},
+		m_cannonBallTexture{},
+		m_shadowTexture{}
 	{
 	}
 
@@ -63,10 +69,18 @@ private:
 	std::unique_ptr<DirectX::Model> m_skySphereModel;
 	// 弾モデル
 	std::unique_ptr<DirectX::Model> m_bulletModel;
+	// 固定砲台モデル
+	std::unique_ptr<DirectX::Model> m_fixedTurretModel;
 
 	// テクスチャ======================================================
 	// 照準テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_targetTexture;
 	// 照準ロックテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_targetLockTexture;
+	// 砲弾テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_bulletTexture;
+	// 通常弾テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_cannonBallTexture;
+	// 丸影テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_shadowTexture;
 };

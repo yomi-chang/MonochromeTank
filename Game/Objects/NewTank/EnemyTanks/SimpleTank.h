@@ -10,6 +10,10 @@ class EnemyHpGauge;
 
 class SimpleTank : IObject
 {
+private:
+	// 敵速度
+	const float TANK_SPEED = 5.5f;
+
 public:
 	SimpleTank(
 		DirectX::SimpleMath::Vector3 position
@@ -48,6 +52,15 @@ private:
 	// 死亡しているかどうか
 	bool m_isDead;
 
+	// 移動関係
+	// 巡回地点
+	std::vector<DirectX::SimpleMath::Vector3> m_patrolPoint;
+	// 現在の番号
+	unsigned int m_currentPoint;
+
+	// デバッグ用モデル
+	std::unique_ptr<DirectX::GeometricPrimitive> m_box;
+
 private:
 	// プレイヤーの情報
 	PlayerTank* m_playerTank;
@@ -71,4 +84,6 @@ private:
 	void DetectCollisionTankAndBullets();
 	// 戦車と戦車の衝突判定を行う
 	void DetectCollisionTankAndOtherTanks();
+	// 巡回
+	void Patrol(float elapsedTime);
 };
