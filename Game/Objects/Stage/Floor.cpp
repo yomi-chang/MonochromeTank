@@ -1,24 +1,22 @@
 #include "pch.h"
-#include "Game/UserInterface/DrawTexture.h"
+#include "Game/Objects/Stage/Floor.h"
 #include "Framework/Graphics.h"
+
 #include <PrimitiveBatch.h> 
 #include <VertexTypes.h> 
 #include <WICTextureLoader.h> 
 
-using namespace DirectX;
-
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
-DrawTexture::DrawTexture()
+Floor::Floor(float size)
 	:
-	m_graphics{Graphics::GetInstance()},
-	m_inputLayout{},
+	m_graphics{ Graphics::GetInstance()},
+	m_inputLayout{ m_graphics->GetInputLayout() },
 	m_batchEffect{},
 	m_primitiveBatch{},
-	m_texture{}
+	m_texture{},
+	m_vertex{}
 {
 	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
 
 	// エフェクト作成
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
@@ -39,19 +37,16 @@ DrawTexture::DrawTexture()
 	// プリミティブバッチ作成
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
+
+	// 頂点情報の設定
+	float halfSize = size / 2;
+	m_vertex[0] = DirectX::VertexPositionTexture(Vector3(-halfSize, 0.0f, halfSize), Vector2(0.0f, 0.0f));
+	m_vertex[1] = DirectX::VertexPositionTexture(Vector3(halfSize, 0.0f, halfSize), Vector2(halfSize, 0.0f));
+	m_vertex[2] = DirectX::VertexPositionTexture(Vector3(halfSize, 0.0f, -halfSize), Vector2(halfSize, halfSize));
+	m_vertex[3] = DirectX::VertexPositionTexture(Vector3(-halfSize, 0.0f, -halfSize), Vector2(0.0f, halfSize));
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
-DrawTexture::~DrawTexture()
-{
-}
-
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
-void DrawTexture::Render(DirectX::SimpleMath::Vector3 position)
+void Floor::Render()
 {
 	using namespace DirectX::SimpleMath;
 
@@ -60,43 +55,22 @@ void DrawTexture::Render(DirectX::SimpleMath::Vector3 position)
 	auto proj = m_graphics->GetProjectionMatrix();
 	auto states = m_graphics->GetCommonStates();
 
-	
-
-	//  頂点情報
-	VertexPositionTexture vertex[4] =
-	{
-		VertexPositionTexture(SimpleMath::Vector3(-0.5f,0.5f, 0.0f),	SimpleMath::Vector2(0.0f, 0.0f)),
-		VertexPositionTexture(SimpleMath::Vector3(0.5f, 0.5f, 0.0f),	SimpleMath::Vector2(1.0f, 0.0f)),
-		VertexPositionTexture(SimpleMath::Vector3(0.5f, -0.5f, 0.0f),	SimpleMath::Vector2(1.0f,1.0f)),
-		VertexPositionTexture(SimpleMath::Vector3(-0.5f,-0.5f, 0.0f),	SimpleMath::Vector2(0.0f, 1.0f)),
-	};
-
-	// 座標指定
-	Matrix mat = Matrix::CreateTranslation(position);
-	//mat = Matrix::CreateScale(5.0f);
-
-	// ビルボード
-	Matrix billboard = view.Invert();
-	billboard._41 = 0;
-	billboard._42 = 0;
-	billboard._43 = 0;
-	billboard *= mat;
-
 	//	テクスチャサンプラーの設定（クランプテクスチャアドレッシングモード） 
 	ID3D11SamplerState* samplers[1] = { states->PointWrap() };
 	context->PSSetSamplers(0, 1, samplers);
 
 	//	深度バッファに書き込み参照する 
-	context->OMSetDepthStencilState(states->DepthDefault(), 0);
+	context->OMSetDepthStencilState(states->DepthRead(), 0);
 
 	//	カリングなし　
-	context->RSSetState(states->CullNone());
+	context->RSSetState(states->CullClockwise());
 
 	//	不透明のみ描画する設定 
 	m_batchEffect->SetAlphaFunction(D3D11_COMPARISON_NOT_EQUAL);
 	m_batchEffect->SetReferenceAlpha(0);
 
-	m_batchEffect->SetWorld(billboard);
+	Matrix world = Matrix::CreateTranslation(Vector3::Zero);
+	m_batchEffect->SetWorld(world);
 
 	m_batchEffect->SetView(view);
 	m_batchEffect->SetProjection(proj);
@@ -106,8 +80,6 @@ void DrawTexture::Render(DirectX::SimpleMath::Vector3 position)
 
 	//	半透明部分を描画 
 	m_primitiveBatch->Begin();
-	m_primitiveBatch->DrawQuad(vertex[0], vertex[1], vertex[2], vertex[3]);
+	m_primitiveBatch->DrawQuad(m_vertex[0], m_vertex[1], m_vertex[2], m_vertex[3]);
 	m_primitiveBatch->End();
 }
-
-

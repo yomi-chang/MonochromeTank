@@ -5,11 +5,15 @@
 #include<sstream>
 #include<regex>
 
+#include "Framework/Resources.h"
+
 #include "Game/Objects/Stage/StageManager.h"
 #include "Game/Objects/Stage/Wall.h"
+#include "Game/Objects/Stage/Floor.h"
 #include "Game/Objects/Other/SkySphere.h"
 
 #include "Game/Objects/NewTank/PlayerTank.h"
+#include "Game/Objects/NewTank/EnemyTanks/SimpleTank.h"
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -17,6 +21,7 @@
 StageManager::StageManager()
 	:
 	m_walls{},
+	m_floor{},
 	m_skySphere{}
 {
 }
@@ -24,10 +29,7 @@ StageManager::StageManager()
 //---------------------------------------------------------
 // 初期化処理
 //---------------------------------------------------------
-void StageManager::Initialize(
-	PlayerTank* tank,
-	mylib::FollowCamera* camera
-)
+void StageManager::Initialize()
 {
 	// 天球の生成
 	m_skySphere = std::make_unique<SkySphere>();
@@ -37,22 +39,6 @@ void StageManager::Initialize(
 
 	// ステージの生成
 	CreateStage();
-
-	// プレイヤーとカメラ情報を渡す
-	for (auto& wall : m_walls)
-	{
-		wall->SetPlayer(tank);
-		wall->SetCamera(camera);
-	}
-
-	// 壁情報をステージに渡す
-	std::vector<Wall*> wallPointers;
-	for (const auto& wall : m_walls)
-	{
-		wallPointers.push_back(wall.get());
-	}
-	// 戦車に壁情報を渡す
-	tank->SetWalls(wallPointers);
 }
 
 //---------------------------------------------------------
@@ -68,6 +54,7 @@ void StageManager::Render()
 	{
 		wall->Render();
 	}
+	m_floor->Render();
 }
 
 //---------------------------------------------------------
@@ -112,7 +99,9 @@ void StageManager::CreateStage()
 	using namespace DirectX::SimpleMath;
 
 	// 土台の作成
-	m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 1.0f, 40.0f), Vector3::Zero));
+	//m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 1.0f, 40.0f), Vector3::Zero));
+	m_floor = std::make_unique<Floor>(STAGESIZE);
+	m_floor->SetTexture(Resources::GetInstance()->GetFloorTexture());
 
 	for (int y = 0; y < STAGESIZE; y++)
 	{
@@ -127,10 +116,34 @@ void StageManager::CreateStage()
 				case 0:		// 情報がない場合
 					continue;
 				case 1:		// 壁
-					m_walls.emplace_back(std::make_unique<Wall>(Vector3::One, Vector3(x - (STAGESIZE / 2), 1.0f, y - (STAGESIZE / 2))));
+					m_walls.emplace_back(std::make_unique<Wall>(Vector3::One, Vector3(x - (STAGESIZE / 2), 0.5f, y - (STAGESIZE / 2))));
 				default:
 					break;
 			}
 		}
 	}
+}
+
+void StageManager::SetObjectData(
+	PlayerTank* playerTank,
+	mylib::FollowCamera* camera,
+	std::vector<EnemyTank*> enemyTanks
+)
+{
+	// プレイヤーとカメラ情報を渡す
+	for (auto& wall : m_walls)
+	{
+		wall->SetPlayer(playerTank);
+		wall->SetCamera(camera);
+		wall->SetEnemyTanks(enemyTanks);
+	}
+
+	// 壁情報をステージに渡す
+	std::vector<Wall*> wallPointers;
+	for (const auto& wall : m_walls)
+	{
+		wallPointers.push_back(wall.get());
+	}
+	// 戦車に壁情報を渡す
+	playerTank->SetWalls(wallPointers);
 }

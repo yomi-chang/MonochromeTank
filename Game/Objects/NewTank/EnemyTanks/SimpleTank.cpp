@@ -14,7 +14,7 @@
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/DebugLog.h"
 
-SimpleTank::SimpleTank(
+EnemyTank::EnemyTank(
 	DirectX::SimpleMath::Vector3 position
 )
 	:
@@ -25,11 +25,11 @@ SimpleTank::SimpleTank(
 	m_position = position;
 }
 
-SimpleTank::~SimpleTank()
+EnemyTank::~EnemyTank()
 {
 }
 
-void SimpleTank::Initialize()
+void EnemyTank::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
@@ -48,7 +48,7 @@ void SimpleTank::Initialize()
 	m_patrolPoint.emplace_back(Vector3{ 10.0f, 0.0f,  10.0f });
 	m_patrolPoint.emplace_back(Vector3{ -10.0f, 0.0f,  10.0f });
 	m_patrolPoint.emplace_back(Vector3{ -10.0f, 0.0f, -10.0f });
-	m_patrolPoint.emplace_back(Vector3{ 10.0f, 0.0f, -10.0f });
+	m_patrolPoint.emplace_back(Vector3{ 6.0f, 0.0f, -10.0f });
 
 	// デバッグ用モデルの描画
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
@@ -56,14 +56,10 @@ void SimpleTank::Initialize()
 
 }
 
-void SimpleTank::Update(float elapsedTime)
+void EnemyTank::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	// プレイヤーの方向を向く処理 ToDo：今はすぐプレイヤーの方向に向いてしまうので徐々に向けるようにする
-	Vector3 delta = m_playerTank->GetPosition() - m_position;
-	float angleRadians = atan2(delta.x, delta.z);
-	m_tank->GetTurret()->RotateTurret(angleRadians);
 
 	// 戦車の更新
 	m_tank->Update(elapsedTime);
@@ -83,10 +79,16 @@ void SimpleTank::Update(float elapsedTime)
 	// ダメージ処理
 	m_hpGauge->Damage(m_damage);
 
+	// 巡回行動
 	Patrol(elapsedTime);
+
+	// プレイヤーの方向を向く処理 ToDo：今はすぐプレイヤーの方向に向いてしまうので徐々に向けるようにする
+	Vector3 delta = m_playerTank->GetPosition() - m_position;
+	float angleRadians = atan2(delta.x, delta.z);
+	m_tank->GetTurret()->RotateTurret(angleRadians);
 }
 
-void SimpleTank::Render()
+void EnemyTank::Render()
 {
 	// 戦車の描画
 	m_tank->Render();
@@ -118,23 +120,23 @@ void SimpleTank::Render()
 			break;
 	}
 	
-	m_box->Draw(boxMatrix, view, proj, DirectX::Colors::Red);
+	//m_box->Draw(boxMatrix, view, proj, DirectX::Colors::Red);
 }
 
-void SimpleTank::Finalize()
+void EnemyTank::Finalize()
 {
 }
 
-void SimpleTank::Attach(std::unique_ptr<IObject> parts)
+void EnemyTank::Attach(std::unique_ptr<IObject> parts)
 {
 }
 
-void SimpleTank::Detach(std::unique_ptr<IObject> parts)
+void EnemyTank::Detach(std::unique_ptr<IObject> parts)
 {
 }
 
 // 死亡情報を渡す
-bool SimpleTank::GetDead()
+bool EnemyTank::GetDead()
 {
 	// 体力が0なら死亡判定
 	if (m_hpGauge->GetHp() <= 0.0f)
@@ -144,8 +146,14 @@ bool SimpleTank::GetDead()
 	return false;
 }
 
+// 座標情報の受け取り
+void EnemyTank::SetPosition(DirectX::SimpleMath::Vector3 position)
+{
+	m_tank->GetBody()->SetCollisionVel(position);
+}
+
 // 戦車と弾の衝突判定
-void SimpleTank::DetectCollisionTankAndBullets()
+void EnemyTank::DetectCollisionTankAndBullets()
 {
 	// 弾丸と戦車の当たり判定
 	// 連射弾
@@ -169,19 +177,19 @@ void SimpleTank::DetectCollisionTankAndBullets()
 }
 
 // 戦車と戦車の衝突判定を行う
-void SimpleTank::DetectCollisionTankAndOtherTanks()
+void EnemyTank::DetectCollisionTankAndOtherTanks()
 {
 	// プレイヤーの戦車を押し戻す
 	m_playerTank->SetPosition(m_collider->CheckCollisionCollider(m_playerTank->GetBoundingBox()));
 }
 
 
-void SimpleTank::Patrol(float elapsedTime)
+void EnemyTank::Patrol(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
 	// ティーポットの進行方向ベクトル
-	Vector3 heading = Vector3::Transform(Vector3::Forward * 0.25, m_tank->GetAngle());
+	Vector3 heading = Vector3::Transform(Vector3::Forward * TANK_SPEED * elapsedTime, m_tank->GetAngle());
 
 	// ティーポットからターゲットへ向かうベクトル
 	//Vector3 toTarget = m_spherePosition - m_teapotPosition;
@@ -213,8 +221,10 @@ void SimpleTank::Patrol(float elapsedTime)
 	/*if (toTarget.LengthSquared() > TEAPOT_SPEED * TEAPOT_SPEED)
 	{*/
 		// ティーポットを移動する
-		m_position += (heading * TANK_SPEED * elapsedTime);
-		m_tank->GetBody()->SetPosition(m_position);
+		//m_position += (heading * TANK_SPEED * elapsedTime);
+		//m_tank->GetBody()->SetPosition(m_position);
+
+		m_tank->GetBody()->Move(heading);
 		//m_boundingSphere.Center = m_teapotPosition;
 
 		/*
@@ -249,6 +259,8 @@ void SimpleTank::Patrol(float elapsedTime)
 		// ティーポットの角度を更新する
 		//m_teapotAngle += theta;
 		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(theta), 0.0f, 0.0f));
+
+		
 
 		// ゴールに達したら、ゴール情報を更新する
 		if (/*m_isInside == false &&*/ toTarget.Length() < 1.0f)

@@ -8,18 +8,18 @@ class BoxCollider;
 class PlayerTank;
 class EnemyHpGauge;
 
-class SimpleTank : IObject
+class EnemyTank : IObject
 {
 private:
 	// 敵速度
-	const float TANK_SPEED = 5.5f;
+	const float TANK_SPEED = 3.0f;
 
 public:
-	SimpleTank(
+	EnemyTank(
 		DirectX::SimpleMath::Vector3 position
 	);
 
-	~SimpleTank() override;
+	~EnemyTank() override;
 
 	void Initialize()override;
 
@@ -74,7 +74,8 @@ public:
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
 	// 死亡情報を渡す
 	bool GetDead();
-	
+	// 座標の受け取り
+	void SetPosition(DirectX::SimpleMath::Vector3 position);
 	
 	// プレイヤーの情報の受け取り
 	void SetPlayerTank(PlayerTank* tank) { m_playerTank = tank; }

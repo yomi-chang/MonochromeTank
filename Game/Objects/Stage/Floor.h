@@ -1,20 +1,23 @@
 #pragma once
-#include "Framework/Graphics.h"
 #include <PrimitiveBatch.h>
 #include <VertexTypes.h>
 
-class DrawTexture
+class Graphics;
+
+class Floor
 {
 public:
-	DrawTexture();
-	~DrawTexture();
+	// コンストラクタ
+	Floor(float size);
+
+	// デストラクタ
+	~Floor() = default;
 
 	// 描画処理
-	void Render(DirectX::SimpleMath::Vector3 position);
+	void Render();
 
 	// 画像のセット
-	void SetTexture(ID3D11ShaderResourceView* texture) { m_texture  = texture; }
-
+	void SetTexture(ID3D11ShaderResourceView* texture) { m_texture = texture; }
 
 private:
 	// グラフィックス
@@ -31,4 +34,7 @@ private:
 
 	// テクスチャハンドル 
 	ID3D11ShaderResourceView* m_texture;
+
+	// 頂点情報
+	DirectX::VertexPositionTexture m_vertex[4];
 };

@@ -7,7 +7,7 @@
 
 class Graphics;
 class PlayerTank;
-class SimpleTank;
+class EnemyTank;
 class StageManager;
 
 class Magazine;
@@ -43,7 +43,7 @@ private:
 	std::unique_ptr<PlayerTank> m_player;					// プレイヤー
 	//std::unique_ptr<SimpleTank> m_enemy;					// 敵戦車
 
-	std::vector<std::unique_ptr<SimpleTank>> m_enemies;		// 敵戦車(配列管理)
+	std::vector<std::unique_ptr<EnemyTank>> m_enemies;		// 敵戦車(配列管理)
 
 	// マネージャー
 	std::unique_ptr<StageManager> m_stageManager;			// ステージマネージャー

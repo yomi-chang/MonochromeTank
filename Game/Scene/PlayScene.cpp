@@ -98,12 +98,15 @@ void PlayScene::Initialize()
 	m_player->Initialize();
 
 	// 敵戦車
-	m_enemies.push_back(std::make_unique<SimpleTank>(Vector3{ -5.0f, 0.2f, -10.0f }));
-	m_enemies.push_back(std::make_unique<SimpleTank>(Vector3{ 5.0f, 0.2f, -10.0f }));
+	m_enemies.push_back(std::make_unique<EnemyTank>(Vector3{ -5.0f, 0.0f, -10.0f }));
+	m_enemies.push_back(std::make_unique<EnemyTank>(Vector3{ 5.0f, 0.0f, -10.0f }));
+	std::vector<EnemyTank*> enemyPointers;
 	for (auto& enemy : m_enemies)
 	{
 		enemy->Initialize();
 		enemy->SetPlayerTank(m_player.get());
+
+		enemyPointers.push_back(enemy.get());
 	}
 
 	// TPSカメラの生成
@@ -112,7 +115,8 @@ void PlayScene::Initialize()
 
 	// ステージマネージャーの生成
 	m_stageManager = std::make_unique<StageManager>();
-	m_stageManager->Initialize(m_player.get(), m_tpsCamera.get());
+	m_stageManager->Initialize();
+	m_stageManager->SetObjectData(m_player.get(), m_tpsCamera.get(), enemyPointers);
 
 	// UI関係
 	m_magazine = std::make_unique<Magazine>();
@@ -202,6 +206,20 @@ void PlayScene::Render()
 
 	// UI関係
 	m_magazine->Render();
+
+	SpriteBatch* spriteBatch = m_graphics->GetSpriteBatch();
+	ID3D11ShaderResourceView* texture = Resources::GetInstance()->GetCannonBallTexture();
+	RECT rect = { 1100,600,1200,650 };
+	spriteBatch->Begin();
+	if (m_player->GetTankCannon()->GetCannonBall()->GetBulletState() == IBullet::UNUSED)
+	{
+		spriteBatch->Draw(texture, rect);
+	}
+	else
+	{
+		spriteBatch->Draw(texture, rect, DirectX::Colors::Gray);
+	}
+	spriteBatch->End();
 
 	// デバッグ情報を「DebugString」で表示する
 #ifdef _DEBUG

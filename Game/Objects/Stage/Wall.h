@@ -6,6 +6,7 @@ namespace mylib
 	class FollowCamera;
 }
 class PlayerTank;
+class EnemyTank;
 
 class Wall
 {
@@ -13,6 +14,8 @@ public:
 	void SetPlayer(PlayerTank* tank) { m_playerTank = tank; }
 
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
+
+	void SetEnemyTanks(std::vector<EnemyTank*> enemyTanks) { m_enemyTanks = enemyTanks; }
 
 public:
 	// コンストラクタ
@@ -35,6 +38,7 @@ private:
 	std::unique_ptr<BoxCollider> m_collider;					// ボックスコライダー
 	PlayerTank* m_playerTank;									// プレイヤー
 	mylib::FollowCamera* m_camera;								// カメラ
+	std::vector<EnemyTank*> m_enemyTanks;						// 敵戦車
 	Graphics* m_graphics;										// グラフィックス	
 	DirectX::SimpleMath::Vector4 m_color;						// カラー
 

@@ -88,5 +88,4 @@ public:
 	DirectX::SimpleMath::Quaternion GetTurretAngle() { return m_turret->GetTurretAngle(); }
 	// –CgŠp“x‚Ìó‚¯æ‚è
 	DirectX::SimpleMath::Quaternion GetCannonAngle() { return m_cannon->GetCannonAngle(); }
-	// c‚è’e”‚Ìæ“¾
 };

@@ -39,7 +39,7 @@ void NewTank::Initialize()
 	using namespace DirectX;
 
 	// 車体の生成(地面から0.5f高い座標に生成)
-	Attach(std::make_unique<NewTankBody>(this,Vector3(0.0f, 0.5f, 0.0f), 0.0f));
+	Attach(std::make_unique<NewTankBody>(this,Vector3(0.0f, 0.0f, 0.0f), 0.0f));
 
 	// 現在位置の更新
 	m_currentPosition = m_initialPosition;
@@ -115,7 +115,7 @@ void NewTank::Render()
 	m_basicEffect->Apply(context);
 
 	// 影のパラメータ
-	float radius = 1.0f;
+	float radius = 1.1f;
 	Vector3 position = GetPosition();
 
 	// 影ポリゴンの頂点情報を設定する：影を床から0.01f浮かせる

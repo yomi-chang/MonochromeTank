@@ -3,6 +3,7 @@
 #include "Framework/Graphics.h"
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Game/Objects/NewTank/PlayerTank.h"
+#include "Game/Objects/NewTank/EnemyTanks/SimpleTank.h"
 
 using namespace DirectX;
 
@@ -68,16 +69,15 @@ void Wall::Finalize()
 //---------------------------------------------------------
 void Wall::DetectCollision()
 {
-	// 何にも触れていない場合は早期リターン
-	if (!m_collider->CheckTriggerCollider(m_playerTank->GetBoundingBox()) &&
-		!m_collider->CheckTriggerCollider(m_camera->GetBoundingSphere()))
-	{
-		return;
-	}
-
 	// プレイヤーとの当たり判定
 	m_playerTank->SetPosition(m_collider->CheckCollisionCollider(m_playerTank->GetBoundingBox()));
 
 	// カメラとの当たり判定
 	m_camera->SetEyePosition(m_camera->GetEyePosition() + m_collider->CheckCollisionCollider(m_camera->GetBoundingSphere()));
+
+	// 敵戦車との当たり判定
+	for (auto& enemyTank : m_enemyTanks)
+	{
+		enemyTank->SetPosition(m_collider->CheckCollisionCollider(enemyTank->GetBoundingBox()));
+	}
 }

@@ -17,6 +17,7 @@ public:
 	ID3D11ShaderResourceView* GetCannonBallTexture() { return m_cannonBallTexture.Get(); }	// 砲弾テクスチャ
 	ID3D11ShaderResourceView* GetBulletTexture() { return m_bulletTexture.Get(); }			// 通常弾テクスチャ
 	ID3D11ShaderResourceView* GetShadowTexture() { return m_shadowTexture.Get(); }			// 丸影テクスチャ
+	ID3D11ShaderResourceView* GetFloorTexture() { return m_floorTexture.Get(); }			// 床テクスチャ
 
 public:
 	Resources(Resources&&) = default;
@@ -44,7 +45,8 @@ private:
 		m_targetLockTexture{},
 		m_bulletTexture{},
 		m_cannonBallTexture{},
-		m_shadowTexture{}
+		m_shadowTexture{},
+		m_floorTexture{}
 	{
 	}
 
@@ -83,4 +85,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_cannonBallTexture;
 	// 丸影テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_shadowTexture;
+	// 床テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_floorTexture;
 };

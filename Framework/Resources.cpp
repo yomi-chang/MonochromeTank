@@ -31,7 +31,6 @@ void Resources::LoadResource()
 	m_tankCanonModel = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\TankCannon.sdkmesh", *m_graphics->GetFX());
 
 	// 「天球」モデルをロードする
-	//m_skySphereModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\SkySphereWilderness.cmo", *m_graphics->GetFX());
 	m_skySphereModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\GraySky.cmo", *m_graphics->GetFX());
 
 	// 「弾」モデルをロードする
@@ -76,5 +75,13 @@ void Resources::LoadResource()
 		L"Resources\\Textures\\Shadow.png",
 		nullptr,
 		m_shadowTexture.GetAddressOf()
+	);
+
+	// 床のロード
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\Floor.png",
+		nullptr,
+		m_floorTexture.GetAddressOf()
 	);
 }

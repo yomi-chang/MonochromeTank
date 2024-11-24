@@ -33,7 +33,8 @@ NewTankCannon::NewTankCannon(
 	m_isReload{},
 	m_reloadBulletType{},
 	m_drawTexture{},
-	m_tank{}
+	m_tank{},
+	m_walls{}
 {
 	// 戦車情報の受け取り
 	m_tank = tank;
@@ -332,7 +333,7 @@ void NewTankCannon::DisplaySight()
 	// プリミティブ描画を開始する
 	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
 
-	// 照準の描画
+	// レーザーサイトの描画
 	Quaternion rotation = m_cannonAngle * m_currentAngle;
 	Matrix matrix = Matrix::CreateFromQuaternion(rotation);
 	//m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
@@ -340,38 +341,55 @@ void NewTankCannon::DisplaySight()
 	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();
 
+	// 壁の情報を持っていないならこれ以降の処理をしない
+	if (m_walls.empty())
+	{
+		return;
+	}
 
-	// Rayを飛ばして着弾方向の表示
-	// Rayの距離設定
-	float maxDistance = 10.0f;
-	// Rayの作成
+	// レイを飛ばして着弾方向の表示
+	// 射程距離
+	float range = 7.0f;
+	// レイの距離
+	float rayDistance = 0.0f;
+	// レイの距離記録用変数
+	float minDistance = range;
+	
+	// レイの作成
 	Ray ray{ this->GetMuzzlePosition(), matrix.Forward() };
+
 	// 壁のボックスコライダーとの衝突判定を取る
-	Vector3 hitPosition = Vector3::Zero;
 	for (auto& wall : m_walls)
 	{
-		float distance = 0.0f;
 		// 壁との衝突判定
-		bool isHit = ray.Intersects(*wall->GetBoundingBox(), distance);
+		bool isHit = ray.Intersects(*wall->GetBoundingBox(), rayDistance);
 		
 		// 射程範囲外かつ当たっている
-		if (distance <= maxDistance && isHit)
+		if (rayDistance <= range && isHit)
 		{
-			// 衝突点計算
-			hitPosition = Vector3{ ray.position + ray.direction * distance - ray.direction };
-			// 赤い照準を出す
-			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
-			break;
-		}
-		// 射程範囲外または当たっていない
-		else
-		{
-			// 照準画像の表示場所計算
-			hitPosition = Vector3{ ray.position + ray.direction * maxDistance - ray.direction };
-			// 黒い照準を出す
-			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
+			// より短い距離を記録する
+			minDistance = std::min(minDistance, rayDistance);
 		}
 	}
+
+	// 衝突座標
+	Vector3 hitPosition = Vector3::Zero;
+	// 一回でも壁との衝突が取れていたら
+	if (minDistance < range)
+	{
+		// 衝突点計算
+		hitPosition = Vector3{ ray.position + ray.direction * minDistance - ray.direction };
+		// 赤い照準を出す
+		m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
+	}
+	else
+	{
+		// 照準画像の表示場所計算
+		hitPosition = Vector3{ ray.position + ray.direction * range - ray.direction };
+		// 黒い照準を出す
+		m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
+	}
+
 	// 照準画像の表示
 	m_drawTexture->Render(hitPosition);
 }
