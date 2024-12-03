@@ -3,6 +3,8 @@
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
 
+#include "Libraries/MyLib/DebugLog.h"
+
 // 砲弾速度を定義する
 const DirectX::SimpleMath::Vector3 CannonBall::SPEED(0.0f, 0.0f, -0.3f);
 
@@ -63,8 +65,14 @@ void CannonBall::Update(float time)
 	// 経過時間を記録
 	m_elapsedTime += time;
 
+	// 一定時間経過していたら使用済みにする
+	if (m_elapsedTime >= 5.0f)
+	{
+		SetBulletState(IBullet::USED);
+	}
+
 	// 速度を計算する（初速度）
-	Vector3 initialVelocity = Vector3::Transform(SPEED, m_angle);
+	Vector3 initialVelocity = Vector3::Transform(SPEED, Matrix::CreateFromQuaternion(m_angle));
 
 	// 速度に重力の影響を加えて位置を計算する
 	m_velocity = initialVelocity + (GRAVITY * m_elapsedTime);
@@ -73,7 +81,7 @@ void CannonBall::Update(float time)
 	// コライダーの座標を更新
 	m_collider->Update(m_position);
 
-	// 地面より下に行ったら使用済みに
+	// 地面より下に行ったら使用済みにする
 	if (m_position.y <= 0)
 	{
 		SetBulletState(IBullet::USED);

@@ -75,7 +75,7 @@ void PlayScene::Initialize()
 	// Ë‰es—ñ‚ğì¬‚·‚é
 	Matrix projection;
 	projection = Matrix::CreatePerspectiveFieldOfView(
-		XMConvertToRadians(45.0f),
+		XMConvertToRadians(65.0f),
 		static_cast<float>(rect.right) / static_cast<float>(rect.bottom),
 		0.1f, 1000.0f
 	);

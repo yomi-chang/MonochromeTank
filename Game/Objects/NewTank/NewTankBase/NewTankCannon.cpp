@@ -8,6 +8,8 @@
 #include "Game/Objects/Bullet/Bullet.h"
 #include "Game/Objects/Bullet/CannonBall.h"
 
+#include "Libraries/MyLib/DebugLog.h";
+
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
@@ -179,7 +181,7 @@ void NewTankCannon::ShootBullet(IBullet* bullet)
 	// コライダー座標の更新
 	bullet->SetColliderPosition(this->GetMuzzlePosition());
 	// 「砲弾」角度を設定する
-	bullet->SetAngle(m_currentAngle * m_cannonAngle);
+	bullet->SetAngle(m_cannonAngle * m_currentAngle);
 	// 「砲弾」を発射する
 	bullet->SetBulletState(IBullet::FLYING);
 }
@@ -215,6 +217,7 @@ void NewTankCannon::Shoot()
 			{
 				// 「砲弾」を発射する
 				ShootBullet(m_cannonBall.get());
+				mylib::DebugLog("砲身角度 ： ", m_cannonAngle.x);
 			}
 			break;
 	}
@@ -336,7 +339,7 @@ void NewTankCannon::DisplaySight()
 	// レーザーサイトの描画
 	Quaternion rotation = m_cannonAngle * m_currentAngle;
 	Matrix matrix = Matrix::CreateFromQuaternion(rotation);
-	//m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
+	m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
 
 	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();

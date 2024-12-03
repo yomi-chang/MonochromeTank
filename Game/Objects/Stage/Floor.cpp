@@ -39,7 +39,7 @@ Floor::Floor(float size)
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 
 	// 頂点情報の設定
-	float halfSize = size / 2;
+	float halfSize = size / 2 - 0.5f;
 	m_vertex[0] = DirectX::VertexPositionTexture(Vector3(-halfSize, 0.0f, halfSize), Vector2(0.0f, 0.0f));
 	m_vertex[1] = DirectX::VertexPositionTexture(Vector3(halfSize, 0.0f, halfSize), Vector2(halfSize, 0.0f));
 	m_vertex[2] = DirectX::VertexPositionTexture(Vector3(halfSize, 0.0f, -halfSize), Vector2(halfSize, halfSize));
@@ -60,14 +60,15 @@ void Floor::Render()
 	context->PSSetSamplers(0, 1, samplers);
 
 	//	深度バッファに書き込み参照する 
-	context->OMSetDepthStencilState(states->DepthRead(), 0);
+	context->OMSetDepthStencilState(states->DepthDefault(), 0);
 
-	//	カリングなし　
+	// カリング
 	context->RSSetState(states->CullClockwise());
+	context->RSSetState(states->CullNone());
 
 	//	不透明のみ描画する設定 
-	m_batchEffect->SetAlphaFunction(D3D11_COMPARISON_NOT_EQUAL);
-	m_batchEffect->SetReferenceAlpha(0);
+	//m_batchEffect->SetAlphaFunction(D3D11_COMPARISON_NOT_EQUAL);
+	//m_batchEffect->SetReferenceAlpha(0);
 
 	Matrix world = Matrix::CreateTranslation(Vector3::Zero);
 	m_batchEffect->SetWorld(world);

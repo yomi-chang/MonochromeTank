@@ -80,7 +80,7 @@ void Resources::LoadResource()
 	// °‚Ìƒ[ƒh
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
-		L"Resources\\Textures\\Floor.png",
+		L"Resources\\Textures\\floorTexture2.png",
 		nullptr,
 		m_floorTexture.GetAddressOf()
 	);
