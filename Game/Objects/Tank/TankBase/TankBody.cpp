@@ -1,18 +1,18 @@
 #include "pch.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankTurret.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTank.h"
+#include "Game/Objects/Tank/TankBase/TankBody.h"
+#include "Game/Objects/Tank/TankBase/TankTurret.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
 
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
-NewTankTurret::NewTankTurret(
-	NewTank* tank,
+TankBody::TankBody(
+	Tank* tank,
 	const DirectX::SimpleMath::Vector3& initialPosition,
 	const float& initialAngle
 )
 	:
-	m_graphics{ m_graphics = Graphics::GetInstance() },
+	m_graphics{ Graphics::GetInstance() },
 	m_initialPosition{ initialPosition },
 	m_initialAngle{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
 	m_currentPosition{},
@@ -20,7 +20,7 @@ NewTankTurret::NewTankTurret(
 	m_tankParts{},
 	m_worldMatrix{},
 	m_model{},
-	m_turretAngle{},
+	m_bodyAngle{},
 	m_tank{}
 {
 	// 戦車情報の受け取り
@@ -30,39 +30,41 @@ NewTankTurret::NewTankTurret(
 //---------------------------------------------------------
 // デストラクタ
 //---------------------------------------------------------
-NewTankTurret::~NewTankTurret()
+TankBody::~TankBody()
 {
 }
 
 //---------------------------------------------------------
 // 初期化処理
 //---------------------------------------------------------
-void NewTankTurret::Initialize()
+void TankBody::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	// 砲身の生成(砲塔と同じ高さに生成)
-	Attach(std::make_unique<NewTankCannon>(m_tank, Vector3(0.0f, 0.0f, 0.0f), 0.0f));
+	// 砲塔の生成(車体の中心から0.3f高い座標に生成)
+	Attach(std::make_unique<TankTurret>(m_tank,Vector3(0.0f, 0.0f, 0.0f), 0.0f));
 
 	// モデルの取得
-	m_model = Resources::GetInstance()->GetTankTurretModel();
+	m_model = Resources::GetInstance()->GetTankBodyModel();
 
-	// 戦車に砲塔情報を渡す
-	m_tank->SetTurret(this);
+	// 戦車に車体情報を渡す
+	m_tank->SetBody(this);
+
+	// 初期座標の確定
+	m_currentPosition = m_initialPosition + m_tank->GetInitialPosition();
 }
 
 //---------------------------------------------------------
 // 更新処理
 //---------------------------------------------------------
-void NewTankTurret::Update(
+void TankBody::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
 	const DirectX::SimpleMath::Quaternion& currentAngle
 )
 {
-	// 現在位置の更新
-	m_currentPosition = currentPosition + m_initialPosition;
-	m_currentAngle =  currentAngle * m_initialAngle * m_turretAngle;
+	// 現在回転角の更新
+	m_currentAngle = currentAngle * m_initialAngle * m_bodyAngle;
 
 	// 部品の更新
 	for (auto& part : m_tankParts)
@@ -74,7 +76,7 @@ void NewTankTurret::Update(
 //---------------------------------------------------------
 // 描画処理
 //---------------------------------------------------------
-void NewTankTurret::Render()
+void TankBody::Render()
 {
 	using namespace DirectX::SimpleMath;
 
@@ -83,7 +85,7 @@ void NewTankTurret::Render()
 		Matrix::CreateFromQuaternion(m_currentAngle) *
 		Matrix::CreateTranslation(m_currentPosition);
 
-	// 「砲塔」の描画
+	// 「車体」の描画
 	m_graphics->DrawModel(m_model, m_worldMatrix);
 
 	// 部品の描画
@@ -96,14 +98,14 @@ void NewTankTurret::Render()
 //---------------------------------------------------------
 // 終了処理
 //---------------------------------------------------------
-void NewTankTurret::Finalize()
+void TankBody::Finalize()
 {
 }
 
 //---------------------------------------------------------
 // パーツの追加
 //---------------------------------------------------------
-void NewTankTurret::Attach(std::unique_ptr<IObject> part)
+void TankBody::Attach(std::unique_ptr<IObject> part)
 {
 	// パーツの初期化
 	part->Initialize();
@@ -114,17 +116,24 @@ void NewTankTurret::Attach(std::unique_ptr<IObject> part)
 //---------------------------------------------------------
 // パーツの削除
 //---------------------------------------------------------
-void NewTankTurret::Detach(std::unique_ptr<IObject> part)
+void TankBody::Detach(std::unique_ptr<IObject> part)
 {
 }
 
 //---------------------------------------------------------
-// 砲塔の回転
+// 移動処理
 //---------------------------------------------------------
-void NewTankTurret::RotateTurret(float angle)
+void TankBody::Move(DirectX::SimpleMath::Vector3 velocity)
 {
-	using namespace DirectX::SimpleMath;
+	// 速度の加算
+	m_currentPosition += velocity;
+}
 
-	// クォータニオンに変換して適用
-	m_turretAngle = Quaternion::CreateFromYawPitchRoll(angle, 0.0f, 0.0f);
+//---------------------------------------------------------
+// 回転処理
+//---------------------------------------------------------
+void TankBody::Rotate(DirectX::SimpleMath::Quaternion angle)
+{
+	// 回転を加える
+	m_bodyAngle *= angle;
 }

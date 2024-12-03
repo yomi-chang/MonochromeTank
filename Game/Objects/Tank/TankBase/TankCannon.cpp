@@ -1,6 +1,6 @@
 #include "pch.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTank.h"
+#include "Game/Objects/Tank/TankBase/TankCannon.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
 
 #include "Game/UserInterface/DrawTexture.h"
 #include "Game/Objects/Stage/Wall.h"
@@ -13,8 +13,8 @@
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
-NewTankCannon::NewTankCannon(
-	NewTank* tank,
+TankCannon::TankCannon(
+	Tank* tank,
 	const DirectX::SimpleMath::Vector3& initialPosition,
 	const float& initialAngle
 )
@@ -45,14 +45,14 @@ NewTankCannon::NewTankCannon(
 //---------------------------------------------------------
 // デストラクタ
 //---------------------------------------------------------
-NewTankCannon::~NewTankCannon()
+TankCannon::~TankCannon()
 {
 }
 
 //---------------------------------------------------------
 // 初期化処理
 //---------------------------------------------------------
-void NewTankCannon::Initialize()
+void TankCannon::Initialize()
 {
 	// モデルの取得
 	m_model = Resources::GetInstance()->GetTankCannonModel();
@@ -92,7 +92,7 @@ void NewTankCannon::Initialize()
 //---------------------------------------------------------
 // 更新処理
 //---------------------------------------------------------
-void NewTankCannon::Update(
+void TankCannon::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
 	const DirectX::SimpleMath::Quaternion& currentAngle
@@ -122,7 +122,7 @@ void NewTankCannon::Update(
 //---------------------------------------------------------
 // 描画処理
 //---------------------------------------------------------
-void NewTankCannon::Render()
+void TankCannon::Render()
 {
 	using namespace DirectX::SimpleMath;
 
@@ -156,14 +156,14 @@ void NewTankCannon::Render()
 //---------------------------------------------------------
 // 終了処理
 //---------------------------------------------------------
-void NewTankCannon::Finalize()
+void TankCannon::Finalize()
 {
 }
 
 //---------------------------------------------------------
 // 砲身の回転
 //---------------------------------------------------------
-void NewTankCannon::RotateCannon(float angle)
+void TankCannon::RotateCannon(float angle)
 {
 	using namespace DirectX::SimpleMath;
 
@@ -174,7 +174,7 @@ void NewTankCannon::RotateCannon(float angle)
 //---------------------------------------------------------
 // 弾の発射処理
 //---------------------------------------------------------
-void NewTankCannon::ShootBullet(IBullet* bullet)
+void TankCannon::ShootBullet(IBullet* bullet)
 {
 	// 「砲弾」位置を設定する
 	bullet->SetPosition(this->GetMuzzlePosition());
@@ -189,7 +189,7 @@ void NewTankCannon::ShootBullet(IBullet* bullet)
 //---------------------------------------------------------
 // 弾の発射呼び出し
 //---------------------------------------------------------
-void NewTankCannon::Shoot()
+void TankCannon::Shoot()
 {
 	if (m_shotTimer > 0.0f)
 		return;
@@ -227,7 +227,7 @@ void NewTankCannon::Shoot()
 //---------------------------------------------------------
 // 弾の変更
 //---------------------------------------------------------
-void NewTankCannon::ChangeBullet()
+void TankCannon::ChangeBullet()
 {
 	m_bulletType = (m_bulletType == BulletType::CANNONBALL) ? BulletType::BULLET : BulletType::CANNONBALL;
 }
@@ -236,7 +236,7 @@ void NewTankCannon::ChangeBullet()
 //---------------------------------------------------------
 // リロード開始
 //---------------------------------------------------------
-void NewTankCannon::StartReload()
+void TankCannon::StartReload()
 {
 	// リロード開始
 	if (m_isReload)
@@ -279,7 +279,7 @@ void NewTankCannon::StartReload()
 //---------------------------------------------------------
 // リロード処理
 //---------------------------------------------------------
-void NewTankCannon::Reload(float elapsedTime)
+void TankCannon::Reload(float elapsedTime)
 {
 	// リロード中でないなら早期リターン
 	if (!m_isReload)
@@ -313,7 +313,7 @@ void NewTankCannon::Reload(float elapsedTime)
 //---------------------------------------------------------
 // 砲身の先端座標取得
 //---------------------------------------------------------
-DirectX::SimpleMath::Vector3 NewTankCannon::GetMuzzlePosition()
+DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 {
 	using namespace DirectX::SimpleMath;
 
@@ -328,7 +328,7 @@ DirectX::SimpleMath::Vector3 NewTankCannon::GetMuzzlePosition()
 //---------------------------------------------------------
 // 照準の表示
 //---------------------------------------------------------
-void NewTankCannon::DisplaySight()
+void TankCannon::DisplaySight()
 {
 	using namespace DirectX::SimpleMath;
 

@@ -1,19 +1,19 @@
 #pragma once
 #include "Interface/IObject.h"
 
-class NewTank;
+class Tank;
 
-class NewTankBody : public IObject
+class TankBody : public IObject
 {
 public:
 	// コンストラクタ
-	NewTankBody(
-		NewTank* tank,
+	TankBody(
+		Tank* tank,
 		const DirectX::SimpleMath::Vector3& initialPosition,
 		const float& initialAngle
 	);
 	// デストラクタ
-	~NewTankBody() override;
+	~TankBody() override;
 	// 初期化処理
 	void Initialize() override;
 	// 更新処理
@@ -44,7 +44,7 @@ private:
 	DirectX::Model* m_model;								// モデル
 
 	DirectX::SimpleMath::Quaternion m_bodyAngle;			// 車体の回転角
-	NewTank* m_tank;										// 親の情報
+	Tank* m_tank;										// 親の情報
 
 public:
 	// 角度の取得

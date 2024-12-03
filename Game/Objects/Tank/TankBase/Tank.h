@@ -1,24 +1,23 @@
 #pragma once
 #include "Interface/IObject.h"
+#include "Game/Objects/Tank/TankBase/TankBody.h"
+#include "Game/Objects/Tank/TankBase/TankTurret.h"
+#include "Game/Objects/Tank/TankBase/TankCannon.h"
 
-#include "Game/Objects/NewTank/NewTankBase/NewTankBody.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankTurret.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
+class TankBody;
+class TankTurret;
+class TankCannon;
 
-class NewTankBody;
-class NewTankTurret;
-class NewTankCannon;
-
-class NewTank : public IObject
+class Tank : public IObject
 {
 public:
 	// コンストラクタ
-	NewTank(
+	Tank(
 		const DirectX::SimpleMath::Vector3& initialPosition,
 		const float& initialAngle
 	);
 	// デストラクタ
-	~NewTank() override;
+	~Tank() override;
 	// 初期化処理
 	void Initialize() override;
 	// 更新処理
@@ -48,9 +47,9 @@ private:
 	DirectX::SimpleMath::Matrix m_worldMatrix;				// ワールド行列
 
 	// 各パーツ
-	NewTankBody* m_body;
-	NewTankTurret* m_turret;
-	NewTankCannon* m_cannon;
+	TankBody* m_body;
+	TankTurret* m_turret;
+	TankCannon* m_cannon;
 
 	// 影描画用
 	// 影用ポリゴン
@@ -64,18 +63,18 @@ private:
 
 public:
 	// 車体情報の受け取り
-	void SetBody(NewTankBody* body) { m_body = body; }
+	void SetBody(TankBody* body) { m_body = body; }
 	// 砲塔情報の受け取り
-	void SetTurret(NewTankTurret* turret) { m_turret = turret; }
+	void SetTurret(TankTurret* turret) { m_turret = turret; }
 	// 砲身情報の受け取り
-	void SetCannon(NewTankCannon* cannon) { m_cannon = cannon; }
+	void SetCannon(TankCannon* cannon) { m_cannon = cannon; }
 
 	// 車体情報の受け取り
-	NewTankBody* GetBody() { return m_body; }
+	TankBody* GetBody() { return m_body; }
 	// 砲塔情報の受け取り
-	NewTankTurret* GetTurret() { return m_turret; }
+	TankTurret* GetTurret() { return m_turret; }
 	// 砲身情報の受け取り
-	NewTankCannon* GetCannon() { return m_cannon; }
+	TankCannon* GetCannon() { return m_cannon; }
 
 	// 初期座標の受け取り
 	DirectX::SimpleMath::Vector3 GetInitialPosition(){ return m_initialPosition; }

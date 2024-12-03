@@ -2,7 +2,7 @@
 #include "Interface/IObject.h"
 #include "Game/Collider/BoxCollider.h"
 
-class NewTank;
+class Tank;
 class BoxCollider;
 
 class PlayerTank;
@@ -42,7 +42,7 @@ private:
 	// 回転角
 	DirectX::SimpleMath::Quaternion m_angle;
 	// 戦車
-	std::unique_ptr<NewTank> m_tank;
+	std::unique_ptr<Tank> m_tank;
 	// コライダー
 	std::unique_ptr<BoxCollider> m_collider;
 	// HPゲージ

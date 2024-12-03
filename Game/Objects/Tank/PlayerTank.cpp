@@ -1,10 +1,10 @@
 #include "pch.h"
-#include "Game/Objects/NewTank/PlayerTank.h"
+#include "Game/Objects/Tank/PlayerTank.h"
 
-#include "Game/Objects/NewTank/NewTankBase/NewTank.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankBody.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankTurret.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
+#include "Game/Objects/Tank/TankBase/TankBody.h"
+#include "Game/Objects/Tank/TankBase/TankTurret.h"
+#include "Game/Objects/Tank/TankBase/TankCannon.h"
 
 #include "Interface/IBullet.h"
 
@@ -45,7 +45,7 @@ void PlayerTank::Initialize()
 
 	// êÌé‘ÇÃê∂ê¨
 	Vector3 initialPosition = Vector3::Zero;
-	m_tank = std::make_unique<NewTank>(initialPosition, 0.0f);
+	m_tank = std::make_unique<Tank>(initialPosition, 0.0f);
 	m_tank->Initialize();
 
 	// ÉRÉâÉCÉ_Å[ÇÃçÏê¨
@@ -136,7 +136,7 @@ void PlayerTank::KeyBoardEvent(float elapsedTime)
 	if (mouseState.leftButton)
 	{
 		// ñCíeÇ™î≠éÀÇ≥ÇÍÇΩÇ∆Ç´ÇÃÇ›ÉJÉÅÉâÇóhÇÁÇ∑
-		if (m_tank->GetCannon()->GetCurrentBullet() == NewTankCannon::BulletType::CANNONBALL &&
+		if (m_tank->GetCannon()->GetCurrentBullet() == TankCannon::BulletType::CANNONBALL &&
 			m_tank->GetCannon()->GetCannonBall()->GetBulletState() == IBullet::UNUSED)
 			m_camera->StartShakeCamera(25.0f, 0.05f, 0.5f);
 
@@ -235,4 +235,4 @@ void PlayerTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 //---------------------------------------------------------
 // ñCêgèÓïÒÇÃéÊìæ
 //---------------------------------------------------------
-NewTankCannon* PlayerTank::GetTankCannon() { return m_tank->GetCannon(); }
+TankCannon* PlayerTank::GetTankCannon() { return m_tank->GetCannon(); }

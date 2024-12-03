@@ -12,8 +12,8 @@
 #include "Game/Objects/Stage/Floor.h"
 #include "Game/Objects/Other/SkySphere.h"
 
-#include "Game/Objects/NewTank/PlayerTank.h"
-#include "Game/Objects/NewTank/EnemyTanks/SimpleTank.h"
+#include "Game/Objects/Tank/PlayerTank.h"
+#include "Game/Objects/Tank/EnemyTanks/SimpleTank.h"
 
 //---------------------------------------------------------
 // コンストラクタ

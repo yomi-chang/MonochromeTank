@@ -1,11 +1,11 @@
 #include "pch.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTank.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankBody.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
+#include "Game/Objects/Tank/TankBase/TankBody.h"
 
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
-NewTank::NewTank(
+Tank::Tank(
 	const DirectX::SimpleMath::Vector3& initialPosition,
 	const float& initialAngle
 )
@@ -26,20 +26,20 @@ NewTank::NewTank(
 //---------------------------------------------------------
 // デストラクタ
 //---------------------------------------------------------
-NewTank::~NewTank()
+Tank::~Tank()
 {
 }
 
 //---------------------------------------------------------
 // 初期化処理
 //---------------------------------------------------------
-void NewTank::Initialize()
+void Tank::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 	using namespace DirectX;
 
 	// 車体の生成(地面から0.5f高い座標に生成)
-	Attach(std::make_unique<NewTankBody>(this,Vector3(0.0f, 0.0f, 0.0f), 0.0f));
+	Attach(std::make_unique<TankBody>(this,Vector3(0.0f, 0.0f, 0.0f), 0.0f));
 
 	// 現在位置の更新
 	m_currentPosition = m_initialPosition;
@@ -74,7 +74,7 @@ void NewTank::Initialize()
 //---------------------------------------------------------
 // 更新処理
 //---------------------------------------------------------
-void NewTank::Update(float elapsedTime)
+void Tank::Update(float elapsedTime)
 {
 	// 部品の更新
 	for (auto& part : m_tankParts)
@@ -86,7 +86,7 @@ void NewTank::Update(float elapsedTime)
 //---------------------------------------------------------
 // 描画処理
 //---------------------------------------------------------
-void NewTank::Render()
+void Tank::Render()
 {
 	using namespace DirectX::SimpleMath;
 
@@ -139,14 +139,14 @@ void NewTank::Render()
 //---------------------------------------------------------
 // 終了処理
 //---------------------------------------------------------
-void NewTank::Finalize()
+void Tank::Finalize()
 {
 }
 
 //---------------------------------------------------------
 // パーツの追加
 //---------------------------------------------------------
-void NewTank::Attach(std::unique_ptr<IObject> part)
+void Tank::Attach(std::unique_ptr<IObject> part)
 {
 	// パーツの初期化
 	part->Initialize();
@@ -157,6 +157,6 @@ void NewTank::Attach(std::unique_ptr<IObject> part)
 //---------------------------------------------------------
 // パーツの削除
 //---------------------------------------------------------
-void NewTank::Detach(std::unique_ptr<IObject> part)
+void Tank::Detach(std::unique_ptr<IObject> part)
 {
 }

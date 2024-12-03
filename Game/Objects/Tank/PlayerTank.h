@@ -3,9 +3,9 @@
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Game/Collider/BoxCollider.h"
 
-#include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
+#include "Game/Objects/Tank/TankBase/TankCannon.h"
 
-class NewTank;
+class Tank;
 class BoxCollider;
 class HpGauge;
 class Wall;
@@ -54,7 +54,7 @@ private:
 	// 回転角
 	DirectX::SimpleMath::Quaternion m_angle;
 	// 戦車
-	std::unique_ptr<NewTank> m_tank;
+	std::unique_ptr<Tank> m_tank;
 	// コライダー
 	std::unique_ptr<BoxCollider> m_collider;
 	// HPゲージ
@@ -84,7 +84,7 @@ public:
 	// コライダーの取得
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
 	// 砲身の取得
-	NewTankCannon* GetTankCannon();
+	TankCannon* GetTankCannon();
 	// カメラ情報の受け取り
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 };

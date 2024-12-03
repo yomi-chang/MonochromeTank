@@ -1,19 +1,19 @@
 #pragma once
 #include "Interface/IObject.h"
 
-class NewTank;
+class Tank;
 
-class NewTankTurret : public IObject
+class TankTurret : public IObject
 {
 public:
 	// コンストラクタ
-	NewTankTurret(
-		NewTank* tank,
+	TankTurret(
+		Tank* tank,
 		const DirectX::SimpleMath::Vector3& initialPosition,
 		const float& initialAngle
 	);
 	// デストラクタ
-	~NewTankTurret() override;
+	~TankTurret() override;
 	// 初期化処理
 	void Initialize() override;
 	// 更新処理
@@ -45,7 +45,7 @@ private:
 
 	DirectX::SimpleMath::Quaternion m_turretAngle;		// 砲塔の角度
 
-	NewTank* m_tank;
+	Tank* m_tank;
 
 public:
 	// 砲塔の回転

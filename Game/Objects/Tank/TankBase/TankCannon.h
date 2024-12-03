@@ -2,11 +2,11 @@
 #include "Interface/IObject.h"
 #include "Interface/IBullet.h"
 
-class NewTank;
+class Tank;
 class Wall;
 class DrawTexture;
 
-class NewTankCannon : public IObject
+class TankCannon : public IObject
 {
 public:
 	// 弾の種類
@@ -29,13 +29,13 @@ public:
 	const float MAX_RANGE = 5.0f;
 public:
 	// コンストラクタ
-	NewTankCannon(
-		NewTank* tank,
+	TankCannon(
+		Tank* tank,
 		const DirectX::SimpleMath::Vector3& initialPosition,
 		const float& initialAngle
 	);
 	// デストラクタ
-	~NewTankCannon() override;
+	~TankCannon() override;
 	// 初期化処理
 	void Initialize() override;
 	// 更新処理
@@ -78,7 +78,7 @@ private:
 	std::unique_ptr<DrawTexture> m_drawTexture;			// 画像の描画
 	std::vector<Wall*> m_walls;							// 壁
 
-	NewTank* m_tank;									// 戦車情報
+	Tank* m_tank;									// 戦車情報
 
 
 public:

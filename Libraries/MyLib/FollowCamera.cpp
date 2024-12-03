@@ -5,7 +5,7 @@
 #include "pch.h"
 #include "FollowCamera.h"
 #include "Game/Screen.h"
-#include "Game/Objects/NewTank/PlayerTank.h"
+#include "Game/Objects/Tank/PlayerTank.h"
 #include <cassert>
 
 //-------------------------------------------------------------------
@@ -50,10 +50,14 @@ void mylib::FollowCamera::Initialize(PlayerTank* tank)
 void mylib::FollowCamera::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
+	using namespace DirectX::SimpleMath;
 
+	// 戦車の座標の角度の情報を受け取る
 	m_followUpTargetPosition = m_tank->GetPosition();
-	//float tankAngleRL = m_tank->GetTankAngleRL();
 	m_followUpTargetQuaternion = m_tank->GetAngle();
+
+	// 戦車が手前に来るように座標を調整
+	m_followUpTargetPosition += Vector3::Transform(Vector3::Forward * 2.0f, m_followUpTargetQuaternion);
 
 	// 基準になる「eye」を計算する
 	DirectX::SimpleMath::Vector3 eye{ 0.0f, HEIGHT, DISTANCE };

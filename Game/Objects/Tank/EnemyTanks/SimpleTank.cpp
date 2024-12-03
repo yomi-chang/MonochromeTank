@@ -1,12 +1,12 @@
 #include"pch.h"
-#include"Game/Objects/NewTank/EnemyTanks/SimpleTank.h"
+#include"Game/Objects/Tank/EnemyTanks/SimpleTank.h"
 
-#include "Game/Objects/NewTank/NewTankBase/NewTank.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankBody.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankTurret.h"
-#include "Game/Objects/NewTank/NewTankBase/NewTankCannon.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
+#include "Game/Objects/Tank/TankBase/TankBody.h"
+#include "Game/Objects/Tank/TankBase/TankTurret.h"
+#include "Game/Objects/Tank/TankBase/TankCannon.h"
 
-#include "Game/Objects/NewTank/PlayerTank.h"
+#include "Game/Objects/Tank/PlayerTank.h"
 
 #include "Game/UserInterface/EnemyHpGauge.h"
 
@@ -34,7 +34,7 @@ void EnemyTank::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	// 戦車の生成
-	m_tank = std::make_unique<NewTank>(m_position, DirectX::XMConvertToRadians(180.0f));
+	m_tank = std::make_unique<Tank>(m_position, DirectX::XMConvertToRadians(180.0f));
 	m_tank->Initialize();
 
 	// コライダーの作成

@@ -2,8 +2,8 @@
 #include "Game/Objects/Stage/Wall.h"
 #include "Framework/Graphics.h"
 #include "Libraries/MyLib/FollowCamera.h"
-#include "Game/Objects/NewTank/PlayerTank.h"
-#include "Game/Objects/NewTank/EnemyTanks/SimpleTank.h"
+#include "Game/Objects/Tank/PlayerTank.h"
+#include "Game/Objects/Tank/EnemyTanks/SimpleTank.h"
 
 using namespace DirectX;
 
