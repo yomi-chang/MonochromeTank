@@ -19,11 +19,11 @@ class PlayerTank : IObject
 {
 private:
 	// ñCìÉÇÃâÒì]êßå¿
-	const float TURRET_ANGLE_MIN = DirectX::XMConvertToRadians(-35.0f);
-	const float TURRET_ANGLE_MAX = DirectX::XMConvertToRadians(35.0f);
+	const float TURRET_ANGLE_MIN = DirectX::XMConvertToRadians(-45.0f);
+	const float TURRET_ANGLE_MAX = DirectX::XMConvertToRadians(45.0f);
 	// ñCêgÇÃâÒì]êßå¿
 	const float CANNON_ANGLE_MIN = DirectX::XMConvertToRadians(-7.5f);
-	const float CANNON_ANGLE_MAX = DirectX::XMConvertToRadians(7.5f);
+	const float CANNON_ANGLE_MAX = DirectX::XMConvertToRadians(22.5f);
 
 	const DirectX::SimpleMath::Vector3 COLLIDER_SIZE = DirectX::SimpleMath::Vector3(1.2f, 1.0f, 1.2f);
 	const float COLLIDER_POSITION = 0.25f;

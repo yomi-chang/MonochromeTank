@@ -24,6 +24,9 @@ public:
 	// インターバル
 	const float SHOT_INTERVAL = 0.2f;
 	const float ENEMY_SHOT_INTERVAL = 1.0f;
+
+	// 照準の射程距離
+	const float MAX_RANGE = 5.0f;
 public:
 	// コンストラクタ
 	NewTankCannon(

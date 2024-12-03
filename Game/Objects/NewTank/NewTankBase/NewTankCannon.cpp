@@ -217,7 +217,6 @@ void NewTankCannon::Shoot()
 			{
 				// 「砲弾」を発射する
 				ShootBullet(m_cannonBall.get());
-				mylib::DebugLog("砲身角度 ： ", m_cannonAngle.x);
 			}
 			break;
 	}
@@ -339,7 +338,7 @@ void NewTankCannon::DisplaySight()
 	// レーザーサイトの描画
 	Quaternion rotation = m_cannonAngle * m_currentAngle;
 	Matrix matrix = Matrix::CreateFromQuaternion(rotation);
-	m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
+	//m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
 
 	// プリミティブ描画を終了する
 	m_graphics->DrawPrimitiveEnd();
@@ -352,7 +351,7 @@ void NewTankCannon::DisplaySight()
 
 	// レイを飛ばして着弾方向の表示
 	// 射程距離
-	float range = 7.0f;
+	float range = MAX_RANGE;
 	// レイの距離
 	float rayDistance = 0.0f;
 	// レイの距離記録用変数
