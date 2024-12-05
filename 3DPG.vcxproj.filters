@@ -77,15 +77,12 @@
     </ClInclude>
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Resources.h" />
-    <ClInclude Include="Interface\IComponent.h" />
     <ClInclude Include="Game\Objects\Other\SkySphere.h" />
     <ClInclude Include="Interface\IBullet.h" />
     <ClInclude Include="Game\Objects\Bullet\Bullet.h" />
     <ClInclude Include="Libraries\MyLib\FollowCamera.h" />
     <ClInclude Include="Game\Collider\SphereCollider.h" />
     <ClInclude Include="Game\Collider\BoxCollider.h" />
-    <ClInclude Include="Interface\IComposite.h" />
-    <ClInclude Include="Interface\ILeaf.h" />
     <ClInclude Include="Game\UserInterface\HpGauge.h" />
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
@@ -109,7 +106,9 @@
     <ClInclude Include="Libraries\Microsoft\ReadData.h" />
     <ClInclude Include="Libraries\Microsoft\RenderTexture.h" />
     <ClInclude Include="Game\Objects\Stage\Floor.h" />
-    <ClInclude Include="Game\Objects\Stage\Item\HeelItem.h" />
+    <ClInclude Include="Game\Objects\Stage\Item\StageItem.h" />
+    <ClInclude Include="Interface\IParent.h" />
+    <ClInclude Include="Interface\IParts.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -164,7 +163,7 @@
     <ClCompile Include="Game\UserInterface\Magazine.cpp" />
     <ClCompile Include="Libraries\Microsoft\RenderTexture.cpp" />
     <ClCompile Include="Game\Objects\Stage\Floor.cpp" />
-    <ClCompile Include="Game\Objects\Stage\Item\HeelItem.cpp" />
+    <ClCompile Include="Game\Objects\Stage\Item\StageItem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -189,7 +189,7 @@
     <ClInclude Include="Game\Collider\SphereCollider.h" />
     <ClInclude Include="Game\Objects\Bullet\Bullet.h" />
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
-    <ClInclude Include="Game\Objects\Stage\Item\HeelItem.h" />
+    <ClInclude Include="Game\Objects\Stage\Item\StageItem.h" />
     <ClInclude Include="Game\Objects\Tank\EnemyTanks\SimpleTank.h" />
     <ClInclude Include="Game\Objects\Tank\TankBase\Tank.h" />
     <ClInclude Include="Game\Objects\Tank\TankBase\TankBody.h" />
@@ -212,10 +212,9 @@
     <ClInclude Include="Game\UserInterface\Magazine.h" />
     <ClInclude Include="Game\UserInterface\UserInterface.h" />
     <ClInclude Include="Interface\IBullet.h" />
-    <ClInclude Include="Interface\IComposite.h" />
-    <ClInclude Include="Interface\ILeaf.h" />
-    <ClInclude Include="Interface\IComponent.h" />
     <ClInclude Include="Interface\IObject.h" />
+    <ClInclude Include="Interface\IParent.h" />
+    <ClInclude Include="Interface\IParts.h" />
     <ClInclude Include="Libraries\Microsoft\DebugDraw.h" />
     <ClInclude Include="Libraries\Microsoft\ReadData.h" />
     <ClInclude Include="Libraries\Microsoft\RenderTexture.h" />
@@ -239,7 +238,7 @@
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
     <ClCompile Include="Game\Objects\Bullet\Bullet.cpp" />
     <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
-    <ClCompile Include="Game\Objects\Stage\Item\HeelItem.cpp" />
+    <ClCompile Include="Game\Objects\Stage\Item\StageItem.cpp" />
     <ClCompile Include="Game\Objects\Tank\EnemyTanks\SimpleTank.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankBase\Tank.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankBase\TankBody.cpp" />

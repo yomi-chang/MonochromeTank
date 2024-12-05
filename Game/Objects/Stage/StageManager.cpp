@@ -137,13 +137,4 @@ void StageManager::SetObjectData(
 		wall->SetCamera(camera);
 		wall->SetEnemyTanks(enemyTanks);
 	}
-
-	// 壁情報をステージに渡す
-	std::vector<Wall*> wallPointers;
-	for (const auto& wall : m_walls)
-	{
-		wallPointers.push_back(wall.get());
-	}
-	// 戦車に壁情報を渡す
-	playerTank->SetWalls(wallPointers);
 }

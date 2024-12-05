@@ -16,8 +16,6 @@
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 
-#include "Interface/IComponent.h"
-
 #include "Game/Objects/Other/SkySphere.h"
 #include "Game/Objects/Stage/Wall.h"
 #include "Game/Objects/Tank/PlayerTank.h"
@@ -89,17 +87,13 @@ void PlayScene::Initialize()
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 
-	// 戦車
-	//m_playerTank = std::make_unique<Tank>(nullptr, Vector3(0.0f, 0.0f,5.0f), 0.0f);
-	//m_playerTank->Initialize(IComponent::Type::PLAYER);
-
 	// プレイヤー戦車の生成
-	m_player = std::make_unique<PlayerTank>();
+	m_player = std::make_unique<PlayerTank>(0, Vector3::Zero);
 	m_player->Initialize();
 
 	// 敵戦車
-	m_enemies.push_back(std::make_unique<EnemyTank>(Vector3{ -5.0f, 0.0f, -10.0f }));
-	m_enemies.push_back(std::make_unique<EnemyTank>(Vector3{ 5.0f, 0.0f, -10.0f }));
+	m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ -5.0f, 0.0f, -10.0f }));
+	m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ 5.0f, 0.0f, -10.0f }));
 	std::vector<EnemyTank*> enemyPointers;
 	for (auto& enemy : m_enemies)
 	{
@@ -124,6 +118,22 @@ void PlayScene::Initialize()
 
 	// カメラ情報を渡す
 	m_player->SetCamera(m_tpsCamera.get());
+
+	// 壁の情報を渡す
+	m_player->SetWalls(m_stageManager->GetWalls());
+
+	//全戦車の情報を渡す
+	std::vector<Tank*> tankPointers;
+	for (auto& tank : m_enemies)
+	{
+		tankPointers.push_back(tank->GetTank());
+	}
+	tankPointers.push_back(m_player->GetTank());
+	for (auto& tank : m_enemies)
+	{
+		tank->SetOtherTanks(tankPointers);
+	}
+	m_player->SetOtherTanks(tankPointers);
 }
 
 //---------------------------------------------------------

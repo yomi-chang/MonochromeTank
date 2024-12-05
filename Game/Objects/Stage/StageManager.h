@@ -49,6 +49,18 @@ public:
 		std::vector<EnemyTank*> enemyTanks
 	);
 
+	// ステージのデータを渡す
+	// 壁の情報を渡す
+	std::vector<Wall*> GetWalls() 
+	{
+		std::vector<Wall*> wallPointers;
+		for (auto& wall : m_walls)
+		{
+			wallPointers.push_back(wall.get());
+		}
+		return wallPointers;
+	}
+
 private:
 	// 外部ファイルの読み込み
 	void LoadFile();

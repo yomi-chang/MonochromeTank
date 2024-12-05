@@ -1,12 +1,12 @@
 #pragma once
-#include "Interface/IObject.h"
+#include "Interface/IParts.h"
 #include "Interface/IBullet.h"
 
 class Tank;
 class Wall;
 class DrawTexture;
 
-class TankCannon : public IObject
+class TankCannon : public IParts
 {
 public:
 	// 弾の種類
@@ -39,7 +39,6 @@ public:
 	// 初期化処理
 	void Initialize() override;
 	// 更新処理
-	void Update(float elapsedTime)override{}
 	void Update(
 		float elapsedTime,
 		const DirectX::SimpleMath::Vector3& currentPosition,
@@ -51,9 +50,9 @@ public:
 	void Finalize() override;
 
 	// パーツ追加
-	void Attach(std::unique_ptr<IObject> part) override {};
+	void Attach(std::unique_ptr<IParts> parts) override {};
 	// パーツ削除
-	void Detach(std::unique_ptr<IObject> part) override {};
+	void Detach(std::unique_ptr<IParts> parts) override {};
 
 private:
 	Graphics* m_graphics;								// グラフィックス						
@@ -61,7 +60,7 @@ private:
 	DirectX::SimpleMath::Quaternion m_initialAngle;		// 初期回転角
 	DirectX::SimpleMath::Vector3 m_currentPosition;		// 現在の座標
 	DirectX::SimpleMath::Quaternion m_currentAngle;		// 現在の回転角
-	std::vector<std::unique_ptr<IObject>> m_tankParts;	// 自身が管理する戦車部品の配列
+	std::vector<std::unique_ptr<IParts>> m_tankParts;	// 自身が管理する戦車部品の配列
 	DirectX::SimpleMath::Matrix m_worldMatrix;			// ワールド行列
 	DirectX::Model* m_model;							// モデル
 
@@ -103,10 +102,7 @@ public:
 	// 壁情報の受け取り
 	void SetWalls(std::vector<Wall*> walls)
 	{
-		for (Wall* wall : walls)
-		{
-			m_walls.emplace_back(wall);
-		}
+		m_walls = walls;
 	}
 
 	// 「連射弾」を参照する

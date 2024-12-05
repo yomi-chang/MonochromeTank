@@ -2,12 +2,13 @@
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 #include "Libraries/MyLib/DebugLog.h"
+#include "Interface/IParts.h"
 
-class IObject
+class IParent
 {
 public:
 	// デストラクタ
-	virtual ~IObject() = default;
+	virtual ~IParent() = default;
 	// 初期化処理
 	virtual void Initialize() = 0;
 	// 更新処理
@@ -16,4 +17,9 @@ public:
 	virtual void Render() = 0;
 	// 終了処理
 	virtual void Finalize() = 0;
+
+	// 追加
+	virtual void Attach(std::unique_ptr<IParts> parts) = 0;
+	// 削除
+	virtual void Detach(std::unique_ptr<IParts> parts) = 0;
 };

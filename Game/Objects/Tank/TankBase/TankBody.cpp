@@ -105,18 +105,18 @@ void TankBody::Finalize()
 //---------------------------------------------------------
 // パーツの追加
 //---------------------------------------------------------
-void TankBody::Attach(std::unique_ptr<IObject> part)
+void TankBody::Attach(std::unique_ptr<IParts> parts)
 {
 	// パーツの初期化
-	part->Initialize();
+	parts->Initialize();
 	// パーツの追加
-	m_tankParts.emplace_back(std::move(part));
+	m_tankParts.emplace_back(std::move(parts));
 }
 
 //---------------------------------------------------------
 // パーツの削除
 //---------------------------------------------------------
-void TankBody::Detach(std::unique_ptr<IObject> part)
+void TankBody::Detach(std::unique_ptr<IParts> parts)
 {
 }
 

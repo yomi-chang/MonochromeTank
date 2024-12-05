@@ -1,9 +1,9 @@
 #pragma once
-#include "Interface/IObject.h"
+#include "Interface/IParts.h"
 
 class Tank;
 
-class TankBody : public IObject
+class TankBody : public IParts
 {
 public:
 	// コンストラクタ
@@ -17,7 +17,6 @@ public:
 	// 初期化処理
 	void Initialize() override;
 	// 更新処理
-	void Update(float elapsedTime)override{}
 	void Update(
 		float elapsedTime,
 		const DirectX::SimpleMath::Vector3& currentPosition,
@@ -29,9 +28,9 @@ public:
 	void Finalize() override;
 
 	// パーツ追加
-	void Attach(std::unique_ptr<IObject> part) override;
+	void Attach(std::unique_ptr<IParts> parts) override;
 	// パーツ削除
-	void Detach(std::unique_ptr<IObject> part) override;
+	void Detach(std::unique_ptr<IParts> parts) override;
 
 private:
 	Graphics* m_graphics;									// グラフィックス
@@ -39,7 +38,7 @@ private:
 	DirectX::SimpleMath::Quaternion m_initialAngle;			// 初期回転角
 	DirectX::SimpleMath::Vector3 m_currentPosition;			// 現在の座標
 	DirectX::SimpleMath::Quaternion m_currentAngle;			// 現在の回転角
-	std::vector<std::unique_ptr<IObject>> m_tankParts;		// 自身が管理する戦車部品の配列
+	std::vector<std::unique_ptr<IParts>> m_tankParts;		// 自身が管理する戦車部品の配列
 	DirectX::SimpleMath::Matrix m_worldMatrix;				// ワールド行列
 	DirectX::Model* m_model;								// モデル
 

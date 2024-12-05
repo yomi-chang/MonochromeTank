@@ -1,15 +1,16 @@
 #include "pch.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
-#include "Game/Objects/Tank/TankBase/TankBody.h"
 
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
 Tank::Tank(
+	const int& tankNumber,
 	const DirectX::SimpleMath::Vector3& initialPosition,
 	const float& initialAngle
 )
 	:
+	m_tankNumber{tankNumber},
 	m_graphics{ Graphics::GetInstance() },
 	m_initialPosition{initialPosition},
 	m_initialAngle{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
@@ -19,7 +20,9 @@ Tank::Tank(
 	m_worldMatrix{},
 	m_vertices{},
 	m_primitiveBatch{},
-	m_basicEffect{}
+	m_basicEffect{},
+	m_collider{},
+	m_otherTanks{}
 {
 }
 
@@ -44,6 +47,10 @@ void Tank::Initialize()
 	// 現在位置の更新
 	m_currentPosition = m_initialPosition;
 	m_currentAngle = m_initialAngle;
+
+	// コライダーの生成
+	m_collider = std::make_unique<BoxCollider>();
+	m_collider->CreateBoundingBox(m_currentPosition, COLLIDER_SIZE);
 
 	// 影用のポリゴンを設定する
 	// ここではUV座標を指定している
@@ -81,6 +88,11 @@ void Tank::Update(float elapsedTime)
 	{
 		part->Update(elapsedTime, m_currentPosition, m_currentAngle);
 	}
+
+	// コライダー座標の更新
+	DirectX::SimpleMath::Vector3 colliderPos = m_body->GetPosition();
+	colliderPos.y += COLLIDER_POSITION;
+	m_collider->Update(colliderPos);
 }
 
 //---------------------------------------------------------
@@ -129,6 +141,9 @@ void Tank::Render()
 	m_primitiveBatch->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
 	m_primitiveBatch->End();
 
+	// コライダーの描画
+	m_collider->Render();
+
 	// 部品の描画
 	for (auto& part : m_tankParts)
 	{
@@ -146,17 +161,75 @@ void Tank::Finalize()
 //---------------------------------------------------------
 // パーツの追加
 //---------------------------------------------------------
-void Tank::Attach(std::unique_ptr<IObject> part)
+void Tank::Attach(std::unique_ptr<IParts> parts)
 {
 	// パーツの初期化
-	part->Initialize();
+	parts->Initialize();
 	// パーツの追加
-	m_tankParts.emplace_back(std::move(part));
+	m_tankParts.emplace_back(std::move(parts));
 }
 
 //---------------------------------------------------------
 // パーツの削除
 //---------------------------------------------------------
-void Tank::Detach(std::unique_ptr<IObject> part)
+void Tank::Detach(std::unique_ptr<IParts> parts)
 {
+}
+
+//---------------------------------------------------------
+// 戦車と通常弾の当たり判定
+//---------------------------------------------------------
+bool Tank::DetectCollisionTankAndNomalBullets()
+{
+	for (auto& tank : m_otherTanks)
+	{
+		// 自機の場合は判定を行わない
+		if (tank->GetTankNumber() == m_tankNumber) { continue; }
+
+		for (auto& bullet : tank->GetCannon()->GetBullets())
+		{
+			// 弾丸が飛んでいる、かつ当たっているなら
+			if (bullet->GetBulletState() == IBullet::FLYING &&
+				m_collider->CheckTriggerCollider(bullet->GetBoundingSphere()))
+			{
+				bullet->SetBulletState(IBullet::USED);
+				return true;
+			}
+		}
+	}
+	return false;
+}
+
+//---------------------------------------------------------
+// 戦車と砲弾の当たり判定
+//---------------------------------------------------------
+bool Tank::DetectCollisionTankAndCannonBall()
+{
+	for (auto& tank : m_otherTanks)
+	{
+		// 自機の場合は判定を行わない
+		if (tank->GetTankNumber() == m_tankNumber) { continue; }
+
+		if (tank->GetCannon()->GetCannonBall()->GetBulletState() == IBullet::FLYING &&
+			m_collider->CheckTriggerCollider(tank->GetCannon()->GetCannonBall()->GetBoundingSphere()))
+		{
+			tank->GetCannon()->GetCannonBall()->SetBulletState(IBullet::USED);
+			return true;
+		}
+	}
+	return false;
+}
+
+//---------------------------------------------------------
+// 戦車同士の当たり判定
+//---------------------------------------------------------
+void Tank::DetectCollisionTankAndOtherTanks()
+{
+	for (auto& tank : m_otherTanks)
+	{
+		// 自機の場合は判定を行わない
+		if (tank->GetTankNumber() == m_tankNumber) { continue; }
+
+		tank->GetBody()->SetCollisionVel(m_collider->CheckCollisionCollider(tank->GetBoundingBox()));
+	}
 }

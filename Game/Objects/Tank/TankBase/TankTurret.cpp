@@ -103,18 +103,18 @@ void TankTurret::Finalize()
 //---------------------------------------------------------
 // パーツの追加
 //---------------------------------------------------------
-void TankTurret::Attach(std::unique_ptr<IObject> part)
+void TankTurret::Attach(std::unique_ptr<IParts> parts)
 {
 	// パーツの初期化
-	part->Initialize();
+	parts->Initialize();
 	// パーツの追加
-	m_tankParts.emplace_back(std::move(part));
+	m_tankParts.emplace_back(std::move(parts));
 }
 
 //---------------------------------------------------------
 // パーツの削除
 //---------------------------------------------------------
-void TankTurret::Detach(std::unique_ptr<IObject> part)
+void TankTurret::Detach(std::unique_ptr<IParts> parts)
 {
 }
 

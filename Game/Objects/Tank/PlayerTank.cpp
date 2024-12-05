@@ -18,9 +18,13 @@
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
-PlayerTank::PlayerTank()
+PlayerTank::PlayerTank(
+	int tankNumber,
+	DirectX::SimpleMath::Vector3 position
+)
 	:
-	m_position{},
+	m_tankNumber{ tankNumber },
+	m_position{ position },
 	m_angle{},
 	m_tank{},
 	m_collider{},
@@ -45,7 +49,7 @@ void PlayerTank::Initialize()
 
 	// 戦車の生成
 	Vector3 initialPosition = Vector3::Zero;
-	m_tank = std::make_unique<Tank>(initialPosition, 0.0f);
+	m_tank = std::make_unique<Tank>(m_tankNumber,initialPosition, 0.0f);
 	m_tank->Initialize();
 
 	// コライダーの作成
@@ -81,6 +85,9 @@ void PlayerTank::Update(float elapsedTime)
 
 	// ダメージの初期化
 	m_damage = 0.0f;
+	if (m_tank->DetectCollisionTankAndNomalBullets()) { m_damage += 0.5f; }
+	if (m_tank->DetectCollisionTankAndCannonBall()) { m_damage += 3.0f; }
+	m_tank->DetectCollisionTankAndOtherTanks();
 
 	// ダメージ処理
 	m_hpGauge->Damage(m_damage);
@@ -92,7 +99,7 @@ void PlayerTank::Update(float elapsedTime)
 void PlayerTank::Render()
 {
 	// コライダーの描画
-	m_collider->Render();
+	//m_collider->Render();
 
 	// HPゲージ
 	m_hpGauge->Render();
@@ -107,15 +114,6 @@ void PlayerTank::Render()
 void PlayerTank::Finalize()
 {
 }
-
-void PlayerTank::Attach(std::unique_ptr<IObject> parts)
-{
-}
-
-void PlayerTank::Detach(std::unique_ptr<IObject> parts)
-{
-}
-
 
 //---------------------------------------------------------
 // キーボードイベント
@@ -184,9 +182,9 @@ void PlayerTank::Move(float elapsedTime)
 
 	// 左右回転
 	if (keyboardState.A)
-		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(XMConvertToRadians(0.5f), 0.0f, 0.0f));
+		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(XMConvertToRadians(0.6f), 0.0f, 0.0f));
 	else if (keyboardState.D)
-		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(XMConvertToRadians(-0.5f), 0.0f, 0.0f));
+		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(XMConvertToRadians(-0.6f), 0.0f, 0.0f));
 }
 
 //---------------------------------------------------------
@@ -236,3 +234,8 @@ void PlayerTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 // 砲身情報の取得
 //---------------------------------------------------------
 TankCannon* PlayerTank::GetTankCannon() { return m_tank->GetCannon(); }
+
+void PlayerTank::SetOtherTanks(std::vector<Tank*> tanks)
+{
+	m_tank->SetOtherTanks(tanks);
+}

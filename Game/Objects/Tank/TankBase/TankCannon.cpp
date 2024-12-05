@@ -332,22 +332,19 @@ void TankCannon::DisplaySight()
 {
 	using namespace DirectX::SimpleMath;
 
-	// プリミティブ描画を開始する
-	m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+	// 壁の情報を持っていないならこれ以降の処理をしない
+	if (m_walls.empty()) { return; }
 
-	// レーザーサイトの描画
+	// 戦車の向いている方向
 	Quaternion rotation = m_cannonAngle * m_currentAngle;
 	Matrix matrix = Matrix::CreateFromQuaternion(rotation);
-	//m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * 10.0f}, DirectX::Colors::Red);
 
-	// プリミティブ描画を終了する
-	m_graphics->DrawPrimitiveEnd();
-
-	// 壁の情報を持っていないならこれ以降の処理をしない
-	if (m_walls.empty())
-	{
-		return;
-	}
+	//// 描画開始
+	//m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
+	//// レーザーサイト
+	//m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * MAX_RANGE}, DirectX::Colors::Red);
+	//// 描画終了
+	//m_graphics->DrawPrimitiveEnd();
 
 	// レイを飛ばして着弾方向の表示
 	// 射程距離
@@ -358,7 +355,9 @@ void TankCannon::DisplaySight()
 	float minDistance = range;
 	
 	// レイの作成
-	Ray ray{ this->GetMuzzlePosition(), matrix.Forward() };
+	Vector3 rayDirection = matrix.Forward();
+	rayDirection.Normalize();
+	Ray ray{ this->GetMuzzlePosition(), rayDirection };
 
 	// 壁のボックスコライダーとの衝突判定を取る
 	for (auto& wall : m_walls)

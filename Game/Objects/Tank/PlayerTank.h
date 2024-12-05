@@ -29,26 +29,23 @@ private:
 	const float COLLIDER_POSITION = 0.25f;
 
 public:
-	PlayerTank();
+	PlayerTank(
+		int tankNumber,
+		DirectX::SimpleMath::Vector3 position
+	);
 
 	~PlayerTank()override;
 
 	void Initialize()override;
 
 	void Update(float elapsedTime)override;
-	void Update(
-		float elapsedTime,
-		const DirectX::SimpleMath::Vector3& currentPosition,
-		const DirectX::SimpleMath::Quaternion& currentAngle
-	)override{};
 
 	void Render()override;
 	void Finalize()override;
 
-	void Attach(std::unique_ptr<IObject> parts)override;
-	void Detach(std::unique_ptr<IObject> parts)override;
-
 private:
+	// íÔ”Ô†
+	int m_tankNumber;
 	// À•W
 	DirectX::SimpleMath::Vector3 m_position;
 	// ‰ñ“]Šp
@@ -87,4 +84,8 @@ public:
 	TankCannon* GetTankCannon();
 	// ƒJƒƒ‰î•ñ‚Ìó‚¯æ‚è
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
+	// íÔî•ñ‚Ìæ“¾
+	Tank* GetTank() { return m_tank.get(); }
+	// ‘¼íÔî•ñó‚¯“n‚µ
+	void SetOtherTanks(std::vector<Tank*> tanks);
 };

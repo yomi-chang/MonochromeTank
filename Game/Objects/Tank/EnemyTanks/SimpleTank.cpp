@@ -15,12 +15,16 @@
 #include "Libraries/MyLib/DebugLog.h"
 
 EnemyTank::EnemyTank(
+	int tankNumber,
 	DirectX::SimpleMath::Vector3 position
 )
 	:
 	m_patrolPoint{},
 	m_currentPoint{}
 {
+	// 戦車の番号の受け取り
+	m_tankNumber = tankNumber;
+
 	// 座標の受け取り
 	m_position = position;
 }
@@ -34,7 +38,7 @@ void EnemyTank::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	// 戦車の生成
-	m_tank = std::make_unique<Tank>(m_position, DirectX::XMConvertToRadians(180.0f));
+	m_tank = std::make_unique<Tank>(m_tankNumber,m_position, DirectX::XMConvertToRadians(180.0f));
 	m_tank->Initialize();
 
 	// コライダーの作成
@@ -54,6 +58,7 @@ void EnemyTank::Initialize()
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
 	m_box = DirectX::GeometricPrimitive::CreateBox(context, DirectX::SimpleMath::Vector3(1.0f, 1.0f, 1.0f));
 
+	//m_tank->GetCannon()->ChangeBullet();
 }
 
 void EnemyTank::Update(float elapsedTime)
@@ -74,8 +79,11 @@ void EnemyTank::Update(float elapsedTime)
 	// ダメージの初期化
 	m_damage = 0.0f;
 	// 衝突判定
-	DetectCollisionTankAndBullets();
-	DetectCollisionTankAndOtherTanks();
+	//DetectCollisionTankAndBullets();
+	//DetectCollisionTankAndOtherTanks();
+	if(m_tank->DetectCollisionTankAndNomalBullets()) { m_damage += 0.5f; }
+	if (m_tank->DetectCollisionTankAndCannonBall()) { m_damage += 3.0f;}
+	m_tank->DetectCollisionTankAndOtherTanks();
 	// ダメージ処理
 	m_hpGauge->Damage(m_damage);
 
@@ -86,6 +94,9 @@ void EnemyTank::Update(float elapsedTime)
 	Vector3 delta = m_playerTank->GetPosition() - m_position;
 	float angleRadians = atan2(delta.x, delta.z);
 	m_tank->GetTurret()->RotateTurret(angleRadians);
+
+	m_tank->GetCannon()->StartReload();
+	m_tank->GetCannon()->Shoot();
 }
 
 void EnemyTank::Render()
@@ -94,7 +105,7 @@ void EnemyTank::Render()
 	m_tank->Render();
 
 	// コライダーの描画
-	m_collider->Render();
+	//m_collider->Render();
 
 	// HPゲージ
 	m_hpGauge->Render(m_position);
@@ -127,14 +138,6 @@ void EnemyTank::Finalize()
 {
 }
 
-void EnemyTank::Attach(std::unique_ptr<IObject> parts)
-{
-}
-
-void EnemyTank::Detach(std::unique_ptr<IObject> parts)
-{
-}
-
 // 死亡情報を渡す
 bool EnemyTank::GetDead()
 {
@@ -150,6 +153,11 @@ bool EnemyTank::GetDead()
 void EnemyTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 {
 	m_tank->GetBody()->SetCollisionVel(position);
+}
+
+void EnemyTank::SetOtherTanks(std::vector<Tank*> tanks)
+{
+	m_tank->SetOtherTanks(tanks);
 }
 
 // 戦車と弾の衝突判定

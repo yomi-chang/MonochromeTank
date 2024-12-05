@@ -16,6 +16,7 @@ private:
 
 public:
 	EnemyTank(
+		int tankNumber,
 		DirectX::SimpleMath::Vector3 position
 	);
 
@@ -24,19 +25,13 @@ public:
 	void Initialize()override;
 
 	void Update(float elapsedTime)override;
-	void Update(
-		float elapsedTime,
-		const DirectX::SimpleMath::Vector3& currentPosition,
-		const DirectX::SimpleMath::Quaternion& currentAngle
-	)override {};
 
 	void Render()override;
 	void Finalize()override;
 
-	void Attach(std::unique_ptr<IObject> parts)override;
-	void Detach(std::unique_ptr<IObject> parts)override;
-
 private:
+	// íÔ”Ô†
+	int m_tankNumber;
 	// À•W
 	DirectX::SimpleMath::Vector3 m_position;
 	// ‰ñ“]Šp
@@ -79,6 +74,10 @@ public:
 	
 	// ƒvƒŒƒCƒ„[‚Ìî•ñ‚Ìó‚¯æ‚è
 	void SetPlayerTank(PlayerTank* tank) { m_playerTank = tank; }
+	// íÔî•ñ‚Ìæ“¾
+	Tank* GetTank() { return m_tank.get(); }
+	// ‘¼íÔî•ñ‚Ìó‚¯“n‚µ
+	void SetOtherTanks(std::vector<Tank*> tanks);
 
 private:
 	// íÔ‚Æ–C’e‚ÌÕ“Ë”»’è‚ğs‚¤
