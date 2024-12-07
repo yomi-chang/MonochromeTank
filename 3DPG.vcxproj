@@ -189,6 +189,7 @@
     <ClInclude Include="Game\Collider\SphereCollider.h" />
     <ClInclude Include="Game\Objects\Bullet\Bullet.h" />
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
+    <ClInclude Include="Game\Objects\Stage\Gimmick\WallGimmick.h" />
     <ClInclude Include="Game\Objects\Stage\Item\StageItem.h" />
     <ClInclude Include="Game\Objects\Tank\EnemyTanks\SimpleTank.h" />
     <ClInclude Include="Game\Objects\Tank\TankBase\Tank.h" />
@@ -238,6 +239,7 @@
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
     <ClCompile Include="Game\Objects\Bullet\Bullet.cpp" />
     <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
+    <ClCompile Include="Game\Objects\Stage\Gimmick\WallGimmick.cpp" />
     <ClCompile Include="Game\Objects\Stage\Item\StageItem.cpp" />
     <ClCompile Include="Game\Objects\Tank\EnemyTanks\SimpleTank.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankBase\Tank.cpp" />

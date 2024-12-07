@@ -109,6 +109,7 @@
     <ClInclude Include="Game\Objects\Stage\Item\StageItem.h" />
     <ClInclude Include="Interface\IParent.h" />
     <ClInclude Include="Interface\IParts.h" />
+    <ClInclude Include="Game\Objects\Stage\Gimmick\WallGimmick.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -164,6 +165,7 @@
     <ClCompile Include="Libraries\Microsoft\RenderTexture.cpp" />
     <ClCompile Include="Game\Objects\Stage\Floor.cpp" />
     <ClCompile Include="Game\Objects\Stage\Item\StageItem.cpp" />
+    <ClCompile Include="Game\Objects\Stage\Gimmick\WallGimmick.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
