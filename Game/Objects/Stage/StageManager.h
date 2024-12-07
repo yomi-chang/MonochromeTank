@@ -4,8 +4,8 @@
 class Wall;
 class Floor;
 class SkySphere;
-class PlayerTank;
-class EnemyTank;
+
+class Tank;
 
 namespace mylib
 {
@@ -44,9 +44,8 @@ private:
 public:
 	// プレイヤー情報のセット
 	void SetObjectData(
-		PlayerTank* playerTank,
-		mylib::FollowCamera* camera,
-		std::vector<EnemyTank*> enemyTanks
+		std::vector<Tank*> tanks,
+		mylib::FollowCamera* camera
 	);
 
 	// ステージのデータを渡す

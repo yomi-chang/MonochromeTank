@@ -7,8 +7,6 @@
 #include "Game/Objects/Tank/TankBase/TankCannon.h"
 
 #include "Interface/IBullet.h"
-
-#include "Game/Collider/BoxCollider.h"
 #include "Game/UserInterface/HpGauge.h"
 
 #include "Framework/InputManager.h"
@@ -27,7 +25,6 @@ PlayerTank::PlayerTank(
 	m_position{ position },
 	m_angle{},
 	m_tank{},
-	m_collider{},
 	m_hpGauge{},
 	m_damage{}
 {
@@ -52,11 +49,8 @@ void PlayerTank::Initialize()
 	m_tank = std::make_unique<Tank>(m_tankNumber,initialPosition, 0.0f);
 	m_tank->Initialize();
 
-	// コライダーの作成
-	m_collider = std::make_unique<BoxCollider>();
+	// 座標の設定
 	m_position = m_tank->GetPosition();
-	m_position.y += COLLIDER_POSITION;
-	m_collider->CreateBoundingBox(m_position, Vector3(1.2f, 1.0f, 1.2f));
 
 	// HPゲージの作成
 	m_hpGauge = std::make_unique<HpGauge>();
@@ -74,10 +68,8 @@ void PlayerTank::Update(float elapsedTime)
 	// 戦車の更新
 	m_tank->Update(elapsedTime);
 
-	// コライダーの更新
+	// 座標の更新
 	m_position = m_tank->GetPosition();
-	m_position.y += COLLIDER_POSITION;
-	m_collider->Update(m_position);
 
 	// 座標と回転角の更新
 	m_position = m_tank->GetPosition();

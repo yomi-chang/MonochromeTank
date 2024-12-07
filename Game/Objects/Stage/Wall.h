@@ -5,17 +5,13 @@ namespace mylib
 {
 	class FollowCamera;
 }
-class PlayerTank;
-class EnemyTank;
+class Tank;
 
 class Wall
 {
 public:
-	void SetPlayer(PlayerTank* tank) { m_playerTank = tank; }
-
+	void SetTanks(std::vector<Tank*> tanks) { m_tanks = tanks; }
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
-
-	void SetEnemyTanks(std::vector<EnemyTank*> enemyTanks) { m_enemyTanks = enemyTanks; }
 
 public:
 	// コンストラクタ
@@ -36,12 +32,10 @@ private:
 	std::unique_ptr<DirectX::GeometricPrimitive> m_model;		// ジオメトリックプリミティブ
 	DirectX::SimpleMath::Matrix m_world;						// ワールド座標	
 	std::unique_ptr<BoxCollider> m_collider;					// ボックスコライダー
-	PlayerTank* m_playerTank;									// プレイヤー
+	std::vector<Tank*> m_tanks;									// 戦車情報
 	mylib::FollowCamera* m_camera;								// カメラ
-	std::vector<EnemyTank*> m_enemyTanks;						// 敵戦車
 	Graphics* m_graphics;										// グラフィックス	
 	DirectX::SimpleMath::Vector4 m_color;						// カラー
-
 private:
 	// 衝突判定
 	void DetectCollision();

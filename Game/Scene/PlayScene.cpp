@@ -63,7 +63,6 @@ void PlayScene::Initialize()
 
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	//auto states = m_graphics->GetCommonStates();
 
 	// デバッグカメラを作成する
 	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
@@ -87,6 +86,7 @@ void PlayScene::Initialize()
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 
+	// オブジェクトの生成============================================================
 	// プレイヤー戦車の生成
 	m_player = std::make_unique<PlayerTank>(0, Vector3::Zero);
 	m_player->Initialize();
@@ -94,13 +94,9 @@ void PlayScene::Initialize()
 	// 敵戦車
 	m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ -5.0f, 0.0f, -10.0f }));
 	m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ 5.0f, 0.0f, -10.0f }));
-	std::vector<EnemyTank*> enemyPointers;
 	for (auto& enemy : m_enemies)
 	{
 		enemy->Initialize();
-		enemy->SetPlayerTank(m_player.get());
-
-		enemyPointers.push_back(enemy.get());
 	}
 
 	// TPSカメラの生成
@@ -110,30 +106,33 @@ void PlayScene::Initialize()
 	// ステージマネージャーの生成
 	m_stageManager = std::make_unique<StageManager>();
 	m_stageManager->Initialize();
-	m_stageManager->SetObjectData(m_player.get(), m_tpsCamera.get(), enemyPointers);
 
 	// UI関係
 	m_magazine = std::make_unique<Magazine>();
 	m_magazine->Initialize();
 
-	// カメラ情報を渡す
-	m_player->SetCamera(m_tpsCamera.get());
-
-	// 壁の情報を渡す
-	m_player->SetWalls(m_stageManager->GetWalls());
-
-	//全戦車の情報を渡す
+	//全戦車の情報を持つ配列
 	std::vector<Tank*> tankPointers;
+	tankPointers.push_back(m_player->GetTank());
 	for (auto& tank : m_enemies)
 	{
 		tankPointers.push_back(tank->GetTank());
 	}
-	tankPointers.push_back(m_player->GetTank());
+
+	// 必要な情報の受け取り============================================================
+	// 各戦車に全戦車の情報を渡す
+	m_player->SetOtherTanks(tankPointers);
 	for (auto& tank : m_enemies)
 	{
 		tank->SetOtherTanks(tankPointers);
 	}
-	m_player->SetOtherTanks(tankPointers);
+	// 壁に戦車情報を渡す
+	m_stageManager->SetObjectData(tankPointers, m_tpsCamera.get());
+	// カメラ情報を渡す
+	m_player->SetCamera(m_tpsCamera.get());
+	// 壁の情報を渡す
+	m_player->SetWalls(m_stageManager->GetWalls());
+	
 }
 
 //---------------------------------------------------------
@@ -277,7 +276,6 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
 }
-
 
 //---------------------------------------------------------
 // カメラタイプを変更する

@@ -12,8 +12,7 @@
 #include "Game/Objects/Stage/Floor.h"
 #include "Game/Objects/Other/SkySphere.h"
 
-#include "Game/Objects/Tank/PlayerTank.h"
-#include "Game/Objects/Tank/EnemyTanks/SimpleTank.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -124,17 +123,17 @@ void StageManager::CreateStage()
 	}
 }
 
+//---------------------------------------------------------
+// オブジェクトデータの受け渡し
+//---------------------------------------------------------
 void StageManager::SetObjectData(
-	PlayerTank* playerTank,
-	mylib::FollowCamera* camera,
-	std::vector<EnemyTank*> enemyTanks
+	std::vector<Tank*> tanks,
+	mylib::FollowCamera* camera
 )
 {
-	// プレイヤーとカメラ情報を渡す
 	for (auto& wall : m_walls)
 	{
-		wall->SetPlayer(playerTank);
+		wall->SetTanks(tanks);
 		wall->SetCamera(camera);
-		wall->SetEnemyTanks(enemyTanks);
 	}
 }

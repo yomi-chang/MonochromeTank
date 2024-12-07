@@ -6,8 +6,6 @@
 #include "Game/Objects/Tank/TankBase/TankTurret.h"
 #include "Game/Objects/Tank/TankBase/TankCannon.h"
 
-#include "Game/Objects/Tank/PlayerTank.h"
-
 #include "Game/UserInterface/EnemyHpGauge.h"
 
 #include "Framework/InputManager.h"
@@ -41,10 +39,6 @@ void EnemyTank::Initialize()
 	m_tank = std::make_unique<Tank>(m_tankNumber,m_position, DirectX::XMConvertToRadians(180.0f));
 	m_tank->Initialize();
 
-	// コライダーの作成
-	m_collider = std::make_unique<BoxCollider>();
-	m_collider->CreateBoundingBox(m_tank->GetPosition(), Vector3(1.2f, 1.2f, 1.2f));
-
 	// 敵体力ゲージを生成
 	m_hpGauge = std::make_unique<EnemyHpGauge>();
 	m_hpGauge->SetMaxHp(10.0f);
@@ -73,14 +67,9 @@ void EnemyTank::Update(float elapsedTime)
 	m_position = m_tank->GetPosition();
 	m_angle = m_tank->GetAngle();
 
-	// コライダーの更新
-	m_collider->Update(m_position);
-
 	// ダメージの初期化
 	m_damage = 0.0f;
 	// 衝突判定
-	//DetectCollisionTankAndBullets();
-	//DetectCollisionTankAndOtherTanks();
 	if(m_tank->DetectCollisionTankAndNomalBullets()) { m_damage += 0.5f; }
 	if (m_tank->DetectCollisionTankAndCannonBall()) { m_damage += 3.0f;}
 	m_tank->DetectCollisionTankAndOtherTanks();
@@ -90,10 +79,10 @@ void EnemyTank::Update(float elapsedTime)
 	// 巡回行動
 	Patrol(elapsedTime);
 
-	// プレイヤーの方向を向く処理 ToDo：今はすぐプレイヤーの方向に向いてしまうので徐々に向けるようにする
-	Vector3 delta = m_playerTank->GetPosition() - m_position;
-	float angleRadians = atan2(delta.x, delta.z);
-	m_tank->GetTurret()->RotateTurret(angleRadians);
+	// 接敵している敵の方向を向く
+	//Vector3 delta = m_playerTank->GetPosition() - m_position;
+	//float angleRadians = atan2(delta.x, delta.z);
+	//m_tank->GetTurret()->RotateTurret(angleRadians);
 
 	m_tank->GetCannon()->StartReload();
 	m_tank->GetCannon()->Shoot();
@@ -103,9 +92,6 @@ void EnemyTank::Render()
 {
 	// 戦車の描画
 	m_tank->Render();
-
-	// コライダーの描画
-	//m_collider->Render();
 
 	// HPゲージ
 	m_hpGauge->Render(m_position);
@@ -159,38 +145,6 @@ void EnemyTank::SetOtherTanks(std::vector<Tank*> tanks)
 {
 	m_tank->SetOtherTanks(tanks);
 }
-
-// 戦車と弾の衝突判定
-void EnemyTank::DetectCollisionTankAndBullets()
-{
-	// 弾丸と戦車の当たり判定
-	// 連射弾
-	for (auto& bullet : m_playerTank->GetTankCannon()->GetBullets())
-	{
-		// 弾丸が飛んでいる、かつ当たっているなら
-		if (bullet->GetBulletState() == IBullet::FLYING &&
-			m_collider->CheckTriggerCollider(bullet->GetBoundingSphere()))
-		{
-			bullet->SetBulletState(IBullet::USED);
-			m_damage += 0.5f;
-		}
-	}
-	// 砲弾
-	if (m_playerTank->GetTankCannon()->GetCannonBall()->GetBulletState() == IBullet::FLYING &&
-		m_collider->CheckTriggerCollider(m_playerTank->GetTankCannon()->GetCannonBall()->GetBoundingSphere()))
-	{
-		m_playerTank->GetTankCannon()->GetCannonBall()->SetBulletState(IBullet::USED);
-		m_damage += 3.0f;
-	}
-}
-
-// 戦車と戦車の衝突判定を行う
-void EnemyTank::DetectCollisionTankAndOtherTanks()
-{
-	// プレイヤーの戦車を押し戻す
-	m_playerTank->SetPosition(m_collider->CheckCollisionCollider(m_playerTank->GetBoundingBox()));
-}
-
 
 void EnemyTank::Patrol(float elapsedTime)
 {

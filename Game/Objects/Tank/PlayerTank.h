@@ -1,12 +1,9 @@
 #pragma once
 #include "Interface/IObject.h"
 #include "Libraries/MyLib/FollowCamera.h"
-#include "Game/Collider/BoxCollider.h"
-
 #include "Game/Objects/Tank/TankBase/TankCannon.h"
 
 class Tank;
-class BoxCollider;
 class HpGauge;
 class Wall;
 
@@ -24,9 +21,6 @@ private:
 	// 砲身の回転制限
 	const float CANNON_ANGLE_MIN = DirectX::XMConvertToRadians(-7.5f);
 	const float CANNON_ANGLE_MAX = DirectX::XMConvertToRadians(22.5f);
-
-	const DirectX::SimpleMath::Vector3 COLLIDER_SIZE = DirectX::SimpleMath::Vector3(1.2f, 1.0f, 1.2f);
-	const float COLLIDER_POSITION = 0.25f;
 
 public:
 	PlayerTank(
@@ -52,8 +46,6 @@ private:
 	DirectX::SimpleMath::Quaternion m_angle;
 	// 戦車
 	std::unique_ptr<Tank> m_tank;
-	// コライダー
-	std::unique_ptr<BoxCollider> m_collider;
 	// HPゲージ
 	std::unique_ptr<HpGauge> m_hpGauge;
 	// ダメージ
@@ -78,8 +70,6 @@ public:
 	void SetPosition(DirectX::SimpleMath::Vector3 position);
 	// 回転角の取得
 	DirectX::SimpleMath::Quaternion GetAngle() { return m_angle; }
-	// コライダーの取得
-	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
 	// 砲身の取得
 	TankCannon* GetTankCannon();
 	// カメラ情報の受け取り

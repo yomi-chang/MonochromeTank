@@ -2,10 +2,8 @@
 #include "Game/Objects/Stage/Wall.h"
 #include "Framework/Graphics.h"
 #include "Libraries/MyLib/FollowCamera.h"
-#include "Game/Objects/Tank/PlayerTank.h"
-#include "Game/Objects/Tank/EnemyTanks/SimpleTank.h"
 
-using namespace DirectX;
+#include "Game/Objects/Tank/TankBase/Tank.h"
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -15,11 +13,13 @@ Wall::Wall(
 	DirectX::SimpleMath::Vector3 movePosition
 )
 	:
+	m_tanks{},
 	m_camera{},
 	m_graphics{ Graphics::GetInstance() },
-	m_color{ static_cast<DirectX::SimpleMath::Vector4>(Colors::DimGray) }
+	m_color{ static_cast<DirectX::SimpleMath::Vector4>(DirectX::Colors::DimGray) }
 {
 	using namespace DirectX::SimpleMath;
+	using namespace DirectX;
 
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
@@ -69,15 +69,12 @@ void Wall::Finalize()
 //---------------------------------------------------------
 void Wall::DetectCollision()
 {
-	// プレイヤーとの当たり判定
-	m_playerTank->SetPosition(m_collider->CheckCollisionCollider(m_playerTank->GetBoundingBox()));
+	// 戦車との当たり判定
+	for (auto& tank : m_tanks)
+	{
+		tank->GetBody()->SetCollisionVel(m_collider->CheckCollisionCollider(tank->GetBoundingBox()));
+	}
 
 	// カメラとの当たり判定
 	m_camera->SetEyePosition(m_camera->GetEyePosition() + m_collider->CheckCollisionCollider(m_camera->GetBoundingSphere()));
-
-	// 敵戦車との当たり判定
-	for (auto& enemyTank : m_enemyTanks)
-	{
-		enemyTank->SetPosition(m_collider->CheckCollisionCollider(enemyTank->GetBoundingBox()));
-	}
 }
