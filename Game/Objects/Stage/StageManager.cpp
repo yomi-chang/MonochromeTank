@@ -56,6 +56,11 @@ void StageManager::Render()
 	m_floor->Render();
 }
 
+// 壁を上げる処理
+void StageManager::UpWall()
+{
+}
+
 //---------------------------------------------------------
 // CSVファイルの読み込み
 //---------------------------------------------------------
@@ -113,9 +118,12 @@ void StageManager::CreateStage()
 			switch (m_data[y][x])
 			{
 				case 0:		// 情報がない場合
+					m_walls.emplace_back(std::make_unique<Wall>(Vector3::One, Vector3(x - (STAGESIZE / 2), -1.0f, y - (STAGESIZE / 2))));
 					continue;
 				case 1:		// 壁
 					m_walls.emplace_back(std::make_unique<Wall>(Vector3::One, Vector3(x - (STAGESIZE / 2), 0.5f, y - (STAGESIZE / 2))));
+				case 2:		// ギミック用壁
+					m_walls.emplace_back(std::make_unique<Wall>(Vector3::One, Vector3(x - (STAGESIZE / 2), -1.0f, y - (STAGESIZE / 2))));
 				default:
 					break;
 			}

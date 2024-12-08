@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Game/Objects/Stage/Gimmick/WallGimmick.h"
 #include "Game/Collider/BoxCollider.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Framework/Graphics.h"
 
 WallGimmick::WallGimmick()
@@ -21,7 +22,17 @@ void WallGimmick::Initialize()
 
 void WallGimmick::Update()
 {
-
+	// ’e‚ª‚ ‚½‚Á‚½‚È‚ç•Ç‚ğ‰º‚©‚ço‚·–½—ß
+	for (auto& tank : m_tanks)
+	{
+		// ©‹@‚Ìê‡‚Í”»’è‚ğs‚í‚È‚¢
+		if (tank->GetCannon()->GetCannonBall()->GetBulletState() == IBullet::FLYING &&
+			m_collider->CheckTriggerCollider(tank->GetCannon()->GetCannonBall()->GetBoundingSphere()))
+		{
+			tank->GetCannon()->GetCannonBall()->SetBulletState(IBullet::USED);
+			// ‚±‚±‚É•Ç‚Ìˆ—
+		}
+	}
 }
 
 void WallGimmick::Render()

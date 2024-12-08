@@ -10,6 +10,14 @@ class Tank;
 class Wall
 {
 public:
+	// 壁の種類
+	enum WallType
+	{
+		FIXED,		// 固定
+		MOVE		// 移動
+	};
+
+public:
 	void SetTanks(std::vector<Tank*> tanks) { m_tanks = tanks; }
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 
@@ -17,7 +25,8 @@ public:
 	// コンストラクタ
 	Wall(
 		DirectX::SimpleMath::Vector3 scale,
-		DirectX::SimpleMath::Vector3 movePosition
+		DirectX::SimpleMath::Vector3 position,
+		WallType type
 	);
 	// デストラクタ
 	~Wall();
@@ -36,6 +45,7 @@ private:
 	mylib::FollowCamera* m_camera;								// カメラ
 	Graphics* m_graphics;										// グラフィックス	
 	DirectX::SimpleMath::Vector4 m_color;						// カラー
+	WallType m_wallType;										// 壁の種類
 private:
 	// 衝突判定
 	void DetectCollision();

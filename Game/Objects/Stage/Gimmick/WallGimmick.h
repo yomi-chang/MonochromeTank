@@ -1,6 +1,7 @@
 #pragma once
 
 class BoxCollider;
+class Tank;
 
 class WallGimmick
 {
@@ -28,8 +29,14 @@ private:
 	// デバッグ用モデル
 	std::unique_ptr<DirectX::GeometricPrimitive> m_box;
 
+	// 弾情報を取得するための戦車クラス
+	std::vector<Tank*> m_tanks;
+
 public:
 	// あたっているかの情報の取得
 	bool GetHit() { return m_isHit; }
+
+	// 戦車情報の設定
+	void SetTanks(std::vector<Tank*> tanks) { m_tanks = tanks; }
 
 };

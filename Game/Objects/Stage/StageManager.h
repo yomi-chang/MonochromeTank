@@ -60,6 +60,9 @@ public:
 		return wallPointers;
 	}
 
+	// 壁を上げる処理
+	void UpWall();
+
 private:
 	// 外部ファイルの読み込み
 	void LoadFile();

@@ -10,7 +10,8 @@
 //---------------------------------------------------------
 Wall::Wall(
 	DirectX::SimpleMath::Vector3 scale,
-	DirectX::SimpleMath::Vector3 movePosition
+	DirectX::SimpleMath::Vector3 position,
+	WallType type
 )
 	:
 	m_tanks{},
@@ -27,11 +28,11 @@ Wall::Wall(
 	m_model = GeometricPrimitive::CreateBox(context, scale);
 
 	// ワールド座標の設定
-	m_world = Matrix::CreateTranslation(movePosition);
+	m_world = Matrix::CreateTranslation(position);
 
 	// ボックスコライダーの作成
 	m_collider = std::make_unique<BoxCollider>();
-	m_collider->CreateBoundingBox(movePosition, scale);
+	m_collider->CreateBoundingBox(position, scale);
 }
 
 // デストラクタ
