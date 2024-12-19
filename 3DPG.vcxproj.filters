@@ -77,7 +77,7 @@
     </ClInclude>
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\Resources.h" />
-    <ClInclude Include="Game\Objects\Other\SkySphere.h" />
+    <ClInclude Include="Game\Objects\Stage\StageObject\SkySphere.h" />
     <ClInclude Include="Interface\IBullet.h" />
     <ClInclude Include="Game\Objects\Bullet\Bullet.h" />
     <ClInclude Include="Libraries\MyLib\FollowCamera.h" />
@@ -110,6 +110,8 @@
     <ClInclude Include="Interface\IParent.h" />
     <ClInclude Include="Interface\IParts.h" />
     <ClInclude Include="Game\Objects\Stage\Gimmick\WallGimmick.h" />
+    <ClInclude Include="Game\Objects\FixedTurret\FixedTurret.h" />
+    <ClInclude Include="Game\Other\CollisionManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -138,7 +140,7 @@
     </ClCompile>
     <ClCompile Include="Framework\Graphics.cpp" />
     <ClCompile Include="Framework\Resources.cpp" />
-    <ClCompile Include="Game\Objects\Other\SkySphere.cpp" />
+    <ClCompile Include="Game\Objects\Stage\StageObject\SkySphere.cpp" />
     <ClCompile Include="Game\Objects\Bullet\Bullet.cpp" />
     <ClCompile Include="Libraries\MyLib\FollowCamera.cpp" />
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
@@ -166,6 +168,8 @@
     <ClCompile Include="Game\Objects\Stage\Floor.cpp" />
     <ClCompile Include="Game\Objects\Stage\Item\StageItem.cpp" />
     <ClCompile Include="Game\Objects\Stage\Gimmick\WallGimmick.cpp" />
+    <ClCompile Include="Game\Objects\FixedTurret\FixedTurret.cpp" />
+    <ClCompile Include="Game\Other\CollisionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

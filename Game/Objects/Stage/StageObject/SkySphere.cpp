@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Game/Objects/Other/SkySphere.h"
+#include "Game/Objects/Stage/StageObject/SkySphere.h"
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
 

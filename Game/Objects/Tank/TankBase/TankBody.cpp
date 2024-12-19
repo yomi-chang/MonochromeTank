@@ -21,7 +21,8 @@ TankBody::TankBody(
 	m_worldMatrix{},
 	m_model{},
 	m_bodyAngle{},
-	m_tank{}
+	m_tank{},
+	m_gravityEnabled{}
 {
 	// 戦車情報の受け取り
 	m_tank = tank;
@@ -63,6 +64,12 @@ void TankBody::Update(
 	const DirectX::SimpleMath::Quaternion& currentAngle
 )
 {
+	// 重力をかける
+	if (m_currentPosition.y > 0.0f && m_gravityEnabled)
+		m_currentPosition.y -= 0.1f;
+	// 重力を有効にする
+	m_gravityEnabled = true;
+
 	// 現在回転角の更新
 	m_currentAngle = currentAngle * m_initialAngle * m_bodyAngle;
 

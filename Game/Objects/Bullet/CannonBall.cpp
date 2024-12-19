@@ -37,11 +37,11 @@ void CannonBall::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	// 砲弾モデルの作成
-	m_bullet = DirectX::GeometricPrimitive::CreateSphere(m_graphics->GetDeviceResources()->GetD3DDeviceContext(),0.2f);
+	m_bullet = DirectX::GeometricPrimitive::CreateSphere(m_graphics->GetDeviceResources()->GetD3DDeviceContext(),0.25f);
 
 	// スフィアコライダーの作成
 	m_collider = std::make_unique<SphereCollider>();
-	m_collider->CreateBoundingSphere(m_position, 0.1f);
+	m_collider->CreateBoundingSphere(m_position, 0.125f);
 }
 
 // 更新する 

@@ -77,7 +77,7 @@ private:
 	std::unique_ptr<DrawTexture> m_drawTexture;			// 画像の描画
 	std::vector<Wall*> m_walls;							// 壁
 
-	Tank* m_tank;									// 戦車情報
+	Tank* m_tank;										// 戦車情報
 
 
 public:
@@ -96,14 +96,11 @@ public:
 	// 発射する弾の変更
 	void ChangeBullet();
 
-	// リロード
+	// リロード開始
 	void StartReload();
 
 	// 壁情報の受け取り
-	void SetWalls(std::vector<Wall*> walls)
-	{
-		m_walls = walls;
-	}
+	void SetWalls(std::vector<Wall*> walls) { m_walls = walls; }
 
 	// 「連射弾」を参照する
 	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };

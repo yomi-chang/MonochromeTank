@@ -4,11 +4,13 @@
 class Tank;
 class EnemyHpGauge;
 
+class SphereCollider;
+
 class EnemyTank : IObject
 {
 private:
 	// 敵速度
-	const float TANK_SPEED = 3.0f;
+	const float TANK_SPEED = 2.0f;
 
 public:
 	EnemyTank(
@@ -40,6 +42,17 @@ private:
 	float m_damage;
 	// 死亡しているかどうか
 	bool m_isDead;
+	// ターゲットを追跡中かどうか
+	bool m_isTracking;
+	// タイマー
+	float m_time;
+	// 索敵用コライダー
+	std::unique_ptr<SphereCollider> m_collider;
+
+	// 追跡対象の戦車
+	Tank* m_targetTank;
+	// 全戦車の情報
+	std::vector<Tank*> m_tanks;
 
 	// 移動関係
 	// 巡回地点

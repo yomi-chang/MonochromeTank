@@ -36,6 +36,9 @@ void Resources::LoadResource()
 	// 「弾」モデルをロードする
 	m_bulletModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\bullet.cmo", *m_graphics->GetFX());
 
+	// 「固定砲台」モデルをロードする
+	m_fixedTurretModel = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\FixedTurret.sdkmesh", *m_graphics->GetFX());
+
 
 	//	照準テクスチャのロード 
 	DirectX::CreateWICTextureFromFile(

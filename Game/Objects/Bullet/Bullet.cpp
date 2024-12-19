@@ -35,11 +35,11 @@ void Bullet::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	// 砲弾モデルの作成
-	m_bullet = DirectX::GeometricPrimitive::CreateSphere(m_graphics->GetDeviceResources()->GetD3DDeviceContext(), 0.05f);
+	m_bullet = DirectX::GeometricPrimitive::CreateSphere(m_graphics->GetDeviceResources()->GetD3DDeviceContext(), 0.1f);
 
 	// スフィアコライダーの作成
 	m_collider = std::make_unique<SphereCollider>();
-	m_collider->CreateBoundingSphere(m_position, 0.025f);
+	m_collider->CreateBoundingSphere(m_position, 0.05f);
 
 	m_count = SURVIVAL_TIME;
 }
@@ -64,6 +64,7 @@ void Bullet::Update(float time)
 
 	// 速度を計算する
 	m_velocity = Vector3::Transform(SPEED,m_angle);
+
 	// 位置を計算する
 	m_position += m_velocity;
 	// コライダーの座標更新

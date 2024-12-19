@@ -16,7 +16,7 @@
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 
-#include "Game/Objects/Other/SkySphere.h"
+#include "Game/Objects/Stage/StageObject/SkySphere.h"
 #include "Game/Objects/Stage/Wall.h"
 #include "Game/Objects/Tank/PlayerTank.h"
 #include "Game/Objects/Tank/EnemyTanks/SimpleTank.h"
@@ -24,6 +24,7 @@
 #include "Game/UserInterface/Magazine.h"
 
 #include "Game/Objects/Stage/StageManager.h"
+#include "Game/Other/CollisionManager.h"
 
 #include <cassert>
 
@@ -42,7 +43,8 @@ PlayScene::PlayScene()
 	m_isChangeScene{},
 	m_player{},
 	m_enemies{},
-	m_stageManager{}
+	m_stageManager{},
+	m_collisonManager{}
 {
 }
 
@@ -60,9 +62,6 @@ PlayScene::~PlayScene()
 void PlayScene::Initialize()
 {
 	using namespace DirectX::SimpleMath;
-
-	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
-	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
 	// デバッグカメラを作成する
 	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
@@ -92,8 +91,9 @@ void PlayScene::Initialize()
 	m_player->Initialize();
 
 	// 敵戦車
-	m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ -5.0f, 0.0f, -10.0f }));
-	m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ 5.0f, 0.0f, -10.0f }));
+	m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 0.0f, 0.0f, -5.0f }));
+	//m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ -5.0f, 0.0f, -10.0f }));
+	//m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ 5.0f, 0.0f, -10.0f }));
 	for (auto& enemy : m_enemies)
 	{
 		enemy->Initialize();
@@ -111,6 +111,9 @@ void PlayScene::Initialize()
 	m_magazine = std::make_unique<Magazine>();
 	m_magazine->Initialize();
 
+	// コリジョンマネージャー
+	m_collisonManager = std::make_unique<CollisionManager>();
+
 	//全戦車の情報を持つ配列
 	std::vector<Tank*> tankPointers;
 	tankPointers.push_back(m_player->GetTank());
@@ -119,20 +122,27 @@ void PlayScene::Initialize()
 		tankPointers.push_back(tank->GetTank());
 	}
 
-	// 必要な情報の受け取り============================================================
-	// 各戦車に全戦車の情報を渡す
+	// 必要な情報の設定============================================================
+	// 各戦車に全戦車の情報を設定
 	m_player->SetOtherTanks(tankPointers);
 	for (auto& tank : m_enemies)
 	{
 		tank->SetOtherTanks(tankPointers);
 	}
-	// 壁に戦車情報を渡す
+	// 壁に戦車情報の設定
 	m_stageManager->SetObjectData(tankPointers, m_tpsCamera.get());
-	// カメラ情報を渡す
+	// カメラ情報の設定
 	m_player->SetCamera(m_tpsCamera.get());
-	// 壁の情報を渡す
+	// 壁の情報の設定
 	m_player->SetWalls(m_stageManager->GetWalls());
-	
+	// 全オブジェクトの情報の設定
+	m_collisonManager->SetObjectData(
+		tankPointers,
+		m_tpsCamera.get(),
+		m_stageManager->GetFixedTurret(),
+		m_stageManager->GetWalls(),
+		m_stageManager->GetWallGimmick()
+	);
 }
 
 //---------------------------------------------------------
@@ -142,6 +152,9 @@ void PlayScene::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
+	// コリジョンマネージャーの更新
+	m_collisonManager->Update();
+
 	// 戦車の更新
 	m_player->Update(elapsedTime);
 
@@ -150,6 +163,9 @@ void PlayScene::Update(float elapsedTime)
 	{
 		enemy->Update(elapsedTime);
 	}
+
+	// ステージの更新
+	m_stageManager->Update(elapsedTime);
 
 	// フォローカメラを更新する
 	m_tpsCamera->Update(elapsedTime);
@@ -179,9 +195,6 @@ void PlayScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void PlayScene::Render()
 {
-	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = m_graphics->GetCommonStates();
-	
 	// カメラタイプに応じたビュー行列の取得
 	auto view = DirectX::SimpleMath::Matrix::Identity;
 	switch (m_cameraType)

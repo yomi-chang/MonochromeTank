@@ -4,11 +4,13 @@
 */
 #pragma once
 #include "IScene.h"
+#include "Libraries/Microsoft/RenderTexture.h"
 
 class Graphics;
 class PlayerTank;
 class EnemyTank;
 class StageManager;
+class CollisionManager;
 
 class Magazine;
 
@@ -46,9 +48,12 @@ private:
 
 	// マネージャー
 	std::unique_ptr<StageManager> m_stageManager;			// ステージマネージャー
+	std::unique_ptr<CollisionManager> m_collisonManager;	// コリジョンマネージャー
 
 	// 残弾数UI
 	std::unique_ptr<Magazine> m_magazine;
+
+
 public:
 	PlayScene();
 	~PlayScene() override;

@@ -6,11 +6,12 @@
 class Resources
 {
 public:
-	DirectX::Model* GetTankBodyModel() { return m_tankBodyModel.get(); }		// 車体モデル
-	DirectX::Model* GetTankTurretModel() { return m_tankTurretModel.get(); }	// 砲塔モデル
-	DirectX::Model* GetTankCannonModel() { return m_tankCanonModel.get(); }		// 砲身モデル
-	DirectX::Model* GetSkySphereModel() { return m_skySphereModel.get(); }		// 天球モデル
-	DirectX::Model* GetBulletModel() { return m_bulletModel.get(); }			// 弾モデル
+	DirectX::Model* GetTankBodyModel() { return m_tankBodyModel.get(); }			// 車体モデル
+	DirectX::Model* GetTankTurretModel() { return m_tankTurretModel.get(); }		// 砲塔モデル
+	DirectX::Model* GetTankCannonModel() { return m_tankCanonModel.get(); }			// 砲身モデル
+	DirectX::Model* GetSkySphereModel() { return m_skySphereModel.get(); }			// 天球モデル
+	DirectX::Model* GetBulletModel() { return m_bulletModel.get(); }				// 弾モデル
+	DirectX::Model* GetFixedTurretModel() { return m_fixedTurretModel.get(); }		// 固定砲台モデル
 
 	ID3D11ShaderResourceView* GetTargetTexture() { return m_targetTexture.Get(); }			// 照準テクスチャ
 	ID3D11ShaderResourceView* GetTargetLockTexture() { return m_targetLockTexture.Get(); }	// 照準ロックテクスチャ
@@ -40,6 +41,7 @@ private:
 		m_tankCanonModel{},
 		m_skySphereModel{},
 		m_bulletModel {},
+		m_fixedTurretModel{},
 
 		m_targetTexture{},
 		m_targetLockTexture{},

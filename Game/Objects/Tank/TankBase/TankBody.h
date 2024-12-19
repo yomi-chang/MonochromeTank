@@ -43,7 +43,8 @@ private:
 	DirectX::Model* m_model;								// ƒ‚ƒfƒ‹
 
 	DirectX::SimpleMath::Quaternion m_bodyAngle;			// Ô‘Ì‚Ì‰ñ“]Šp
-	Tank* m_tank;										// e‚Ìî•ñ
+	Tank* m_tank;											// e‚Ìî•ñ
+	bool m_gravityEnabled;									// d—Í‚ª—LŒø‚©‚Ç‚¤‚©
 
 public:
 	// Šp“x‚Ìæ“¾
@@ -62,6 +63,8 @@ public:
 
 	// ‰ñ“]ˆ—
 	void Rotate(DirectX::SimpleMath::Quaternion angle);
+
+	void SetGravity(bool b) { m_gravityEnabled = b; }
 
 private:
 	// ‰e‚Ì•`‰æ

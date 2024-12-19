@@ -8,7 +8,7 @@
 #include "Game/Objects/Bullet/Bullet.h"
 #include "Game/Objects/Bullet/CannonBall.h"
 
-#include "Libraries/MyLib/DebugLog.h";
+#include "Libraries/MyLib/DebugLog.h"
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -61,15 +61,22 @@ void TankCannon::Initialize()
 	m_tank->SetCannon(this);
 
 	// 連射弾配列を作成する
-	m_bullets.resize(20);
-	// 配列に連射弾を格納する
-	for (int index = 0; index < 20; index++)
+	//m_bullets.resize(20);
+	//// 配列に連射弾を格納する
+	//for (int index = 0; index < 20; index++)
+	//{
+	//	// 連射弾を生成する
+	//	m_bullets[index] = std::make_unique<Bullet>(IBullet::UNUSED);
+	//	// 連射弾を初期化する
+	//	m_bullets[index]->Initialize();
+	//}
+	/// 連射弾の生成
+	for (int i = 0; i <= 20; i++)
 	{
-		// 連射弾を生成する
-		m_bullets[index] = std::make_unique<Bullet>(IBullet::UNUSED);
-		// 連射弾を初期化する
-		m_bullets[index]->Initialize();
+		m_bullets.push_back(std::make_unique<Bullet>(IBullet::UNUSED));
+		m_bullets[i]->Initialize();
 	}
+
 	// 砲弾を生成する
 	m_cannonBall = std::make_unique<CannonBall>(IBullet::UNUSED);
 	m_cannonBall->Initialize();
@@ -82,7 +89,6 @@ void TankCannon::Initialize()
 	// 最初に発射できる弾を砲弾に設定する
 	m_bulletType = BulletType::CANNONBALL;
 	m_reloadBulletType = BulletType::CANNONBALL;
-
 
 	// デバッグ用モデルの描画
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
@@ -220,7 +226,7 @@ void TankCannon::Shoot()
 			}
 			break;
 	}
-	// 初期値を設定する
+	// 発射インターバルを設定する
 	m_shotTimer = SHOT_INTERVAL;
 }
 

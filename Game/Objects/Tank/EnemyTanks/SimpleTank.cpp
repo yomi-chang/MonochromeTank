@@ -7,10 +7,10 @@
 #include "Game/Objects/Tank/TankBase/TankCannon.h"
 
 #include "Game/UserInterface/EnemyHpGauge.h"
+#include "Game/Collider/SphereCollider.h"
 
 #include "Framework/InputManager.h"
 #include "Libraries/MyLib/Math.h"
-#include "Libraries/MyLib/DebugLog.h"
 
 EnemyTank::EnemyTank(
 	int tankNumber,
@@ -18,7 +18,10 @@ EnemyTank::EnemyTank(
 )
 	:
 	m_patrolPoint{},
-	m_currentPoint{}
+	m_currentPoint{},
+	m_isTracking{},
+	m_time{},
+	m_collider{}
 {
 	// 戦車の番号の受け取り
 	m_tankNumber = tankNumber;
@@ -43,14 +46,18 @@ void EnemyTank::Initialize()
 	m_hpGauge = std::make_unique<EnemyHpGauge>();
 	m_hpGauge->SetMaxHp(10.0f);
 
-	m_patrolPoint.emplace_back(Vector3{ 10.0f, 0.0f,  10.0f });
-	m_patrolPoint.emplace_back(Vector3{ -10.0f, 0.0f,  10.0f });
-	m_patrolPoint.emplace_back(Vector3{ -10.0f, 0.0f, -10.0f });
-	m_patrolPoint.emplace_back(Vector3{ 6.0f, 0.0f, -10.0f });
+	m_patrolPoint.emplace_back(Vector3{ 3.0f, 0.0f,  3.0f });
+	m_patrolPoint.emplace_back(Vector3{ -3.0f, 0.0f,  3.0f });
+	m_patrolPoint.emplace_back(Vector3{ -3.0f, 0.0f, -3.0f });
+	m_patrolPoint.emplace_back(Vector3{ 3.0f, 0.0f, -3.0f });
 
 	// デバッグ用モデルの描画
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	m_box = DirectX::GeometricPrimitive::CreateBox(context, DirectX::SimpleMath::Vector3(1.0f, 1.0f, 1.0f));
+	m_box = DirectX::GeometricPrimitive::CreateBox(context, DirectX::SimpleMath::Vector3(0.3f, 0.3f, 0.3f));
+
+	// 索敵用コライダーの作成
+	m_collider = std::make_unique<SphereCollider>();
+	m_collider->CreateBoundingSphere(m_position,1.5f);
 
 	//m_tank->GetCannon()->ChangeBullet();
 }
@@ -66,6 +73,9 @@ void EnemyTank::Update(float elapsedTime)
 	// 座標と回転角の更新
 	m_position = m_tank->GetPosition();
 	m_angle = m_tank->GetAngle();
+	
+	// 索敵用コライダーの座標更新
+	m_collider->Update(m_position);
 
 	// ダメージの初期化
 	m_damage = 0.0f;
@@ -76,22 +86,50 @@ void EnemyTank::Update(float elapsedTime)
 	// ダメージ処理
 	m_hpGauge->Damage(m_damage);
 
+	// 追跡中の戦車
+	m_targetTank = m_tanks.at(0);
+	if (m_collider->CheckTriggerCollider(m_targetTank->GetBoundingBox()))
+	{
+		m_isTracking = true;
+		m_tank->GetTurret()->RotateTurret(0.0f);
+	}
+
+	// 追跡中かどうか
+	if (m_isTracking)
+	{
+		// 追跡中の敵の方向を向く
+		// 敵の方向ベクトルの計算
+		Vector3 delta = m_position - m_targetTank->GetPosition();
+		float angleRadians = atan2(delta.x, delta.z);
+
+		// 車体の回転を考慮して目標の角度を計算
+		float adjustedAngle = angleRadians - m_tank->GetAngle().ToEuler().y;
+
+		// 砲塔の回転
+		m_tank->GetTurret()->RotateTurret(adjustedAngle);
+	}
+	else
+	{
+		// 探している挙動
+		m_time += elapsedTime;
+		m_tank->GetTurret()->RotateTurret(sinf(m_time) / 2.0f);
+	}
+	
 	// 巡回行動
 	Patrol(elapsedTime);
 
-	// 接敵している敵の方向を向く
-	//Vector3 delta = m_playerTank->GetPosition() - m_position;
-	//float angleRadians = atan2(delta.x, delta.z);
-	//m_tank->GetTurret()->RotateTurret(angleRadians);
-
-	m_tank->GetCannon()->StartReload();
-	m_tank->GetCannon()->Shoot();
+	
+	//m_tank->GetCannon()->StartReload();
+	//m_tank->GetCannon()->Shoot();
 }
 
 void EnemyTank::Render()
 {
 	// 戦車の描画
 	m_tank->Render();
+
+	// 索敵用コライダーの描画
+	m_collider->Render();
 
 	// HPゲージ
 	m_hpGauge->Render(m_position);
@@ -102,22 +140,22 @@ void EnemyTank::Render()
 	switch (m_currentPoint)
 	{
 		case 0:
-			boxMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(10.0f, 0.5f, 10.0f);
+			boxMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(3.0f, 0.5f, 3.0f);
 			break;
 		case 1:
-			boxMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(-10.0f, 0.5f, 10.0f);
+			boxMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(-3.0f, 0.5f, 3.0f);
 			break;
 		case 2:
-			boxMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(-10.0f, 0.5f, -10.0f);
+			boxMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(-3.0f, 0.5f, -3.0f);
 			break;
 		case 3:
-			boxMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(10.0f, 0.5f, -10.0f);
+			boxMatrix = DirectX::SimpleMath::Matrix::CreateTranslation(3.0f, 0.5f, -3.0f);
 			break;
 		default:
 			break;
 	}
 	
-	//m_box->Draw(boxMatrix, view, proj, DirectX::Colors::Red);
+	m_box->Draw(boxMatrix, view, proj, DirectX::Colors::Red);
 }
 
 void EnemyTank::Finalize()
@@ -143,6 +181,7 @@ void EnemyTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 
 void EnemyTank::SetOtherTanks(std::vector<Tank*> tanks)
 {
+	m_tanks = tanks;
 	m_tank->SetOtherTanks(tanks);
 }
 
@@ -152,9 +191,6 @@ void EnemyTank::Patrol(float elapsedTime)
 
 	// ティーポットの進行方向ベクトル
 	Vector3 heading = Vector3::Transform(Vector3::Forward * TANK_SPEED * elapsedTime, m_tank->GetAngle());
-
-	// ティーポットからターゲットへ向かうベクトル
-	//Vector3 toTarget = m_spherePosition - m_teapotPosition;
 
 	// ティーポットからゴールへ向かうベクトル
 	Vector3 toGoal = m_patrolPoint[m_currentPoint] - m_position;
@@ -218,10 +254,9 @@ void EnemyTank::Patrol(float elapsedTime)
 			・heading.Cross(toTorus).y == 0.0f：ティーポットとターゲットは同一線上
 		*/
 
-		// ティーポットの角度を更新する
+		// 角度を更新する
 		//m_teapotAngle += theta;
 		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(theta), 0.0f, 0.0f));
-
 		
 
 		// ゴールに達したら、ゴール情報を更新する

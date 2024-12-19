@@ -30,23 +30,34 @@ public:
 	);
 	// デストラクタ
 	~Wall();
+	// 更新処理
+	void Update(float elapsedTime);
 	// 描画処理
 	void Render();
 	// 終了処理
 	void Finalize();
 	// コライダーの取得
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
+	// 壁の種類の取得
+	WallType GetWallType() { return m_wallType; }
+	// 沈んでいる壁を出すかどうか
+	void SetActiveWall(bool b) { m_isActive = b; }
+	// 壁が上がっているかどうかの取得
+	bool GetActiveWall() { return m_isActive; }
 
 private:
 	std::unique_ptr<DirectX::GeometricPrimitive> m_model;		// ジオメトリックプリミティブ
-	DirectX::SimpleMath::Matrix m_world;						// ワールド座標	
+	DirectX::SimpleMath::Vector3 m_position;					// 座標	
 	std::unique_ptr<BoxCollider> m_collider;					// ボックスコライダー
 	std::vector<Tank*> m_tanks;									// 戦車情報
 	mylib::FollowCamera* m_camera;								// カメラ
 	Graphics* m_graphics;										// グラフィックス	
 	DirectX::SimpleMath::Vector4 m_color;						// カラー
 	WallType m_wallType;										// 壁の種類
+	bool m_isActive;
 private:
 	// 衝突判定
 	void DetectCollision();
+	void RaiseWall(float elapsedTime);											// 壁をゆっくり上げる処理
+	void LowerWall(float elapsedTime);											// 壁をゆっくり下げる処理
 };
