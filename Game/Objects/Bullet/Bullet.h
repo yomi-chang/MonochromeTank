@@ -15,7 +15,7 @@ public:
 	// ˆÊ’u‚ğİ’è‚·‚é
 	virtual void SetPosition(const DirectX::SimpleMath::Vector3& position) { m_position = position; }
 	// –C’e‚Ì‰ñ“]Šp‚Ìİ’è
-	void SetAngle(const DirectX::SimpleMath::Quaternion& angle) { m_angle = angle; }
+	void SetRotation(const DirectX::SimpleMath::Quaternion& rotation) { m_rotation = rotation; }
 	// –C’e‚ª”­Ë‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
 	IBullet::BulletState GetBulletState() const { return m_bulletState; }
 	// –C’e‚Ìó‘Ô‚ğİ’è‚·‚é
@@ -52,7 +52,7 @@ private:
 	// ˆÊ’u
 	DirectX::SimpleMath::Vector3 m_position;
 	// Šp“x
-	DirectX::SimpleMath::Quaternion m_angle;
+	DirectX::SimpleMath::Quaternion m_rotation;
 	// ƒ[ƒ‹ƒhs—ñ
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 	// –C’e‚ª”­Ë‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğ¦‚·

@@ -14,13 +14,13 @@ TankTurret::TankTurret(
 	:
 	m_graphics{ m_graphics = Graphics::GetInstance() },
 	m_initialPosition{ initialPosition },
-	m_initialAngle{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
+	m_initialRotation{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
 	m_currentPosition{},
-	m_currentAngle{},
+	m_currentRotation{},
 	m_tankParts{},
 	m_worldMatrix{},
 	m_model{},
-	m_turretAngle{},
+	m_turretRotation{},
 	m_tank{}
 {
 	// 戦車情報の受け取り
@@ -57,17 +57,17 @@ void TankTurret::Initialize()
 void TankTurret::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
-	const DirectX::SimpleMath::Quaternion& currentAngle
+	const DirectX::SimpleMath::Quaternion& currentRotation
 )
 {
 	// 現在位置の更新
 	m_currentPosition = currentPosition + m_initialPosition;
-	m_currentAngle =  currentAngle * m_initialAngle * m_turretAngle;
+	m_currentRotation =  currentRotation * m_initialRotation * m_turretRotation;
 
 	// 部品の更新
 	for (auto& part : m_tankParts)
 	{
-		part->Update(elapsedTime, m_currentPosition, m_currentAngle);
+		part->Update(elapsedTime, m_currentPosition, m_currentRotation);
 	}
 }
 
@@ -80,7 +80,7 @@ void TankTurret::Render()
 
 	// ワールド行列の生成
 	m_worldMatrix = Matrix::CreateScale(0.09f) *
-		Matrix::CreateFromQuaternion(m_currentAngle) *
+		Matrix::CreateFromQuaternion(m_currentRotation) *
 		Matrix::CreateTranslation(m_currentPosition);
 
 	// 「砲塔」の描画
@@ -126,5 +126,5 @@ void TankTurret::RotateTurret(float angle)
 	using namespace DirectX::SimpleMath;
 
 	// クォータニオンに変換して適用
-	m_turretAngle = Quaternion::CreateFromYawPitchRoll(angle, 0.0f, 0.0f);
+	m_turretRotation = Quaternion::CreateFromYawPitchRoll(angle, 0.0f, 0.0f);
 }

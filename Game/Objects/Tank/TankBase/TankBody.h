@@ -20,7 +20,7 @@ public:
 	void Update(
 		float elapsedTime,
 		const DirectX::SimpleMath::Vector3& currentPosition,
-		const DirectX::SimpleMath::Quaternion& currentAngle
+		const DirectX::SimpleMath::Quaternion& currentRotation
 	) override;
 	// •`‰æˆ—
 	void Render() override;
@@ -35,20 +35,20 @@ public:
 private:
 	Graphics* m_graphics;									// ƒOƒ‰ƒtƒBƒbƒNƒX
 	DirectX::SimpleMath::Vector3 m_initialPosition;			// ‰ŠúÀ•W
-	DirectX::SimpleMath::Quaternion m_initialAngle;			// ‰Šú‰ñ“]Šp
+	DirectX::SimpleMath::Quaternion m_initialRotation;		// ‰Šú‰ñ“]Šp
 	DirectX::SimpleMath::Vector3 m_currentPosition;			// Œ»İ‚ÌÀ•W
-	DirectX::SimpleMath::Quaternion m_currentAngle;			// Œ»İ‚Ì‰ñ“]Šp
+	DirectX::SimpleMath::Quaternion m_currentRotation;		// Œ»İ‚Ì‰ñ“]Šp
 	std::vector<std::unique_ptr<IParts>> m_tankParts;		// ©g‚ªŠÇ—‚·‚éíÔ•”•i‚Ì”z—ñ
 	DirectX::SimpleMath::Matrix m_worldMatrix;				// ƒ[ƒ‹ƒhs—ñ
 	DirectX::Model* m_model;								// ƒ‚ƒfƒ‹
 
-	DirectX::SimpleMath::Quaternion m_bodyAngle;			// Ô‘Ì‚Ì‰ñ“]Šp
+	DirectX::SimpleMath::Quaternion m_bodyRotation;			// Ô‘Ì‚Ì‰ñ“]Šp
 	Tank* m_tank;											// e‚Ìî•ñ
 	bool m_gravityEnabled;									// d—Í‚ª—LŒø‚©‚Ç‚¤‚©
 
 public:
 	// Šp“x‚Ìæ“¾
-	DirectX::SimpleMath::Quaternion GetAngle(){ return m_currentAngle; }
+	DirectX::SimpleMath::Quaternion GetRotation(){ return m_currentRotation; }
 	// À•W‚Ìæ“¾
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_currentPosition; }
 
@@ -62,7 +62,7 @@ public:
 	void Move(DirectX::SimpleMath::Vector3 velocity);
 
 	// ‰ñ“]ˆ—
-	void Rotate(DirectX::SimpleMath::Quaternion angle);
+	void Rotate(DirectX::SimpleMath::Quaternion rotation);
 
 	void SetGravity(bool b) { m_gravityEnabled = b; }
 

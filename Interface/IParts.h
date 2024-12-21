@@ -14,7 +14,7 @@ public:
 	virtual void Update(
 		float elapsedTime,
 		const DirectX::SimpleMath::Vector3& currentPosition,
-		const DirectX::SimpleMath::Quaternion& currentAngle
+		const DirectX::SimpleMath::Quaternion& currentRotation
 	) = 0;
 	// •`‰æˆ—
 	virtual void Render() = 0;

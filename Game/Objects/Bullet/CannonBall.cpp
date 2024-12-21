@@ -15,7 +15,7 @@ const DirectX::SimpleMath::Vector3 CannonBall::GRAVITY(0.0f, -0.1f, 0.0f);
 CannonBall::CannonBall(IBullet::BulletState bulletState)
 	:
 	m_position{},
-	m_angle{},
+	m_rotation{},
 	m_velocity{},
 	m_worldMatrix{},
 	m_bulletState(bulletState),
@@ -72,7 +72,7 @@ void CannonBall::Update(float time)
 	}
 
 	// 速度を計算する（初速度）
-	Vector3 initialVelocity = Vector3::Transform(SPEED, Matrix::CreateFromQuaternion(m_angle));
+	Vector3 initialVelocity = Vector3::Transform(SPEED, Matrix::CreateFromQuaternion(m_rotation));
 
 	// 速度に重力の影響を加えて位置を計算する
 	m_velocity = initialVelocity + (GRAVITY * m_elapsedTime);
@@ -96,7 +96,7 @@ void CannonBall::Render()
 	// モデル描画のためのワールド行列を計算する
 	//Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	m_worldMatrix = Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) *
-		Matrix::CreateFromQuaternion(m_angle) *
+		Matrix::CreateFromQuaternion(m_rotation) *
 		Matrix::CreateTranslation(m_position);
 
 	// 砲弾が未使用か使用済みの場合は描画しない

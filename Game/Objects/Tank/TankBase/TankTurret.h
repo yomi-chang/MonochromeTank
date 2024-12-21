@@ -20,7 +20,7 @@ public:
 	void Update(
 		float elapsedTime,
 		const DirectX::SimpleMath::Vector3& currentPosition,
-		const DirectX::SimpleMath::Quaternion& currentAngle
+		const DirectX::SimpleMath::Quaternion& currentRotation
 	) override;
 	// ©g‚ğ•`‰æ‚µ‚È‚¢•`‰æˆ—
 	void Render() override;
@@ -35,14 +35,14 @@ public:
 private:
 	Graphics* m_graphics;								// ƒOƒ‰ƒtƒBƒbƒNƒX				
 	DirectX::SimpleMath::Vector3 m_initialPosition;		// ‰ŠúÀ•W	
-	DirectX::SimpleMath::Quaternion m_initialAngle;		// ‰Šú‰ñ“]Šp	
+	DirectX::SimpleMath::Quaternion m_initialRotation;	// ‰Šú‰ñ“]Šp	
 	DirectX::SimpleMath::Vector3 m_currentPosition;		// Œ»İ‚ÌÀ•W	
-	DirectX::SimpleMath::Quaternion m_currentAngle;		// Œ»İ‚Ì‰ñ“]Šp	
+	DirectX::SimpleMath::Quaternion m_currentRotation;	// Œ»İ‚Ì‰ñ“]Šp	
 	std::vector<std::unique_ptr<IParts>> m_tankParts;	// ©g‚ªŠÇ—‚·‚éíÔ•”•i‚Ì”z—ñ	
 	DirectX::SimpleMath::Matrix m_worldMatrix;			// ƒ[ƒ‹ƒhs—ñ	
 	DirectX::Model* m_model;							// ƒ‚ƒfƒ‹	
 
-	DirectX::SimpleMath::Quaternion m_turretAngle;		// –C“ƒ‚ÌŠp“x
+	DirectX::SimpleMath::Quaternion m_turretRotation;		// –C“ƒ‚ÌŠp“x
 
 	Tank* m_tank;
 
@@ -51,5 +51,5 @@ public:
 	void RotateTurret(float angle);
 
 	// –C“ƒ‚ÌŠp“x‚Ìæ“¾
-	DirectX::SimpleMath::Quaternion GetTurretAngle() { return m_turretAngle; }
+	DirectX::SimpleMath::Quaternion GetTurretRotation() { return m_turretRotation; }
 };

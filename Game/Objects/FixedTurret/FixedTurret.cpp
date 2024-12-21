@@ -108,7 +108,7 @@ void FixedTurret::ShootBullet(IBullet* bullet)
 	// コライダー座標の更新
 	bullet->SetColliderPosition(this->GetMuzzlePosition());
 	// 「砲弾」角度を設定する
-	bullet->SetAngle(m_angle);
+	bullet->SetRotation(m_angle);
 	// 「砲弾」を発射する
 	bullet->SetBulletState(IBullet::FLYING);
 }

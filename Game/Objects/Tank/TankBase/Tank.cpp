@@ -13,9 +13,9 @@ Tank::Tank(
 	m_tankNumber{tankNumber},
 	m_graphics{ Graphics::GetInstance() },
 	m_initialPosition{initialPosition},
-	m_initialAngle{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
+	m_initialRotation{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
 	m_currentPosition{},
-	m_currentAngle{},
+	m_currentRotation{},
 	m_tankParts{},
 	m_worldMatrix{},
 	m_vertices{},
@@ -46,7 +46,7 @@ void Tank::Initialize()
 
 	// 現在位置の更新
 	m_currentPosition = m_initialPosition;
-	m_currentAngle = m_initialAngle;
+	m_currentRotation = m_initialRotation;
 
 	// コライダーの生成
 	m_collider = std::make_unique<BoxCollider>();
@@ -86,7 +86,7 @@ void Tank::Update(float elapsedTime)
 	// 部品の更新
 	for (auto& part : m_tankParts)
 	{
-		part->Update(elapsedTime, m_currentPosition, m_currentAngle);
+		part->Update(elapsedTime, m_currentPosition, m_currentRotation);
 	}
 
 	// コライダー座標の更新

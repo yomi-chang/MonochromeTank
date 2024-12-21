@@ -21,13 +21,13 @@ TankCannon::TankCannon(
 	:
 	m_graphics{ m_graphics = Graphics::GetInstance() },
 	m_initialPosition{ initialPosition },
-	m_initialAngle{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
+	m_initialRotation{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
 	m_currentPosition{},
-	m_currentAngle{},
+	m_currentRotation{},
 	m_tankParts{},
 	m_worldMatrix{},
 	m_model{},
-	m_cannonAngle{},
+	m_cannonRotation{},
 	m_bullets{},
 	m_cannonBall{},
 	m_bulletType{},
@@ -101,12 +101,12 @@ void TankCannon::Initialize()
 void TankCannon::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
-	const DirectX::SimpleMath::Quaternion& currentAngle
+	const DirectX::SimpleMath::Quaternion& currentRotation
 )
 {
 	// 現在位置の更新
 	m_currentPosition = currentPosition + m_initialPosition;
-	m_currentAngle = currentAngle * m_initialAngle;
+	m_currentRotation = currentRotation * m_initialRotation;
 
 	// 弾の更新
 	for (auto& bullet : m_bullets)
@@ -141,9 +141,9 @@ void TankCannon::Render()
 
 	// ワールド行列の生成
 	m_worldMatrix = Matrix::CreateScale(0.09f) *
-		Matrix::CreateFromQuaternion(m_cannonAngle) *
+		Matrix::CreateFromQuaternion(m_cannonRotation) *
 		Matrix::CreateTranslation(Vector3(0.0f, 0.0f, -0.0f)) *
-		Matrix::CreateFromQuaternion(m_currentAngle) *
+		Matrix::CreateFromQuaternion(m_currentRotation) *
 		Matrix::CreateTranslation(m_currentPosition);
 
 	// 「砲身」の描画
@@ -174,7 +174,7 @@ void TankCannon::RotateCannon(float angle)
 	using namespace DirectX::SimpleMath;
 
 	// クォータニオンに変換して適用
-	m_cannonAngle = Quaternion::CreateFromYawPitchRoll(0.0f, angle, 0.0f);
+	m_cannonRotation = Quaternion::CreateFromYawPitchRoll(0.0f, angle, 0.0f);
 }
 
 //---------------------------------------------------------
@@ -187,7 +187,7 @@ void TankCannon::ShootBullet(IBullet* bullet)
 	// コライダー座標の更新
 	bullet->SetColliderPosition(this->GetMuzzlePosition());
 	// 「砲弾」角度を設定する
-	bullet->SetAngle(m_cannonAngle * m_currentAngle);
+	bullet->SetRotation(m_cannonRotation * m_currentRotation);
 	// 「砲弾」を発射する
 	bullet->SetBulletState(IBullet::FLYING);
 }
@@ -326,7 +326,7 @@ DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 	// 砲身の先端に対するオフセットベクトル
 	DirectX::SimpleMath::Vector3 muzzleOffset = DirectX::SimpleMath::Vector3(0.0f, 0.5f, -0.8f);
 	// Quaternion から Matrix を作成して Transform を適用
-	Matrix rotationMatrix = Matrix::CreateFromQuaternion(m_cannonAngle * m_currentAngle);
+	Matrix rotationMatrix = Matrix::CreateFromQuaternion(m_cannonRotation * m_currentRotation);
 	// 回転をオフセットに適用し、砲身の先端座標を計算
 	return Vector3::Transform(muzzleOffset, rotationMatrix) + m_currentPosition;
 }
@@ -342,7 +342,7 @@ void TankCannon::DisplaySight()
 	if (m_walls.empty()) { return; }
 
 	// 戦車の向いている方向
-	Quaternion rotation = m_cannonAngle * m_currentAngle;
+	Quaternion rotation = m_cannonRotation * m_currentRotation;
 	Matrix matrix = Matrix::CreateFromQuaternion(rotation);
 
 	//// 描画開始

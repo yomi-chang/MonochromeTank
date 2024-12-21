@@ -47,9 +47,9 @@ public:
 private:
 	Graphics* m_graphics;									// グラフィックス
 	DirectX::SimpleMath::Vector3 m_initialPosition;			// 初期座標
-	DirectX::SimpleMath::Quaternion m_initialAngle;			// 初期回転角
+	DirectX::SimpleMath::Quaternion m_initialRotation;		// 初期回転角
 	DirectX::SimpleMath::Vector3 m_currentPosition;			// 現在の座標
-	DirectX::SimpleMath::Quaternion m_currentAngle;			// 現在の回転角
+	DirectX::SimpleMath::Quaternion m_currentRotation;		// 現在の回転角
 	std::vector<std::unique_ptr<IParts>> m_tankParts;		// 自身が管理する戦車部品の配列
 	DirectX::SimpleMath::Matrix m_worldMatrix;				// ワールド行列
 
@@ -90,11 +90,11 @@ public:
 	// 戦車座標の取得
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_body->GetPosition(); }
 	// 戦車の角度の取得
-	DirectX::SimpleMath::Quaternion GetAngle() { return m_body->GetAngle(); }
+	DirectX::SimpleMath::Quaternion GetRotation() { return m_body->GetRotation(); }
 	// 砲塔角度の取得
-	DirectX::SimpleMath::Quaternion GetTurretAngle() { return m_turret->GetTurretAngle(); }
+	DirectX::SimpleMath::Quaternion GetTurretRotation() { return m_turret->GetTurretRotation(); }
 	// 砲身角度の取得
-	DirectX::SimpleMath::Quaternion GetCannonAngle() { return m_cannon->GetCannonAngle(); }
+	DirectX::SimpleMath::Quaternion GetCannonRotation() { return m_cannon->GetCannonRotation(); }
 	// コライダーの取得
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
 	// 戦車番号の取得

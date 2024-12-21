@@ -14,13 +14,13 @@ TankBody::TankBody(
 	:
 	m_graphics{ Graphics::GetInstance() },
 	m_initialPosition{ initialPosition },
-	m_initialAngle{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
+	m_initialRotation{ DirectX::SimpleMath::Quaternion::CreateFromAxisAngle(DirectX::SimpleMath::Vector3::Up, initialAngle) },
 	m_currentPosition{},
-	m_currentAngle{},
+	m_currentRotation{},
 	m_tankParts{},
 	m_worldMatrix{},
 	m_model{},
-	m_bodyAngle{},
+	m_bodyRotation{},
 	m_tank{},
 	m_gravityEnabled{}
 {
@@ -61,7 +61,7 @@ void TankBody::Initialize()
 void TankBody::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
-	const DirectX::SimpleMath::Quaternion& currentAngle
+	const DirectX::SimpleMath::Quaternion& currentRotation
 )
 {
 	// 重力をかける
@@ -71,12 +71,12 @@ void TankBody::Update(
 	m_gravityEnabled = true;
 
 	// 現在回転角の更新
-	m_currentAngle = currentAngle * m_initialAngle * m_bodyAngle;
+	m_currentRotation = currentRotation * m_initialRotation * m_bodyRotation;
 
 	// 部品の更新
 	for (auto& part : m_tankParts)
 	{
-		part->Update(elapsedTime, m_currentPosition, m_currentAngle);
+		part->Update(elapsedTime, m_currentPosition, m_currentRotation);
 	}
 }
 
@@ -89,7 +89,7 @@ void TankBody::Render()
 
 	// ワールド行列の生成
 	m_worldMatrix = Matrix::CreateScale(0.09f) *
-		Matrix::CreateFromQuaternion(m_currentAngle) *
+		Matrix::CreateFromQuaternion(m_currentRotation) *
 		Matrix::CreateTranslation(m_currentPosition);
 
 	// 「車体」の描画
@@ -139,8 +139,8 @@ void TankBody::Move(DirectX::SimpleMath::Vector3 velocity)
 //---------------------------------------------------------
 // 回転処理
 //---------------------------------------------------------
-void TankBody::Rotate(DirectX::SimpleMath::Quaternion angle)
+void TankBody::Rotate(DirectX::SimpleMath::Quaternion rotation)
 {
 	// 回転を加える
-	m_bodyAngle *= angle;
+	m_bodyRotation *= rotation;
 }

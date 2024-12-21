@@ -72,7 +72,7 @@ void EnemyTank::Update(float elapsedTime)
 
 	// 座標と回転角の更新
 	m_position = m_tank->GetPosition();
-	m_angle = m_tank->GetAngle();
+	m_angle = m_tank->GetRotation();
 	
 	// 索敵用コライダーの座標更新
 	m_collider->Update(m_position);
@@ -103,7 +103,7 @@ void EnemyTank::Update(float elapsedTime)
 		float angleRadians = atan2(delta.x, delta.z);
 
 		// 車体の回転を考慮して目標の角度を計算
-		float adjustedAngle = angleRadians - m_tank->GetAngle().ToEuler().y;
+		float adjustedAngle = angleRadians - m_tank->GetRotation().ToEuler().y;
 
 		// 砲塔の回転
 		m_tank->GetTurret()->RotateTurret(adjustedAngle);
@@ -119,8 +119,8 @@ void EnemyTank::Update(float elapsedTime)
 	Patrol(elapsedTime);
 
 	
-	//m_tank->GetCannon()->StartReload();
-	//m_tank->GetCannon()->Shoot();
+	m_tank->GetCannon()->StartReload();
+	m_tank->GetCannon()->Shoot();
 }
 
 void EnemyTank::Render()
@@ -189,10 +189,10 @@ void EnemyTank::Patrol(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	// ティーポットの進行方向ベクトル
-	Vector3 heading = Vector3::Transform(Vector3::Forward * TANK_SPEED * elapsedTime, m_tank->GetAngle());
+	// 進行方向ベクトル
+	Vector3 heading = Vector3::Transform(Vector3::Forward * TANK_SPEED * elapsedTime, m_tank->GetRotation());
 
-	// ティーポットからゴールへ向かうベクトル
+	// ゴールへ向かうベクトル
 	Vector3 toGoal = m_patrolPoint[m_currentPoint] - m_position;
 	Vector3 toTarget = toGoal;
 

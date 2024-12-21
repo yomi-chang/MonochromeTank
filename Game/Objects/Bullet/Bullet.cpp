@@ -13,7 +13,7 @@ Bullet::Bullet(IBullet::BulletState bulletState)
 	:
 	m_graphics{Graphics::GetInstance()},
 	m_position{},
-	m_angle{},
+	m_rotation{},
 	m_velocity{},
 	m_gravity(DirectX::SimpleMath::Vector3(0.0f, -9.8f, 0.0f)),
 	m_worldMatrix{},
@@ -63,7 +63,7 @@ void Bullet::Update(float time)
 	}
 
 	// 速度を計算する
-	m_velocity = Vector3::Transform(SPEED,m_angle);
+	m_velocity = Vector3::Transform(SPEED,m_rotation);
 
 	// 位置を計算する
 	m_position += m_velocity;
@@ -88,7 +88,7 @@ void Bullet::Render()
 	// モデル描画のためのワールド行列を計算する
 	//Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	m_worldMatrix = Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) *
-		Matrix::CreateFromQuaternion(m_angle) *
+		Matrix::CreateFromQuaternion(m_rotation) *
 		Matrix::CreateTranslation(m_position);
 
 	// 砲弾が未使用か使用済みの場合は描画しない

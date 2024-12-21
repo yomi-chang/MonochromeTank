@@ -14,7 +14,7 @@ public:
 	// Œ»İ‚ÌˆÊ’u‚ğİ’è‚·‚é
 	virtual void SetPosition(const DirectX::SimpleMath::Vector3& position) = 0;
 	// –C’e‰ñ“]Šp‚Ìİ’è
-	virtual void SetAngle(const DirectX::SimpleMath::Quaternion& angle) = 0;
+	virtual void SetRotation(const DirectX::SimpleMath::Quaternion& rotation) = 0;
 	// –C’e‚ª”­Ë‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
 	virtual BulletState GetBulletState() const = 0;
 	// –C’e‚Ìó‘Ô‚ğİ’è‚·‚é
