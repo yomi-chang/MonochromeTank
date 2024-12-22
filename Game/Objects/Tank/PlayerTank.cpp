@@ -162,21 +162,35 @@ void PlayerTank::Move(float elapsedTime)
 	// •Ï”éŒ¾
 	Vector3 velocity = Vector3::Zero;
 	float speed = elapsedTime * 3.0f;
+	float angle = 0.0f;
+
+	// ¶‰E‰ñ“]
+	if (keyboardState.A)
+		angle = DirectX::XMConvertToRadians(0.7f);
+	else if (keyboardState.D)
+		angle = DirectX::XMConvertToRadians(-0.7f);
 
 	// ‘OŒãˆÚ“®
 	if (keyboardState.W)
 		velocity += Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
 	else if (keyboardState.S)
+	{
 		velocity += Vector3::Transform(Vector3::Backward * speed, m_tank->GetRotation());
 
+		// Œã‘ÞŽž‚Ì‚Ý‰ñ“]‚ð”½“]
+		angle *= -1;
+	}
+
+	// “¯Žž‰Ÿ‚µ‚³‚ê‚Ä‚¢‚½‚ç’âŽ~
+	if (keyboardState.A && keyboardState.D)
+		angle = 0.0f;
+	if (keyboardState.W && keyboardState.S)
+		velocity = Vector3::Zero;
+		
 	// ˆÚ“®‚³‚¹‚é
 	m_tank->GetBody()->Move(velocity);
-
-	// ¶‰E‰ñ“]
-	if (keyboardState.A)
-		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(XMConvertToRadians(0.6f), 0.0f, 0.0f));
-	else if (keyboardState.D)
-		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(XMConvertToRadians(-0.6f), 0.0f, 0.0f));
+	// ‰ñ“]‚³‚¹‚é
+	m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(angle, 0.0f, 0.0f));
 }
 
 //---------------------------------------------------------

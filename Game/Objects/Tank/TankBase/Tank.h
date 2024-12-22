@@ -18,7 +18,7 @@ class Tank : public IParent
 {
 private:
 	// コライダーのサイズ
-	const DirectX::SimpleMath::Vector3 COLLIDER_SIZE = DirectX::SimpleMath::Vector3(1.2f, 0.7f, 1.2f);
+	const DirectX::SimpleMath::Vector3 COLLIDER_SIZE = DirectX::SimpleMath::Vector3(1.3f, 0.7f, 1.3f);
 	// コライダーを上にずらす
 	const float COLLIDER_POSITION = 0.5f;
 public:

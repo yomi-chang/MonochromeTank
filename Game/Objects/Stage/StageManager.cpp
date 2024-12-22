@@ -86,7 +86,7 @@ void StageManager::Render()
 	}
 	m_floor->Render();
 	m_wallGimmick->Render();
-	m_fixedTurret->Render();
+	//m_fixedTurret->Render();
 }
 
 // •Ç‚ğã‚°‚éˆ—

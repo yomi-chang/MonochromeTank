@@ -57,7 +57,7 @@ void EnemyTank::Initialize()
 
 	// 索敵用コライダーの作成
 	m_collider = std::make_unique<SphereCollider>();
-	m_collider->CreateBoundingSphere(m_position,1.5f);
+	m_collider->CreateBoundingSphere(m_position,3.0f);
 
 	//m_tank->GetCannon()->ChangeBullet();
 }
@@ -80,19 +80,22 @@ void EnemyTank::Update(float elapsedTime)
 	// ダメージの初期化
 	m_damage = 0.0f;
 	// 衝突判定
-	if(m_tank->DetectCollisionTankAndNomalBullets()) { m_damage += 0.5f; }
-	if (m_tank->DetectCollisionTankAndCannonBall()) { m_damage += 3.0f;}
+	if(m_tank->DetectCollisionTankAndNomalBullets()) 
+	{
+		m_damage += 0.5f;
+		m_isTracking = true;
+	}
+	if (m_tank->DetectCollisionTankAndCannonBall()) 
+	{
+		m_damage += 3.0f;
+		m_isTracking = true;
+	}
 	m_tank->DetectCollisionTankAndOtherTanks();
 	// ダメージ処理
 	m_hpGauge->Damage(m_damage);
 
 	// 追跡中の戦車
 	m_targetTank = m_tanks.at(0);
-	if (m_collider->CheckTriggerCollider(m_targetTank->GetBoundingBox()))
-	{
-		m_isTracking = true;
-		m_tank->GetTurret()->RotateTurret(0.0f);
-	}
 
 	// 追跡中かどうか
 	if (m_isTracking)
@@ -103,10 +106,30 @@ void EnemyTank::Update(float elapsedTime)
 		float angleRadians = atan2(delta.x, delta.z);
 
 		// 車体の回転を考慮して目標の角度を計算
-		float adjustedAngle = angleRadians - m_tank->GetRotation().ToEuler().y;
+		float targetAngle = angleRadians - m_tank->GetRotation().ToEuler().y;
+
+		// 砲塔回転の制限
+		targetAngle = mylib::Clamp(targetAngle, DirectX::XMConvertToRadians(-45.0f), DirectX::XMConvertToRadians(45.0f));
+
+		// 現在の砲塔の回転角度
+		float currentAngle = m_tank->GetTurret()->GetTurretRotation().ToEuler().y;
+
+		// 目標角度と現在の角度との差を求め、Lerp補間で回転
+		float angleDifference = targetAngle - currentAngle;
+
+		// ゆっくり回転するための速度制御
+		float rotationSpeed = 0.9f;
+		float t = rotationSpeed * elapsedTime;
+
+		// 補間後の回転角度
+		float newAngle = currentAngle + angleDifference * t;
 
 		// 砲塔の回転
-		m_tank->GetTurret()->RotateTurret(adjustedAngle);
+		m_tank->GetTurret()->RotateTurret(newAngle);
+
+		// 射撃処理
+		m_tank->GetCannon()->StartReload();
+		m_tank->GetCannon()->Shoot();
 	}
 	else
 	{
@@ -117,10 +140,6 @@ void EnemyTank::Update(float elapsedTime)
 	
 	// 巡回行動
 	Patrol(elapsedTime);
-
-	
-	m_tank->GetCannon()->StartReload();
-	m_tank->GetCannon()->Shoot();
 }
 
 void EnemyTank::Render()
@@ -134,7 +153,7 @@ void EnemyTank::Render()
 	// HPゲージ
 	m_hpGauge->Render(m_position);
 
-	auto view = Graphics::GetInstance()->GetViewMatrix();
+	/*auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
 	DirectX::SimpleMath::Matrix boxMatrix;
 	switch (m_currentPoint)
@@ -155,7 +174,7 @@ void EnemyTank::Render()
 			break;
 	}
 	
-	m_box->Draw(boxMatrix, view, proj, DirectX::Colors::Red);
+	m_box->Draw(boxMatrix, view, proj, DirectX::Colors::Red);*/
 }
 
 void EnemyTank::Finalize()
@@ -194,76 +213,74 @@ void EnemyTank::Patrol(float elapsedTime)
 
 	// ゴールへ向かうベクトル
 	Vector3 toGoal = m_patrolPoint[m_currentPoint] - m_position;
-	Vector3 toTarget = toGoal;
 
-	//// 視界に入るまでの最短距離
-	//float distance = 0.5f + 3.0f;
-	//// 球とティーポット間の距離の平方
-	//float distSqSphereToTeapot = (m_spherePosition - m_teapotPosition).LengthSquared();
+	// 自機からターゲットへ向かうベクトル
+	Vector3 toTarget = m_targetTank->GetPosition() - m_position;
 
-	//// 視界内のフラグをリセットする
-	//m_isInside = false;
 
-	//// 視界の範囲内か？
-	//if (distSqSphereToTeapot < distance * distance)
-	//{
-	//	m_isInside = true;
-	//}
-	//else
-	//{
-	//	// ターゲットが視界に入っていないときは、ゴールを目指す
-	//	toTarget = toGoal;
-	//}
+	// 視界に入るまでの最短距離
+	float distance = 8.0f;
+	// 追跡距離
+	float maxRange = 60.0f;
+	// 追跡対象の戦車と自機の距離の平方
+	float distSqTargetTankToTank = (m_targetTank->GetPosition() - m_position).LengthSquared();
 
-	// ティーポットとターゲットとの距離が近すぎなければ
-	/*if (toTarget.LengthSquared() > TEAPOT_SPEED * TEAPOT_SPEED)
-	{*/
-		// ティーポットを移動する
-		//m_position += (heading * TANK_SPEED * elapsedTime);
-		//m_tank->GetBody()->SetPosition(m_position);
 
-		m_tank->GetBody()->Move(heading);
-		//m_boundingSphere.Center = m_teapotPosition;
+	// 一定範囲内に入ったら追跡開始
+	if (distSqTargetTankToTank < distance)
+	{
+		// 追跡開始
+		m_isTracking = true;
+	}
 
-		/*
-			ティーポットがターゲットの方向へ徐々に回転する
-		*/
-		// 「ティーポットの進行方向ベクトル」と「ターゲットの方向」からcosθを計算する
-		float cosTheta = heading.Dot(toTarget) / (toTarget.Length() * heading.Length());
+	// 一定範囲外なら追跡終了
+	if (m_isTracking && distSqTargetTankToTank >= maxRange)
+	{
+		// 追跡終了
+		m_isTracking = false;
+	}
 
-		// acosの引数で指定できる範囲は「-1～1」なので、値を補正する
-		cosTheta = std::max(-1.0f, std::min(cosTheta, 1.0f));
+	// 追跡中でないなら巡回ルートを移動
+	if (!m_isTracking)
+	{
+		toTarget = toGoal;
+	}
 
-		// cosθからθを計算する
-		// acosの結果は「0～π」
-		float theta = std::acos(cosTheta);
+	// 移動処理
+	m_tank->GetBody()->Move(heading);
+	mylib::DebugLog("距離", distSqTargetTankToTank);
 
-		//１フレームでの回転角を制限値以内に補正する
-		theta = std::min(10.0f, theta);
+	/*
+		自機をターゲットの方向へ徐々に回転する
+	*/
+	// 「自機の進行方向ベクトル」と「ターゲットの方向」からcosθを計算する
+	float cosTheta = heading.Dot(toTarget) / (toTarget.Length() * heading.Length());
 
-		// 右側に行きたい場合は角度の符号を付け替える
-		// ZX平面上にあるベクトルの向きはYのプラスマイナスで判断する
-		if (heading.Cross(toTarget).y < 0.0f)
-		{
-			theta *= (-1.0f);
-		}
-		/*
-			■ティーポットとターゲットの位置関係
-			・heading.Cross(toTorus).y > 0.0f：ターゲットはティーポットの左側
-			・heading.Cross(toTorus).y < 0.0f：ターゲットはティーポットの右側
-			・heading.Cross(toTorus).y == 0.0f：ティーポットとターゲットは同一線上
-		*/
+	// acosの引数で指定できる範囲は「-1～1」なので、値を補正する
+	cosTheta = std::max(-1.0f, std::min(cosTheta, 1.0f));
 
-		// 角度を更新する
-		//m_teapotAngle += theta;
-		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(theta), 0.0f, 0.0f));
+	// cosθからθを計算する
+	// acosの結果は「0～π」
+	float theta = std::acos(cosTheta);
+
+	//１フレームでの回転角を制限値以内に補正する
+	theta = std::min(10.0f, theta);
+
+	// 右側に行きたい場合は角度の符号を付け替える
+	// ZX平面上にあるベクトルの向きはYのプラスマイナスで判断する
+	if (heading.Cross(toTarget).y < 0.0f)
+	{
+		theta *= (-1.0f);
+	}
+
+	// 角度を更新する
+	m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(theta), 0.0f, 0.0f));
 		
 
-		// ゴールに達したら、ゴール情報を更新する
-		if (/*m_isInside == false &&*/ toTarget.Length() < 1.0f)
-		{
-			m_currentPoint++;
-			m_currentPoint %= 4;
-		}
-	//}
+	// ゴールに達したら、ゴール情報を更新する
+	if (m_isTracking == false && toTarget.Length() < 1.0f)
+	{
+		m_currentPoint++;
+		m_currentPoint %= 4;
+	}
 }
