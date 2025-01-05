@@ -2,6 +2,8 @@
 #include "Interface/IObject.h"
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Game/Objects/Tank/TankBase/TankCannon.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
+#include "Game/UserInterface/HpGauge.h"
 
 class Tank;
 class HpGauge;
@@ -50,8 +52,11 @@ private:
 	std::unique_ptr<HpGauge> m_hpGauge;
 	// ダメージ
 	float m_damage;
+	// 倒されているかどうか
+	bool m_isDead;
 	// カメラ
 	mylib::FollowCamera* m_camera;
+
 
 private:
 	// キーボードイベント
@@ -76,6 +81,16 @@ public:
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 	// 戦車情報の取得
 	Tank* GetTank() { return m_tank.get(); }
+	// Tankの所有権を移動する（新しいメソッド）
+	std::unique_ptr<Tank> ReleaseTank() { return std::move(m_tank);}
 	// 他戦車情報受け渡し
 	void SetOtherTanks(std::vector<Tank*> tanks);
+	// 死亡しているかどうか
+	bool GetDead() 
+	{
+		if (m_hpGauge->GetDead()) { return true; }
+		else { return false; }
+	}
+	// 壁情報の削除
+	void DeleteWall() { m_tank->GetCannon()->DeleteWall(); }
 };

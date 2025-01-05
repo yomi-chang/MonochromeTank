@@ -15,10 +15,14 @@ public:
 
 	ID3D11ShaderResourceView* GetTargetTexture() { return m_targetTexture.Get(); }			// 照準テクスチャ
 	ID3D11ShaderResourceView* GetTargetLockTexture() { return m_targetLockTexture.Get(); }	// 照準ロックテクスチャ
-	ID3D11ShaderResourceView* GetCannonBallTexture() { return m_cannonBallTexture.Get(); }	// 砲弾テクスチャ
-	ID3D11ShaderResourceView* GetBulletTexture() { return m_bulletTexture.Get(); }			// 通常弾テクスチャ
 	ID3D11ShaderResourceView* GetShadowTexture() { return m_shadowTexture.Get(); }			// 丸影テクスチャ
 	ID3D11ShaderResourceView* GetFloorTexture() { return m_floorTexture.Get(); }			// 床テクスチャ
+
+	ID3D11ShaderResourceView* GetBoxTexture() { return m_boxTexture.Get(); }				// 塗りつぶし用テクスチャ
+	ID3D11ShaderResourceView* GetCannonBallTexture() { return m_cannonBallTexture.Get(); }	// 砲弾テクスチャ
+	ID3D11ShaderResourceView* GetBulletTexture() { return m_bulletTexture.Get(); }			// 通常弾テクスチャ
+	ID3D11ShaderResourceView* GetFrameTexture() { return m_frameTexture.Get(); }			// フレームテクスチャ
+	ID3D11ShaderResourceView* GetRelooadTexture() { return m_reloadTexture.Get(); }			// リロードテキストテクスチャ
 
 public:
 	Resources(Resources&&) = default;
@@ -45,10 +49,14 @@ private:
 
 		m_targetTexture{},
 		m_targetLockTexture{},
+		m_shadowTexture{},
+		m_floorTexture{},
+
+		m_boxTexture{},
 		m_bulletTexture{},
 		m_cannonBallTexture{},
-		m_shadowTexture{},
-		m_floorTexture{}
+		m_frameTexture{},
+		m_reloadTexture{}
 	{
 	}
 
@@ -81,12 +89,21 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_targetTexture;
 	// 照準ロックテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_targetLockTexture;
-	// 砲弾テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_bulletTexture;
-	// 通常弾テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_cannonBallTexture;
 	// 丸影テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_shadowTexture;
 	// 床テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_floorTexture;
+
+	// UIテクスチャ====================================================
+	// 塗りつぶし用テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_boxTexture;
+	// 砲弾テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_bulletTexture;
+	// 通常弾テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_cannonBallTexture;
+	// フレームテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_frameTexture;
+	// リロードテキストテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_reloadTexture;
+
 };

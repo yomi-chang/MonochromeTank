@@ -24,4 +24,8 @@ private:
 	void ChangeScene(IScene::SceneID sceneID);
 	void CreateScene(IScene::SceneID sceneID);
 	void DeleteScene();
+
+private:
+	// Ÿ—˜‚µ‚½íÔ‚Ìî•ñ
+	
 };

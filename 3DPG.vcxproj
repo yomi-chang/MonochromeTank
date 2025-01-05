@@ -187,6 +187,10 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Collider\BoxCollider.h" />
     <ClInclude Include="Game\Collider\SphereCollider.h" />
+    <ClInclude Include="Game\EnemyAi\Escape.h" />
+    <ClInclude Include="Game\EnemyAi\Patrol.h" />
+    <ClInclude Include="Game\EnemyAi\SelectAction.h" />
+    <ClInclude Include="Game\EnemyAi\Tracking.h" />
     <ClInclude Include="Game\Objects\Bullet\Bullet.h" />
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
     <ClInclude Include="Game\Objects\FixedTurret\FixedTurret.h" />
@@ -203,6 +207,7 @@
     <ClInclude Include="Game\Objects\Stage\StageManager.h" />
     <ClInclude Include="Game\Objects\Stage\Wall.h" />
     <ClInclude Include="Game\Other\CollisionManager.h" />
+    <ClInclude Include="Game\Other\ResultData.h" />
     <ClInclude Include="Game\Scene\IScene.h" />
     <ClInclude Include="Game\Scene\PlayScene.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
@@ -212,7 +217,7 @@
     <ClInclude Include="Game\UserInterface\DrawTexture.h" />
     <ClInclude Include="Game\UserInterface\EnemyHpGauge.h" />
     <ClInclude Include="Game\UserInterface\HpGauge.h" />
-    <ClInclude Include="Game\UserInterface\Magazine.h" />
+    <ClInclude Include="Game\UserInterface\MagazineUi.h" />
     <ClInclude Include="Game\UserInterface\UserInterface.h" />
     <ClInclude Include="Interface\IBullet.h" />
     <ClInclude Include="Interface\IObject.h" />
@@ -226,6 +231,7 @@
     <ClInclude Include="Libraries\MyLib\DebugLog.h" />
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
     <ClInclude Include="Libraries\MyLib\FollowCamera.h" />
+    <ClInclude Include="Libraries\MyLib\LockOnCamera.h" />
     <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
     <ClInclude Include="pch.h" />
@@ -239,6 +245,10 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Collider\BoxCollider.cpp" />
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
+    <ClCompile Include="Game\EnemyAi\Escape.cpp" />
+    <ClCompile Include="Game\EnemyAi\Patrol.cpp" />
+    <ClCompile Include="Game\EnemyAi\SelectAction.cpp" />
+    <ClCompile Include="Game\EnemyAi\Tracking.cpp" />
     <ClCompile Include="Game\Objects\Bullet\Bullet.cpp" />
     <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
     <ClCompile Include="Game\Objects\FixedTurret\FixedTurret.cpp" />
@@ -255,6 +265,7 @@
     <ClCompile Include="Game\Objects\Stage\StageManager.cpp" />
     <ClCompile Include="Game\Objects\Stage\Wall.cpp" />
     <ClCompile Include="Game\Other\CollisionManager.cpp" />
+    <ClCompile Include="Game\Other\ResultData.cpp" />
     <ClCompile Include="Game\Scene\PlayScene.cpp" />
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
     <ClCompile Include="Game\Scene\SceneManager.cpp" />
@@ -262,7 +273,7 @@
     <ClCompile Include="Game\UserInterface\DrawTexture.cpp" />
     <ClCompile Include="Game\UserInterface\EnemyHpGauge.cpp" />
     <ClCompile Include="Game\UserInterface\HpGauge.cpp" />
-    <ClCompile Include="Game\UserInterface\Magazine.cpp" />
+    <ClCompile Include="Game\UserInterface\MagazineUi.cpp" />
     <ClCompile Include="Game\UserInterface\UserInterface.cpp" />
     <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp" />
     <ClCompile Include="Libraries\Microsoft\RenderTexture.cpp" />
@@ -271,6 +282,7 @@
     <ClCompile Include="Libraries\MyLib\DebugLog.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
     <ClCompile Include="Libraries\MyLib\FollowCamera.cpp" />
+    <ClCompile Include="Libraries\MyLib\LockOnCamera.cpp" />
     <ClCompile Include="Libraries\MyLib\Math.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="pch.cpp">

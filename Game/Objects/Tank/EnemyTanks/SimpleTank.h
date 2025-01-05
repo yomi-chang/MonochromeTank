@@ -1,10 +1,16 @@
 #pragma once
 #include "Interface/IObject.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
+#include "Game/UserInterface/EnemyHpGauge.h"
 
 class Tank;
 class EnemyHpGauge;
 
 class SphereCollider;
+
+class SelectAction;
+class Patrol;
+class Tracking;
 
 class EnemyTank : IObject
 {
@@ -25,6 +31,7 @@ public:
 	void Update(float elapsedTime)override;
 
 	void Render()override;
+
 	void Finalize()override;
 
 private:
@@ -63,6 +70,12 @@ private:
 	// デバッグ用モデル
 	std::unique_ptr<DirectX::GeometricPrimitive> m_box;
 
+	// AI関係
+	std::unique_ptr<SelectAction> m_selectAction;	// 行動選択
+	std::unique_ptr<Patrol> m_patrol;				// 巡回行動
+	std::unique_ptr<Tracking> m_tracking;			// 追跡行動
+
+
 public:
 	// 座標の取得
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; }
@@ -74,10 +87,14 @@ public:
 	void SetPosition(DirectX::SimpleMath::Vector3 position);
 	// 戦車情報の取得
 	Tank* GetTank() { return m_tank.get(); }
+	// Tankの所有権を移動する（新しいメソッド）
+	std::unique_ptr<Tank> ReleaseTank() { return std::move(m_tank); }
 	// 他戦車情報の受け渡し
 	void SetOtherTanks(std::vector<Tank*> tanks);
+	// HPの取得
+	float GetHP() { return m_hpGauge->GetHp(); }
 
 private:
 	// 巡回
-	void Patrol(float elapsedTime);
+	//void Patrol(float elapsedTime);
 };

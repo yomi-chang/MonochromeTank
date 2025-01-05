@@ -5,7 +5,7 @@
 #pragma once
 #include "Game/Collider/SphereCollider.h"
 
-class PlayerTank;
+class Tank;
 
 namespace mylib
 {
@@ -32,7 +32,7 @@ namespace mylib
 		DirectX::SimpleMath::Quaternion m_followUpTargetQuaternion;
 
 		// 自機
-		PlayerTank* m_tank;
+		Tank* m_tank;
 
 		// コライダー
 		std::unique_ptr<SphereCollider> m_collider;
@@ -59,7 +59,7 @@ namespace mylib
 		FollowCamera();
 		~FollowCamera() = default;
 
-		void Initialize(PlayerTank* tank);
+		void Initialize(Tank* tank);
 
 		void Update(float elapsedTime);
 

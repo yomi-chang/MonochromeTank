@@ -19,14 +19,14 @@ public:
 public:
 	// 各種弾におけるリロード時間
 	const float BULLET_RELOAD_TIME = 1.0f;
-	const float CANNONBALL_RELOAD_TIME = 1.0f;
+	const float CANNONBALL_RELOAD_TIME = 2.0f;
 
 	// インターバル
 	const float SHOT_INTERVAL = 0.2f;
 	const float ENEMY_SHOT_INTERVAL = 1.0f;
 
 	// 照準の射程距離
-	const float MAX_RANGE = 5.0f;
+	const float MAX_RANGE = 4.0f;
 public:
 	// コンストラクタ
 	TankCannon(
@@ -110,6 +110,13 @@ public:
 
 	// 現在の弾情報を渡す
 	BulletType GetCurrentBullet() { return m_bulletType; }
+
+	// リロードがどれだけ完了しているかの割合を渡す
+	float GetCannonReloadRatio() { return 1.0f - (m_reloadCount / CANNONBALL_RELOAD_TIME); }
+	float GetBulletReloadRatio() { return 1.0f - (m_reloadCount / BULLET_RELOAD_TIME); }
+
+	// 壁の情報を初期化する
+	void DeleteWall();
 
 private:
 	// 照準の表示

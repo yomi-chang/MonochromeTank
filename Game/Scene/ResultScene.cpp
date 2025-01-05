@@ -8,6 +8,10 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include "Framework/InputManager.h"
+#include "Game/Other/ResultData.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
+#include "Libraries/MyLib/LockOnCamera.h"
+#include "Game/Objects/Stage/Floor.h"
 #include <cassert>
 
 using namespace DirectX;
@@ -23,7 +27,10 @@ ResultScene::ResultScene()
 	m_spriteFont{},
 	m_texture{},
 	m_texCenter{},
-	m_isChangeScene{}
+	m_isChangeScene{},
+	m_tank{},
+	m_camera{},
+	m_floor{}
 {
 }
 
@@ -41,18 +48,9 @@ ResultScene::~ResultScene()
 void ResultScene::Initialize()
 {
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
-	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	
+
 	// スプライトバッチを作成する
-	//m_spriteBatch = std::make_unique<DirectX::SpriteBatch>(context);
 	m_spriteBatch = m_graphics->GetSpriteBatch();
-
-	// スプライトフォントを作成する
-	/*m_spriteFont = std::make_unique<DirectX::SpriteFont>(
-		device,
-		L"Resources/Fonts/SegoeUI_18.spritefont"
-	);*/
-
 	m_spriteFont = m_graphics->GetFont();
 
 	// 画像をロードする
@@ -92,9 +90,20 @@ void ResultScene::Initialize()
 	// テクスチャの中心位置を計算する
 	m_texCenter = texSize / 2.0f;
 
-
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
+
+	// 勝利した戦車情報を受け取る
+	m_tank = ResultData::GetInstance()->GetWinnerTank();
+
+	// TPSカメラの生成
+	m_camera = std::make_unique<mylib::LockOnCamera>();
+	m_camera->Initialize();
+	m_camera->SetTargetPosition(m_tank->GetPosition());
+
+	// 床の生成
+	m_floor = std::make_unique<Floor>(50);
+	m_floor->SetTexture(Resources::GetInstance()->GetFloorTexture());
 }
 
 //---------------------------------------------------------
@@ -113,6 +122,13 @@ void ResultScene::Update(float elapsedTime)
 	{
 		m_isChangeScene = true;
 	}
+
+	float angle = DirectX::XMConvertToRadians(0.7f);
+	m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(angle, 0.0f, 0.0f));
+	m_tank->Update(elapsedTime);
+
+	// フォローカメラを更新する
+	m_camera->Update(elapsedTime);
 }
 
 //---------------------------------------------------------
@@ -121,6 +137,14 @@ void ResultScene::Update(float elapsedTime)
 void ResultScene::Render()
 {
 	auto states = m_graphics->GetCommonStates();
+
+	// ビュー行列の取得
+	auto view = Matrix::CreateLookAt(
+		m_camera->GetEyePosition(),
+		m_camera->GetTargetPosition(),
+		Vector3::UnitY
+	);
+	Graphics::GetInstance()->SetViewMatrix(view);
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
@@ -153,6 +177,10 @@ void ResultScene::Render()
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
+
+	m_floor->Render();
+
+	m_tank->Render();
 }
 
 //---------------------------------------------------------

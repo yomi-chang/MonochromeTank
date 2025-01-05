@@ -12,7 +12,7 @@ class EnemyTank;
 class StageManager;
 class CollisionManager;
 
-class Magazine;
+class MagazineUi;
 
 namespace mylib
 {
@@ -51,7 +51,7 @@ private:
 	std::unique_ptr<CollisionManager> m_collisonManager;	// コリジョンマネージャー
 
 	// 残弾数UI
-	std::unique_ptr<Magazine> m_magazine;
+	std::unique_ptr<MagazineUi> m_magazine;
 
 
 public:

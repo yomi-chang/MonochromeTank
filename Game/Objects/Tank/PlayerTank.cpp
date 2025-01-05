@@ -26,7 +26,9 @@ PlayerTank::PlayerTank(
 	m_angle{},
 	m_tank{},
 	m_hpGauge{},
-	m_damage{}
+	m_damage{},
+	m_isDead{},
+	m_camera{}
 {
 }
 
@@ -83,6 +85,10 @@ void PlayerTank::Update(float elapsedTime)
 
 	// ƒ_ƒ[ƒWˆ—
 	m_hpGauge->Damage(m_damage);
+
+	// ‘Ì—Í‚ª0‚É‚È‚Á‚½ê‡‚Ìˆ—
+	if (m_hpGauge->GetDead())
+		m_isDead = true;
 }
 
 //---------------------------------------------------------
@@ -174,12 +180,7 @@ void PlayerTank::Move(float elapsedTime)
 	if (keyboardState.W)
 		velocity += Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
 	else if (keyboardState.S)
-	{
 		velocity += Vector3::Transform(Vector3::Backward * speed, m_tank->GetRotation());
-
-		// Œã‘ÞŽž‚Ì‚Ý‰ñ“]‚ð”½“]
-		angle *= -1;
-	}
 
 	// “¯Žž‰Ÿ‚µ‚³‚ê‚Ä‚¢‚½‚ç’âŽ~
 	if (keyboardState.A && keyboardState.D)
@@ -245,3 +246,4 @@ void PlayerTank::SetOtherTanks(std::vector<Tank*> tanks)
 {
 	m_tank->SetOtherTanks(tanks);
 }
+

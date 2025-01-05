@@ -71,7 +71,7 @@ void TankCannon::Initialize()
 	//	m_bullets[index]->Initialize();
 	//}
 	/// 連射弾の生成
-	for (int i = 0; i <= 20; i++)
+	for (int i = 0; i < 20; i++)
 	{
 		m_bullets.push_back(std::make_unique<Bullet>(IBullet::UNUSED));
 		m_bullets[i]->Initialize();
@@ -235,6 +235,8 @@ void TankCannon::Shoot()
 //---------------------------------------------------------
 void TankCannon::ChangeBullet()
 {
+	// リロード開始
+	if (m_isReload) { return; }
 	m_bulletType = (m_bulletType == BulletType::CANNONBALL) ? BulletType::BULLET : BulletType::CANNONBALL;
 }
 
@@ -245,8 +247,7 @@ void TankCannon::ChangeBullet()
 void TankCannon::StartReload()
 {
 	// リロード開始
-	if (m_isReload)
-		return;
+	if (m_isReload) { return; }
 
 	// どの弾をリロードするか
 	switch (m_bulletType)
@@ -288,8 +289,7 @@ void TankCannon::StartReload()
 void TankCannon::Reload(float elapsedTime)
 {
 	// リロード中でないなら早期リターン
-	if (!m_isReload)
-		return;
+	if (!m_isReload) { return; }
 
 	// カウントダウン
 	m_reloadCount -= elapsedTime;
@@ -297,6 +297,7 @@ void TankCannon::Reload(float elapsedTime)
 	// リロード完了
 	if (m_reloadCount <= 0.0f)
 	{
+		m_reloadCount = 0.0f;
 		switch (m_reloadBulletType)
 		{
 			case BulletType::BULLET:
@@ -378,7 +379,7 @@ void TankCannon::DisplaySight()
 			minDistance = std::min(minDistance, rayDistance);
 		}
 	}
-
+	
 	// 衝突座標
 	Vector3 hitPosition = Vector3::Zero;
 	// 一回でも壁との衝突が取れていたら
@@ -393,10 +394,28 @@ void TankCannon::DisplaySight()
 	{
 		// 照準画像の表示場所計算
 		hitPosition = Vector3{ ray.position + ray.direction * range - ray.direction };
+
 		// 黒い照準を出す
 		m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
+
+		// 床に埋まらないようにする
+		if (hitPosition.y <= 0.0f)
+		{
+			hitPosition.y = 0.0f;
+			// 赤い照準を出す
+			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
+		}
+		
 	}
 
 	// 照準画像の表示
 	m_drawTexture->Render(hitPosition);
+}
+
+//---------------------------------------------------------
+// 壁情報の削除
+//---------------------------------------------------------
+void TankCannon::DeleteWall()
+{
+	m_walls.clear();
 }

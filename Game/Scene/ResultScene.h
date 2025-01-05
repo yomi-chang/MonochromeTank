@@ -8,10 +8,11 @@
 
 namespace mylib
 {
-	class DebugCamera;
-	class GridFloor;
+	class LockOnCamera;
 }
 
+class Tank;
+class Floor;
 
 class ResultScene final :
     public IScene
@@ -20,13 +21,7 @@ private:
 	// グラフィックス
 	Graphics* m_graphics;
 
-	// スプライトバッチ
-	//std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
-
 	DirectX::SpriteBatch* m_spriteBatch;
-
-	// スプライトフォント
-	//std::unique_ptr<DirectX::SpriteFont> m_spriteFont;
 
 	DirectX::SpriteFont* m_spriteFont;
 
@@ -38,6 +33,15 @@ private:
 
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
+
+	// 勝利した戦車
+	Tank* m_tank;
+
+	// カメラ
+	std::unique_ptr<mylib::LockOnCamera> m_camera;
+
+	// 床
+	std::unique_ptr<Floor> m_floor;
 
 
 public:

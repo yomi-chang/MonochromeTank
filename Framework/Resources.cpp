@@ -56,6 +56,32 @@ void Resources::LoadResource()
 		m_targetLockTexture.GetAddressOf()
 	);
 
+	// 丸影テクスチャのロード
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\Shadow.png",
+		nullptr,
+		m_shadowTexture.GetAddressOf()
+	);
+
+	// 床のロード
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\floorTexture.png",
+		nullptr,
+		m_floorTexture.GetAddressOf()
+	);
+
+
+
+	//	塗りつぶし用テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\box_1x1.png",
+		nullptr,
+		m_boxTexture.GetAddressOf()
+	);
+
 	//	砲弾テクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
@@ -72,19 +98,19 @@ void Resources::LoadResource()
 		m_bulletTexture.GetAddressOf()
 	);
 
-	// 丸影テクスチャのロード
+	//	フレームテクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
-		L"Resources\\Textures\\Shadow.png",
+		L"Resources\\Textures\\Frame.png",
 		nullptr,
-		m_shadowTexture.GetAddressOf()
+		m_frameTexture.GetAddressOf()
 	);
 
-	// 床のロード
+	//	リロードテキストテクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
-		L"Resources\\Textures\\floorTexture.png",
+		L"Resources\\Textures\\ReloadText.png",
 		nullptr,
-		m_floorTexture.GetAddressOf()
+		m_reloadTexture.GetAddressOf()
 	);
 }

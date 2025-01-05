@@ -31,7 +31,7 @@ mylib::FollowCamera::FollowCamera()
 // 初期化する
 //-------------------------------------------------------------------
 
-void mylib::FollowCamera::Initialize(PlayerTank* tank)
+void mylib::FollowCamera::Initialize(Tank* tank)
 {
 	// 自機情報の受け取り
 	m_tank = tank;
@@ -54,10 +54,10 @@ void mylib::FollowCamera::Update(float elapsedTime)
 
 	// 戦車の座標の角度の情報を受け取る
 	m_followUpTargetPosition = m_tank->GetPosition();
-	m_followUpTargetQuaternion = m_tank->GetAngle();
+	m_followUpTargetQuaternion = m_tank->GetRotation();
 
 	// 戦車が手前に来るように座標を調整
-	m_followUpTargetPosition += Vector3::Transform(Vector3::Forward * 2.0f, m_followUpTargetQuaternion);
+	m_followUpTargetPosition += Vector3::Transform(Vector3::Forward * 2.5f, m_followUpTargetQuaternion);
 
 	// 基準になる「eye」を計算する
 	DirectX::SimpleMath::Vector3 eye{ 0.0f, HEIGHT, DISTANCE };
@@ -77,7 +77,10 @@ void mylib::FollowCamera::Update(float elapsedTime)
 	this->ShakeCamera(elapsedTime);
 }
 
+
+//-------------------------------------------------------------------
 // カメラを揺らす処理
+//-------------------------------------------------------------------
 void mylib::FollowCamera::ShakeCamera(float elapsedTime)
 {
 	// カメラ振動がセットされていないなら早期リターン
@@ -93,7 +96,9 @@ void mylib::FollowCamera::ShakeCamera(float elapsedTime)
 	}
 }
 
+//-------------------------------------------------------------------
 // 振動開始
+//-------------------------------------------------------------------
 void mylib::FollowCamera::StartShakeCamera(
 	float speed,
 	float width,

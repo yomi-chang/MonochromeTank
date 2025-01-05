@@ -102,7 +102,7 @@
     <ClInclude Include="Game\Objects\Stage\StageManager.h" />
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Game\UserInterface\UserInterface.h" />
-    <ClInclude Include="Game\UserInterface\Magazine.h" />
+    <ClInclude Include="Game\UserInterface\MagazineUi.h" />
     <ClInclude Include="Libraries\Microsoft\ReadData.h" />
     <ClInclude Include="Libraries\Microsoft\RenderTexture.h" />
     <ClInclude Include="Game\Objects\Stage\Floor.h" />
@@ -112,6 +112,12 @@
     <ClInclude Include="Game\Objects\Stage\Gimmick\WallGimmick.h" />
     <ClInclude Include="Game\Objects\FixedTurret\FixedTurret.h" />
     <ClInclude Include="Game\Other\CollisionManager.h" />
+    <ClInclude Include="Game\Other\ResultData.h" />
+    <ClInclude Include="Libraries\MyLib\LockOnCamera.h" />
+    <ClInclude Include="Game\EnemyAi\Patrol.h" />
+    <ClInclude Include="Game\EnemyAi\Tracking.h" />
+    <ClInclude Include="Game\EnemyAi\Escape.h" />
+    <ClInclude Include="Game\EnemyAi\SelectAction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -163,13 +169,19 @@
     <ClCompile Include="Game\Objects\Stage\StageManager.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Game\UserInterface\UserInterface.cpp" />
-    <ClCompile Include="Game\UserInterface\Magazine.cpp" />
+    <ClCompile Include="Game\UserInterface\MagazineUi.cpp" />
     <ClCompile Include="Libraries\Microsoft\RenderTexture.cpp" />
     <ClCompile Include="Game\Objects\Stage\Floor.cpp" />
     <ClCompile Include="Game\Objects\Stage\Item\StageItem.cpp" />
     <ClCompile Include="Game\Objects\Stage\Gimmick\WallGimmick.cpp" />
     <ClCompile Include="Game\Objects\FixedTurret\FixedTurret.cpp" />
     <ClCompile Include="Game\Other\CollisionManager.cpp" />
+    <ClCompile Include="Game\Other\ResultData.cpp" />
+    <ClCompile Include="Libraries\MyLib\LockOnCamera.cpp" />
+    <ClCompile Include="Game\EnemyAi\Patrol.cpp" />
+    <ClCompile Include="Game\EnemyAi\Tracking.cpp" />
+    <ClCompile Include="Game\EnemyAi\Escape.cpp" />
+    <ClCompile Include="Game\EnemyAi\SelectAction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

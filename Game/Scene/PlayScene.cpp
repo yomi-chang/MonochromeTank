@@ -21,10 +21,11 @@
 #include "Game/Objects/Tank/PlayerTank.h"
 #include "Game/Objects/Tank/EnemyTanks/SimpleTank.h"
 
-#include "Game/UserInterface/Magazine.h"
+#include "Game/UserInterface/MagazineUi.h"
 
 #include "Game/Objects/Stage/StageManager.h"
 #include "Game/Other/CollisionManager.h"
+#include "Game/Other/ResultData.h"
 
 #include <cassert>
 
@@ -101,15 +102,16 @@ void PlayScene::Initialize()
 
 	// TPSカメラの生成
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
-	m_tpsCamera->Initialize(m_player.get());
+	m_tpsCamera->Initialize(m_player->GetTank());
 
 	// ステージマネージャーの生成
 	m_stageManager = std::make_unique<StageManager>();
 	m_stageManager->Initialize();
 
 	// UI関係
-	m_magazine = std::make_unique<Magazine>();
+	m_magazine = std::make_unique<MagazineUi>();
 	m_magazine->Initialize();
+	m_magazine->SetPlayer(m_player.get());
 
 	// コリジョンマネージャー
 	m_collisonManager = std::make_unique<CollisionManager>();
@@ -181,13 +183,44 @@ void PlayScene::Update(float elapsedTime)
 	}
 
 	// 敵を全て倒していたらリザルトシーンへ ToDo:現在1体倒したら終わるので修正する
-	for (auto& enemy : m_enemies)
+	/*for (auto& enemy : m_enemies)
 	{
 		if (enemy->GetDead())
 		{
 			m_isChangeScene = true;
 		}
+	}*/
+
+	// 生存している戦車の確認
+	int surviveTank = 0;
+	if (m_player->GetDead())
+		surviveTank++;
+	for (auto& enemy : m_enemies)
+	{
+		if (enemy->GetDead())
+			surviveTank++;
 	}
+
+	// 生存している戦車が1両だけならゲーム終了
+	if (surviveTank == 1)
+	{
+		// 生存している戦車情報をRetultDataに所有権ごと渡す
+		if (!m_player->GetDead())
+		{
+			// 砲身が持っている壁情報の削除
+			m_player->DeleteWall();
+			ResultData::GetInstance()->SetWinnerTank(m_player->ReleaseTank());
+		}
+		for (auto& enemy : m_enemies)
+		{
+			if(!enemy->GetDead())
+				ResultData::GetInstance()->SetWinnerTank(enemy->ReleaseTank());
+		}
+
+		// リザルトシーンへ
+		m_isChangeScene = true;
+	}
+
 }
 
 //---------------------------------------------------------
@@ -228,20 +261,6 @@ void PlayScene::Render()
 
 	// UI関係
 	m_magazine->Render();
-
-	SpriteBatch* spriteBatch = m_graphics->GetSpriteBatch();
-	ID3D11ShaderResourceView* texture = Resources::GetInstance()->GetCannonBallTexture();
-	RECT rect = { 1100,600,1200,650 };
-	spriteBatch->Begin();
-	if (m_player->GetTankCannon()->GetCannonBall()->GetBulletState() == IBullet::UNUSED)
-	{
-		spriteBatch->Draw(texture, rect);
-	}
-	else
-	{
-		spriteBatch->Draw(texture, rect, DirectX::Colors::Gray);
-	}
-	spriteBatch->End();
 
 	// デバッグ情報を「DebugString」で表示する
 #ifdef _DEBUG
