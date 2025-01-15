@@ -24,6 +24,10 @@ namespace mylib
 		// 追跡対象のクォータニオン
 		DirectX::SimpleMath::Quaternion m_followUpTargetQuaternion;
 
+		// 対象からの距離
+		float m_distance;
+		float m_height;
+
 	public:
 		LockOnCamera();
 		~LockOnCamera() = default;
@@ -39,5 +43,7 @@ namespace mylib
 		// setter
 		void SetEyePosition(const DirectX::SimpleMath::Vector3& position) { m_eye = position; }
 		void SetTargetPosition(const DirectX::SimpleMath::Vector3& position) { m_targetPosition = position; }
+		void SetDistance(const float distance) { m_distance = distance; }
+		void SetHeight(const float height) { m_height = height; }
 	};
 }

@@ -73,6 +73,7 @@ private:
 	bool m_isReload;									// リロードしているか
 	BulletType m_reloadBulletType;						// リロードしている弾の種類
 	float m_shotTimer;									// 砲弾発射タイマー
+	float m_bulletBlurRadius;							// 弾のブレの半径
 	
 	std::unique_ptr<DrawTexture> m_drawTexture;			// 画像の描画
 	std::vector<Wall*> m_walls;							// 壁
@@ -127,6 +128,9 @@ private:
 
 	// リロード処理
 	void Reload(float elapsedTime);
+
+	// ずらした射撃方向を取得する
+	DirectX::SimpleMath::Quaternion GetShotRotation();
 
 private:
 	// デバッグ用モデル

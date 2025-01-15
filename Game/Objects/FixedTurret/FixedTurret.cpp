@@ -30,13 +30,16 @@ void FixedTurret::Initialize()
 	m_model = Resources::GetInstance()->GetFixedTurretModel();
 
 	// 連射弾の生成
-	for (int i = 0; i <= 20; i++)
+	for (int i = 0; i <= 100; i++)
 	{
 		m_bullets.push_back(std::make_unique<Bullet>(IBullet::UNUSED));
 		m_bullets[i]->Initialize();
 	}
 
-	m_position = Vector3{ -10.0f,2.0f,-10.0f };
+	m_position = Vector3{ 0.0f,2.0f,-5.0f };
+	m_angle = Quaternion::CreateFromYawPitchRoll(
+		DirectX::XMConvertToRadians(180),
+		DirectX::XMConvertToRadians(-20), 0);
 
 	// デバッグ用モデルの描画
 	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
@@ -69,6 +72,8 @@ void FixedTurret::Update(float elapsedTime)
 
 	// 発射処理
 	Shot();
+	//Reload(elapsedTime);
+	//StartReload();
 
 	// タイマーを減らす
 	if (m_shotTimer > 0.0f)
@@ -94,10 +99,10 @@ void FixedTurret::Render()
 	Graphics::GetInstance()->DrawModel(m_model, world);
 
 	// デバッグ用のモデルの描画(消しておく)
-	auto view = Graphics::GetInstance()->GetViewMatrix();
+	/*auto view = Graphics::GetInstance()->GetViewMatrix();
 	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
 	Matrix boxMatrix = Matrix::CreateTranslation(this->GetMuzzlePosition());
-	m_box->Draw(boxMatrix, view, proj, DirectX::Colors::Red);
+	m_box->Draw(boxMatrix, view, proj, DirectX::Colors::Red);*/
 }
 
 // 弾の発射
@@ -151,8 +156,6 @@ void FixedTurret::Shot()
 // リロード処理
 void FixedTurret::Reload(float elapsedTime)
 {
-
-
 	// カウントダウン
 	m_reloadCount -= elapsedTime;
 
@@ -163,6 +166,24 @@ void FixedTurret::Reload(float elapsedTime)
 		{
 			bullet->SetBulletState(IBullet::UNUSED);
 		}
-		m_reloadCount = RELOAD_TIME;
 	}
 }
+
+// リロード開始
+void FixedTurret::StartReload()
+{
+	// リロード開始
+	if (m_isReload) { return; }
+
+	for (auto& bullet : m_bullets)
+	{
+		// 弾が1発でも使用されていたらリロード可能
+		if (bullet->GetBulletState() == IBullet::USED)
+		{
+			m_reloadCount = RELOAD_TIME;
+			m_isReload = true;
+			return;
+		}
+	}
+}
+

@@ -36,7 +36,7 @@ SceneManager::~SceneManager()
 void SceneManager::Initialize()
 {
 	// Å‰‚ÌƒV[ƒ“‚ğİ’è‚·‚é
-	ChangeScene(IScene::SceneID::PLAY);
+	ChangeScene(IScene::SceneID::TITLE);
 }
 
 //---------------------------------------------------------

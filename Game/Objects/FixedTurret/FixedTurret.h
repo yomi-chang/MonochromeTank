@@ -51,6 +51,8 @@ private:
 	// リロード処理
 	void Reload(float elapsedTime);
 
+	void StartReload();
+
 private:
 	// デバッグ用モデル
 	std::unique_ptr<DirectX::GeometricPrimitive> m_box;

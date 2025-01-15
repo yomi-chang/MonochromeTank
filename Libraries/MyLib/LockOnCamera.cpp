@@ -9,7 +9,9 @@ mylib::LockOnCamera::LockOnCamera()
 	m_eye{},
 	m_target{},
 	m_targetPosition{},
-	m_followUpTargetQuaternion{}
+	m_followUpTargetQuaternion{},
+	m_distance{},
+	m_height{}
 {
 }
 
@@ -22,6 +24,9 @@ void mylib::LockOnCamera::Initialize()
 
 	// ビュー行列の作成のために一度Updateを呼ぶ
 	this->Update(0.0f);
+
+	m_distance = DISTANCE;
+	m_height = HEIGHT;
 }
 
 //-------------------------------------------------------------------
@@ -36,7 +41,7 @@ void mylib::LockOnCamera::Update(float elapsedTime)
 	//m_followUpTargetQuaternion = m_tank->GetRotation();
 
 	// 基準になる「eye」を計算する
-	DirectX::SimpleMath::Vector3 eye{ 0.0f, HEIGHT, DISTANCE };
+	DirectX::SimpleMath::Vector3 eye{ 0.0f, m_height, m_distance };
 
 	// 基準になる「target」を計算する
 	DirectX::SimpleMath::Vector3 target = m_targetPosition;

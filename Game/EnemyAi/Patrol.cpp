@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Game/EnemyAi/Patrol.h"
-#include "Game/Objects/Tank/EnemyTanks/SimpleTank.h"
+#include "Game/Objects/Tank/EnemyTanks/EnemyTank.h"
 
 //-------------------------------------------------------------------
 // コンストラクタ
@@ -43,6 +43,8 @@ void Patrol::Update(float elapsedTime)
 	// 探している挙動
 	m_time += elapsedTime;
 	m_tank->GetTurret()->RotateTurret(sinf(m_time) / 2.0f);
+
+
 
 	// 進行方向ベクトル
 	Vector3 heading = Vector3::Transform(Vector3::Forward * TANK_SPEED * elapsedTime, m_tank->GetRotation());

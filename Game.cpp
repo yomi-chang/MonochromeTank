@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "Game/Screen.h"
 #include "Game/Scene/SceneManager.h"
+#include "Framework/Resources.h"
 
 extern void ExitGame() noexcept;
 
@@ -85,6 +86,9 @@ void Game::Initialize(HWND window, int width, int height)
 
     // デバッグストリングの設定
     m_graphics->SetDebugString(m_debugString.get());
+
+    // モデル、テクスチャの読み込み
+    Resources::GetInstance()->LoadResource();
 
     // シーンマネージャを初期化する
     m_sceneManager = std::make_unique<SceneManager>();

@@ -98,7 +98,7 @@
     <ClInclude Include="Game\Objects\Tank\TankBase\TankCannon.h" />
     <ClInclude Include="Game\Objects\Tank\TankBase\TankTurret.h" />
     <ClInclude Include="Game\Objects\Tank\PlayerTank.h" />
-    <ClInclude Include="Game\Objects\Tank\EnemyTanks\SimpleTank.h" />
+    <ClInclude Include="Game\Objects\Tank\EnemyTanks\EnemyTank.h" />
     <ClInclude Include="Game\Objects\Stage\StageManager.h" />
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Game\UserInterface\UserInterface.h" />
@@ -118,6 +118,8 @@
     <ClInclude Include="Game\EnemyAi\Tracking.h" />
     <ClInclude Include="Game\EnemyAi\Escape.h" />
     <ClInclude Include="Game\EnemyAi\SelectAction.h" />
+    <ClInclude Include="Game\Objects\Bullet\BulletTrail.h" />
+    <ClInclude Include="Game\Particle\Smoke.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -165,7 +167,7 @@
     <ClCompile Include="Game\Objects\Tank\TankBase\TankCannon.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankBase\TankTurret.cpp" />
     <ClCompile Include="Game\Objects\Tank\PlayerTank.cpp" />
-    <ClCompile Include="Game\Objects\Tank\EnemyTanks\SimpleTank.cpp" />
+    <ClCompile Include="Game\Objects\Tank\EnemyTanks\EnemyTank.cpp" />
     <ClCompile Include="Game\Objects\Stage\StageManager.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Game\UserInterface\UserInterface.cpp" />
@@ -182,6 +184,8 @@
     <ClCompile Include="Game\EnemyAi\Tracking.cpp" />
     <ClCompile Include="Game\EnemyAi\Escape.cpp" />
     <ClCompile Include="Game\EnemyAi\SelectAction.cpp" />
+    <ClCompile Include="Game\Objects\Bullet\BulletTrail.cpp" />
+    <ClCompile Include="Game\Particle\Smoke.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -200,10 +204,13 @@
     <None Include="packages.config" />
     <None Include="ClassDiagram.cd" />
     <None Include="Game\Shader\Ui.hlsli" />
+    <None Include="Game\Shader\Trail\BulletTrail.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Game\Shader\UiPS.hlsl" />
     <FxCompile Include="Game\Shader\UiVS.hlsl" />
     <FxCompile Include="Game\Shader\UiGS.hlsl" />
+    <FxCompile Include="Game\Shader\Trail\BulletTrailPS.hlsl" />
+    <FxCompile Include="Game\Shader\Trail\BulletTrailVS.hlsl" />
   </ItemGroup>
 </Project>

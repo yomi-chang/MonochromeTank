@@ -9,6 +9,7 @@
 #include "Game/Objects/Bullet/CannonBall.h"
 
 #include "Libraries/MyLib/DebugLog.h"
+#include "Libraries/MyLib/Math.h"
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -34,6 +35,7 @@ TankCannon::TankCannon(
 	m_reloadCount{},
 	m_isReload{},
 	m_reloadBulletType{},
+	m_bulletBlurRadius{},
 	m_drawTexture{},
 	m_tank{},
 	m_walls{}
@@ -93,6 +95,9 @@ void TankCannon::Initialize()
 	// デバッグ用モデルの描画
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	m_box = DirectX::GeometricPrimitive::CreateBox(context, DirectX::SimpleMath::Vector3(0.1f,0.1f,0.1f));
+
+	// 弾のブレの半径(仮)
+	m_bulletBlurRadius = 1.5f;
 }
 
 //---------------------------------------------------------
@@ -187,7 +192,7 @@ void TankCannon::ShootBullet(IBullet* bullet)
 	// コライダー座標の更新
 	bullet->SetColliderPosition(this->GetMuzzlePosition());
 	// 「砲弾」角度を設定する
-	bullet->SetRotation(m_cannonRotation * m_currentRotation);
+	bullet->SetRotation(GetShotRotation());
 	// 「砲弾」を発射する
 	bullet->SetBulletState(IBullet::FLYING);
 }
@@ -315,6 +320,26 @@ void TankCannon::Reload(float elapsedTime)
 
 		m_isReload = false;
 	}
+}
+
+//---------------------------------------------------------
+// ずらした射撃方向を取得する
+//---------------------------------------------------------
+DirectX::SimpleMath::Quaternion TankCannon::GetShotRotation()
+{
+	using namespace DirectX::SimpleMath;
+	using namespace DirectX;
+
+	Quaternion shotRotation = m_cannonRotation * m_currentRotation;
+
+	// 角度をランダムな値を利用してずらす
+	shotRotation *= Quaternion::CreateFromYawPitchRoll(
+		mylib::Random(XMConvertToRadians(-m_bulletBlurRadius), XMConvertToRadians(m_bulletBlurRadius)),
+		mylib::Random(XMConvertToRadians(-m_bulletBlurRadius), XMConvertToRadians(m_bulletBlurRadius)),
+		0.0f
+	);
+
+	return shotRotation;
 }
 
 //---------------------------------------------------------

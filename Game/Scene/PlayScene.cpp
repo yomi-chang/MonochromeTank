@@ -19,7 +19,7 @@
 #include "Game/Objects/Stage/StageObject/SkySphere.h"
 #include "Game/Objects/Stage/Wall.h"
 #include "Game/Objects/Tank/PlayerTank.h"
-#include "Game/Objects/Tank/EnemyTanks/SimpleTank.h"
+#include "Game/Objects/Tank/EnemyTanks/EnemyTank.h"
 
 #include "Game/UserInterface/MagazineUi.h"
 
@@ -81,7 +81,7 @@ void PlayScene::Initialize()
 	m_graphics->SetProjectionMatrix(projection);
 
 	// モデルの読み込み(GameClassの方がいいかも)
-	Resources::GetInstance()->LoadResource();
+	//Resources::GetInstance()->LoadResource();
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
@@ -92,9 +92,9 @@ void PlayScene::Initialize()
 	m_player->Initialize();
 
 	// 敵戦車
-	m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 0.0f, 0.0f, -5.0f }));
-	//m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ -5.0f, 0.0f, -10.0f }));
-	//m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ 5.0f, 0.0f, -10.0f }));
+	m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 5.0f, 0.0f, -5.0f }));
+	m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -5.0f, 0.0f, -5.0f }));
+	m_enemies.push_back(std::make_unique<EnemyTank>(3, Vector3{ 3.0f, 0.0f, 5.0f }));
 	for (auto& enemy : m_enemies)
 	{
 		enemy->Initialize();
@@ -183,28 +183,20 @@ void PlayScene::Update(float elapsedTime)
 	}
 
 	// 敵を全て倒していたらリザルトシーンへ ToDo:現在1体倒したら終わるので修正する
-	/*for (auto& enemy : m_enemies)
-	{
-		if (enemy->GetDead())
-		{
-			m_isChangeScene = true;
-		}
-	}*/
-
 	// 生存している戦車の確認
 	int surviveTank = 0;
-	if (m_player->GetDead())
+	if (!m_player->GetDead())
 		surviveTank++;
 	for (auto& enemy : m_enemies)
 	{
-		if (enemy->GetDead())
+		if (!enemy->GetDead())
 			surviveTank++;
 	}
 
-	// 生存している戦車が1両だけならゲーム終了
+	// 生存している戦車が1台だけならゲーム終了
 	if (surviveTank == 1)
 	{
-		// 生存している戦車情報をRetultDataに所有権ごと渡す
+		//生存している戦車情報をRetultDataに所有権ごと渡す
 		if (!m_player->GetDead())
 		{
 			// 砲身が持っている壁情報の削除

@@ -12,6 +12,8 @@ class SelectAction;
 class Patrol;
 class Tracking;
 
+class Smoke;
+
 class EnemyTank : IObject
 {
 private:
@@ -64,16 +66,18 @@ private:
 	// 移動関係
 	// 巡回地点
 	std::vector<DirectX::SimpleMath::Vector3> m_patrolPoint;
+	std::vector<DirectX::SimpleMath::Vector3> m_patrolPoint2;
+	std::vector<DirectX::SimpleMath::Vector3> m_patrolPoint3;
 	// 現在の番号
 	unsigned int m_currentPoint;
-
-	// デバッグ用モデル
-	std::unique_ptr<DirectX::GeometricPrimitive> m_box;
 
 	// AI関係
 	std::unique_ptr<SelectAction> m_selectAction;	// 行動選択
 	std::unique_ptr<Patrol> m_patrol;				// 巡回行動
 	std::unique_ptr<Tracking> m_tracking;			// 追跡行動
+
+	// 倒されたときの演出
+	std::unique_ptr<Smoke> m_smokeEffect;
 
 
 public:
@@ -82,7 +86,7 @@ public:
 	// 回転角の取得
 	DirectX::SimpleMath::Quaternion GetAngle() { return m_angle; }
 	// 死亡情報を渡す
-	bool GetDead();
+	bool GetDead() { return m_isDead; }
 	// 座標の受け取り
 	void SetPosition(DirectX::SimpleMath::Vector3 position);
 	// 戦車情報の取得
@@ -93,8 +97,4 @@ public:
 	void SetOtherTanks(std::vector<Tank*> tanks);
 	// HPの取得
 	float GetHP() { return m_hpGauge->GetHp(); }
-
-private:
-	// 巡回
-	//void Patrol(float elapsedTime);
 };

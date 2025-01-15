@@ -100,6 +100,7 @@ void ResultScene::Initialize()
 	m_camera = std::make_unique<mylib::LockOnCamera>();
 	m_camera->Initialize();
 	m_camera->SetTargetPosition(m_tank->GetPosition());
+	m_camera->SetEyePosition(DirectX::SimpleMath::Vector3(0.0f, 1.0f, 1.0f));
 
 	// 床の生成
 	m_floor = std::make_unique<Floor>(50);
@@ -146,6 +147,10 @@ void ResultScene::Render()
 	);
 	Graphics::GetInstance()->SetViewMatrix(view);
 
+	m_floor->Render();
+
+	m_tank->Render();
+
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 
@@ -177,10 +182,6 @@ void ResultScene::Render()
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
-
-	m_floor->Render();
-
-	m_tank->Render();
 }
 
 //---------------------------------------------------------

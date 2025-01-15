@@ -22,9 +22,7 @@ MagazineUi::MagazineUi()
     m_gaugeTexture{},
     m_graphics{ Graphics::GetInstance() },
     m_spriteBatch{},
-    m_framePos{},
-    m_cannonReloadPos{},
-    m_bulletReloadPos{}
+    m_reloadPos{}
 {
     // 画面サイズの受け取り
     m_graphics->GetScreenSize(m_windowWidth, m_windowHeight);
@@ -45,14 +43,8 @@ void MagazineUi::Initialize()
     m_spriteBatch = m_graphics->GetSpriteBatch();
     m_spriteFont = m_graphics->GetFont();
 
-    // 初期で選択されている弾は砲弾
-    m_framePos = SELECT_CANNON;
-
-    m_cannonReloadPos = CANNON_RELOAD_GAUGE_FRONT;
-    m_bulletReloadPos = BULLET_RELOAD_GAUGE_FRONT;
-
-    m_cannonReloadPos.right = CANNON_RELOAD_GAUGE_FRONT.left; 
-    m_bulletReloadPos.right = BULLET_RELOAD_GAUGE_FRONT.left;
+    m_reloadPos = RELOAD_GAUGE_BACK;
+    m_reloadPos.right = RELOAD_GAUGE_BACK.left;
 
     // ウィンドウサイズの指定
     /*RECT rect = m_graphics->GetDeviceResources()->GetOutputSize();
@@ -76,91 +68,26 @@ void MagazineUi::Render()
     int gaugeWidth = 0;
     if (m_player->GetTankCannon()->GetCurrentBullet() == TankCannon::BulletType::CANNONBALL)
     {
-        // 選択されている弾の変更
-        m_framePos = SELECT_CANNON;
-
         // リロードの進行の受け取り
         bulletReloadRatio = m_player->GetTankCannon()->GetCannonReloadRatio();
-
         // ゲージ全体の幅から増加量を計算
-        gaugeWidth = CANNON_RELOAD_GAUGE_FRONT.right - CANNON_RELOAD_GAUGE_FRONT.left;
-        m_cannonReloadPos.right = m_cannonReloadPos.left + static_cast<int>(gaugeWidth * bulletReloadRatio);
-
+        gaugeWidth = RELOAD_GAUGE_BACK.right - RELOAD_GAUGE_BACK.left;
+        m_reloadPos.right = m_reloadPos.left + static_cast<int>(gaugeWidth * bulletReloadRatio);
         // リロードが完了しているならゲージを0にする
-        if (bulletReloadRatio == 1.0f) { m_cannonReloadPos.right = CANNON_RELOAD_GAUGE_FRONT.left; }
+        if (bulletReloadRatio == 1.0f) { m_reloadPos.right = RELOAD_GAUGE_BACK.left; }
     }
     else
     {
-        m_framePos = SELECT_BULLET;
-
         bulletReloadRatio = m_player->GetTankCannon()->GetBulletReloadRatio();
-
-        gaugeWidth = BULLET_RELOAD_GAUGE_FRONT.right - BULLET_RELOAD_GAUGE_FRONT.left;
-        m_bulletReloadPos.right = m_bulletReloadPos.left + static_cast<int>(gaugeWidth * bulletReloadRatio);
-
-        if (bulletReloadRatio == 1.0f) { m_bulletReloadPos.right = BULLET_RELOAD_GAUGE_FRONT.left; }
+        gaugeWidth = RELOAD_GAUGE_BACK.right - RELOAD_GAUGE_BACK.left;
+        m_reloadPos.right = m_reloadPos.left + static_cast<int>(gaugeWidth * bulletReloadRatio);
+        if (bulletReloadRatio == 1.0f) { m_reloadPos.right = RELOAD_GAUGE_BACK.left; }
     }
 
-    // 砲弾
-    // 使用済みの弾は色を変更する
-    if (m_player->GetTankCannon()->GetCannonBall()->GetBulletState() == IBullet::UNUSED)
-        m_spriteBatch->Draw(m_cannonTexture.Get(), CANNON_UI_POS);
-    else
-        m_spriteBatch->Draw(m_cannonTexture.Get(), CANNON_UI_POS, DirectX::Colors::DimGray);
-    
-    // リロードゲージ
-    m_spriteBatch->Draw(m_gaugeTexture.Get(), CANNON_RELOAD_GAUGE_BACK, DirectX::Colors::Black);
-    m_spriteBatch->Draw(m_gaugeTexture.Get(), m_cannonReloadPos, DirectX::Colors::Aqua);
-
-    // 通常弾
-    for (auto& bullet : m_player->GetTankCannon()->GetBullets())
-    {
-        if (bullet->GetBulletState() == IBullet::UNUSED)
-            m_spriteBatch->Draw(m_bulletTexture.Get(), BULLET_UI_POS);
-        else
-            m_spriteBatch->Draw(m_bulletTexture.Get(), BULLET_UI_POS, DirectX::Colors::DimGray);
-    }
-    m_spriteBatch->Draw(m_gaugeTexture.Get(), BULLET_RELOAD_GAUGE_BACK, DirectX::Colors::Black);
-    m_spriteBatch->Draw(m_gaugeTexture.Get(), m_bulletReloadPos, DirectX::Colors::Aqua);
-
-    // 選択している弾を示すフレーム
-    m_spriteBatch->Draw(m_frameTexture.Get(), m_framePos);
-
-    // 残弾数の表示
-    RECT rect = { 1180,620,1245,680 };
-    m_spriteBatch->Draw(m_gaugeTexture.Get(), rect, DirectX::Colors::White);
-    int num = 0;
-    if (m_player->GetTankCannon()->GetCannonBall()->GetBulletState() == IBullet::UNUSED)
-        num++;
-    m_spriteFont->DrawString(
-        m_spriteBatch,
-        std::to_wstring(num).c_str(),
-        DirectX::XMFLOAT2(1190, 615),   
-        DirectX::Colors::Black,
-        0.0f,                       
-        DirectX::XMFLOAT2(0, 0),     
-        2.0f
-    );
-
-    num = 0;
-    rect = { 1180,520,1245,580 };
-    m_spriteBatch->Draw(m_gaugeTexture.Get(), rect, DirectX::Colors::White);
-    for (auto& bullet : m_player->GetTankCannon()->GetBullets())
-    {
-        if (bullet->GetBulletState() == IBullet::UNUSED)
-            num++;
-    }
-    m_spriteFont->DrawString(
-        m_spriteBatch,
-        std::to_wstring(num).c_str(),
-        DirectX::XMFLOAT2(1180, 515),
-        DirectX::Colors::Black,
-        0.0f,
-        DirectX::XMFLOAT2(0, 0),
-        2.0f
-    );
-
-
+    // 選択されていない弾
+    SubBulletUi();
+    // 選択されている弾
+    MainBulletUi();
 
     // 描画終了
     m_spriteBatch->End();
@@ -229,3 +156,73 @@ void MagazineUi::LoadTexture()
         return;
     }
 }
+
+// サブの弾のUI表示
+void MagazineUi::SubBulletUi()
+{
+    // 枠
+    DirectX::SimpleMath::Vector4 color = static_cast<DirectX::SimpleMath::Vector4>(DirectX::Colors::Gray);
+    color.w = 0.5f;
+    m_spriteBatch->Draw(m_gaugeTexture, SUB_BULLET_FRAME, color);
+
+    // 砲弾を選択している場合
+    if (m_player->GetTankCannon()->GetCurrentBullet() == TankCannon::BulletType::CANNONBALL)
+        m_spriteBatch->Draw(m_bulletTexture, SUB_BULLET_UI , DirectX::Colors::DimGray);
+    // 連射弾を選択している場合
+    else
+        m_spriteBatch->Draw(m_cannonTexture, SUB_BULLET_UI, DirectX::Colors::DimGray);
+}
+
+// メインの弾のUI表示
+void MagazineUi::MainBulletUi()
+{
+    // 枠
+    DirectX::SimpleMath::Vector4 color = static_cast<DirectX::SimpleMath::Vector4>(DirectX::Colors::WhiteSmoke);
+    color.w = 0.5f;
+    m_spriteBatch->Draw(m_gaugeTexture, MAIN_BULLET_FRAME, color);
+
+    // 砲弾を選択している場合
+    if (m_player->GetTankCannon()->GetCurrentBullet() == TankCannon::BulletType::CANNONBALL)
+        m_spriteBatch->Draw(m_cannonTexture, MAIN_BULLET_UI);
+    // 連射弾を選択している場合
+    else
+        m_spriteBatch->Draw(m_bulletTexture, MAIN_BULLET_UI);
+    
+    // リロードゲージ
+    m_spriteBatch->Draw(m_gaugeTexture, RELOAD_GAUGE_BACK, DirectX::Colors::Black);
+    m_spriteBatch->Draw(m_gaugeTexture, m_reloadPos, DirectX::Colors::Aqua);
+
+    // 残弾数の表示
+    m_spriteFont->DrawString(
+        m_spriteBatch,
+        std::to_wstring(CheckBulletValue()).c_str(),
+        DirectX::XMFLOAT2(1110, 595),
+        DirectX::Colors::Black,
+        0.0f,
+        DirectX::XMFLOAT2(0, 0),
+        2.0f
+    );
+}
+
+// 残弾数の確認
+int MagazineUi::CheckBulletValue()
+{
+    int num = 0;
+    // 砲弾の残り弾数の確認
+    if (m_player->GetTankCannon()->GetCurrentBullet() == TankCannon::BulletType::CANNONBALL)
+    {
+        if (m_player->GetTankCannon()->GetCannonBall()->GetBulletState() == IBullet::UNUSED)
+            num++;
+    }
+    else
+    {
+        for (auto& bullet : m_player->GetTankCannon()->GetBullets())
+        {
+            if (bullet->GetBulletState() == IBullet::UNUSED)
+                num++;
+        }
+    }
+    return num;
+}
+
+

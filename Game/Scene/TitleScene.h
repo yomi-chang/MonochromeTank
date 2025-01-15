@@ -8,9 +8,12 @@
 
 namespace mylib
 {
-	class DebugCamera;
-	class GridFloor;
+	class LockOnCamera;
 }
+
+class Graphics;
+class Floor;
+class Tank;
 
 class TitleScene final :
     public IScene
@@ -19,24 +22,28 @@ private:
 	// グラフィックス
 	Graphics* m_graphics;
 
-	// スプライトバッチ
-	//std::unique_ptr<DirectX::SpriteBatch> m_spriteBatch;
-
 	DirectX::SpriteBatch* m_spriteBatch;
-
-	// スプライトフォント
-	//std::unique_ptr<DirectX::SpriteFont> m_spriteFont;
 
 	DirectX::SpriteFont* m_spriteFont;
 
 	// テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+	ID3D11ShaderResourceView* m_titleLogo;
 
 	// テクスチャの半分の大きさ
 	DirectX::SimpleMath::Vector2 m_texCenter;
 
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
+
+
+	// カメラ
+	std::unique_ptr<mylib::LockOnCamera> m_camera;
+
+	// 床
+	std::unique_ptr<Floor> m_floor;
+
+	// 戦車
+	std::vector<std::unique_ptr<Tank>> m_tanks;
 
 
 public:

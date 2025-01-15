@@ -11,14 +11,11 @@ class MagazineUi
 {
 private:
 	// UI座標の定数
-	const RECT BULLET_UI_POS = { 1050,510,1150,560 };
-	const RECT CANNON_UI_POS = { 1050,610,1150,660 };
-	const RECT SELECT_BULLET = { 1030,500,1260,600 };
-	const RECT SELECT_CANNON = { 1030,600,1260,700 };
-	const RECT BULLET_RELOAD_GAUGE_BACK = { 1050,570,1150,590 };
-	const RECT BULLET_RELOAD_GAUGE_FRONT = { 1055,575,1145,585 };
-	const RECT CANNON_RELOAD_GAUGE_BACK = { 1050,670,1150,690 };
-	const RECT CANNON_RELOAD_GAUGE_FRONT = { 1055,675,1145,685 };
+	const RECT MAIN_BULLET_FRAME = { 1000,600,1195,700 };
+	const RECT SUB_BULLET_FRAME = { 1140,580,1270,650 };
+	const RECT MAIN_BULLET_UI = { 1010,610,1100,650 };
+	const RECT SUB_BULLET_UI = { 1200,600,1265,630 };
+	const RECT RELOAD_GAUGE_BACK = { 1010,660,1185,690 };
 
 
 
@@ -32,11 +29,11 @@ private:
 	// ピクセルシェーダ
 	Microsoft::WRL::ComPtr<ID3D11PixelShader> m_pixelShader;
 	// テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_bulletTexture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_cannonTexture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_frameTexture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_reloadTexture;
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_gaugeTexture;
+	ID3D11ShaderResourceView* m_bulletTexture;
+	ID3D11ShaderResourceView* m_cannonTexture;
+	ID3D11ShaderResourceView* m_frameTexture;
+	ID3D11ShaderResourceView* m_reloadTexture;
+	ID3D11ShaderResourceView* m_gaugeTexture;
 
 
 	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_renderTargetView;
@@ -48,13 +45,9 @@ private:
 
 	// スプライトフォント
 	DirectX::SpriteFont* m_spriteFont;
-
-	// 弾選択フレーム座標
-	RECT m_framePos;
 	
 	// ゲージ座標
-	RECT m_cannonReloadPos;
-	RECT m_bulletReloadPos;
+	RECT m_reloadPos;
 
 	
 public:
@@ -76,4 +69,13 @@ private:
 
 public:
 	void SetPlayer(PlayerTank* player) { m_player = player; }
+
+	// 選択されている弾のUI
+	void MainBulletUi();
+
+	// 選択されていない弾のUI
+	void SubBulletUi();
+
+	// 残弾数の確認
+	int CheckBulletValue();
 };

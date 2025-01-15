@@ -21,8 +21,8 @@ public:
 	// I—¹ˆ—
 	virtual void Finalize() = 0;
 
-	// ’Ç‰Á
+	// •”•i‚Ì’Ç‰Á
 	virtual void Attach(std::unique_ptr<IParts> parts) = 0;
-	// íœ
+	// •”•i‚Ìíœ
 	virtual void Detach(std::unique_ptr<IParts> parts) = 0;
 };

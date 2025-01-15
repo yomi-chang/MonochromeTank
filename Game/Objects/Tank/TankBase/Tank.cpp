@@ -225,11 +225,11 @@ bool Tank::DetectCollisionTankAndCannonBall()
 //---------------------------------------------------------
 void Tank::DetectCollisionTankAndOtherTanks()
 {
-	for (auto& tank : m_otherTanks)
-	{
-		// 自機の場合は判定を行わない
-		if (tank->GetTankNumber() == m_tankNumber) { continue; }
+	//for (auto& tank : m_otherTanks)
+	//{
+	//	// 自機の場合は判定を行わない
+	//	if (tank->GetTankNumber() == m_tankNumber) { continue; }
 
-		tank->GetBody()->SetCollisionVel(m_collider->CheckCollisionCollider(tank->GetBoundingBox()));
-	}
+	//	tank->GetBody()->SetCollisionVel(m_collider->CheckCollisionCollider(tank->GetBoundingBox()));
+	//}
 }

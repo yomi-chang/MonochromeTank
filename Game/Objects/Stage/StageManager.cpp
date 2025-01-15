@@ -158,10 +158,17 @@ void StageManager::CreateStage()
 				case 0:		// 情報がない場合
 					continue;
 				case 1:		// 壁
-					m_walls.emplace_back(std::make_unique<Wall>(Vector3::One, Vector3(x - (STAGESIZE / 2), 0.5f, y - (STAGESIZE / 2)), Wall::WallType::FIXED));
+					m_walls.emplace_back(std::make_unique<Wall>(
+						Vector3(1.0f,2.0f,1.0f),
+						Vector3(x - (STAGESIZE / 2), 0.5f, y - (STAGESIZE / 2)), Wall::WallType::FIXED)
+					);
 					break;
 				case 2:		// ギミック用壁
-					m_walls.emplace_back(std::make_unique<Wall>(Vector3::One, Vector3(x - (STAGESIZE / 2), -1.0f, y - (STAGESIZE / 2)), Wall::WallType::MOVE));
+					m_walls.emplace_back(std::make_unique<Wall>(
+						Vector3(1.0f, 2.0f, 1.0f),
+						Vector3(x - (STAGESIZE / 2), -2.0f, y - (STAGESIZE / 2)),
+						Wall::WallType::MOVE)
+					);
 					break;
 				default:
 					break;

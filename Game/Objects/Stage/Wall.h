@@ -38,6 +38,8 @@ public:
 	void Finalize();
 	// コライダーの取得
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
+	// コライダーのポインタの取得
+	BoxCollider* GetCollider() { return m_collider.get(); }
 	// 壁の種類の取得
 	WallType GetWallType() { return m_wallType; }
 	// 沈んでいる壁を出すかどうか

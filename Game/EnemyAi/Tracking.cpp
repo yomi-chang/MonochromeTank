@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Game/EnemyAi/Tracking.h"
-#include "Game/Objects/Tank/EnemyTanks/SimpleTank.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Libraries/MyLib/Math.h"
 
 //-------------------------------------------------------------------
@@ -58,6 +58,8 @@ void Tracking::Update(float elapsedTime)
 	
 	// 砲塔の回転
 	m_tank->GetTurret()->RotateTurret(newAngle);
+
+
 
 	// 敵を追跡する
 	// 進行方向ベクトル

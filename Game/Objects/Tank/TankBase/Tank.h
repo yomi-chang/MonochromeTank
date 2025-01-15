@@ -21,6 +21,8 @@ private:
 	const DirectX::SimpleMath::Vector3 COLLIDER_SIZE = DirectX::SimpleMath::Vector3(1.3f, 0.7f, 1.3f);
 	// コライダーを上にずらす
 	const float COLLIDER_POSITION = 0.5f;
+	// 体力
+	const float DEFAULT_HP = 10;
 public:
 	// コンストラクタ
 	Tank(
@@ -67,6 +69,8 @@ private:
 	int m_tankNumber;										// 戦車番号
 	std::unique_ptr<BoxCollider> m_collider;				// コライダー
 	std::vector<Tank*> m_otherTanks;						// 自分以外の戦車
+	float m_hp;												// 体力
+
 
 public:
 	// 車体情報の設定
@@ -97,11 +101,13 @@ public:
 	DirectX::SimpleMath::Quaternion GetCannonRotation() { return m_cannon->GetCannonRotation(); }
 	// コライダーの取得
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
+	// コライダーのポインタの取得
+	BoxCollider* GetCollider() { return m_collider.get(); }
 	// 戦車番号の取得
 	int GetTankNumber() { return m_tankNumber; }
 
 	// 当たり判定
-	bool DetectCollisionTankAndNomalBullets();	// 戦車の通常弾の当たり判定
-	bool DetectCollisionTankAndCannonBall();	// 戦車の通常弾の当たり判定
+	bool DetectCollisionTankAndNomalBullets();	// 戦車の連射弾の当たり判定
+	bool DetectCollisionTankAndCannonBall();	// 戦車の連射弾の当たり判定
 	void DetectCollisionTankAndOtherTanks();	// 戦車同士の当たり判定
 };

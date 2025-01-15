@@ -3,6 +3,8 @@
 #include "Framework/Graphics.h"
 #include "Game/Collider/SphereCollider.h"
 
+class BulletTrail;
+
 class Bullet : public IBullet
 {
 public:
@@ -61,6 +63,8 @@ private:
 	std::unique_ptr<SphereCollider> m_collider;
 	// ジオメトリックプリミティブ
 	std::unique_ptr<DirectX::GeometricPrimitive> m_bullet;
+	// トレイル
+	std::unique_ptr<BulletTrail> m_trail;
 
 	// 破壊カウント
 	const float SURVIVAL_TIME = 1.5f;

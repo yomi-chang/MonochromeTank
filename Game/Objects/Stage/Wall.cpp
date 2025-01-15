@@ -95,13 +95,13 @@ void Wall::Finalize()
 void Wall::DetectCollision()
 {
 	// íŽÔ‚Æ‚Ì“–‚½‚è”»’è
-	for (auto& tank : m_tanks)
-	{
-		tank->GetBody()->SetCollisionVel(m_collider->CheckCollisionCollider(tank->GetBoundingBox()));
-		// •Ç‚ÉG‚ê‚Ä‚¢‚éŠÔd—Í‚ð–³Œø‚É‚·‚é
-		if(m_collider->CheckTriggerCollider(tank->GetBoundingBox()))
-		tank->GetBody()->SetGravity(false);
-	}
+	//for (auto& tank : m_tanks)
+	//{
+	//	tank->GetBody()->SetCollisionVel(m_collider->CheckCollisionCollider(tank->GetBoundingBox()));
+	//	// •Ç‚ÉG‚ê‚Ä‚¢‚éŠÔd—Í‚ð–³Œø‚É‚·‚é
+	//	if(m_collider->CheckTriggerCollider(tank->GetBoundingBox()))
+	//	tank->GetBody()->SetGravity(false);
+	//}
 
 	// ƒJƒƒ‰‚Æ‚Ì“–‚½‚è”»’è
 	m_camera->SetEyePosition(m_camera->GetEyePosition() + m_collider->CheckCollisionCollider(m_camera->GetBoundingSphere()));
@@ -117,6 +117,6 @@ void Wall::RaiseWall(float elapsedTime)
 // •Ç‚ð‚ä‚Á‚­‚è‚Æ‰º‚°‚éˆ—
 void Wall::LowerWall(float elapsedTime)
 {
-	if (m_position.y > -0.6f)
+	if (m_position.y >= -1.0f)
 		m_position.y -= 0.5f * elapsedTime;
 }

@@ -67,8 +67,14 @@ private:
 	void RotateTurretCannon();
 
 public:
+	// 他戦車情報受け渡し
+	void SetOtherTanks(std::vector<Tank*> tanks);
 	// 壁情報の受け取り
 	void SetWalls(std::vector<Wall*> walls);
+	// カメラ情報の受け取り
+	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
+
+
 	// 座標の取得
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; }
 	// 座標の受け取り
@@ -77,14 +83,12 @@ public:
 	DirectX::SimpleMath::Quaternion GetAngle() { return m_angle; }
 	// 砲身の取得
 	TankCannon* GetTankCannon();
-	// カメラ情報の受け取り
-	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 	// 戦車情報の取得
 	Tank* GetTank() { return m_tank.get(); }
+
 	// Tankの所有権を移動する（新しいメソッド）
 	std::unique_ptr<Tank> ReleaseTank() { return std::move(m_tank);}
-	// 他戦車情報受け渡し
-	void SetOtherTanks(std::vector<Tank*> tanks);
+	
 	// 死亡しているかどうか
 	bool GetDead() 
 	{
@@ -93,4 +97,6 @@ public:
 	}
 	// 壁情報の削除
 	void DeleteWall() { m_tank->GetCannon()->DeleteWall(); }
+	// ダメージを与える処理
+	void AddDamage(float damage) { m_damage += damage; }
 };

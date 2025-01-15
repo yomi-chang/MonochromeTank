@@ -35,7 +35,7 @@ void SelectAction::Update()
 		float d = (tank->GetPosition() - m_tank->GetPosition()).LengthSquared();
 		distance = std::min(distance, d); // 小さい値を格納
 	}
-	mylib::DebugLog("距離", distance);
+	//mylib::DebugLog("距離", distance);
 
 	// 体力の取得
 	float hp = m_hpGauge->GetHp();
@@ -53,7 +53,7 @@ SelectAction::Evaluation SelectAction::EvaluateStates(float value, float high, f
 {
 	// ステータスが高閾値以上ならHIGHを返す
 	if (value >= high) return Evaluation::HIGH;
-	// ステータスが低閾値以上ならMIDIUMを返す
+	// ステータスが低閾値以上ならMEDIUMを返す
 	if (value >= low) return Evaluation::MEDIUM;
 	// それ以外ならLOWを返す
 	return Evaluation::LOW;

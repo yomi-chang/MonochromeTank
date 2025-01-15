@@ -1,5 +1,6 @@
 #include "Libraries/MyLib/Math.h"
 #include "pch.h"
+#include <random>
 
 namespace mylib
 {
@@ -7,5 +8,16 @@ namespace mylib
 	float Clamp(float value, float min, float max)
 	{
 		return std::max(min, std::min(value, max));;
+	}
+
+	// ƒ‰ƒ“ƒ_ƒ€ŠÖ”
+	float Random(float min, float max)
+	{
+		std::random_device seed_gen;
+		std::mt19937 engine(seed_gen());
+
+		std::normal_distribution<double> dist(min, max);
+
+		return dist(engine);
 	}
 }

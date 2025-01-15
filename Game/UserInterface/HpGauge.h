@@ -40,7 +40,7 @@ private:
 	DirectX::SpriteFont* m_spriteFont;
 
 	// ゲージ画像
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+	ID3D11ShaderResourceView* m_texture;
 
 	// ゲージの最大値
 	const int MAX_WIDTH = 300;

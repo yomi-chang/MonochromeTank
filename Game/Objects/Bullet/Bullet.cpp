@@ -3,6 +3,7 @@
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
 #include "Libraries/Microsoft/DebugDraw.h"
+#include "Game/Objects/Bullet/BulletTrail.h"
 
 
 // –C’e‘¬“x‚ğ’è‹`‚·‚é
@@ -41,6 +42,10 @@ void Bullet::Initialize()
 	m_collider = std::make_unique<SphereCollider>();
 	m_collider->CreateBoundingSphere(m_position, 0.05f);
 
+	// ƒgƒŒƒCƒ‹‚Ìì¬
+	//m_trail = std::make_unique<BulletTrail>();
+	//m_trail->Initialize(2);
+
 	m_count = SURVIVAL_TIME;
 }
 
@@ -53,6 +58,7 @@ void Bullet::Update(float time)
 	// g—p‰Â”\‚à‚µ‚­‚Íg—pÏ‚İ‚Ìê‡
 	if (m_bulletState == USED)
 	{
+
 		return;
 	}
 	else if(m_bulletState == UNUSED)
@@ -97,6 +103,14 @@ void Bullet::Render()
 
 	// –C’e‚ğ•`‰æ‚·‚é
 	DrawBullet();
+
+	// ƒgƒŒƒCƒ‹‚Ì•`‰æ
+	/*Vector3 head = m_position;
+	head.z += 1.0f;
+	Vector3 tail = m_position;
+	tail.z -= 1.0f;
+	m_trail->SetPosition(head, tail);
+	m_trail->Render();*/
 }
 
 // –C’e‚ğ•`‰æ‚·‚é

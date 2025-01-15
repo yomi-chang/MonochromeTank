@@ -181,5 +181,4 @@ bool BoxCollider::CheckTriggerCollider(DirectX::BoundingBox* boundingBox)
 	// “–‚½‚Á‚Ä‚¢‚½‚çtrue‚ð•Ô‚·
 	return true;
 }
-//==================================================================================================
 

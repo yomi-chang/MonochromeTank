@@ -90,7 +90,7 @@ void Resources::LoadResource()
 		m_cannonBallTexture.GetAddressOf()
 	);
 
-	//	通常弾テクスチャのロード 
+	//	連射弾テクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\Bullet.png",
@@ -112,5 +112,22 @@ void Resources::LoadResource()
 		L"Resources\\Textures\\ReloadText.png",
 		nullptr,
 		m_reloadTexture.GetAddressOf()
+	);
+
+	//	タイトルロゴテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\TitleLogo.png",
+		nullptr,
+		m_titleLogoTexture.GetAddressOf()
+	);
+
+
+	//	破壊演出テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\blackSmoke.png",
+		nullptr,
+		m_blackSmokeTexture.GetAddressOf()
 	);
 }

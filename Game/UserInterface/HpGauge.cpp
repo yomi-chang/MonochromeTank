@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Game/UserInterface/HpGauge.h"
+#include "Framework/Resources.h"
 
 // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 HpGauge::HpGauge()
@@ -22,14 +23,7 @@ void HpGauge::Initialize(DirectX::SimpleMath::Vector2 position)
 	m_spriteFont = m_graphics->GetFont();
 
 	// ƒeƒNƒXƒ`ƒƒ‚ð“Ç‚Ýž‚Þ
-	DX::ThrowIfFailed(
-		CreateWICTextureFromFile(
-			m_graphics->GetDeviceResources()->GetD3DDevice(),
-			L"Resources/Textures/box_1x1.png",
-			nullptr,
-			m_texture.ReleaseAndGetAddressOf()
-		)
-	);
+	m_texture = Resources::GetInstance()->GetBoxTexture();
 
 	// ƒQ[ƒW‚Ì‰Šú’l‚ðÝ’è‚·‚é
 	m_value = DEFAULT_VALUE;
@@ -68,8 +62,8 @@ void HpGauge::Render()
 	m_spriteBatch->Begin();
 
 	// ƒQ[ƒW‚ð•`‰æ‚·‚é
-	m_spriteBatch->Draw(m_texture.Get(), back,  Colors::Black);	// ”wŒi
-	m_spriteBatch->Draw(m_texture.Get(), front, Colors::Green);	// •\–Ê
+	m_spriteBatch->Draw(m_texture, back,  Colors::Black);	// ”wŒi
+	m_spriteBatch->Draw(m_texture, front, Colors::Green);	// •\–Ê
 
 	// •¶Žš—ñ‚ð•`‰æ‚·‚é
 	//m_spriteFont->DrawString(

@@ -86,6 +86,9 @@ void PlayerTank::Update(float elapsedTime)
 	// ダメージ処理
 	m_hpGauge->Damage(m_damage);
 
+	// ダメージのリセット
+	m_damage = 0.0f;
+
 	// 体力が0になった場合の処理
 	if (m_hpGauge->GetDead())
 		m_isDead = true;
