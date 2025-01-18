@@ -69,7 +69,8 @@ private:
 	int m_tankNumber;										// 戦車番号
 	std::unique_ptr<BoxCollider> m_collider;				// コライダー
 	std::vector<Tank*> m_otherTanks;						// 自分以外の戦車
-	float m_hp;												// 体力
+	unsigned int m_maxHp;											// 最大体力
+	unsigned int  m_hp;												// 体力
 
 
 public:
@@ -81,6 +82,12 @@ public:
 	void SetCannon(TankCannon* cannon) { m_cannon = cannon; }
 	// 他の戦車情報の設定
 	void SetOtherTanks(std::vector<Tank*> tanks) { m_otherTanks = tanks; }
+	// 体力の設定
+	void SetMaxHp(float hp) 
+	{
+		m_maxHp = hp; 
+		m_hp = hp;
+	}
 
 	// 車体情報の取得
 	TankBody* GetBody() { return m_body; }
@@ -105,6 +112,14 @@ public:
 	BoxCollider* GetCollider() { return m_collider.get(); }
 	// 戦車番号の取得
 	int GetTankNumber() { return m_tankNumber; }
+	// 体力の取得
+	float GetHp() { return m_hp; }
+	// 体力の減っている割合の取得
+	float GetHpRatio() { return 1.0f - (static_cast<float>(m_hp) / static_cast<float>(m_maxHp)); }
+
+	// ダメージ処理
+	void Damage(int damage);
+
 
 	// 当たり判定
 	bool DetectCollisionTankAndNomalBullets();	// 戦車の連射弾の当たり判定

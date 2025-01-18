@@ -192,6 +192,9 @@ void MagazineUi::MainBulletUi()
     m_spriteBatch->Draw(m_gaugeTexture, RELOAD_GAUGE_BACK, DirectX::Colors::Black);
     m_spriteBatch->Draw(m_gaugeTexture, m_reloadPos, DirectX::Colors::Aqua);
 
+    RECT rect = {1170,620,1230,680};
+    m_spriteBatch->Draw(Resources::GetInstance()->GetSpaceKeyTexture(), rect);
+
     // Žc’e”‚Ì•\Ž¦
     m_spriteFont->DrawString(
         m_spriteBatch,

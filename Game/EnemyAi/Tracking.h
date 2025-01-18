@@ -1,18 +1,18 @@
 #pragma once
+#include "IEnemyAction.h"
 
-class Tank;
-
-class Tracking
+class Tracking : public IEnemyAction
 {
 public:
 	Tracking();
-	~Tracking() = default;
+	~Tracking() override = default;
 
-	void Initialize(
-		Tank* targetTank,
-		Tank* tank
-	);
-	void Update(float elapsedTime);
+	void Initialize(Tank* tank) override;
+	void Update(float elapsedTime) override;
+
+private:
+	// íÔ‚Ì‘¬“x
+	const float TANK_SPEED = 2.0f;
 
 private:
 	// ’ÇÕ‘ÎÛ‚ÌíÔ
@@ -20,9 +20,6 @@ private:
 
 	// ©‹@‚Ìî•ñ
 	Tank* m_tank;
-
-	// íÔ‚Ì‘¬“x
-	const float TANK_SPEED = 2.0f;
 
 public:
 	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìİ’è

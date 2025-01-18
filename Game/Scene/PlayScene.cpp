@@ -93,8 +93,8 @@ void PlayScene::Initialize()
 
 	// “GíÔ
 	m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 5.0f, 0.0f, -5.0f }));
-	m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -5.0f, 0.0f, -5.0f }));
-	m_enemies.push_back(std::make_unique<EnemyTank>(3, Vector3{ 3.0f, 0.0f, 5.0f }));
+	//m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -5.0f, 0.0f, -5.0f }));
+	//m_enemies.push_back(std::make_unique<EnemyTank>(3, Vector3{ 3.0f, 0.0f, 5.0f }));
 	for (auto& enemy : m_enemies)
 	{
 		enemy->Initialize();

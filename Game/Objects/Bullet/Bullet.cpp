@@ -105,12 +105,8 @@ void Bullet::Render()
 	DrawBullet();
 
 	// ƒgƒŒƒCƒ‹‚Ì•`‰æ
-	/*Vector3 head = m_position;
-	head.z += 1.0f;
-	Vector3 tail = m_position;
-	tail.z -= 1.0f;
-	m_trail->SetPosition(head, tail);
-	m_trail->Render();*/
+	//m_trail->SetPosition(m_position, m_position);
+	//m_trail->Render();
 }
 
 // –C’e‚ð•`‰æ‚·‚é

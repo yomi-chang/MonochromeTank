@@ -187,7 +187,9 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="Game\Collider\BoxCollider.h" />
     <ClInclude Include="Game\Collider\SphereCollider.h" />
+    <ClInclude Include="Game\EnemyAi\Attack.h" />
     <ClInclude Include="Game\EnemyAi\Escape.h" />
+    <ClInclude Include="Game\EnemyAi\IEnemyAction.h" />
     <ClInclude Include="Game\EnemyAi\Patrol.h" />
     <ClInclude Include="Game\EnemyAi\SelectAction.h" />
     <ClInclude Include="Game\EnemyAi\Tracking.h" />
@@ -247,6 +249,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Game\Collider\BoxCollider.cpp" />
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
+    <ClCompile Include="Game\EnemyAi\Attack.cpp" />
     <ClCompile Include="Game\EnemyAi\Escape.cpp" />
     <ClCompile Include="Game\EnemyAi\Patrol.cpp" />
     <ClCompile Include="Game\EnemyAi\SelectAction.cpp" />

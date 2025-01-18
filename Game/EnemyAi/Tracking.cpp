@@ -1,7 +1,5 @@
 #include "pch.h"
 #include "Game/EnemyAi/Tracking.h"
-#include "Game/Objects/Tank/TankBase/Tank.h"
-#include "Libraries/MyLib/Math.h"
 
 //-------------------------------------------------------------------
 // コンストラクタ
@@ -16,11 +14,8 @@ Tracking::Tracking()
 //-------------------------------------------------------------------
 // 初期化処理
 //-------------------------------------------------------------------
-void Tracking::Initialize(Tank* targetTank, Tank* tank)
+void Tracking::Initialize(Tank* tank)
 {
-	// 追跡対象の戦車の設定
-	m_targetTank = targetTank;
-
 	// 自機の取得
 	m_tank = tank;
 }
@@ -30,6 +25,9 @@ void Tracking::Initialize(Tank* targetTank, Tank* tank)
 //-------------------------------------------------------------------
 void Tracking::Update(float elapsedTime)
 {
+	// 追跡対象の戦車がいないなら処理しない
+	if (m_targetTank == nullptr) { return; }
+
 	using namespace DirectX::SimpleMath;
 
 	// 追跡中の敵の方向を向く
@@ -96,9 +94,4 @@ void Tracking::Update(float elapsedTime)
 
 	// 角度を更新する
 	m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(theta), 0.0f, 0.0f));
-
-	
-	// 射撃処理
-	m_tank->GetCannon()->StartReload();
-	m_tank->GetCannon()->Shoot();
 }

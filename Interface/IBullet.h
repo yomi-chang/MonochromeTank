@@ -25,12 +25,6 @@ public:
 
 	// コライダーの座標の設定
 	virtual void SetColliderPosition(DirectX::SimpleMath::Vector3 position) = 0;
-	
-
-	// モデルを取得する
-	//virtual DirectX::Model* GetModel() = 0;
-	// ワールド境界ボックスを取得する
-	//virtual DirectX::BoundingBox* GetWorldBoundingBox() = 0;
 
 public:
 	// 仮想デストラクタ

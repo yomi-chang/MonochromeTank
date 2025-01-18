@@ -12,7 +12,7 @@ public:
 		NONE,
 		PATROL,
 		TRACKING,
-		ESCAPE
+		ATTACK
 	};
 
 private:
@@ -25,7 +25,7 @@ private:
 	};
 
 	// 距離閾値
-	const float DISTANCE_HIGH = /*60.0f*/ 30.0f, DISTANCE_LOW = 8.0f;
+	const float DISTANCE_HIGH = /*60.0f*/ 50.0f, DISTANCE_LOW = 8.0f;
 
 	// 体力閾値
 	const float HP_HIGH = 7.0f, HP_LOW = 3.0f;
@@ -54,12 +54,21 @@ private:
 	// 自機の体力
 	Evaluation m_hp;
 
+	// 追跡対象の戦車
+	Tank* m_targetTank;
+
 public:
 	// 行動方法を返す
 	Action GetAction() { return m_action; }
 
-	// 戦車情報を受け取る
+	// 戦車情報の設定
 	void SetOtherTanks(std::vector<Tank*> tanks) { m_otherTanks = tanks; }
+
+	// 追跡対象の戦車の取得
+	Tank* GetTargetTank() { return m_targetTank; }
+
+	// 追跡対象の戦車の設定
+	void SetTargetTank(Tank* targetTank) { m_targetTank = targetTank; }
 
 private:
 	// ステータスの評価

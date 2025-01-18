@@ -9,7 +9,8 @@ SelectAction::SelectAction()
 	m_tank{},
 	m_otherTanks{},
 	m_distance{},
-	m_hp{}
+	m_hp{},
+	m_targetTank{}
 {
 }
 
@@ -20,22 +21,41 @@ void SelectAction::Initialize(Tank* tank, EnemyHpGauge* hp)
 
 	// HPゲージの取得
 	m_hpGauge = hp;
+
+	// 最初の行動は巡回行動
+	m_action = Action::PATROL;
 }
 
 void SelectAction::Update()
 {
-	// 最も近い敵を探す
-	float distance = std::numeric_limits<float>::max(); // 最大値で初期化
-	for (auto& tank : m_otherTanks)
-	{
-		// 自機では判定しない
-		if (tank->GetTankNumber() == m_tank->GetTankNumber()) { continue; }
-		
-		// 距離の取得
-		float d = (tank->GetPosition() - m_tank->GetPosition()).LengthSquared();
-		distance = std::min(distance, d); // 小さい値を格納
-	}
+	// 最も近い敵との距離を調べる
+	//float distance = std::numeric_limits<float>::max(); // 最大値で初期化
+	//for (auto& tank : m_otherTanks)
+	//{
+	//	// 自機では判定しない
+	//	if (tank->GetTankNumber() == m_tank->GetTankNumber()) { continue; }
+	//	
+	//	// 距離の取得
+	//	float d = (tank->GetPosition() - m_tank->GetPosition()).LengthSquared();
+	//	if (distance >= d)
+	//	{
+	//		// 追跡対象の戦車の設定
+	//		m_targetTank = tank;
+	//		// 小さい値を格納
+	//		distance = d;
+	//	}
+	//}
 	//mylib::DebugLog("距離", distance);
+
+	if (m_targetTank == nullptr) 
+	{
+		// 巡回行動を設定
+		m_action = Action::PATROL;
+		return; 
+	}
+
+	// 追跡対象の戦車との距離を調べる
+	float distance = (m_targetTank->GetPosition() - m_tank->GetPosition()).LengthSquared();
 
 	// 体力の取得
 	float hp = m_hpGauge->GetHp();
@@ -64,15 +84,15 @@ SelectAction::Action SelectAction::Select()
 {
 	if (m_hp == Evaluation::HIGH)
 	{
-		if (m_distance == Evaluation::HIGH)		{ return Action::PATROL; }
+		if (m_distance == Evaluation::HIGH)		{ return Action::TRACKING; }
 		if (m_distance == Evaluation::MEDIUM)	{ return Action::TRACKING; }
-		if (m_distance == Evaluation::LOW)		{ return Action::PATROL; }
+		if (m_distance == Evaluation::LOW)		{ return Action::ATTACK;   }
 	}
 	if (m_hp == Evaluation::MEDIUM)
 	{
-		if (m_distance == Evaluation::HIGH)		{ return Action::PATROL; }
+		if (m_distance == Evaluation::HIGH)		{ return Action::TRACKING; }
 		if (m_distance == Evaluation::MEDIUM)	{ return Action::TRACKING; }
-		if (m_distance == Evaluation::LOW)		{ return Action::PATROL; }
+		if (m_distance == Evaluation::LOW)		{ return Action::ATTACK;   }
 	}
 	if (m_hp == Evaluation::LOW)
 	{

@@ -1,12 +1,11 @@
 #pragma once
 #include "IEnemyAction.h"
 
-class Tank;
-
-class Escape : public IEnemyAction
+class Attack : public IEnemyAction 
 {
-	Escape();
-	~Escape() override = default;
+public:
+	Attack();
+	~Attack() override = default;
 
 	void Initialize(Tank* tank) override;
 	void Update(float elapsedTime) override;
@@ -14,5 +13,4 @@ class Escape : public IEnemyAction
 private:
 	// Ž©‹@
 	Tank* m_tank;
-
 };

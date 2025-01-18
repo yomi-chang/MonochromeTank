@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Game/EnemyAi/Patrol.h"
-#include "Game/Objects/Tank/EnemyTanks/EnemyTank.h"
 
 //-------------------------------------------------------------------
 // コンストラクタ
@@ -18,17 +17,8 @@ Patrol::Patrol()
 //-------------------------------------------------------------------
 // 初期化処理
 //-------------------------------------------------------------------
-void Patrol::Initialize(
-	std::vector<DirectX::SimpleMath::Vector3> patrolPoints,
-	Tank* tank
-)
+void Patrol::Initialize(Tank* tank)
 {
-	// 巡回地点の登録
-	m_patrolPoints = patrolPoints;
-
-	// 巡回地点数の取得
-	m_patrolPointVelue = m_patrolPoints.size();
-
 	// 自機の取得
 	m_tank = tank;
 }
@@ -43,7 +33,6 @@ void Patrol::Update(float elapsedTime)
 	// 探している挙動
 	m_time += elapsedTime;
 	m_tank->GetTurret()->RotateTurret(sinf(m_time) / 2.0f);
-
 
 
 	// 進行方向ベクトル
@@ -81,13 +70,38 @@ void Patrol::Update(float elapsedTime)
 	// 角度を更新する
 	m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(theta), 0.0f, 0.0f));
 
-
 	// ゴールに達したら、ゴール情報を更新する
 	if (toGoal.Length() < 1.0f)
 	{
 		m_currentPoint++;
 		m_currentPoint %= m_patrolPointVelue;
 	}
+}
+
+// 巡回地点の追加
+void Patrol::AddPatrolPoint(DirectX::SimpleMath::Vector3 point)
+{
+	m_patrolPoints.push_back(point);
+	m_patrolPointVelue++;
+}
+
+// 巡回地点の削除
+void Patrol::ClearPatrolPoints()
+{
+	m_patrolPoints.clear();
+}
+
+// 巡回地点の登録
+void Patrol::SetPatrolPoints(std::vector<DirectX::SimpleMath::Vector3> patrolPoints)
+{
+	// 巡回地点の削除
+	ClearPatrolPoints();
+
+	// 巡回地点の登録
+	m_patrolPoints = patrolPoints;
+
+	// 巡回地点数の取得
+	m_patrolPointVelue = m_patrolPoints.size();
 }
 
 

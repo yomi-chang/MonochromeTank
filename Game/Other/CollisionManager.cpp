@@ -11,6 +11,12 @@ CollisionManager::CollisionManager()
 
 void CollisionManager::Update()
 {
+	// 戦車の砲弾の当たり判定
+	DetectCollisionTankAndCannonBall();
+
+	// 戦車と連射弾の当たり判定
+	DetectCollisionTankAndNomalBullets();
+
 	// 戦車同士の当たり判定
 	DetectCollisionTankAndOtherTanks();
 
@@ -24,12 +30,46 @@ void CollisionManager::Update()
 // 戦車と連射弾の当たり判定
 void CollisionManager::DetectCollisionTankAndNomalBullets()
 {
+	for (auto& tank : m_tanks)
+	{
+		for (auto& otherTank : m_tanks)
+		{
+			// 自機の場合は判定を行わない
+			if (tank->GetTankNumber() == otherTank->GetTankNumber()) { continue; }
 
+			for (auto& bullet : otherTank->GetCannon()->GetBullets())
+			{
+				// 弾丸が飛んでいる、かつ当たっているなら
+				if (bullet->GetBulletState() == IBullet::FLYING &&
+					tank->GetCollider()->CheckTriggerCollider(bullet->GetBoundingSphere()))
+				{
+					bullet->SetBulletState(IBullet::USED);
+					tank->Damage(1);
+				}
+			}
+		}
+	}
 }
 
 // 戦車と砲弾の当たり判定
 void CollisionManager::DetectCollisionTankAndCannonBall()
 {
+	for (auto& tank : m_tanks)
+	{
+		for (auto& otherTank : m_tanks)
+		{
+			// 自機の場合は判定を行わない
+			if (tank->GetTankNumber() == otherTank->GetTankNumber()) { continue; }
+
+			// 他の戦車の弾が当たっていたらダメージ
+			if (otherTank->GetCannon()->GetCannonBall()->GetBulletState() == IBullet::FLYING &&
+				tank->GetCollider()->CheckTriggerCollider(otherTank->GetCannon()->GetCannonBall()->GetBoundingSphere()))
+			{
+				otherTank->GetCannon()->GetCannonBall()->SetBulletState(IBullet::USED);
+				tank->Damage(10);
+			}
+		}
+	}
 }
 
 // 戦車同士の当たり判定

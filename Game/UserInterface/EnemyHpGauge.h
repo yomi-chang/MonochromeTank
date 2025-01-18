@@ -27,20 +27,23 @@ public:
     EnemyHpGauge();
     ~EnemyHpGauge();
 
-    void Render(DirectX::SimpleMath::Vector3 position);
+    void Render(
+        DirectX::SimpleMath::Vector3 position,
+        float hpRatio
+    );
 
 private:
     //	入力レイアウト 
-    Microsoft::WRL::ComPtr<ID3D11InputLayout> m_InputLayout;
+    Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
 
     //	共通ステートオブジェクトへのポインタ
-    std::unique_ptr<DirectX::CommonStates> m_States;
+    //std::unique_ptr<DirectX::CommonStates> m_status;
 
     //	エフェクト 
-    std::unique_ptr<DirectX::BasicEffect> m_BatchEffect;
+    std::unique_ptr<DirectX::BasicEffect> m_basicEffect;
 
     //	プリミティブバッチ 
-    std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_Batch;
+    std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionColor>> m_primitiveBatch;
 
     // テクスチャの移動
     DirectX::SimpleMath::Vector3 m_position;

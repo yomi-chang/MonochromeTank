@@ -122,6 +122,14 @@ void Resources::LoadResource()
 		m_titleLogoTexture.GetAddressOf()
 	);
 
+	//	スペースキーテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\space.png",
+		nullptr,
+		m_spaceKeyTexture.GetAddressOf()
+	);
+
 
 	//	破壊演出テクスチャのロード 
 	DirectX::CreateWICTextureFromFile(

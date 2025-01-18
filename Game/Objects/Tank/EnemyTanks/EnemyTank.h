@@ -11,6 +11,7 @@ class SphereCollider;
 class SelectAction;
 class Patrol;
 class Tracking;
+class Attack;
 
 class Smoke;
 
@@ -30,7 +31,7 @@ public:
 
 	void Initialize()override;
 
-	void Update(float elapsedTime)override;
+	void Update(float elapsedTime) override;
 
 	void Render()override;
 
@@ -51,8 +52,6 @@ private:
 	float m_damage;
 	// 死亡しているかどうか
 	bool m_isDead;
-	// ターゲットを追跡中かどうか
-	bool m_isTracking;
 	// タイマー
 	float m_time;
 	// 索敵用コライダー
@@ -75,6 +74,7 @@ private:
 	std::unique_ptr<SelectAction> m_selectAction;	// 行動選択
 	std::unique_ptr<Patrol> m_patrol;				// 巡回行動
 	std::unique_ptr<Tracking> m_tracking;			// 追跡行動
+	std::unique_ptr<Attack> m_attack;				// 攻撃行動
 
 	// 倒されたときの演出
 	std::unique_ptr<Smoke> m_smokeEffect;
@@ -96,5 +96,10 @@ public:
 	// 他戦車情報の受け渡し
 	void SetOtherTanks(std::vector<Tank*> tanks);
 	// HPの取得
-	float GetHP() { return m_hpGauge->GetHp(); }
+	int GetHP() { return m_tank->GetHp(); }
+	// 追跡対象の戦車の設定
+	void SetTargetTank(Tank* targetTank) { m_targetTank = targetTank; }
+
+private:
+	void ChangeTargetTank();
 };

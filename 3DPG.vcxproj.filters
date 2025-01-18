@@ -116,10 +116,12 @@
     <ClInclude Include="Libraries\MyLib\LockOnCamera.h" />
     <ClInclude Include="Game\EnemyAi\Patrol.h" />
     <ClInclude Include="Game\EnemyAi\Tracking.h" />
-    <ClInclude Include="Game\EnemyAi\Escape.h" />
+    <ClInclude Include="Game\EnemyAi\Attack.h" />
     <ClInclude Include="Game\EnemyAi\SelectAction.h" />
     <ClInclude Include="Game\Objects\Bullet\BulletTrail.h" />
     <ClInclude Include="Game\Particle\Smoke.h" />
+    <ClInclude Include="Game\EnemyAi\Escape.h" />
+    <ClInclude Include="Game\EnemyAi\IEnemyAction.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -182,10 +184,11 @@
     <ClCompile Include="Libraries\MyLib\LockOnCamera.cpp" />
     <ClCompile Include="Game\EnemyAi\Patrol.cpp" />
     <ClCompile Include="Game\EnemyAi\Tracking.cpp" />
-    <ClCompile Include="Game\EnemyAi\Escape.cpp" />
+    <ClCompile Include="Game\EnemyAi\Attack.cpp" />
     <ClCompile Include="Game\EnemyAi\SelectAction.cpp" />
     <ClCompile Include="Game\Objects\Bullet\BulletTrail.cpp" />
     <ClCompile Include="Game\Particle\Smoke.cpp" />
+    <ClCompile Include="Game\EnemyAi\Escape.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

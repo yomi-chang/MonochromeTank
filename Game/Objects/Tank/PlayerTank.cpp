@@ -50,6 +50,7 @@ void PlayerTank::Initialize()
 	Vector3 initialPosition = Vector3::Zero;
 	m_tank = std::make_unique<Tank>(m_tankNumber,initialPosition, 0.0f);
 	m_tank->Initialize();
+	m_tank->SetMaxHp(100);
 
 	// 座標の設定
 	m_position = m_tank->GetPosition();
@@ -99,14 +100,11 @@ void PlayerTank::Update(float elapsedTime)
 //---------------------------------------------------------
 void PlayerTank::Render()
 {
-	// コライダーの描画
-	//m_collider->Render();
-
-	// HPゲージ
-	m_hpGauge->Render();
-
 	// 戦車の描画
 	m_tank->Render();
+
+	// HPゲージ
+	m_hpGauge->Render(m_tank->GetHpRatio());
 }
 
 //---------------------------------------------------------
