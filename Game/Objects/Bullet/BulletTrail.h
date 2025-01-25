@@ -2,16 +2,15 @@
 
 class Graphics;
 
-// 弾の座標
-struct PosBuffer
-{
-	DirectX::SimpleMath::Vector3 head;	//弾の先端の位置
-	DirectX::SimpleMath::Vector3 tail;	//弾の末端の位置
-};
-
 class BulletTrail
 {
 private:
+	// 弾の座標
+	struct PosBuffer
+	{
+		DirectX::SimpleMath::Vector3 head;	//弾の先端の位置
+		DirectX::SimpleMath::Vector3 tail;	//弾の末端の位置
+	};
 	std::vector<PosBuffer> m_posArray;						// 剣の位置を保存するバッファ
 	PosBuffer tempPos;										// 現在フレームでの剣の位置
 	int m_bufferSize;										// バッファサイズ(どれだけトレイルを伸ばすか)

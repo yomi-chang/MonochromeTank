@@ -22,7 +22,9 @@ Tank::Tank(
 	m_primitiveBatch{},
 	m_basicEffect{},
 	m_collider{},
-	m_otherTanks{}
+	m_otherTanks{},
+	m_targetTank{},
+	m_avoidCollider{}
 {
 }
 
@@ -51,6 +53,10 @@ void Tank::Initialize()
 	// コライダーの生成
 	m_collider = std::make_unique<BoxCollider>();
 	m_collider->CreateBoundingBox(m_currentPosition, COLLIDER_SIZE);
+
+	// 回避用コライダーの作成
+	m_avoidCollider = std::make_unique<SphereCollider>();
+	m_avoidCollider->CreateBoundingSphere(m_currentPosition, 1.0f);
 
 	// 影用のポリゴンを設定する
 	// ここではUV座標を指定している
@@ -93,6 +99,7 @@ void Tank::Update(float elapsedTime)
 	DirectX::SimpleMath::Vector3 colliderPos = m_body->GetPosition();
 	colliderPos.y += COLLIDER_POSITION;
 	m_collider->Update(colliderPos);
+	m_avoidCollider->Update(colliderPos);
 }
 
 //---------------------------------------------------------
@@ -143,6 +150,7 @@ void Tank::Render()
 
 	// コライダーの描画
 	m_collider->Render();
+	m_avoidCollider->Render();
 
 	// 部品の描画
 	for (auto& part : m_tankParts)
@@ -184,62 +192,4 @@ void Tank::Damage(int damage)
 	// ダメージが０でないなら
 	if (m_hp > 0)
 		m_hp -= damage;
-}
-
-//---------------------------------------------------------
-// 戦車と通常弾の当たり判定
-//---------------------------------------------------------
-bool Tank::DetectCollisionTankAndNomalBullets()
-{
-	for (auto& tank : m_otherTanks)
-	{
-		// 自機の場合は判定を行わない
-		if (tank->GetTankNumber() == m_tankNumber) { continue; }
-
-		for (auto& bullet : tank->GetCannon()->GetBullets())
-		{
-			// 弾丸が飛んでいる、かつ当たっているなら
-			if (bullet->GetBulletState() == IBullet::FLYING &&
-				m_collider->CheckTriggerCollider(bullet->GetBoundingSphere()))
-			{
-				bullet->SetBulletState(IBullet::USED);
-				return true;
-			}
-		}
-	}
-	return false;
-}
-
-//---------------------------------------------------------
-// 戦車と砲弾の当たり判定
-//---------------------------------------------------------
-bool Tank::DetectCollisionTankAndCannonBall()
-{
-	for (auto& tank : m_otherTanks)
-	{
-		// 自機の場合は判定を行わない
-		if (tank->GetTankNumber() == m_tankNumber) { continue; }
-
-		if (tank->GetCannon()->GetCannonBall()->GetBulletState() == IBullet::FLYING &&
-			m_collider->CheckTriggerCollider(tank->GetCannon()->GetCannonBall()->GetBoundingSphere()))
-		{
-			tank->GetCannon()->GetCannonBall()->SetBulletState(IBullet::USED);
-			return true;
-		}
-	}
-	return false;
-}
-
-//---------------------------------------------------------
-// 戦車同士の当たり判定
-//---------------------------------------------------------
-void Tank::DetectCollisionTankAndOtherTanks()
-{
-	//for (auto& tank : m_otherTanks)
-	//{
-	//	// 自機の場合は判定を行わない
-	//	if (tank->GetTankNumber() == m_tankNumber) { continue; }
-
-	//	tank->GetBody()->SetCollisionVel(m_collider->CheckCollisionCollider(tank->GetBoundingBox()));
-	//}
 }

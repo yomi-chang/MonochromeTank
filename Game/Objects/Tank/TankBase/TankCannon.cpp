@@ -37,8 +37,7 @@ TankCannon::TankCannon(
 	m_reloadBulletType{},
 	m_bulletBlurRadius{},
 	m_drawTexture{},
-	m_tank{},
-	m_walls{}
+	m_tank{}
 {
 	// 戦車情報の受け取り
 	m_tank = tank;
@@ -362,85 +361,20 @@ DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 //---------------------------------------------------------
 void TankCannon::DisplaySight()
 {
-	using namespace DirectX::SimpleMath;
+	// 照準画像の表示
+	if(m_tank->GetTankNumber() == 0)
+		m_drawTexture->Render(m_hitPosition);
+}
 
-	// 壁の情報を持っていないならこれ以降の処理をしない
-	if (m_walls.empty()) { return; }
-
-	// 戦車の向いている方向
-	Quaternion rotation = m_cannonRotation * m_currentRotation;
-	Matrix matrix = Matrix::CreateFromQuaternion(rotation);
-
-	//// 描画開始
-	//m_graphics->DrawPrimitiveBegin(m_graphics->GetViewMatrix(), m_graphics->GetProjectionMatrix());
-	//// レーザーサイト
-	//m_graphics->DrawLine(GetMuzzlePosition(), { matrix.Forward() * MAX_RANGE}, DirectX::Colors::Red);
-	//// 描画終了
-	//m_graphics->DrawPrimitiveEnd();
-
-	// レイを飛ばして着弾方向の表示
-	// 射程距離
-	float range = MAX_RANGE;
-	// レイの距離
-	float rayDistance = 0.0f;
-	// レイの距離記録用変数
-	float minDistance = range;
-	
-	// レイの作成
-	Vector3 rayDirection = matrix.Forward();
-	rayDirection.Normalize();
-	Ray ray{ this->GetMuzzlePosition(), rayDirection };
-
-	// 壁のボックスコライダーとの衝突判定を取る
-	for (auto& wall : m_walls)
-	{
-		// 壁との衝突判定
-		bool isHit = ray.Intersects(*wall->GetBoundingBox(), rayDistance);
-		
-		// 射程範囲外かつ当たっている
-		if (rayDistance <= range && isHit)
-		{
-			// より短い距離を記録する
-			minDistance = std::min(minDistance, rayDistance);
-		}
-	}
-	
-	// 衝突座標
-	Vector3 hitPosition = Vector3::Zero;
-	// 一回でも壁との衝突が取れていたら
-	if (minDistance < range)
-	{
-		// 衝突点計算
-		hitPosition = Vector3{ ray.position + ray.direction * minDistance - ray.direction };
-		// 赤い照準を出す
+void TankCannon::SetRayInfo(bool isHit, DirectX::SimpleMath::Vector3 hitPosition)
+{
+	// 衝突しているかに応じたテクスチャの設定
+	if (isHit)
 		m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
-	}
 	else
-	{
-		// 照準画像の表示場所計算
-		hitPosition = Vector3{ ray.position + ray.direction * range - ray.direction };
-
-		// 黒い照準を出す
 		m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetTexture());
 
-		// 床に埋まらないようにする
-		if (hitPosition.y <= 0.0f)
-		{
-			hitPosition.y = 0.0f;
-			// 赤い照準を出す
-			m_drawTexture->SetTexture(Resources::GetInstance()->GetTargetLockTexture());
-		}
-		
-	}
-
-	// 照準画像の表示
-	m_drawTexture->Render(hitPosition);
+	// 衝突座標の設定
+	m_hitPosition = hitPosition;
 }
 
-//---------------------------------------------------------
-// 壁情報の削除
-//---------------------------------------------------------
-void TankCannon::DeleteWall()
-{
-	m_walls.clear();
-}

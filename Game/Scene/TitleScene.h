@@ -14,6 +14,7 @@ namespace mylib
 class Graphics;
 class Floor;
 class Tank;
+class Fade;
 
 class TitleScene final :
     public IScene
@@ -44,6 +45,9 @@ private:
 
 	// íÔ
 	std::vector<std::unique_ptr<Tank>> m_tanks;
+
+	// ƒV[ƒ“‘JˆÚ
+	std::unique_ptr<Fade> m_fade;
 
 
 public:

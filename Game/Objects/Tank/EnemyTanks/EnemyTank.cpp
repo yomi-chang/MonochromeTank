@@ -28,10 +28,8 @@ EnemyTank::EnemyTank(
 	m_position{ position },
 	m_angle{},
 	m_hpGauge{},
-	m_damage{},
 	m_isDead{},
 	m_time{},
-	m_collider{},
 	m_targetTank{},
 	m_tank{},
 	m_patrolPoint{},
@@ -55,16 +53,15 @@ void EnemyTank::Initialize()
 	// 戦車の生成
 	m_tank = std::make_unique<Tank>(m_tankNumber,m_position, DirectX::XMConvertToRadians(180.0f));
 	m_tank->Initialize();
-	m_tank->SetMaxHp(100);
+	m_tank->SetMaxHp(50);
 
 	// 敵体力ゲージを生成
 	m_hpGauge = std::make_unique<EnemyHpGauge>();
 	m_hpGauge->SetMaxHp(10.0f);
 
-	m_patrolPoint.emplace_back(Vector3{ 3.0f, 0.0f,  3.0f });
-	m_patrolPoint.emplace_back(Vector3{ -3.0f, 0.0f,  3.0f });
-	m_patrolPoint.emplace_back(Vector3{ -3.0f, 0.0f, -3.0f });
-	m_patrolPoint.emplace_back(Vector3{ 3.0f, 0.0f, -3.0f });
+	m_patrolPoint.emplace_back(Vector3{ 6.0f, 0.0f,  -6.0f });
+	m_patrolPoint.emplace_back(Vector3{ 0.0f, 0.0f,  6.0f });
+	m_patrolPoint.emplace_back(Vector3{ -6.0f, 0.0f, -6.0f });
 
 	// 仮のデータ
 	m_patrolPoint2.emplace_back(Vector3{ -3.0f, 0.0f,  -3.0f });
@@ -74,10 +71,6 @@ void EnemyTank::Initialize()
 	m_patrolPoint3.emplace_back(Vector3{ 3.0f, 0.0f,  3.0f });
 	m_patrolPoint3.emplace_back(Vector3{ -3.0f, 0.0f,  3.0f });
 	m_patrolPoint3.emplace_back(Vector3{ 1.5f, 0.0f, -3.0f });
-
-	// 索敵用コライダーの作成
-	m_collider = std::make_unique<SphereCollider>();
-	m_collider->CreateBoundingSphere(m_position,3.0f);
 
 	//m_tank->GetCannon()->ChangeBullet();
 
@@ -103,13 +96,15 @@ void EnemyTank::Initialize()
 		default:
 			break;
 	}
-	//m_patrol->Initialize(m_patrolPoint, m_tank.get());
 
 	m_tracking = std::make_unique<Tracking>();
 	m_tracking->Initialize(m_tank.get());
 
 	m_attack = std::make_unique<Attack>();
 	m_attack->Initialize(m_tank.get());
+
+	// 
+
 
 	// やられたときの演出作成
 	m_smokeEffect = std::make_unique<Smoke>();
@@ -133,27 +128,14 @@ void EnemyTank::Update(float elapsedTime)
 	// 座標と回転角の更新
 	m_position = m_tank->GetPosition();
 	m_angle = m_tank->GetRotation();
-	
-	// 索敵用コライダーの座標更新
-	m_collider->Update(m_position);
 
-	//// ダメージの初期化
-	//m_damage = 0.0f;
-	//// 衝突判定
-	//if(m_tank->DetectCollisionTankAndNomalBullets()) 
-	//{
-	//	m_damage += 0.5f;
-	//}
-	//if (m_tank->DetectCollisionTankAndCannonBall()) 
-	//{
-	//	m_damage += 3.0f;
-	//}
-	//m_tank->DetectCollisionTankAndOtherTanks();
-	//// ダメージ処理
-	//m_hpGauge->Damage(m_damage);
+	// 攻撃を受けていた場合追跡対象の戦車を切り替える
+	if(m_tank->GetTargetTank() != nullptr)
+		m_targetTank = m_tank->GetTargetTank();
 
 	// 巡回行動中なら一定範囲にいる敵を追跡対象にする
-	if (m_selectAction->GetAction() == SelectAction::Action::PATROL)
+	if (m_selectAction->GetAction() == SelectAction::Action::PATROL &&
+		m_targetTank == nullptr)
 	{
 		for (auto& tank : m_tanks)
 		{
@@ -164,26 +146,29 @@ void EnemyTank::Update(float elapsedTime)
 			if (distance <= 5.0f)
 			{
 				m_targetTank = tank;
-				m_selectAction->SetTargetTank(tank);
+				break;
 			}
 		}
 	}
-	
+
+	m_selectAction->SetTargetTank(m_targetTank);
 	m_selectAction->Update();
 	m_tracking->SetTargetTank(m_targetTank);
+	m_attack->SetTargetTank(m_targetTank);
 	switch (m_selectAction->GetAction())
 	{
 		case  SelectAction::Action::NONE:
 			break;
 		case SelectAction::Action::PATROL:
 			m_patrol->Update(elapsedTime);
-			//mylib::DebugLog("パトロール");
+			mylib::DebugLog("パトロール");
 			break;
 		case SelectAction::Action::TRACKING:
 			m_tracking->Update(elapsedTime);
-			//mylib::DebugLog("追跡行動");
+			mylib::DebugLog("追跡行動");
 		case SelectAction::Action::ATTACK:
 			m_attack->Update(elapsedTime);
+			mylib::DebugLog("攻撃");
 			break;
 		default:
 			break;
@@ -213,11 +198,7 @@ void EnemyTank::Render()
 	// 戦車の描画
 	m_tank->Render();
 
-	// 索敵用コライダーの描画
-	m_collider->Render();
-
 	// HPゲージ
-	mylib::DebugLog("hp", m_tank->GetHp());
 	m_hpGauge->Render(m_position,m_tank->GetHpRatio());
 }
 

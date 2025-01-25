@@ -187,7 +187,6 @@ void StageManager::SetObjectData(
 {
 	for (auto& wall : m_walls)
 	{
-		wall->SetTanks(tanks);
 		wall->SetCamera(camera);
 	}
 	m_wallGimmick->SetTanks(tanks);

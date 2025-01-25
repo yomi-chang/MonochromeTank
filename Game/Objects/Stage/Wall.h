@@ -5,7 +5,6 @@ namespace mylib
 {
 	class FollowCamera;
 }
-class Tank;
 
 class Wall
 {
@@ -18,7 +17,6 @@ public:
 	};
 
 public:
-	void SetTanks(std::vector<Tank*> tanks) { m_tanks = tanks; }
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 
 public:
@@ -50,8 +48,7 @@ public:
 private:
 	std::unique_ptr<DirectX::GeometricPrimitive> m_model;		// ジオメトリックプリミティブ
 	DirectX::SimpleMath::Vector3 m_position;					// 座標	
-	std::unique_ptr<BoxCollider> m_collider;					// ボックスコライダー
-	std::vector<Tank*> m_tanks;									// 戦車情報
+	std::unique_ptr<BoxCollider> m_collider;					// コライダー
 	mylib::FollowCamera* m_camera;								// カメラ
 	Graphics* m_graphics;										// グラフィックス	
 	DirectX::SimpleMath::Vector4 m_color;						// カラー

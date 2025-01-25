@@ -53,6 +53,10 @@ void BulletTrail::Render()
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
+
+	// 座標情報が2つ未満なら早期リターン
+	if (m_posArray.size() < 2) { return; }
+
 	//頂点データを更新する
 	/*float amount = 1.0f / (usedPosArray.size() - 1);
 	float v = 0;
@@ -81,7 +85,7 @@ void BulletTrail::Render()
 	m_basicEffect->Apply(context);
 
 	// bufferSize分回す
-	for (int i = 0; i < m_bufferSize; i++)
+	for (int i = 1; i < m_bufferSize; i++)
 	{
 		VertexPositionTexture vertex[4] =
 		{
@@ -97,12 +101,12 @@ void BulletTrail::Render()
 	}
 
 	//　配列情報をクリアする
-	m_posArray.clear();
+	//m_posArray.clear();
 }
 
 // 座標の受け取り
 void BulletTrail::SetPosition(DirectX::SimpleMath::Vector3& head, DirectX::SimpleMath::Vector3& tail)
 {
 	// 座標情報の受け取り
-	m_posArray.push_back({ head, tail });
+	m_posArray.push_back(PosBuffer{ head, tail });
 }

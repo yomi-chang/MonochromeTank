@@ -25,6 +25,7 @@
 
 #include "Game/Objects/Stage/StageManager.h"
 #include "Game/Other/CollisionManager.h"
+#include "Game/Scene/Fade.h"
 #include "Game/Other/ResultData.h"
 
 #include <cassert>
@@ -45,7 +46,9 @@ PlayScene::PlayScene()
 	m_player{},
 	m_enemies{},
 	m_stageManager{},
-	m_collisonManager{}
+	m_collisonManager{},
+	m_fade{},
+	m_isStart{}
 {
 }
 
@@ -80,9 +83,6 @@ void PlayScene::Initialize()
 	// 射影行列を設定する
 	m_graphics->SetProjectionMatrix(projection);
 
-	// モデルの読み込み(GameClassの方がいいかも)
-	//Resources::GetInstance()->LoadResource();
-
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 
@@ -92,9 +92,9 @@ void PlayScene::Initialize()
 	m_player->Initialize();
 
 	// 敵戦車
-	m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 5.0f, 0.0f, -5.0f }));
-	//m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -5.0f, 0.0f, -5.0f }));
-	//m_enemies.push_back(std::make_unique<EnemyTank>(3, Vector3{ 3.0f, 0.0f, 5.0f }));
+	m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 0.0f, 0.0f, -8.0f }));
+	m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -5.0f, 0.0f, -5.0f }));
+	m_enemies.push_back(std::make_unique<EnemyTank>(3, Vector3{ 3.0f, 0.0f, 5.0f }));
 	for (auto& enemy : m_enemies)
 	{
 		enemy->Initialize();
@@ -116,6 +116,10 @@ void PlayScene::Initialize()
 	// コリジョンマネージャー
 	m_collisonManager = std::make_unique<CollisionManager>();
 
+	// シーン遷移用
+	m_fade = std::make_unique<Fade>(1.0f);
+	m_fade->FadeOut();
+
 	//全戦車の情報を持つ配列
 	std::vector<Tank*> tankPointers;
 	tankPointers.push_back(m_player->GetTank());
@@ -135,8 +139,6 @@ void PlayScene::Initialize()
 	m_stageManager->SetObjectData(tankPointers, m_tpsCamera.get());
 	// カメラ情報の設定
 	m_player->SetCamera(m_tpsCamera.get());
-	// 壁の情報の設定
-	m_player->SetWalls(m_stageManager->GetWalls());
 	// 全オブジェクトの情報の設定
 	m_collisonManager->SetObjectData(
 		tankPointers,
@@ -154,6 +156,29 @@ void PlayScene::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 
+	// シーン遷移用
+	m_fade->Update(elapsedTime);
+
+	// フォローカメラを更新する
+	m_tpsCamera->Update(elapsedTime);
+
+	// デバッグカメラを更新する
+	m_debugCamera->Update();
+
+	// ゲーム開始
+	if (!m_isStart)
+	{
+		// フェードが終了したらゲーム開始
+		if (m_fade->FinishFade())
+		{
+			m_isStart = true;
+		}
+		else
+		{
+			return;
+		}
+	}
+
 	// コリジョンマネージャーの更新
 	m_collisonManager->Update();
 
@@ -168,12 +193,6 @@ void PlayScene::Update(float elapsedTime)
 
 	// ステージの更新
 	m_stageManager->Update(elapsedTime);
-
-	// フォローカメラを更新する
-	m_tpsCamera->Update(elapsedTime);
-
-	// デバッグカメラを更新する
-	m_debugCamera->Update();
 
 	// Cキーを押すことでデバッグカメラとTPSカメラを切り替える
 	const auto& keyboardTracker = InputManager::GetInstance()->GetKeyboardTracker();
@@ -193,26 +212,28 @@ void PlayScene::Update(float elapsedTime)
 			surviveTank++;
 	}
 
-	// 生存している戦車が1台だけならゲーム終了
-	if (surviveTank == 1)
+	// フェードが終了していたらリザルトシーンに
+	if (m_fade->FinishFade())
 	{
 		//生存している戦車情報をRetultDataに所有権ごと渡す
 		if (!m_player->GetDead())
 		{
-			// 砲身が持っている壁情報の削除
-			m_player->DeleteWall();
 			ResultData::GetInstance()->SetWinnerTank(m_player->ReleaseTank());
 		}
 		for (auto& enemy : m_enemies)
 		{
-			if(!enemy->GetDead())
+			if (!enemy->GetDead())
 				ResultData::GetInstance()->SetWinnerTank(enemy->ReleaseTank());
 		}
-
-		// リザルトシーンへ
 		m_isChangeScene = true;
 	}
 
+	// 生存している戦車が1台だけならゲーム終了
+	if (surviveTank == 1)
+	{
+		// フェード開始
+		m_fade->FadeIn();
+	}
 }
 
 //---------------------------------------------------------
@@ -242,17 +263,20 @@ void PlayScene::Render()
 	// ステージの描画
 	m_stageManager->Render();
 
-	// 戦車の描画
-	m_player->Render();
-
 	// 敵の描画
 	for (auto& enemy : m_enemies)
 	{
 		enemy->Render();
 	}
 
+	// 戦車の描画
+	m_player->Render();
+
 	// UI関係
 	m_magazine->Render();
+
+	// シーン遷移用
+	m_fade->Render();
 
 	// デバッグ情報を「DebugString」で表示する
 #ifdef _DEBUG

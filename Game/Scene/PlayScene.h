@@ -13,6 +13,7 @@ class StageManager;
 class CollisionManager;
 
 class MagazineUi;
+class Fade;
 
 namespace mylib
 {
@@ -52,6 +53,10 @@ private:
 
 	// c’e”UI
 	std::unique_ptr<MagazineUi> m_magazine;
+
+	// ƒV[ƒ“‘JˆÚ
+	std::unique_ptr<Fade> m_fade;
+	bool m_isStart; 
 
 
 public:

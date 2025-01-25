@@ -54,4 +54,6 @@ private:
 	void DetectCollisionTankAndWalls();
 	// ’e‚Æ•Ç‚Ì“–‚½‚è”»’è
 	void DetectCollisionBulletsAndWalls();
+	// Ray‚Æ•Ç‚Ì“–‚½‚è”»’è
+	void DetectCollisionRayAndWalls();
 };

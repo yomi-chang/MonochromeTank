@@ -76,11 +76,11 @@ private:
 	float m_bulletBlurRadius;							// 弾のブレの半径
 	
 	std::unique_ptr<DrawTexture> m_drawTexture;			// 画像の描画
-	std::vector<Wall*> m_walls;							// 壁
 
 	Tank* m_tank;										// 戦車情報
+	DirectX::SimpleMath::Vector3 m_hitPosition;			// Rayが当たった座標
 
-
+	
 public:
 	// 砲身の角度の取得
 	DirectX::SimpleMath::Quaternion GetCannonRotation() { return m_cannonRotation; }
@@ -100,8 +100,8 @@ public:
 	// リロード開始
 	void StartReload();
 
-	// 壁情報の受け取り
-	void SetWalls(std::vector<Wall*> walls) { m_walls = walls; }
+	// Rayが壁と当たったかどうかと当たった座標を設定
+	void SetRayInfo(bool isHit, DirectX::SimpleMath::Vector3 hitPosition);
 
 	// 「連射弾」を参照する
 	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
@@ -116,15 +116,18 @@ public:
 	float GetCannonReloadRatio() { return 1.0f - (m_reloadCount / CANNONBALL_RELOAD_TIME); }
 	float GetBulletReloadRatio() { return 1.0f - (m_reloadCount / BULLET_RELOAD_TIME); }
 
-	// 壁の情報を初期化する
-	void DeleteWall();
+	// 銃口の座標を取得する
+	DirectX::SimpleMath::Vector3 GetMuzzlePosition();
+
+	// Rayの射程の取得
+	float GetMaxRange() { return MAX_RANGE; }
+
+	// 発射方向の取得
+	DirectX::SimpleMath::Quaternion GetMuzzleRotation() { return m_cannonRotation * m_currentRotation; }
 
 private:
 	// 照準の表示
 	void DisplaySight();
-
-	// 銃口の座標を取得する
-	DirectX::SimpleMath::Vector3 GetMuzzlePosition();
 
 	// リロード処理
 	void Reload(float elapsedTime);

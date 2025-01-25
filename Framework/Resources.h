@@ -25,6 +25,7 @@ public:
 	ID3D11ShaderResourceView* GetRelooadTexture() { return m_reloadTexture.Get(); }			// リロードテキストテクスチャ
 	ID3D11ShaderResourceView* GetTitleLogoTexture() { return m_titleLogoTexture.Get(); }	// タイトルロゴテクスチャ
 	ID3D11ShaderResourceView* GetSpaceKeyTexture() { return m_spaceKeyTexture.Get(); }		// スペースキーテクスチャ
+	ID3D11ShaderResourceView* GetFontTexture() { return m_fontTexture.Get(); }				// フォントテクスチャ
 
 	ID3D11ShaderResourceView* GetBlackSmokeTexture() { return m_blackSmokeTexture.Get(); }	// 破壊演出テクスチャ
 
@@ -63,6 +64,7 @@ private:
 		m_reloadTexture{},
 		m_titleLogoTexture{},
 		m_spaceKeyTexture{},
+		m_fontTexture{},
 
 		m_blackSmokeTexture{}
 	{
@@ -117,6 +119,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_titleLogoTexture;
 	// スペースキーテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_spaceKeyTexture;
+	// フォントテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_fontTexture;
 
 	// エフェクトテクスチャ============================================
 	// 破壊演出テクスチャ

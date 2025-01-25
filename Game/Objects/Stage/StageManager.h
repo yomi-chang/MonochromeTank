@@ -41,7 +41,7 @@ private:
 	std::unique_ptr<FixedTurret> m_fixedTurret;						// 固定砲台
 
 	// 配列サイズの宣言
-	static const int STAGESIZE = 16;
+	static const int STAGESIZE = 20;
 
 	// 土台
 	int m_base[STAGESIZE][STAGESIZE];

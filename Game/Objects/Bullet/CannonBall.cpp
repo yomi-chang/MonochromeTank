@@ -6,7 +6,7 @@
 #include "Libraries/MyLib/DebugLog.h"
 
 // –C’e‘¬“x‚ğ’è‹`‚·‚é
-const DirectX::SimpleMath::Vector3 CannonBall::SPEED(0.0f, 0.0f, -0.1f);
+const DirectX::SimpleMath::Vector3 CannonBall::SPEED(0.0f, 0.0f, -0.12f);
 
 // –C’e‚É‚©‚©‚éd—Í‚ğ’è‹`‚·‚é
 const DirectX::SimpleMath::Vector3 CannonBall::GRAVITY(0.0f, -0.05f, 0.0f);

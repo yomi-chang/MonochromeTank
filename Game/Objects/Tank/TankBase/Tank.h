@@ -7,12 +7,14 @@
 #include "Game/Objects/Tank/TankBase/TankCannon.h"
 
 #include "Game/Collider/BoxCollider.h"
+#include "Game/Collider/SphereCollider.h"
 
 class TankBody;
 class TankTurret;
 class TankCannon;
 
 class BoxCollider;
+class SphereCollider;
 
 class Tank : public IParent
 {
@@ -69,8 +71,10 @@ private:
 	int m_tankNumber;										// 戦車番号
 	std::unique_ptr<BoxCollider> m_collider;				// コライダー
 	std::vector<Tank*> m_otherTanks;						// 自分以外の戦車
-	unsigned int m_maxHp;											// 最大体力
-	unsigned int  m_hp;												// 体力
+	unsigned int m_maxHp;									// 最大体力
+	unsigned int  m_hp;										// 体力
+	Tank* m_targetTank;										// 攻撃してきた他の戦車
+	std::unique_ptr<SphereCollider> m_avoidCollider;		// 回避用コライダー
 
 
 public:
@@ -83,11 +87,13 @@ public:
 	// 他の戦車情報の設定
 	void SetOtherTanks(std::vector<Tank*> tanks) { m_otherTanks = tanks; }
 	// 体力の設定
-	void SetMaxHp(float hp) 
+	void SetMaxHp(int hp) 
 	{
 		m_maxHp = hp; 
 		m_hp = hp;
 	}
+	// 攻撃してきた敵の設定
+	void SetTargetTank(Tank* targetTank) { m_targetTank = targetTank; }
 
 	// 車体情報の取得
 	TankBody* GetBody() { return m_body; }
@@ -113,16 +119,12 @@ public:
 	// 戦車番号の取得
 	int GetTankNumber() { return m_tankNumber; }
 	// 体力の取得
-	float GetHp() { return m_hp; }
+	int GetHp() { return m_hp; }
 	// 体力の減っている割合の取得
 	float GetHpRatio() { return 1.0f - (static_cast<float>(m_hp) / static_cast<float>(m_maxHp)); }
+	// 攻撃してきた敵の取得
+	Tank* GetTargetTank() { return m_targetTank; }
 
 	// ダメージ処理
 	void Damage(int damage);
-
-
-	// 当たり判定
-	bool DetectCollisionTankAndNomalBullets();	// 戦車の連射弾の当たり判定
-	bool DetectCollisionTankAndCannonBall();	// 戦車の連射弾の当たり判定
-	void DetectCollisionTankAndOtherTanks();	// 戦車同士の当たり判定
 };

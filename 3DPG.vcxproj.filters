@@ -122,6 +122,7 @@
     <ClInclude Include="Game\Particle\Smoke.h" />
     <ClInclude Include="Game\EnemyAi\Escape.h" />
     <ClInclude Include="Game\EnemyAi\IEnemyAction.h" />
+    <ClInclude Include="Game\Scene\Fade.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -189,6 +190,7 @@
     <ClCompile Include="Game\Objects\Bullet\BulletTrail.cpp" />
     <ClCompile Include="Game\Particle\Smoke.cpp" />
     <ClCompile Include="Game\EnemyAi\Escape.cpp" />
+    <ClCompile Include="Game\Scene\Fade.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

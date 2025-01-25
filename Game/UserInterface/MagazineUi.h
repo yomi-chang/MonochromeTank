@@ -12,12 +12,14 @@ class MagazineUi
 private:
 	// UI座標の定数
 	const RECT MAIN_BULLET_FRAME = { 1000,625,1195,700 };
-	const RECT SUB_BULLET_FRAME = { 1140,555,1270,625 };
+	const RECT SUB_BULLET_FRAME = { 1140,590,1270,645 };
 	const RECT MAIN_BULLET_UI = { 1010,635,1100,675 };
-	const RECT SUB_BULLET_UI = { 1200,625,1265,605 };
+	const RECT SUB_BULLET_UI = { 1200,600,1265,630 };
 	const RECT RELOAD_GAUGE_BACK = { 1010,685,1170,695 };
 
-
+	const int FONT_SIZE = 12;
+	const int BASE_POS_X = 15;
+	const float FONT_SCALE = 3.0f;
 
 private:
 	// グラフィックス

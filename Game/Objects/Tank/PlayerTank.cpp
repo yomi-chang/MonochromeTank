@@ -26,7 +26,6 @@ PlayerTank::PlayerTank(
 	m_angle{},
 	m_tank{},
 	m_hpGauge{},
-	m_damage{},
 	m_isDead{},
 	m_camera{}
 {
@@ -50,7 +49,7 @@ void PlayerTank::Initialize()
 	Vector3 initialPosition = Vector3::Zero;
 	m_tank = std::make_unique<Tank>(m_tankNumber,initialPosition, 0.0f);
 	m_tank->Initialize();
-	m_tank->SetMaxHp(100);
+	m_tank->SetMaxHp(50);
 
 	// 座標の設定
 	m_position = m_tank->GetPosition();
@@ -78,20 +77,8 @@ void PlayerTank::Update(float elapsedTime)
 	m_position = m_tank->GetPosition();
 	m_angle = m_tank->GetRotation();
 
-	// ダメージの初期化
-	m_damage = 0.0f;
-	if (m_tank->DetectCollisionTankAndNomalBullets()) { m_damage += 0.5f; }
-	if (m_tank->DetectCollisionTankAndCannonBall()) { m_damage += 3.0f; }
-	m_tank->DetectCollisionTankAndOtherTanks();
-
-	// ダメージ処理
-	m_hpGauge->Damage(m_damage);
-
-	// ダメージのリセット
-	m_damage = 0.0f;
-
 	// 体力が0になった場合の処理
-	if (m_hpGauge->GetDead())
+	if (m_tank->GetHp() <= 0)
 		m_isDead = true;
 }
 
@@ -220,14 +207,6 @@ void PlayerTank::RotateTurretCannon()
 	eulerAngle = mylib::Clamp(eulerAngle, CANNON_ANGLE_MIN, CANNON_ANGLE_MAX);
 	// 回転情報を砲身に伝える
 	m_tank->GetCannon()->RotateCannon(eulerAngle);
-}
-
-//---------------------------------------------------------
-// 壁情報の受け渡し
-//---------------------------------------------------------
-void PlayerTank::SetWalls(std::vector<Wall*> walls)
-{
-	m_tank->GetCannon()->SetWalls(walls);
 }
 
 //---------------------------------------------------------

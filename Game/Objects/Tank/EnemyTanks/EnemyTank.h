@@ -6,12 +6,11 @@
 class Tank;
 class EnemyHpGauge;
 
-class SphereCollider;
-
 class SelectAction;
 class Patrol;
 class Tracking;
 class Attack;
+class SphereCollider;
 
 class Smoke;
 
@@ -48,14 +47,10 @@ private:
 	std::unique_ptr<Tank> m_tank;
 	// HPゲージ
 	std::unique_ptr<EnemyHpGauge> m_hpGauge;
-	// ダメージ
-	float m_damage;
 	// 死亡しているかどうか
 	bool m_isDead;
 	// タイマー
 	float m_time;
-	// 索敵用コライダー
-	std::unique_ptr<SphereCollider> m_collider;
 
 	// 追跡対象の戦車
 	Tank* m_targetTank;

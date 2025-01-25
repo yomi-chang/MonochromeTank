@@ -50,8 +50,6 @@ private:
 	std::unique_ptr<Tank> m_tank;
 	// HPゲージ
 	std::unique_ptr<HpGauge> m_hpGauge;
-	// ダメージ
-	float m_damage;
 	// 倒されているかどうか
 	bool m_isDead;
 	// カメラ
@@ -92,11 +90,7 @@ public:
 	// 死亡しているかどうか
 	bool GetDead() 
 	{
-		if (m_hpGauge->GetDead()) { return true; }
+		if (m_tank->GetHp() <= 0) { return true; }
 		else { return false; }
 	}
-	// 壁情報の削除
-	void DeleteWall() { m_tank->GetCannon()->DeleteWall(); }
-	// ダメージを与える処理
-	void AddDamage(float damage) { m_damage += damage; }
 };

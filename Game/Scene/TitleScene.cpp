@@ -14,6 +14,7 @@
 #include "Game/Objects/Stage/Floor.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Libraries/MyLib/LockOnCamera.h"
+#include "Game/Scene/Fade.h"
 #include <cassert>
 
 using namespace DirectX;
@@ -31,7 +32,8 @@ TitleScene::TitleScene()
 	m_texCenter{},
 	m_isChangeScene{},
 	m_floor{},
-	m_tanks{}
+	m_tanks{},
+	m_fade{}
 {
 }
 
@@ -119,6 +121,9 @@ void TitleScene::Initialize()
 	m_camera->SetHeight(3.0f);
 	m_camera->SetEyePosition(DirectX::SimpleMath::Vector3(0.0f, 5.0f, 5.0f));
 
+	// シーン遷移用
+	m_fade = std::make_unique<Fade>(0.0f);
+
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
 }
@@ -134,11 +139,16 @@ void TitleScene::Update(float elapsedTime)
 	// キーボードステートの取得
 	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
 
-	// スペースキーが押されたら
+	// シーン遷移用
+	m_fade->Update(elapsedTime);
+
+	// スペースキーが押されたらフェード開始
 	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
-	{
+		m_fade->FadeIn();
+	// フェード処理が終了していたら
+	if (m_fade->FinishFade())
 		m_isChangeScene = true;
-	}
+
 
 	// 敵戦車の更新
 	for (auto& tank : m_tanks)
@@ -201,6 +211,9 @@ void TitleScene::Render()
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();
+
+	// シーン遷移用
+	m_fade->Render();
 }
 
 //---------------------------------------------------------

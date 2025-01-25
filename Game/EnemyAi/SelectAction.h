@@ -25,7 +25,7 @@ private:
 	};
 
 	// ‹——£è‡’l
-	const float DISTANCE_HIGH = /*60.0f*/ 50.0f, DISTANCE_LOW = 8.0f;
+	const float DISTANCE_HIGH = /*60.0f*/ 50.0f, DISTANCE_LOW = 10.0f;
 
 	// ‘Ì—Íè‡’l
 	const float HP_HIGH = 7.0f, HP_LOW = 3.0f;

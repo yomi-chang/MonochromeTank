@@ -192,19 +192,45 @@ void MagazineUi::MainBulletUi()
     m_spriteBatch->Draw(m_gaugeTexture, RELOAD_GAUGE_BACK, DirectX::Colors::Black);
     m_spriteBatch->Draw(m_gaugeTexture, m_reloadPos, DirectX::Colors::Aqua);
 
-    RECT rect = {1170,620,1230,680};
-    m_spriteBatch->Draw(Resources::GetInstance()->GetSpaceKeyTexture(), rect);
-
-    // 残弾数の表示
-    m_spriteFont->DrawString(
-        m_spriteBatch,
-        std::to_wstring(CheckBulletValue()).c_str(),
-        DirectX::XMFLOAT2(1110, 595),
-        DirectX::Colors::Black,
-        0.0f,
-        DirectX::XMFLOAT2(0, 0),
-        2.0f
+    m_spriteBatch->Draw(
+        Resources::GetInstance()->GetSpaceKeyTexture(),
+        DirectX::XMFLOAT2(1180, 640),                  
+        nullptr,                                     
+        DirectX::Colors::White,                          
+        0.0f,                                          
+        DirectX::XMFLOAT2(0, 0),                       
+        DirectX::XMFLOAT2(0.25f, 0.25f)
     );
+
+    int value = CheckBulletValue();
+    RECT rect = { 0,0,0,0 };
+    rect.left = (BASE_POS_X + value / 10) * FONT_SIZE;
+    rect.right = rect.left + FONT_SIZE;
+    rect.bottom = FONT_SIZE;
+    // 二桁目
+    m_spriteBatch->Draw(
+        Resources::GetInstance()->GetFontTexture(),
+        DirectX::XMFLOAT2(1110, 640),
+        &rect,
+        DirectX::Colors::White,
+        0.0,
+        DirectX::XMFLOAT2(0,0),
+        FONT_SCALE
+    );
+
+    rect.left = (BASE_POS_X + value % 10) * FONT_SIZE;
+    rect.right = rect.left + FONT_SIZE;
+    // 一桁目
+    m_spriteBatch->Draw(
+        Resources::GetInstance()->GetFontTexture(),
+        DirectX::XMFLOAT2(1135, 640),
+        &rect,
+        DirectX::Colors::White,
+        0.0,
+        DirectX::XMFLOAT2(0, 0),
+        FONT_SCALE
+    );
+
 }
 
 // 残弾数の確認

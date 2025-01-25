@@ -130,6 +130,15 @@ void Resources::LoadResource()
 		m_spaceKeyTexture.GetAddressOf()
 	);
 
+	//	フォントテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\font.png",
+		nullptr,
+		m_fontTexture.GetAddressOf()
+	);
+
+
 
 	//	破壊演出テクスチャのロード 
 	DirectX::CreateWICTextureFromFile(

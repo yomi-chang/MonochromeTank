@@ -28,28 +28,10 @@ void SelectAction::Initialize(Tank* tank, EnemyHpGauge* hp)
 
 void SelectAction::Update()
 {
-	// 最も近い敵との距離を調べる
-	//float distance = std::numeric_limits<float>::max(); // 最大値で初期化
-	//for (auto& tank : m_otherTanks)
-	//{
-	//	// 自機では判定しない
-	//	if (tank->GetTankNumber() == m_tank->GetTankNumber()) { continue; }
-	//	
-	//	// 距離の取得
-	//	float d = (tank->GetPosition() - m_tank->GetPosition()).LengthSquared();
-	//	if (distance >= d)
-	//	{
-	//		// 追跡対象の戦車の設定
-	//		m_targetTank = tank;
-	//		// 小さい値を格納
-	//		distance = d;
-	//	}
-	//}
-	//mylib::DebugLog("距離", distance);
-
 	if (m_targetTank == nullptr) 
 	{
 		// 巡回行動を設定
+		mylib::DebugLog("情報なし");
 		m_action = Action::PATROL;
 		return; 
 	}

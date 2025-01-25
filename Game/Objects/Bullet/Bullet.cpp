@@ -43,8 +43,8 @@ void Bullet::Initialize()
 	m_collider->CreateBoundingSphere(m_position, 0.05f);
 
 	// トレイルの作成
-	//m_trail = std::make_unique<BulletTrail>();
-	//m_trail->Initialize(2);
+	m_trail = std::make_unique<BulletTrail>();
+	m_trail->Initialize(2);
 
 	m_count = SURVIVAL_TIME;
 }
@@ -105,8 +105,12 @@ void Bullet::Render()
 	DrawBullet();
 
 	// トレイルの描画
-	//m_trail->SetPosition(m_position, m_position);
-	//m_trail->Render();
+	Vector3 head = m_position;
+	head.y += 0.2f;
+	Vector3 tail = m_position;
+	tail.y -= 0.2f;
+	m_trail->SetPosition(head, tail);
+	m_trail->Render();
 }
 
 // 砲弾を描画する
@@ -121,7 +125,7 @@ void Bullet::DrawBullet()
 	m_collider->Render();
 
 	// 弾丸の描画
-	m_bullet->Draw(m_worldMatrix, view, proj, DirectX::Colors::Black);
+	m_bullet->Draw(m_worldMatrix, view, proj, DirectX::Colors::Silver);
 }
 
 // Bulletオブジェクトの後処理をおこなう 

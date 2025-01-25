@@ -2,8 +2,6 @@
 #include "Game/Objects/Stage/Wall.h"
 #include "Framework/Graphics.h"
 #include "Libraries/MyLib/FollowCamera.h"
-
-#include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Libraries/MyLib/DebugLog.h"
 
 //---------------------------------------------------------
@@ -15,7 +13,6 @@ Wall::Wall(
 	WallType type
 )
 	:
-	m_tanks{},
 	m_camera{},
 	m_graphics{ Graphics::GetInstance() },
 	m_color{ static_cast<DirectX::SimpleMath::Vector4>(DirectX::Colors::DimGray) },
@@ -94,15 +91,6 @@ void Wall::Finalize()
 //---------------------------------------------------------
 void Wall::DetectCollision()
 {
-	// íŽÔ‚Æ‚Ì“–‚½‚è”»’è
-	//for (auto& tank : m_tanks)
-	//{
-	//	tank->GetBody()->SetCollisionVel(m_collider->CheckCollisionCollider(tank->GetBoundingBox()));
-	//	// •Ç‚ÉG‚ê‚Ä‚¢‚éŠÔd—Í‚ð–³Œø‚É‚·‚é
-	//	if(m_collider->CheckTriggerCollider(tank->GetBoundingBox()))
-	//	tank->GetBody()->SetGravity(false);
-	//}
-
 	// ƒJƒƒ‰‚Æ‚Ì“–‚½‚è”»’è
 	m_camera->SetEyePosition(m_camera->GetEyePosition() + m_collider->CheckCollisionCollider(m_camera->GetBoundingSphere()));
 }
