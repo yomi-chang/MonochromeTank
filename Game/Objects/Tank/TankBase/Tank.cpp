@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
+#include "Game/Particle/Smoke.h"
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -24,7 +25,9 @@ Tank::Tank(
 	m_collider{},
 	m_otherTanks{},
 	m_targetTank{},
-	m_avoidCollider{}
+	m_avoidCollider{},
+	m_smokeEffect{},
+	m_isDead{}
 {
 }
 
@@ -56,7 +59,7 @@ void Tank::Initialize()
 
 	// 回避用コライダーの作成
 	m_avoidCollider = std::make_unique<SphereCollider>();
-	m_avoidCollider->CreateBoundingSphere(m_currentPosition, 1.0f);
+	m_avoidCollider->CreateBoundingSphere(m_currentPosition, 4.0f);
 
 	// 影用のポリゴンを設定する
 	// ここではUV座標を指定している
@@ -82,6 +85,10 @@ void Tank::Initialize()
 	// プリミティブバッチを生成する
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
+
+	// 破壊時の演出作成
+	m_smokeEffect = std::make_unique<Smoke>();
+	m_smokeEffect->Initialize();
 }
 
 //---------------------------------------------------------
@@ -89,6 +96,13 @@ void Tank::Initialize()
 //---------------------------------------------------------
 void Tank::Update(float elapsedTime)
 {
+	// やられているなら破壊演出再生
+	if (m_hp <= 0.0f)
+	{
+		m_smokeEffect->Update(elapsedTime);
+		return;
+	}
+
 	// 部品の更新
 	for (auto& part : m_tankParts)
 	{
@@ -109,6 +123,20 @@ void Tank::Render()
 {
 	using namespace DirectX::SimpleMath;
 
+	// やられているかの判定
+	if (m_hp <= 0)
+	{
+		// 演出表示
+		m_smokeEffect->Render(GetPosition());
+
+		// 演出が終了したら破壊
+		if (m_smokeEffect->GetFinishEffect())
+		{
+			m_isDead = true;
+		}
+		return;
+	}
+
 	// 影の描画
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = m_graphics->GetCommonStates();
@@ -125,8 +153,6 @@ void Tank::Render()
 	// 入力レイアウトの適用
 	context->IASetInputLayout(m_inputLayout.Get());
 	// ベーシックエフェクトを設定し適応
-	//auto basicEffect = m_graphics->GetBasicEffect();
-	//m_basicEffect->SetTextureEnabled(true);
 	m_basicEffect->SetWorld(Matrix::Identity);
 	m_basicEffect->SetView(m_graphics->GetViewMatrix());
 	m_basicEffect->SetProjection(m_graphics->GetProjectionMatrix());

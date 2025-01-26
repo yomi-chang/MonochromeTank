@@ -14,6 +14,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Libraries/Microsoft/DebugDraw.h"
+#include "Libraries/Microsoft/RenderTexture.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 
 #include "Game/Objects/Stage/StageObject/SkySphere.h"
@@ -26,7 +27,7 @@
 #include "Game/Objects/Stage/StageManager.h"
 #include "Game/Other/CollisionManager.h"
 #include "Game/Scene/Fade.h"
-#include "Game/Other/ResultData.h"
+#include "Game/Other/SharedData.h"
 
 #include <cassert>
 
@@ -48,7 +49,9 @@ PlayScene::PlayScene()
 	m_stageManager{},
 	m_collisonManager{},
 	m_fade{},
-	m_isStart{}
+	m_isStart{},
+	m_renderTexture{},
+	m_postProcess{}
 {
 }
 
@@ -94,7 +97,7 @@ void PlayScene::Initialize()
 	// 敵戦車
 	m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 0.0f, 0.0f, -8.0f }));
 	m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -5.0f, 0.0f, -5.0f }));
-	m_enemies.push_back(std::make_unique<EnemyTank>(3, Vector3{ 3.0f, 0.0f, 5.0f }));
+	//m_enemies.push_back(std::make_unique<EnemyTank>(3, Vector3{ 3.0f, 0.0f, 5.0f }));
 	for (auto& enemy : m_enemies)
 	{
 		enemy->Initialize();
@@ -147,6 +150,15 @@ void PlayScene::Initialize()
 		m_stageManager->GetWalls(),
 		m_stageManager->GetWallGimmick()
 	);
+
+	const auto& size = m_graphics->GetDeviceResources()->GetOutputSize();
+	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
+
+	m_renderTexture = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
+	m_renderTexture->SetDevice(device);
+	m_renderTexture->SetWindow(size);
+
+	m_postProcess = std::make_unique<DirectX::BasicPostProcess>(device);
 }
 
 //---------------------------------------------------------
@@ -170,13 +182,9 @@ void PlayScene::Update(float elapsedTime)
 	{
 		// フェードが終了したらゲーム開始
 		if (m_fade->FinishFade())
-		{
 			m_isStart = true;
-		}
 		else
-		{
 			return;
-		}
 	}
 
 	// コリジョンマネージャーの更新
@@ -201,11 +209,18 @@ void PlayScene::Update(float elapsedTime)
 		this->ChangeCameraType();
 	}
 
-	// 敵を全て倒していたらリザルトシーンへ ToDo:現在1体倒したら終わるので修正する
-	// 生存している戦車の確認
+
+	// 生存戦車確認
 	int surviveTank = 0;
 	if (!m_player->GetDead())
+	{
 		surviveTank++;
+	}
+	// やられているならカメラ変更
+	else
+	{
+		m_cameraType = CameraType::DEBUG;
+	}
 	for (auto& enemy : m_enemies)
 	{
 		if (!enemy->GetDead())
@@ -218,20 +233,19 @@ void PlayScene::Update(float elapsedTime)
 		//生存している戦車情報をRetultDataに所有権ごと渡す
 		if (!m_player->GetDead())
 		{
-			ResultData::GetInstance()->SetWinnerTank(m_player->ReleaseTank());
+			SharedData::GetInstance()->SetWinnerTank(m_player->ReleaseTank());
 		}
 		for (auto& enemy : m_enemies)
 		{
 			if (!enemy->GetDead())
-				ResultData::GetInstance()->SetWinnerTank(enemy->ReleaseTank());
+				SharedData::GetInstance()->SetWinnerTank(enemy->ReleaseTank());
 		}
 		m_isChangeScene = true;
 	}
 
-	// 生存している戦車が1台だけならゲーム終了
+	// 生存している戦車が1台だけならフェード開始
 	if (surviveTank == 1)
 	{
-		// フェード開始
 		m_fade->FadeIn();
 	}
 }
@@ -241,6 +255,14 @@ void PlayScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void PlayScene::Render()
 {
+	// レンダーターゲットをオフスクリーンに
+	/*auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto rtv = m_renderTexture->GetRenderTargetView();
+	auto defaultDSV = m_graphics->GetDeviceResources()->GetDepthStencilView();
+	context->ClearRenderTargetView(rtv, DirectX::Colors::White);
+	context->ClearDepthStencilView(defaultDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
+	context->OMSetRenderTargets(1, &rtv, defaultDSV);*/
+
 	// カメラタイプに応じたビュー行列の取得
 	auto view = DirectX::SimpleMath::Matrix::Identity;
 	switch (m_cameraType)
@@ -272,11 +294,22 @@ void PlayScene::Render()
 	// 戦車の描画
 	m_player->Render();
 
-	// UI関係
-	m_magazine->Render();
-
 	// シーン遷移用
 	m_fade->Render();
+
+	// フレームバッファに切り替える
+	// 描画先をフレームバッファに戻す 
+	//auto defaultRTV = m_graphics->GetDeviceResources()->GetRenderTargetView();
+	//context->OMSetRenderTargets(1, &defaultRTV, nullptr);
+	// オフスクリーンの画像をSRVとして取得し、ポストプロセスをかける
+	// ポストエフェクトをかける
+	//auto srv = m_renderTexture->GetShaderResourceView();
+	//m_postProcess->SetEffect(BasicPostProcess::Monochrome);
+	//m_postProcess->SetSourceTexture(srv);
+	//m_postProcess->Process(context);
+
+	// UI関係
+	m_magazine->Render();
 
 	// デバッグ情報を「DebugString」で表示する
 #ifdef _DEBUG

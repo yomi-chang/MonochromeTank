@@ -80,6 +80,8 @@ private:
 	Tank* m_tank;										// 戦車情報
 	DirectX::SimpleMath::Vector3 m_hitPosition;			// Rayが当たった座標
 
+	bool m_displaySight;								// 標準を表示するかどうか
+
 	
 public:
 	// 砲身の角度の取得
@@ -125,17 +127,13 @@ public:
 	// 発射方向の取得
 	DirectX::SimpleMath::Quaternion GetMuzzleRotation() { return m_cannonRotation * m_currentRotation; }
 
-private:
-	// 照準の表示
-	void DisplaySight();
+	// 照準を表示するかどうかの設定
+	void SetDisplaySight(bool display) { m_displaySight = display; }
 
+private:
 	// リロード処理
 	void Reload(float elapsedTime);
 
 	// ずらした射撃方向を取得する
 	DirectX::SimpleMath::Quaternion GetShotRotation();
-
-private:
-	// デバッグ用モデル
-	std::unique_ptr<DirectX::GeometricPrimitive> m_box;
 };

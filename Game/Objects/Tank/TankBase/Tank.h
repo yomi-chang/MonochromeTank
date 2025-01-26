@@ -16,6 +16,8 @@ class TankCannon;
 class BoxCollider;
 class SphereCollider;
 
+class Smoke;
+
 class Tank : public IParent
 {
 private:
@@ -70,11 +72,14 @@ private:
 
 	int m_tankNumber;										// 戦車番号
 	std::unique_ptr<BoxCollider> m_collider;				// コライダー
+	std::unique_ptr<SphereCollider> m_avoidCollider;		// 回避用コライダー
 	std::vector<Tank*> m_otherTanks;						// 自分以外の戦車
+	std::unique_ptr<Smoke> m_smokeEffect;					// 倒されたときのエフェクト
 	unsigned int m_maxHp;									// 最大体力
 	unsigned int  m_hp;										// 体力
+	bool m_isDead;											// 死亡しているかどうか
 	Tank* m_targetTank;										// 攻撃してきた他の戦車
-	std::unique_ptr<SphereCollider> m_avoidCollider;		// 回避用コライダー
+	bool m_isAvoidWall;										// 壁の回避
 
 
 public:
@@ -94,6 +99,8 @@ public:
 	}
 	// 攻撃してきた敵の設定
 	void SetTargetTank(Tank* targetTank) { m_targetTank = targetTank; }
+	// 壁の回避をするのかの設定
+	void SetAvoidWall(bool avoidWall) { m_isAvoidWall = avoidWall; }
 
 	// 車体情報の取得
 	TankBody* GetBody() { return m_body; }
@@ -116,6 +123,8 @@ public:
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
 	// コライダーのポインタの取得
 	BoxCollider* GetCollider() { return m_collider.get(); }
+	// 回避用コライダーのポインタ取得
+	SphereCollider* GetAvoidCollider() { return m_avoidCollider.get(); }
 	// 戦車番号の取得
 	int GetTankNumber() { return m_tankNumber; }
 	// 体力の取得
@@ -124,6 +133,10 @@ public:
 	float GetHpRatio() { return 1.0f - (static_cast<float>(m_hp) / static_cast<float>(m_maxHp)); }
 	// 攻撃してきた敵の取得
 	Tank* GetTargetTank() { return m_targetTank; }
+	// 死亡しているかどうか
+	bool GetDead() { return m_isDead; }
+	// 壁を回避するかどうか
+	bool GetAvoidWall() { return m_isAvoidWall; }
 
 	// ダメージ処理
 	void Damage(int damage);

@@ -124,7 +124,7 @@ void mylib::DebugCamera::CalculateViewMatrix()
 
 	Matrix rotYX = rotY * rotX;
 
-	Vector3 eye(0.0f, 1.0f, 1.0f);
+	Vector3 eye(0.0f, 3.5f, 1.0f);
 	Vector3 target(0.0f, 0.0f, 0.0f);
 	Vector3 up(0.0f, 1.0f, 0.0f);
 

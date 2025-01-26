@@ -47,8 +47,6 @@ private:
 	std::unique_ptr<Tank> m_tank;
 	// HPƒQ[ƒW
 	std::unique_ptr<EnemyHpGauge> m_hpGauge;
-	// €–S‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	bool m_isDead;
 	// ƒ^ƒCƒ}[
 	float m_time;
 
@@ -81,7 +79,7 @@ public:
 	// ‰ñ“]Šp‚Ìæ“¾
 	DirectX::SimpleMath::Quaternion GetAngle() { return m_angle; }
 	// €–Sî•ñ‚ğ“n‚·
-	bool GetDead() { return m_isDead; }
+	bool GetDead() { return m_tank->GetDead(); }
 	// À•W‚Ìó‚¯æ‚è
 	void SetPosition(DirectX::SimpleMath::Vector3 position);
 	// íÔî•ñ‚Ìæ“¾

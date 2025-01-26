@@ -28,6 +28,8 @@ void CollisionManager::Update()
 
 	// Rayと壁の当たり判定
 	DetectCollisionRayAndWalls();
+
+	DetectCollisionWallAndAvoidCollider();
 }
 
 // 戦車と連射弾の当たり判定
@@ -35,10 +37,17 @@ void CollisionManager::DetectCollisionTankAndNomalBullets()
 {
 	for (auto& tank : m_tanks)
 	{
+		// 破壊されている場合
+		if (tank->GetDead()) { continue; }
+
 		for (auto& otherTank : m_tanks)
 		{
-			// 自機の場合は判定を行わない
-			if (tank->GetTankNumber() == otherTank->GetTankNumber()) { continue; }
+			// 自機の場合か相手が破壊されている場合
+			if (tank->GetTankNumber() == otherTank->GetTankNumber() ||
+				otherTank->GetDead())
+			{
+				continue; 
+			}
 
 			for (auto& bullet : otherTank->GetCannon()->GetBullets())
 			{
@@ -65,10 +74,17 @@ void CollisionManager::DetectCollisionTankAndCannonBall()
 {
 	for (auto& tank : m_tanks)
 	{
+		// 破壊されている場合
+		if (tank->GetDead()) { continue; }
+
 		for (auto& otherTank : m_tanks)
 		{
-			// 自機の場合は判定を行わない
-			if (tank->GetTankNumber() == otherTank->GetTankNumber()) { continue; }
+			// 自機の場合か相手が破壊されている場合
+			if (tank->GetTankNumber() == otherTank->GetTankNumber() ||
+				otherTank->GetDead()) 
+			{
+				continue;
+			}
 
 			// 他の戦車の弾が当たっていたらダメージ
 			if (otherTank->GetCannon()->GetCannonBall()->GetBulletState() == IBullet::FLYING &&
@@ -90,16 +106,23 @@ void CollisionManager::DetectCollisionTankAndCannonBall()
 // 戦車同士の当たり判定
 void CollisionManager::DetectCollisionTankAndOtherTanks()
 {
-	for (auto& tank1 : m_tanks)
+	for (auto& tank : m_tanks)
 	{
-		for (auto& tank2 : m_tanks)
-		{
-			// 自機の場合は判定を行わない
-			if (tank1->GetTankNumber() == tank2->GetTankNumber()) { continue; }
+		// 破壊されている場合
+		if (tank->GetDead()) { continue; }
 
-			DirectX::SimpleMath::Vector3 collisionVel = tank1->GetCollider()->CheckCollisionCollider(tank2->GetBoundingBox());
+		for (auto& otherTank : m_tanks)
+		{
+			// 自機の場合か相手が破壊されている場合
+			if (tank->GetTankNumber() == otherTank->GetTankNumber() ||
+				otherTank->GetDead())
+			{
+				continue;
+			}
+
+			DirectX::SimpleMath::Vector3 collisionVel = tank->GetCollider()->CheckCollisionCollider(otherTank->GetBoundingBox());
 			collisionVel.y = 0.0f;
-			tank2->GetBody()->SetCollisionVel(collisionVel);
+			otherTank->GetBody()->SetCollisionVel(collisionVel);
 		}
 	}
 }
@@ -111,6 +134,9 @@ void CollisionManager::DetectCollisionTankAndWalls()
 	{
 		for (auto& tank : m_tanks)
 		{
+			// 破壊されている場合
+			if (tank->GetDead()) { continue; }
+
 			// 壁のコライダー受け取り
 			BoxCollider* wallCollider = wall->GetCollider();
 
@@ -129,6 +155,9 @@ void CollisionManager::DetectCollisionBulletsAndWalls()
 {
 	for (auto& tank : m_tanks)
 	{
+		// 破壊されている場合
+		if (tank->GetDead()) { continue; }
+
 		for (auto& wall : m_walls)
 		{
 			// 壁のコライダー受け取り
@@ -165,6 +194,9 @@ void CollisionManager::DetectCollisionRayAndWalls()
 
 	for (auto& tank : m_tanks)
 	{
+		// 破壊されている場合
+		if (tank->GetDead()) { continue; }
+
 		// プレイヤーは判定を行わない
 		if (tank->GetTankNumber() == 0) 
 		{
@@ -192,10 +224,14 @@ void CollisionManager::DetectCollisionRayAndWalls()
 			// 敵とRayの衝突
 			for (auto& otherTank : m_tanks)
 			{
-				// 自機の場合は判定を行わない
-				if (tank->GetTankNumber() == otherTank->GetTankNumber()) { continue; }
-				isHit = ray.Intersects(*otherTank->GetBoundingBox(), hitDistance);
+				// 自機の場合か相手が破壊されている場合
+				if (tank->GetTankNumber() == otherTank->GetTankNumber() ||
+					otherTank->GetDead())
+				{
+					continue;
+				}
 
+				isHit = ray.Intersects(*otherTank->GetBoundingBox(), hitDistance);
 				if (isHit && hitDistance <= rayDistance)
 				{
 					// より短い距離を代入する
@@ -227,23 +263,32 @@ void CollisionManager::DetectCollisionRayAndWalls()
 			// Rayの衝突情報の設定
 			tank->GetCannon()->SetRayInfo(isHit, hitPosition);
 		}
-		// それ以外
-		else
+	}
+}
+
+void CollisionManager::DetectCollisionWallAndAvoidCollider()
+{
+	using namespace DirectX::SimpleMath;
+
+	for (auto& tank : m_tanks)
+	{
+		// プレイヤーは判定を行わない
+		if (tank->GetTankNumber() == 0 ||
+			tank->GetDead())
+		{ 
+			continue; 
+		}
+
+		for (auto& wall : m_walls)
 		{
-			rayDirection = Matrix::CreateFromQuaternion(tank->GetRotation()).Forward();
-			rayDirection.Normalize();
-			Ray ray{ tank->GetPosition(),rayDirection };
-
-			for (auto& wall : m_walls)
+			if(tank->GetAvoidCollider()->CheckTriggerCollider(wall->GetBoundingBox()))
 			{
-				isHit = ray.Intersects(*wall->GetBoundingBox(), hitDistance);
-
-				if (isHit && hitDistance <= rayDistance)
-				{
-					float angle = DirectX::XMConvertToRadians(1.7f);
-					tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(angle, 0.0f, 0.0f));
-					continue;
-				}
+				tank->SetAvoidWall(true);
+				return;
+			}
+			else
+			{
+				tank->SetAvoidWall(false);
 			}
 		}
 	}

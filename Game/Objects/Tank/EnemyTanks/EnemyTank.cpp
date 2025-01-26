@@ -28,7 +28,6 @@ EnemyTank::EnemyTank(
 	m_position{ position },
 	m_angle{},
 	m_hpGauge{},
-	m_isDead{},
 	m_time{},
 	m_targetTank{},
 	m_tank{},
@@ -103,9 +102,6 @@ void EnemyTank::Initialize()
 	m_attack = std::make_unique<Attack>();
 	m_attack->Initialize(m_tank.get());
 
-	// 
-
-
 	// やられたときの演出作成
 	m_smokeEffect = std::make_unique<Smoke>();
 	m_smokeEffect->Initialize();
@@ -115,15 +111,11 @@ void EnemyTank::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-	// やられているかの判定
-	if (m_tank->GetHp() <= 0)
-	{
-		m_smokeEffect->Update(elapsedTime);
-		return;
-	}
-
 	// 戦車の更新
 	m_tank->Update(elapsedTime);
+
+	// 破壊されているなら早期リターン
+	if (m_tank->GetHp() <= 0.0f) { return; }
 
 	// 座標と回転角の更新
 	m_position = m_tank->GetPosition();
@@ -151,6 +143,21 @@ void EnemyTank::Update(float elapsedTime)
 		}
 	}
 
+	// 壁回避行動
+	if (m_tank->GetAvoidWall())
+	{
+		// 回避行動
+		float speed = elapsedTime * 2.0f;
+		float angle = DirectX::XMConvertToRadians(0.7f);
+		Vector3 velocity = Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
+		// 移動させる
+		m_tank->GetBody()->Move(velocity);
+		// 回転させる
+		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(angle, 0.0f, 0.0f));
+		return;
+	}
+
+
 	m_selectAction->SetTargetTank(m_targetTank);
 	m_selectAction->Update();
 	m_tracking->SetTargetTank(m_targetTank);
@@ -177,28 +184,11 @@ void EnemyTank::Update(float elapsedTime)
 
 void EnemyTank::Render()
 {
-	// やられているかの判定
-	if (m_tank->GetHp() <= 0)
-	{
-		// 演出表示
-		m_smokeEffect->Render(m_position);
-
-		// 演出が終了したら破壊
-		if (m_smokeEffect->GetFinishEffect())
-		{
-			m_isDead = true;
-		}
-
-		return;
-	}
-
-	// やられていたら更新を行わない
-	if (m_isDead) { return; }
-
 	// 戦車の描画
 	m_tank->Render();
 
 	// HPゲージ
+	if (m_tank->GetHp() <= 0.0f) { return; }
 	m_hpGauge->Render(m_position,m_tank->GetHpRatio());
 }
 

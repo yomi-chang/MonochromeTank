@@ -4,7 +4,7 @@
 */
 #pragma once
 #include "IScene.h"
-#include "Libraries/Microsoft/RenderTexture.h"
+#include <PostProcess.h>
 
 class Graphics;
 class PlayerTank;
@@ -19,6 +19,11 @@ namespace mylib
 {
 	class DebugCamera;
 	class FollowCamera;
+}
+
+namespace DX
+{
+	class RenderTexture;
 }
 
 class PlayScene final :
@@ -57,6 +62,11 @@ private:
 	// シーン遷移
 	std::unique_ptr<Fade> m_fade;
 	bool m_isStart; 
+
+	// レンダーテクスチャ
+	std::unique_ptr<DX::RenderTexture> m_renderTexture;
+	// ポストプロセス
+	std::unique_ptr<DirectX::BasicPostProcess> m_postProcess;
 
 
 public:

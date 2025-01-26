@@ -112,7 +112,7 @@
     <ClInclude Include="Game\Objects\Stage\Gimmick\WallGimmick.h" />
     <ClInclude Include="Game\Objects\FixedTurret\FixedTurret.h" />
     <ClInclude Include="Game\Other\CollisionManager.h" />
-    <ClInclude Include="Game\Other\ResultData.h" />
+    <ClInclude Include="Game\Other\SharedData.h" />
     <ClInclude Include="Libraries\MyLib\LockOnCamera.h" />
     <ClInclude Include="Game\EnemyAi\Patrol.h" />
     <ClInclude Include="Game\EnemyAi\Tracking.h" />
@@ -123,6 +123,7 @@
     <ClInclude Include="Game\EnemyAi\Escape.h" />
     <ClInclude Include="Game\EnemyAi\IEnemyAction.h" />
     <ClInclude Include="Game\Scene\Fade.h" />
+    <ClInclude Include="Game\Scene\SelectScene.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -181,7 +182,7 @@
     <ClCompile Include="Game\Objects\Stage\Gimmick\WallGimmick.cpp" />
     <ClCompile Include="Game\Objects\FixedTurret\FixedTurret.cpp" />
     <ClCompile Include="Game\Other\CollisionManager.cpp" />
-    <ClCompile Include="Game\Other\ResultData.cpp" />
+    <ClCompile Include="Game\Other\SharedData.cpp" />
     <ClCompile Include="Libraries\MyLib\LockOnCamera.cpp" />
     <ClCompile Include="Game\EnemyAi\Patrol.cpp" />
     <ClCompile Include="Game\EnemyAi\Tracking.cpp" />
@@ -191,6 +192,7 @@
     <ClCompile Include="Game\Particle\Smoke.cpp" />
     <ClCompile Include="Game\EnemyAi\Escape.cpp" />
     <ClCompile Include="Game\Scene\Fade.cpp" />
+    <ClCompile Include="Game\Scene\SelectScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

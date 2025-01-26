@@ -8,7 +8,7 @@
 #include "DeviceResources.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 #include "Framework/InputManager.h"
-#include "Game/Other/ResultData.h"
+#include "Game/Other/SharedData.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Libraries/MyLib/LockOnCamera.h"
 #include "Game/Objects/Stage/Floor.h"
@@ -94,7 +94,8 @@ void ResultScene::Initialize()
 	m_isChangeScene = false;
 
 	// Ÿ—˜‚µ‚½íÔî•ñ‚ğó‚¯æ‚é
-	m_tank = ResultData::GetInstance()->GetWinnerTank();
+	m_tank = SharedData::GetInstance()->GetWinnerTank();
+	m_tank->GetCannon()->SetDisplaySight(false);
 
 	// TPSƒJƒƒ‰‚Ì¶¬
 	m_camera = std::make_unique<mylib::LockOnCamera>();

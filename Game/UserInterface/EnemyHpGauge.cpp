@@ -15,6 +15,7 @@ EnemyHpGauge::EnemyHpGauge()
 	m_isDead{},
 	m_graphics{Graphics::GetInstance()}
 {
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
 
 	//	エフェクトの作成 
@@ -32,6 +33,9 @@ EnemyHpGauge::EnemyHpGauge()
 
 	// 初期不透明度を設定
 	m_alpha = 1.0f;
+
+	//	プリミティブバッチの作成
+	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(context);
 }
 
 EnemyHpGauge::~EnemyHpGauge()
@@ -48,49 +52,31 @@ void EnemyHpGauge::Render(
 	{
 		m_isDead = true;
 	}
-
-	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	
 	auto view = m_graphics->GetViewMatrix();
 	auto proj = m_graphics->GetProjectionMatrix();
 	auto states = m_graphics->GetCommonStates();
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 
-	//	プリミティブバッチの作成
-	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(context);
-
-	// 最大体力の半分（座標指定で使用)
-	float halfMaxHp = m_maxHp / 2.0f;
-
-	VertexPositionColor backVertex[4] =
-	{
-		VertexPositionColor(SimpleMath::Vector3(-halfMaxHp / 5.0f,1.4f, 0.0f),Colors::Black),
-		VertexPositionColor(SimpleMath::Vector3(halfMaxHp / 5.0f,1.4f, 0.0f),Colors::Black),
-		VertexPositionColor(SimpleMath::Vector3(-halfMaxHp / 5.0f, 1.2f, 0.0f),Colors::Black),
-		VertexPositionColor(SimpleMath::Vector3(halfMaxHp / 5.0f, 1.2f, 0.0f),Colors::Black)
-	};
-
-	// ダメージの計算
-	float damage = m_maxHp - m_hp;
-
-	/*VertexPositionColor frontVertex[4] =
-	{
-		VertexPositionColor(SimpleMath::Vector3(-halfMaxHp / 5.0f,1.5f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(halfMaxHp / 5.0f - damage / 5.0f,1.5f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(-halfMaxHp / 5.0f, 1.2f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(halfMaxHp / 5.0f - damage / 5.0f, 1.2f, 0.0f),Colors::LightGreen)
-	};*/
-
-	float width = 2.0f;
+	float width = 1.0f;
 	float left = -width / 2.0f;
 	float right = left + width;
 	float f = right - (width * hpRatio);
 
+	VertexPositionColor backVertex[4] =
+	{
+		VertexPositionColor(SimpleMath::Vector3(left, 1.1f, 0.0f),Colors::Black),
+		VertexPositionColor(SimpleMath::Vector3(right,1.1f, 0.0f),Colors::Black),
+		VertexPositionColor(SimpleMath::Vector3(left, 1.0f, 0.0f),Colors::Black),
+		VertexPositionColor(SimpleMath::Vector3(right,1.0f, 0.0f),Colors::Black)
+	};
 
 	VertexPositionColor frontVertex[4] =
 	{
-		VertexPositionColor(SimpleMath::Vector3(left,1.4f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(f,1.4f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(left, 1.2f, 0.0f),Colors::LightGreen),
-		VertexPositionColor(SimpleMath::Vector3(f, 1.2f, 0.0f),Colors::LightGreen)
+		VertexPositionColor(SimpleMath::Vector3(left, 1.1f, 0.0f),Colors::LightGreen),
+		VertexPositionColor(SimpleMath::Vector3(f	, 1.1f, 0.0f),Colors::LightGreen),
+		VertexPositionColor(SimpleMath::Vector3(left, 1.0f, 0.0f),Colors::LightGreen),
+		VertexPositionColor(SimpleMath::Vector3(f	, 1.0f, 0.0f),Colors::LightGreen)
 	};
 
 	// 座標の指定
@@ -103,17 +89,17 @@ void EnemyHpGauge::Render(
 	billboard._43 = 0;
 	billboard *= mat;
 
-	//	テクスチャサンプラーの設定（クランプテクスチャアドレッシングモード） 
+	// テクスチャサンプラーの設定（クランプテクスチャアドレッシングモード） 
 	ID3D11SamplerState* samplers[1] = { states->PointWrap() };
 	context->PSSetSamplers(0, 1, samplers);
 
-	//	深度バッファに書き込み参照する 
-	context->OMSetDepthStencilState(states->DepthDefault(), 0);
+	// 深度バッファ設定(一番手前に表示)
+	context->OMSetDepthStencilState(states->DepthNone(), 0);
 
-	//	カリングなし　
+	// カリングなし　
 	context->RSSetState(states->CullNone());
 
-	//	不透明のみ描画する設定 
+	// 不透明のみ描画する設定 
 	m_basicEffect->SetAlpha(m_alpha);
 
 	context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xFFFFFFFF);
@@ -123,7 +109,7 @@ void EnemyHpGauge::Render(
 	m_basicEffect->Apply(context);
 	context->IASetInputLayout(m_inputLayout.Get());
 
-	//	半透明部分を描画 
+	// 半透明部分を描画 
 	m_primitiveBatch->Begin();
 	m_primitiveBatch->DrawQuad(backVertex[0], backVertex[1], backVertex[3], backVertex[2]);
 	m_primitiveBatch->DrawQuad(frontVertex[0], frontVertex[1], frontVertex[3], frontVertex[2]);

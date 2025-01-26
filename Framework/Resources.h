@@ -26,6 +26,11 @@ public:
 	ID3D11ShaderResourceView* GetTitleLogoTexture() { return m_titleLogoTexture.Get(); }	// タイトルロゴテクスチャ
 	ID3D11ShaderResourceView* GetSpaceKeyTexture() { return m_spaceKeyTexture.Get(); }		// スペースキーテクスチャ
 	ID3D11ShaderResourceView* GetFontTexture() { return m_fontTexture.Get(); }				// フォントテクスチャ
+	ID3D11ShaderResourceView* GetManualTexture() { return m_manualTexture.Get(); }			// マニュアルテクスチャ
+	ID3D11ShaderResourceView* GetSettingTexture() { return m_settingTexture.Get(); }		// 設定フレームテクスチャ
+	ID3D11ShaderResourceView* GetCountTextTexture() { return m_countTextTexture.Get(); }	// 戦車のカウント用テキストテクスチャ
+	ID3D11ShaderResourceView* GetStageTextTexture() { return m_stageTextTexture.Get(); }	// ステージ用テキストテクスチャ
+	ID3D11ShaderResourceView* GetSelectTexture() { return m_selectTexture.Get(); }		// 設定選択テクスチャ
 
 	ID3D11ShaderResourceView* GetBlackSmokeTexture() { return m_blackSmokeTexture.Get(); }	// 破壊演出テクスチャ
 
@@ -65,6 +70,11 @@ private:
 		m_titleLogoTexture{},
 		m_spaceKeyTexture{},
 		m_fontTexture{},
+		m_manualTexture{},
+		m_settingTexture{},
+		m_countTextTexture{},
+		m_stageTextTexture{},
+		m_selectTexture{},
 
 		m_blackSmokeTexture{}
 	{
@@ -121,6 +131,16 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_spaceKeyTexture;
 	// フォントテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_fontTexture;
+	// マニュアルテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_manualTexture;
+	// 設定フレームテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_settingTexture;
+	// 戦車のカウント用テキストテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_countTextTexture;
+	// ステージ用テキストテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_stageTextTexture;
+	// 設定選択テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_selectTexture;
 
 	// エフェクトテクスチャ============================================
 	// 破壊演出テクスチャ

@@ -28,6 +28,7 @@ void SelectAction::Initialize(Tank* tank, EnemyHpGauge* hp)
 
 void SelectAction::Update()
 {
+	// ターゲットがいないときは巡回行動に
 	if (m_targetTank == nullptr) 
 	{
 		// 巡回行動を設定
@@ -38,10 +39,8 @@ void SelectAction::Update()
 
 	// 追跡対象の戦車との距離を調べる
 	float distance = (m_targetTank->GetPosition() - m_tank->GetPosition()).LengthSquared();
-
 	// 体力の取得
 	float hp = m_hpGauge->GetHp();
-
 	// ステータスの評価
 	m_distance = EvaluateStates(distance, DISTANCE_HIGH, DISTANCE_LOW);
 	m_hp = EvaluateStates(hp, HP_HIGH, HP_LOW);
@@ -64,7 +63,7 @@ SelectAction::Evaluation SelectAction::EvaluateStates(float value, float high, f
 // 行動選択
 SelectAction::Action SelectAction::Select()
 {
-	if (m_hp == Evaluation::HIGH)
+	/*if (m_hp == Evaluation::HIGH)
 	{
 		if (m_distance == Evaluation::HIGH)		{ return Action::TRACKING; }
 		if (m_distance == Evaluation::MEDIUM)	{ return Action::TRACKING; }
@@ -78,8 +77,9 @@ SelectAction::Action SelectAction::Select()
 	}
 	if (m_hp == Evaluation::LOW)
 	{
-		if (m_distance == Evaluation::HIGH)		{ return Action::PATROL; }
-		if (m_distance == Evaluation::MEDIUM)	{ return Action::PATROL; }
-		if (m_distance == Evaluation::LOW)		{ return Action::PATROL; }
-	}
+		if (m_distance == Evaluation::HIGH)		{ return Action::TRACKING; }
+		if (m_distance == Evaluation::MEDIUM)	{ return Action::TRACKING; }
+		if (m_distance == Evaluation::LOW)		{ return Action::ATTACK;   }
+	}*/
+	return Action::ATTACK;
 }

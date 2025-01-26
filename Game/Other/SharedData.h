@@ -3,26 +3,26 @@
 
 class Tank;
 
-class ResultData final
+class SharedData final
 {
 public:
 	// Graphicsクラスのインスタンスを取得する
-	static ResultData* const GetInstance();
+	static SharedData* const GetInstance();
 
 public:
 	// デストラクタ
-	~ResultData();
+	~SharedData();
 	// 初期化する
 	void Initialize();
 	
 private:
 	// コンストラクタ
-	ResultData();
+	SharedData();
 
 	// 代入は許容しない
-	void operator=(const ResultData& object) = delete;
+	void operator=(const SharedData& object) = delete;
 	// コピーコンストラクタは許容しない
-	ResultData(const ResultData& object) = delete;
+	SharedData(const SharedData& object) = delete;
 
 public:
 	// 勝利した戦車情報の設定
@@ -34,7 +34,7 @@ public:
 
 private:
 	// Graphicsクラスのインスタンスへのポインタ
-	static std::unique_ptr<ResultData> m_resultData;
+	static std::unique_ptr<SharedData> m_sharedData;
 
 	// 勝利した戦車情報
 	std::unique_ptr<Tank> m_winnerTank;

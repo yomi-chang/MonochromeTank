@@ -50,8 +50,6 @@ private:
 	std::unique_ptr<Tank> m_tank;
 	// HPƒQ[ƒW
 	std::unique_ptr<HpGauge> m_hpGauge;
-	// “|‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	bool m_isDead;
 	// ƒJƒƒ‰
 	mylib::FollowCamera* m_camera;
 
@@ -88,9 +86,5 @@ public:
 	std::unique_ptr<Tank> ReleaseTank() { return std::move(m_tank);}
 	
 	// €–S‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
-	bool GetDead() 
-	{
-		if (m_tank->GetHp() <= 0) { return true; }
-		else { return false; }
-	}
+	bool GetDead() { return m_tank->GetDead(); }
 };

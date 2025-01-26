@@ -26,7 +26,6 @@ PlayerTank::PlayerTank(
 	m_angle{},
 	m_tank{},
 	m_hpGauge{},
-	m_isDead{},
 	m_camera{}
 {
 }
@@ -64,9 +63,11 @@ void PlayerTank::Initialize()
 //---------------------------------------------------------
 void PlayerTank::Update(float elapsedTime)
 {
+	// 破壊されていたら処理しない
+	if (m_tank->GetDead()) { return; }
+
 	// キー入力の処理
 	KeyBoardEvent(elapsedTime);
-
 	// 戦車の更新
 	m_tank->Update(elapsedTime);
 
@@ -76,10 +77,6 @@ void PlayerTank::Update(float elapsedTime)
 	// 座標と回転角の更新
 	m_position = m_tank->GetPosition();
 	m_angle = m_tank->GetRotation();
-
-	// 体力が0になった場合の処理
-	if (m_tank->GetHp() <= 0)
-		m_isDead = true;
 }
 
 //---------------------------------------------------------
@@ -91,6 +88,7 @@ void PlayerTank::Render()
 	m_tank->Render();
 
 	// HPゲージ
+	if (m_tank->GetHp() <= 0.0f) { return; }
 	m_hpGauge->Render(m_tank->GetHpRatio());
 }
 
@@ -166,9 +164,9 @@ void PlayerTank::Move(float elapsedTime)
 
 	// 前後移動
 	if (keyboardState.W)
-		velocity += Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
+		velocity = Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
 	else if (keyboardState.S)
-		velocity += Vector3::Transform(Vector3::Backward * speed, m_tank->GetRotation());
+		velocity = Vector3::Transform(Vector3::Backward * speed, m_tank->GetRotation());
 
 	// 同時押しされていたら停止
 	if (keyboardState.A && keyboardState.D)

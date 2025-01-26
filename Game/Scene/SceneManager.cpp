@@ -5,6 +5,7 @@
 #include "pch.h"
 #include "SceneManager.h"
 #include "TitleScene.h"
+#include "SelectScene.h"
 #include "PlayScene.h"
 #include "ResultScene.h"
 #include "Game/Screen.h"
@@ -36,7 +37,7 @@ SceneManager::~SceneManager()
 void SceneManager::Initialize()
 {
 	// ç≈èâÇÃÉVÅ[ÉìÇê›íËÇ∑ÇÈ
-	ChangeScene(IScene::SceneID::TITLE);
+	ChangeScene(IScene::SceneID::SELECT);
 }
 
 //---------------------------------------------------------
@@ -92,6 +93,9 @@ void SceneManager::CreateScene(IScene::SceneID sceneID)
 	{
 		case IScene::SceneID::TITLE:
 			m_currentScene = std::make_unique<TitleScene>();
+			break;
+		case IScene::SceneID::SELECT:
+			m_currentScene = std::make_unique<SelectScene>();
 			break;
 		case IScene::SceneID::PLAY:
 			m_currentScene = std::make_unique<PlayScene>();

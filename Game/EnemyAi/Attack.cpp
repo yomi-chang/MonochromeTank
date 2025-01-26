@@ -31,8 +31,12 @@ void Attack::Update(float elapsedTime)
 	// ’ÇÕ‘ÎÛ‚Ì•ûŒü‚ğŒü‚­
 	LookTargetTank(elapsedTime);
 
+	// ËŒ‚ˆ—
+	m_tank->GetCannon()->StartReload();
+	m_tank->GetCannon()->Shoot();
+
 	// s“®
-	switch (m_currentAction)
+	/*switch (m_currentAction)
 	{
 		case Attack::SHOT:
 			ShotAction(elapsedTime);
@@ -42,7 +46,7 @@ void Attack::Update(float elapsedTime)
 			break;
 		default:
 			break;
-	}
+	}*/
 }
 
 // ’ÇÕ‘ÎÛ‚Ì•ûŒü‚ğŒü‚­

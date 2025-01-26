@@ -37,7 +37,8 @@ TankCannon::TankCannon(
 	m_reloadBulletType{},
 	m_bulletBlurRadius{},
 	m_drawTexture{},
-	m_tank{}
+	m_tank{},
+	m_displaySight{}
 {
 	// 戦車情報の受け取り
 	m_tank = tank;
@@ -91,12 +92,11 @@ void TankCannon::Initialize()
 	m_bulletType = BulletType::CANNONBALL;
 	m_reloadBulletType = BulletType::CANNONBALL;
 
-	// デバッグ用モデルの描画
-	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	m_box = DirectX::GeometricPrimitive::CreateBox(context, DirectX::SimpleMath::Vector3(0.1f,0.1f,0.1f));
-
 	// 弾のブレの半径(仮)
 	m_bulletBlurRadius = 1.5f;
+
+	// 標準表示にする
+	m_displaySight = true;
 }
 
 //---------------------------------------------------------
@@ -153,14 +153,9 @@ void TankCannon::Render()
 	// 「砲身」の描画
 	m_graphics->DrawModel(m_model, m_worldMatrix);
 
-	// 照準の描画
-	DisplaySight();
-
-	// デバッグ用のモデルの描画(消しておく)
-	auto view = m_graphics->GetViewMatrix();
-	auto proj = m_graphics->GetProjectionMatrix();
-	Matrix boxMatrix = Matrix::CreateTranslation(this->GetMuzzlePosition());
-	//m_box->Draw(boxMatrix, view, proj, DirectX::Colors::Red);
+	// 照準画像の表示
+	if (m_tank->GetTankNumber() == 0 && m_displaySight)
+		m_drawTexture->Render(m_hitPosition);
 }
 
 //---------------------------------------------------------
@@ -354,16 +349,6 @@ DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 	Matrix rotationMatrix = Matrix::CreateFromQuaternion(m_cannonRotation * m_currentRotation);
 	// 回転をオフセットに適用し、砲身の先端座標を計算
 	return Vector3::Transform(muzzleOffset, rotationMatrix) + m_currentPosition;
-}
-
-//---------------------------------------------------------
-// 照準の表示
-//---------------------------------------------------------
-void TankCannon::DisplaySight()
-{
-	// 照準画像の表示
-	if(m_tank->GetTankNumber() == 0)
-		m_drawTexture->Render(m_hitPosition);
 }
 
 void TankCannon::SetRayInfo(bool isHit, DirectX::SimpleMath::Vector3 hitPosition)

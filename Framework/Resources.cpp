@@ -138,7 +138,45 @@ void Resources::LoadResource()
 		m_fontTexture.GetAddressOf()
 	);
 
+	//	マニュアルテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\Manual.png",
+		nullptr,
+		m_manualTexture.GetAddressOf()
+	);
 
+	//	設定フレームテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\Setting.png",
+		nullptr,
+		m_settingTexture.GetAddressOf()
+	);
+
+	//	戦車カウント用テキストテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\countText.png",
+		nullptr,
+		m_countTextTexture.GetAddressOf()
+	);
+
+	//	ステージ用テキストテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\StageText.png",
+		nullptr,
+		m_stageTextTexture.GetAddressOf()
+	);
+
+	//	設定選択テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\Gear.png",
+		nullptr,
+		m_selectTexture.GetAddressOf()
+	);
 
 	//	破壊演出テクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
