@@ -29,6 +29,10 @@ private:
 	const RECT STAGE2 = { 0,115,450,215 };
 	const RECT STAGE3 = { 0,230,450,330 };
 
+	const RECT TANK_COUNT1 = { 0,0,90,150 };
+	const RECT TANK_COUNT2 = { 90,0,180,150 };
+	const RECT TANK_COUNT3 = { 180,0,260,150 };
+
 private:
 	// グラフィックス
 	Graphics* m_graphics;
@@ -56,7 +60,8 @@ private:
 	float m_selectAngle;
 	DirectX::SimpleMath::Vector2 m_selectPos;
 
-	RECT m_stageTexturePosition;
+	RECT m_stageTexturePos;
+	RECT m_tankCountTexturePos;
 
 public:
 	SelectScene();

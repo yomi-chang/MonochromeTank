@@ -93,7 +93,8 @@ void SelectScene::Initialize()
 	m_isChangeScene = false;
 
 	m_selectPos = SELECT_POS1;
-	m_stageTexturePosition = STAGE1;
+	m_stageTexturePos = STAGE1;
+	m_tankCountTexturePos = TANK_COUNT3;
 }
 
 //---------------------------------------------------------
@@ -122,19 +123,37 @@ void SelectScene::Update(float elapsedTime)
 		else if (m_selectPos == SELECT_POS2) { m_selectPos = SELECT_POS1; }
 	}
 
+	// ステージ選択
 	if (m_selectPos == SELECT_POS1)
 	{
 		if (kbTracker->IsKeyPressed(DirectX::Keyboard::D))
 		{
-			if (m_stageTexturePosition == STAGE1) { m_stageTexturePosition = STAGE2; }
-			else if (m_stageTexturePosition == STAGE2) { m_stageTexturePosition = STAGE3; }
-			else if (m_stageTexturePosition == STAGE3) { m_stageTexturePosition = STAGE1; }
+			if (m_stageTexturePos == STAGE1) { m_stageTexturePos = STAGE2; }
+			else if (m_stageTexturePos == STAGE2) { m_stageTexturePos = STAGE3; }
+			else if (m_stageTexturePos == STAGE3) { m_stageTexturePos = STAGE1; }
 		}
 		if (kbTracker->IsKeyPressed(DirectX::Keyboard::A))
 		{
-			if (m_stageTexturePosition == STAGE1) { m_stageTexturePosition = STAGE3; }
-			else if (m_stageTexturePosition == STAGE2) { m_stageTexturePosition = STAGE1; }
-			else if (m_stageTexturePosition == STAGE3) { m_stageTexturePosition = STAGE2; }
+			if (m_stageTexturePos == STAGE1) { m_stageTexturePos= STAGE3; }
+			else if (m_stageTexturePos == STAGE2) { m_stageTexturePos = STAGE1; }
+			else if (m_stageTexturePos == STAGE3) { m_stageTexturePos = STAGE2; }
+		}
+	}
+
+	// 戦車数選択
+	if (m_selectPos == SELECT_POS2)
+	{
+		if (kbTracker->IsKeyPressed(DirectX::Keyboard::D))
+		{
+			if (m_tankCountTexturePos == TANK_COUNT1) { m_tankCountTexturePos = TANK_COUNT2; }
+			else if (m_tankCountTexturePos == TANK_COUNT2) { m_tankCountTexturePos = TANK_COUNT3; }
+			else if (m_tankCountTexturePos == TANK_COUNT3) { m_tankCountTexturePos = TANK_COUNT1; }
+		}
+		if (kbTracker->IsKeyPressed(DirectX::Keyboard::A))
+		{
+			if (m_tankCountTexturePos == TANK_COUNT1) { m_tankCountTexturePos = TANK_COUNT3; }
+			else if (m_tankCountTexturePos == TANK_COUNT2) { m_tankCountTexturePos = TANK_COUNT1; }
+			else if (m_tankCountTexturePos == TANK_COUNT3) { m_tankCountTexturePos = TANK_COUNT2; }
 		}
 	}
 
@@ -182,10 +201,10 @@ void SelectScene::Render()
 	m_floor->Render();
 
 	// 敵戦車の更新
-	for (auto& tank : m_tanks)
+	/*for (auto& tank : m_tanks)
 	{
 		tank->Render();
-	}
+	}*/
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
@@ -216,7 +235,18 @@ void SelectScene::Render()
 	m_spriteBatch->Draw(
 		m_resources->GetStageTextTexture(),
 		Vector2{ 210,280 },
-		& m_stageTexturePosition,
+		&m_stageTexturePos,
+		DirectX::Colors::White,
+		0.0f,
+		Vector2{ 50,50 },
+		Vector2{ 0.5f,0.5f }
+	);
+
+	// 戦車数
+	m_spriteBatch->Draw(
+		m_resources->GetCountTextTexture(),
+		Vector2{ 300,415 },
+		&m_tankCountTexturePos,
 		DirectX::Colors::White,
 		0.0f,
 		Vector2{ 50,50 },
@@ -231,12 +261,8 @@ void SelectScene::Render()
 		DirectX::Colors::White,
 		m_selectAngle,
 		Vector2{ 50,50 },
-		Vector2{ 0.5f,0.5f }
+		Vector2{ 1.0f,1.0f }
 	);
-
-
-
-
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();

@@ -32,11 +32,26 @@ public:
 	// 勝利した戦車情報の取得
 	Tank* GetWinnerTank() { return m_winnerTank.get(); }
 
+	// セレクトのデータの設定
+	void SetSelectData(int tankCount, std::string stageName)
+	{
+		m_tankCount = tankCount;
+		m_stageName = stageName;
+	}
+	// 戦車の数の取得
+	int GetTankCount() { return m_tankCount; }
+
+	// ステージ名
+	std::string GetStageName() { return m_stageName; }
+
 private:
 	// Graphicsクラスのインスタンスへのポインタ
 	static std::unique_ptr<SharedData> m_sharedData;
 
 	// 勝利した戦車情報
 	std::unique_ptr<Tank> m_winnerTank;
+
+	int m_tankCount;
+	std::string m_stageName;
 };
 
