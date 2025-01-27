@@ -14,7 +14,6 @@ namespace mylib
 class Graphics;
 class Resources;
 class Floor;
-class Tank;
 class Fade;
 
 class SelectScene final :
@@ -50,9 +49,6 @@ private:
 	// 床
 	std::unique_ptr<Floor> m_floor;
 
-	// 戦車
-	std::vector<std::unique_ptr<Tank>> m_tanks;
-
 	// シーン遷移
 	std::unique_ptr<Fade> m_fade;
 
@@ -73,4 +69,8 @@ public:
     void Finalize() override;
 
     SceneID GetNextSceneID() const;
+
+private:
+	// ステージ設定の設定
+	void SetStageSetting();
 };

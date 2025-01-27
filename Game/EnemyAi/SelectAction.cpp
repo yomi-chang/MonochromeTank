@@ -29,12 +29,14 @@ void SelectAction::Initialize(Tank* tank, EnemyHpGauge* hp)
 void SelectAction::Update()
 {
 	// ターゲットがいないときは巡回行動に
-	if (m_targetTank == nullptr) 
+	if (m_targetTank == nullptr ||
+		m_targetTank->GetDead())
 	{
 		// 巡回行動を設定
+		m_targetTank = nullptr;
 		mylib::DebugLog("情報なし");
 		m_action = Action::PATROL;
-		return; 
+		return;
 	}
 
 	// 追跡対象の戦車との距離を調べる
@@ -81,5 +83,15 @@ SelectAction::Action SelectAction::Select()
 		if (m_distance == Evaluation::MEDIUM)	{ return Action::TRACKING; }
 		if (m_distance == Evaluation::LOW)		{ return Action::ATTACK;   }
 	}*/
-	return Action::ATTACK;
+	//return Action::ATTACK;
+
+	// 距離が近いなら攻撃
+	if (m_distance == Evaluation::LOW)
+	{
+		return Action::ATTACK;
+	}
+	else
+	{
+		return Action::TRACKING;
+	}
 }

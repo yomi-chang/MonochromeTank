@@ -15,6 +15,7 @@
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Libraries/MyLib/LockOnCamera.h"
 #include "Game/Scene/Fade.h"
+#include "Game/Other/SharedData.h"
 #include <cassert>
 
 using namespace DirectX;
@@ -29,7 +30,6 @@ SelectScene::SelectScene()
 	m_spriteBatch{},
 	m_isChangeScene{},
 	m_floor{},
-	m_tanks{},
 	m_fade{},
 	m_resources{ Resources::GetInstance() },
 	m_selectAngle {}
@@ -60,12 +60,6 @@ void SelectScene::Initialize()
 	m_floor = std::make_unique<Floor>(50);
 	m_floor->SetTexture(Resources::GetInstance()->GetFloorTexture());
 
-	m_tanks.push_back(std::make_unique<Tank>(1, Vector3{ -1.5f, 0.0f, -1.5f }, DirectX::XMConvertToRadians(-135.0f)));
-	for (auto& tank : m_tanks)
-	{
-		tank->Initialize();
-	}
-
 	// 射影行列を作成する
 	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
 	Matrix projection;
@@ -87,11 +81,13 @@ void SelectScene::Initialize()
 	m_camera->SetEyePosition(DirectX::SimpleMath::Vector3(0.0f, 5.0f, 5.0f));
 
 	// シーン遷移用
-	m_fade = std::make_unique<Fade>(0.0f);
+	m_fade = std::make_unique<Fade>(1.0f);
+	m_fade->FadeOut();
 
-	// シーン変更フラグを初期化する
+	// シーン変更フラグの初期化
 	m_isChangeScene = false;
 
+	// ゲーム設定の初期設定
 	m_selectPos = SELECT_POS1;
 	m_stageTexturePos = STAGE1;
 	m_tankCountTexturePos = TANK_COUNT3;
@@ -102,14 +98,30 @@ void SelectScene::Initialize()
 //---------------------------------------------------------
 void SelectScene::Update(float elapsedTime)
 {
-	// 宣言をしたが、実際は使用していない変数
 	UNREFERENCED_PARAMETER(elapsedTime);
+
+	// フェード
+	m_fade->Update(elapsedTime);
+
+	// フォローカメラを更新する
+	m_camera->Update(elapsedTime);
+
+	// フェードイン中でフェードが終了しているならシーン遷移
+	if (m_fade->GetFadeType() == Fade::FADEIN &&
+		m_fade->FinishFade())
+	{
+		// ステージ設定の設定
+		SetStageSetting();
+		// シーン遷移フラグ
+		m_isChangeScene = true;
+	}
+
+	// フェードが終了していないなら早期リターン
+	if (!m_fade->FinishFade()) { return; }
+
 
 	// キーボードステートの取得
 	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
-
-	// シーン遷移用
-	m_fade->Update(elapsedTime);
 
 	// カーソル移動
 	if (kbTracker->IsKeyPressed(DirectX::Keyboard::S))
@@ -163,20 +175,6 @@ void SelectScene::Update(float elapsedTime)
 	{
 		m_fade->FadeIn();
 	}
-	// フェード処理が終了していたら
-	if (m_fade->FinishFade())
-	{
-		m_isChangeScene = true;
-	}
-		
-	// 敵戦車の更新
-	for (auto& tank : m_tanks)
-	{
-		tank->Update(elapsedTime);
-	}
-
-	// フォローカメラを更新する
-	m_camera->Update(elapsedTime);
 
 	m_selectAngle += elapsedTime * 2.0f;
 }
@@ -199,12 +197,6 @@ void SelectScene::Render()
 	Graphics::GetInstance()->SetViewMatrix(view);
 
 	m_floor->Render();
-
-	// 敵戦車の更新
-	/*for (auto& tank : m_tanks)
-	{
-		tank->Render();
-	}*/
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
@@ -292,4 +284,26 @@ IScene::SceneID SelectScene::GetNextSceneID() const
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
+}
+
+//---------------------------------------------------------
+// ステージ設定の設定
+//---------------------------------------------------------
+void SelectScene::SetStageSetting()
+{
+	int tankCount;
+	std::string stageName;
+
+	// 戦車の数
+	if (m_tankCountTexturePos == TANK_COUNT1)	   { tankCount = 1; }
+	else if (m_tankCountTexturePos == TANK_COUNT2) { tankCount = 2; }
+	else if (m_tankCountTexturePos == TANK_COUNT3) { tankCount = 3; }
+
+	// ステージ名
+	if (m_stageTexturePos == STAGE1)	  { stageName = "Stage1"; }
+	else if (m_stageTexturePos == STAGE2) { stageName = "Stage2"; }
+	else if (m_stageTexturePos == STAGE3) { stageName = "Stage3"; }
+
+	// データの保存
+	SharedData::GetInstance()->SetSelectData(tankCount, stageName);
 }

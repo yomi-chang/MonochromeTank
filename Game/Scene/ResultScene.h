@@ -13,6 +13,7 @@ namespace mylib
 
 class Tank;
 class Floor;
+class Fade;
 
 class ResultScene final :
     public IScene
@@ -43,6 +44,8 @@ private:
 	// °
 	std::unique_ptr<Floor> m_floor;
 
+	// ƒV[ƒ“‘JˆÚ
+	std::unique_ptr<Fade> m_fade;
 
 public:
 	ResultScene();

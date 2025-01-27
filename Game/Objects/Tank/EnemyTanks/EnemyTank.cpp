@@ -63,13 +63,13 @@ void EnemyTank::Initialize()
 	m_patrolPoint.emplace_back(Vector3{ -6.0f, 0.0f, -6.0f });
 
 	// 仮のデータ
-	m_patrolPoint2.emplace_back(Vector3{ -3.0f, 0.0f,  -3.0f });
-	m_patrolPoint2.emplace_back(Vector3{ -3.0f, 0.0f,  3.0f });
-	//m_patrolPoint2.emplace_back(Vector3{ 1.5f, 0.0f, 3.0f });
+	m_patrolPoint2.emplace_back(Vector3{ -6.0f, 0.0f,  -6.0f });
+	m_patrolPoint2.emplace_back(Vector3{ -6.0f, 0.0f,  6.0f });
+	m_patrolPoint2.emplace_back(Vector3{ 3.0f, 0.0f, 6.0f });
 
-	m_patrolPoint3.emplace_back(Vector3{ 3.0f, 0.0f,  3.0f });
-	m_patrolPoint3.emplace_back(Vector3{ -3.0f, 0.0f,  3.0f });
-	m_patrolPoint3.emplace_back(Vector3{ 1.5f, 0.0f, -3.0f });
+	m_patrolPoint3.emplace_back(Vector3{ 6.0f, 0.0f,  6.0f });
+	m_patrolPoint3.emplace_back(Vector3{ -6.0f, 0.0f,  6.0f });
+	m_patrolPoint3.emplace_back(Vector3{ 3.0f, 0.0f, -6.0f });
 
 	//m_tank->GetCannon()->ChangeBullet();
 
@@ -127,7 +127,7 @@ void EnemyTank::Update(float elapsedTime)
 
 	// 巡回行動中なら一定範囲にいる敵を追跡対象にする
 	if (m_selectAction->GetAction() == SelectAction::Action::PATROL &&
-		m_targetTank == nullptr)
+		m_selectAction->GetTargetTank() == nullptr)
 	{
 		for (auto& tank : m_tanks)
 		{

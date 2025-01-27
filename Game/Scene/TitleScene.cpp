@@ -122,7 +122,8 @@ void TitleScene::Initialize()
 	m_camera->SetEyePosition(DirectX::SimpleMath::Vector3(0.0f, 5.0f, 5.0f));
 
 	// シーン遷移用
-	m_fade = std::make_unique<Fade>(0.0f);
+	m_fade = std::make_unique<Fade>(1.0f);
+	m_fade->FadeOut();
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
@@ -136,19 +137,8 @@ void TitleScene::Update(float elapsedTime)
 	// 宣言をしたが、実際は使用していない変数
 	UNREFERENCED_PARAMETER(elapsedTime);
 
-	// キーボードステートの取得
-	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
-
-	// シーン遷移用
+	// フェード
 	m_fade->Update(elapsedTime);
-
-	// スペースキーが押されたらフェード開始
-	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
-		m_fade->FadeIn();
-	// フェード処理が終了していたら
-	if (m_fade->FinishFade())
-		m_isChangeScene = true;
-
 
 	// 敵戦車の更新
 	for (auto& tank : m_tanks)
@@ -158,6 +148,23 @@ void TitleScene::Update(float elapsedTime)
 
 	// フォローカメラを更新する
 	m_camera->Update(elapsedTime);
+
+	// フェードイン中でフェードが終了しているならシーン遷移
+	if (m_fade->GetFadeType() == Fade::FADEIN &&
+		m_fade->FinishFade())
+	{
+		m_isChangeScene = true;
+	}
+
+	// フェードが終了していないなら早期リターン
+	if (!m_fade->FinishFade()){ return; }
+	
+	// キーボードステートの取得
+	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
+
+	// スペースキーが押されたらフェード開始
+	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
+		m_fade->FadeIn();
 }
 
 //---------------------------------------------------------
@@ -175,6 +182,7 @@ void TitleScene::Render()
 	);
 	Graphics::GetInstance()->SetViewMatrix(view);
 
+	// 床の描画
 	m_floor->Render();
 
 	// 敵戦車の更新

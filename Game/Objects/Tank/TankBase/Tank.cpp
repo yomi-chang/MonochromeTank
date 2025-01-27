@@ -21,13 +21,17 @@ Tank::Tank(
 	m_worldMatrix{},
 	m_vertices{},
 	m_primitiveBatch{},
+	m_inputLayout{},
 	m_basicEffect{},
 	m_collider{},
-	m_otherTanks{},
-	m_targetTank{},
 	m_avoidCollider{},
+	m_otherTanks{},
 	m_smokeEffect{},
-	m_isDead{}
+	m_maxHp{},
+	m_hp{},
+	m_isDead{},
+	m_targetTank{},
+	m_isAvoidWall{}
 {
 }
 
@@ -59,7 +63,7 @@ void Tank::Initialize()
 
 	// 回避用コライダーの作成
 	m_avoidCollider = std::make_unique<SphereCollider>();
-	m_avoidCollider->CreateBoundingSphere(m_currentPosition, 4.0f);
+	m_avoidCollider->CreateBoundingSphere(m_currentPosition, 1.5f);
 
 	// 影用のポリゴンを設定する
 	// ここではUV座標を指定している
@@ -89,6 +93,9 @@ void Tank::Initialize()
 	// 破壊時の演出作成
 	m_smokeEffect = std::make_unique<Smoke>();
 	m_smokeEffect->Initialize();
+
+	// 体力の初期値の設定
+	SetMaxHp(10);
 }
 
 //---------------------------------------------------------

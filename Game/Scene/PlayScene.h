@@ -61,7 +61,6 @@ private:
 
 	// シーン遷移
 	std::unique_ptr<Fade> m_fade;
-	bool m_isStart; 
 
 	// レンダーテクスチャ
 	std::unique_ptr<DX::RenderTexture> m_renderTexture;
@@ -83,4 +82,6 @@ public:
 private:
 	// デバッグカメラと切り替える
 	void ChangeCameraType();
+
+	void CreateTanks();
 };

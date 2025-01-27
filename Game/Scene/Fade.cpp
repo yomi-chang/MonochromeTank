@@ -49,7 +49,8 @@ bool Fade::FinishFade()
 {
 	// フェード処理が終了していたらtrueを返す
 	if ((m_fadeType == FADEIN && m_alpha >= 1.0f) ||
-		(m_fadeType == FADEOUT && m_alpha <= 0.0f))
+		(m_fadeType == FADEOUT && m_alpha <= 0.0f)||
+		m_fadeType == NONE)
 	{
 		m_fadeType = NONE;
 		return true;
