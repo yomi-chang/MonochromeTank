@@ -49,10 +49,7 @@ TitleScene::~TitleScene()
 // 初期化する
 //---------------------------------------------------------
 void TitleScene::Initialize()
-{
-	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
-	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	
+{	
 	// スプライトバッチを作成する
 	m_spriteBatch = m_graphics->GetSpriteBatch();
 	m_spriteFont = m_graphics->GetFont();

@@ -18,7 +18,8 @@ SharedData* const SharedData::GetInstance()
 // コンストラクタ
 SharedData::SharedData()
 	:
-	m_winnerTank{}
+	m_winnerTank{},
+	m_soundManager{}
 {
 }
 

@@ -182,9 +182,9 @@ void TankCannon::RotateCannon(float angle)
 void TankCannon::ShootBullet(IBullet* bullet)
 {
 	// 「砲弾」位置を設定する
-	bullet->SetPosition(this->GetMuzzlePosition());
+	bullet->SetPosition(GetMuzzlePosition());
 	// コライダー座標の更新
-	bullet->SetColliderPosition(this->GetMuzzlePosition());
+	bullet->SetColliderPosition(GetMuzzlePosition());
 	// 「砲弾」角度を設定する
 	bullet->SetRotation(GetShotRotation());
 	// 「砲弾」を発射する

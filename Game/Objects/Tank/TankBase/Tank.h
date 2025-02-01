@@ -75,8 +75,8 @@ private:
 	std::unique_ptr<SphereCollider> m_avoidCollider;		// 回避用コライダー
 	std::vector<Tank*> m_otherTanks;						// 自分以外の戦車
 	std::unique_ptr<Smoke> m_smokeEffect;					// 倒されたときのエフェクト
-	unsigned int m_maxHp;									// 最大体力
-	unsigned int  m_hp;										// 体力
+	int m_maxHp;									// 最大体力
+	int  m_hp;										// 体力
 	bool m_isDead;											// 死亡しているかどうか
 	Tank* m_targetTank;										// 攻撃してきた他の戦車
 	bool m_isAvoidWall;										// 壁の回避

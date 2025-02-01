@@ -37,7 +37,7 @@ void HpGauge::Render(float hpRatio)
 	using namespace DirectX::SimpleMath;
 
 	// 全体の長さ
-	float hpWidth = HP_POSITION.right - HP_POSITION.left;
+	float hpWidth = static_cast<float>(HP_POSITION.right - HP_POSITION.left);
 	m_hpGaugePosition.right = HP_POSITION.right - (hpWidth * hpRatio);
 
 	// スプライトバッチを開始する

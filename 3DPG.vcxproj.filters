@@ -120,10 +120,11 @@
     <ClInclude Include="Game\EnemyAi\SelectAction.h" />
     <ClInclude Include="Game\Objects\Bullet\BulletTrail.h" />
     <ClInclude Include="Game\Particle\Smoke.h" />
-    <ClInclude Include="Game\EnemyAi\Escape.h" />
     <ClInclude Include="Game\EnemyAi\IEnemyAction.h" />
     <ClInclude Include="Game\Scene\Fade.h" />
     <ClInclude Include="Game\Scene\SelectScene.h" />
+    <ClInclude Include="Libraries\MyLib\SoundManager.h" />
+    <ClInclude Include="Game\Other\Sounds.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -190,17 +191,12 @@
     <ClCompile Include="Game\EnemyAi\SelectAction.cpp" />
     <ClCompile Include="Game\Objects\Bullet\BulletTrail.cpp" />
     <ClCompile Include="Game\Particle\Smoke.cpp" />
-    <ClCompile Include="Game\EnemyAi\Escape.cpp" />
     <ClCompile Include="Game\Scene\Fade.cpp" />
     <ClCompile Include="Game\Scene\SelectScene.cpp" />
+    <ClCompile Include="Libraries\MyLib\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="directx.ico">
-      <Filter>Assets</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="settings.manifest">

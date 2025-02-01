@@ -101,7 +101,7 @@ void Patrol::SetPatrolPoints(std::vector<DirectX::SimpleMath::Vector3> patrolPoi
 	m_patrolPoints = patrolPoints;
 
 	// „‰ñ’n“_”‚Ìæ“¾
-	m_patrolPointVelue = m_patrolPoints.size();
+	m_patrolPointVelue = static_cast<int>(m_patrolPoints.size());
 }
 
 

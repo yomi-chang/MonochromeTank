@@ -30,7 +30,9 @@ public:
 	ID3D11ShaderResourceView* GetSettingTexture() { return m_settingTexture.Get(); }		// 設定フレームテクスチャ
 	ID3D11ShaderResourceView* GetCountTextTexture() { return m_countTextTexture.Get(); }	// 戦車のカウント用テキストテクスチャ
 	ID3D11ShaderResourceView* GetStageTextTexture() { return m_stageTextTexture.Get(); }	// ステージ用テキストテクスチャ
-	ID3D11ShaderResourceView* GetSelectTexture() { return m_selectTexture.Get(); }		// 設定選択テクスチャ
+	ID3D11ShaderResourceView* GetSelectTexture() { return m_selectTexture.Get(); }			// 設定選択テクスチャ
+	ID3D11ShaderResourceView* GetResultTexture() { return m_resultTexture.Get(); }			// リザルトテクスチャ
+	ID3D11ShaderResourceView* GetSkipTexture() { return m_skipTexture.Get(); }				// スキップテクスチャ
 
 	ID3D11ShaderResourceView* GetBlackSmokeTexture() { return m_blackSmokeTexture.Get(); }	// 破壊演出テクスチャ
 
@@ -75,6 +77,8 @@ private:
 		m_countTextTexture{},
 		m_stageTextTexture{},
 		m_selectTexture{},
+		m_resultTexture{},
+		m_skipTexture{},
 
 		m_blackSmokeTexture{}
 	{
@@ -141,6 +145,10 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_stageTextTexture;
 	// 設定選択テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_selectTexture;
+	// リザルトテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_resultTexture;
+	// スキップUIテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_skipTexture;
 
 	// エフェクトテクスチャ============================================
 	// 破壊演出テクスチャ

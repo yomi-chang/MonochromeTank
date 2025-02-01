@@ -188,7 +188,6 @@
     <ClInclude Include="Game\Collider\BoxCollider.h" />
     <ClInclude Include="Game\Collider\SphereCollider.h" />
     <ClInclude Include="Game\EnemyAi\Attack.h" />
-    <ClInclude Include="Game\EnemyAi\Escape.h" />
     <ClInclude Include="Game\EnemyAi\IEnemyAction.h" />
     <ClInclude Include="Game\EnemyAi\Patrol.h" />
     <ClInclude Include="Game\EnemyAi\SelectAction.h" />
@@ -211,6 +210,7 @@
     <ClInclude Include="Game\Objects\Stage\Wall.h" />
     <ClInclude Include="Game\Other\CollisionManager.h" />
     <ClInclude Include="Game\Other\SharedData.h" />
+    <ClInclude Include="Game\Other\Sounds.h" />
     <ClInclude Include="Game\Particle\Smoke.h" />
     <ClInclude Include="Game\Scene\Fade.h" />
     <ClInclude Include="Game\Scene\IScene.h" />
@@ -241,6 +241,7 @@
     <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Libraries\MyLib\SoundManager.h" />
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -252,7 +253,6 @@
     <ClCompile Include="Game\Collider\BoxCollider.cpp" />
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
     <ClCompile Include="Game\EnemyAi\Attack.cpp" />
-    <ClCompile Include="Game\EnemyAi\Escape.cpp" />
     <ClCompile Include="Game\EnemyAi\Patrol.cpp" />
     <ClCompile Include="Game\EnemyAi\SelectAction.cpp" />
     <ClCompile Include="Game\EnemyAi\Tracking.cpp" />
@@ -302,12 +302,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Libraries\MyLib\SoundManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="directx.ico" />
   </ItemGroup>
   <ItemGroup>
     <Manifest Include="settings.manifest" />

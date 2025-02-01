@@ -28,6 +28,12 @@ private:
 	// Œ»İ‚Ìs“®
 	Action m_currentAction;
 
+	// ˆÚ“®ŠÔ
+	float m_moveTime;
+
+	// UŒ‚ŠÔ
+	float m_shotTime;
+
 public:
 	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìİ’è
 	void SetTargetTank(Tank* tank) { m_targetTank = tank; }

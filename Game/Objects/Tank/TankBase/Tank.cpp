@@ -104,7 +104,7 @@ void Tank::Initialize()
 void Tank::Update(float elapsedTime)
 {
 	// やられているなら破壊演出再生
-	if (m_hp <= 0.0f)
+	if (m_hp <= 0)
 	{
 		m_smokeEffect->Update(elapsedTime);
 		return;
@@ -223,6 +223,5 @@ void Tank::Detach(std::unique_ptr<IParts> parts)
 void Tank::Damage(int damage)
 {
 	// ダメージが０でないなら
-	if (m_hp > 0)
-		m_hp -= damage;
+	if (m_hp > 0){ m_hp -= damage; }
 }

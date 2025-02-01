@@ -10,9 +10,6 @@ EnemyHpGauge::EnemyHpGauge()
 	:
 	m_alpha{},
 	m_elapsedTime{},
-	m_maxHp{},
-	m_hp{},
-	m_isDead{},
 	m_graphics{Graphics::GetInstance()}
 {
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
@@ -46,13 +43,7 @@ void EnemyHpGauge::Render(
 	DirectX::SimpleMath::Vector3 position,
 	float hpRatio
 )
-{
-	// Ž€–S”»’è
-	if (m_hp <= 0.0f)
-	{
-		m_isDead = true;
-	}
-	
+{	
 	auto view = m_graphics->GetViewMatrix();
 	auto proj = m_graphics->GetProjectionMatrix();
 	auto states = m_graphics->GetCommonStates();

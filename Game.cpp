@@ -7,6 +7,7 @@
 #include "Game/Screen.h"
 #include "Game/Scene/SceneManager.h"
 #include "Framework/Resources.h"
+#include "Game/Other/SharedData.h"
 
 extern void ExitGame() noexcept;
 
@@ -22,6 +23,7 @@ Game::Game() noexcept(false)
     m_debugString{},
     m_inputManager{},
     m_sceneManager{},
+    m_soundManager{},
     m_graphics{},
     m_hWnd{}
 {
@@ -83,6 +85,12 @@ void Game::Initialize(HWND window, int width, int height)
         context,
         L"Resources/Fonts/SegoeUI_18.spritefont"
     );
+
+    // サウンドマネージャの作成
+    m_soundManager = std::make_unique<mylib::SoundManager>();
+    //m_soundManager->Initialize();
+    // サウンドマネージャの設定
+    //SharedData::GetInstance()->SetSoundManager(m_soundManager.get());
 
     // デバッグストリングの設定
     m_graphics->SetDebugString(m_debugString.get());

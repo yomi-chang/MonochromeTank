@@ -50,7 +50,8 @@ PlayScene::PlayScene()
 	m_collisonManager{},
 	m_fade{},
 	m_renderTexture{},
-	m_postProcess{}
+	m_postProcess{},
+	m_skipTexture{}
 {
 }
 
@@ -140,13 +141,15 @@ void PlayScene::Initialize()
 		m_stageManager->GetWallGimmick()
 	);
 
-	const auto& size = m_graphics->GetDeviceResources()->GetOutputSize();
+	/*const auto& size = m_graphics->GetDeviceResources()->GetOutputSize();
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
 
 	m_renderTexture = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
 	m_renderTexture->SetDevice(device);
-	m_renderTexture->SetWindow(size);
+	m_renderTexture->SetWindow(size);*/
 
+	//　スキップテクスチャの受け取り
+	m_skipTexture = Resources::GetInstance()->GetSkipTexture();
 
 	//m_postProcess = std::make_unique<DirectX::BasicPostProcess>(device);
 }
@@ -229,10 +232,10 @@ void PlayScene::Update(float elapsedTime)
 	}
 
 	// Cキーを押すことでデバッグカメラとTPSカメラを切り替える
-	if (kbTracker->IsKeyPressed(DirectX::Keyboard::C))
+	/*if (kbTracker->IsKeyPressed(DirectX::Keyboard::C))
 	{
 		this->ChangeCameraType();
-	}
+	}*/
 }
 
 //---------------------------------------------------------
@@ -279,6 +282,22 @@ void PlayScene::Render()
 	// 戦車の描画
 	m_player->Render();
 
+	// UI関係
+	if (!m_player->GetDead())
+	{
+		m_magazine->Render();
+	}
+	else
+	{
+		// スキップUIの表示
+		auto spriteBatch = m_graphics->GetSpriteBatch();
+		RECT rect = { 1050,580,1260,700 };
+		spriteBatch->Begin();
+		spriteBatch->Draw(m_skipTexture, rect);
+		spriteBatch->End();
+	}
+	
+	
 	// シーン遷移用
 	m_fade->Render();
 
@@ -292,32 +311,6 @@ void PlayScene::Render()
 	//m_postProcess->SetEffect(BasicPostProcess::Monochrome);
 	//m_postProcess->SetSourceTexture(srv);
 	//m_postProcess->Process(context);
-
-	// UI関係
-	m_magazine->Render();
-
-	// デバッグ情報を「DebugString」で表示する
-#ifdef _DEBUG
-	/*auto debugString = m_graphics->GetDebugString();
-	debugString->AddString("Play Scene");
-	debugString->AddString(" ");
-	debugString->AddString("PlayerTank");
-	debugString->AddString("x : %f", m_playerTank->GetTankPosition().x);
-	debugString->AddString("z : %f", m_playerTank->GetTankPosition().z);
-	debugString->AddString(" ");
-	switch (m_playerTank->GetBulletType())
-	{
-		case Tank::BULLET:
-			debugString->AddString("Bullet");
-			debugString->AddString("value : %d", m_playerTank->GetBulletValue());
-			break;
-		case Tank::CANNONBALL:
-			debugString->AddString("CannonBall");
-			debugString->AddString("value : %d", m_playerTank->GetCannonBallValue());
-		default:
-			break;
-	}*/
-#endif
 }
 
 //---------------------------------------------------------

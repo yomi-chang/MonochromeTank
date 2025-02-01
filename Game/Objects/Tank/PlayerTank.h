@@ -65,8 +65,6 @@ private:
 public:
 	// ‘¼íÔî•ñó‚¯“n‚µ
 	void SetOtherTanks(std::vector<Tank*> tanks);
-	// •Çî•ñ‚Ìó‚¯æ‚è
-	void SetWalls(std::vector<Wall*> walls);
 	// ƒJƒƒ‰î•ñ‚Ìó‚¯æ‚è
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 

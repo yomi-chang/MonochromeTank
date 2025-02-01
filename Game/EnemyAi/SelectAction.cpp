@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Game/EnemyAi/SelectAction.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
-#include "Game/UserInterface/EnemyHpGauge.h"
 
 SelectAction::SelectAction()
 	:
@@ -10,17 +9,15 @@ SelectAction::SelectAction()
 	m_otherTanks{},
 	m_distance{},
 	m_hp{},
-	m_targetTank{}
+	m_targetTank{},
+	m_trackingDistance{}
 {
 }
 
-void SelectAction::Initialize(Tank* tank, EnemyHpGauge* hp)
+void SelectAction::Initialize(Tank* tank)
 {
 	// 自機の取得
 	m_tank = tank;
-
-	// HPゲージの取得
-	m_hpGauge = hp;
 
 	// 最初の行動は巡回行動
 	m_action = Action::PATROL;
@@ -42,7 +39,7 @@ void SelectAction::Update()
 	// 追跡対象の戦車との距離を調べる
 	float distance = (m_targetTank->GetPosition() - m_tank->GetPosition()).LengthSquared();
 	// 体力の取得
-	float hp = m_hpGauge->GetHp();
+	float hp = static_cast<float>(m_tank->GetHp());
 	// ステータスの評価
 	m_distance = EvaluateStates(distance, DISTANCE_HIGH, DISTANCE_LOW);
 	m_hp = EvaluateStates(hp, HP_HIGH, HP_LOW);

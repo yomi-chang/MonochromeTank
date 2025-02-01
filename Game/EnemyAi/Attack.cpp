@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Game/EnemyAi/Attack.h"
+#include "Libraries/MyLib/Math.h"
 
 //-------------------------------------------------------------------
 // コンストラクタ
@@ -8,7 +9,9 @@ Attack::Attack()
 	:
 	m_tank{},
 	m_targetTank{},
-	m_time{}
+	m_time{},
+	m_moveTime{},
+	m_shotTime{}
 {
 }
 //-------------------------------------------------------------------
@@ -18,6 +21,12 @@ void Attack::Initialize(Tank* tank)
 {
 	m_tank = tank;
 	m_currentAction = Action::SHOT;
+
+	// 初期の移動時間の設定
+	m_moveTime = mylib::Random(1.0f, 5.0f);
+
+	// 初期の攻撃時間の設定
+	m_shotTime = mylib::Random(1.0f, 3.0f);
 }
 
 //-------------------------------------------------------------------
@@ -36,7 +45,7 @@ void Attack::Update(float elapsedTime)
 	m_tank->GetCannon()->Shoot();
 
 	// 行動
-	/*switch (m_currentAction)
+	switch (m_currentAction)
 	{
 		case Attack::SHOT:
 			ShotAction(elapsedTime);
@@ -46,7 +55,7 @@ void Attack::Update(float elapsedTime)
 			break;
 		default:
 			break;
-	}*/
+	}
 }
 
 // 追跡対象の方向を向く
@@ -73,7 +82,7 @@ void Attack::LookTargetTank(float elapsedTime)
 	float angleDifference = targetAngle - currentAngle;
 
 	// ゆっくり回転するための速度制御
-	float rotationSpeed = 1.0f;
+	float rotationSpeed = 1.5f;
 	float t = rotationSpeed * elapsedTime;
 
 	// 補間後の回転角度
@@ -89,29 +98,30 @@ void Attack::MoveAction(float elapsedTime)
 
 	// 時間経過
 	m_time += elapsedTime;
-	if (m_time >= MOVE_TIME)
+	if (m_time >= m_moveTime)
 	{
 		m_time = 0.0f;
 		m_currentAction = Action::SHOT;
+		// 移動時間を再度設定
+		m_moveTime = mylib::Random(1.0f, 5.0f);
 	}
 
 	// 移動
-	Vector3 moveVector = Vector3::Transform(Vector3::Forward, m_tank->GetRotation());
-
-	moveVector.Normalize();
-	moveVector *= TANK_SPEED * elapsedTime;
+	Vector3 velocity = Vector3::Transform(Vector3::Forward * (TANK_SPEED * elapsedTime), m_tank->GetRotation());
 
 	// 移動処理
-	m_tank->GetBody()->Move(moveVector);
+	m_tank->GetBody()->Move(velocity);
 }
 
 void Attack::ShotAction(float elapsedTime)
 {
 	m_time += elapsedTime;
-	if (m_time >= SHOT_TIME)
+	if (m_time >= m_shotTime)
 	{
 		m_time = 0.0f;
 		m_currentAction = Action::MOVE;
+		// 初期の攻撃時間の設定
+		m_shotTime = mylib::Random(1.0f, 3.0f);
 	}
 
 	// 射撃処理

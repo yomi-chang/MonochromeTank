@@ -88,7 +88,7 @@ void PlayerTank::Render()
 	m_tank->Render();
 
 	// HPƒQ[ƒW
-	if (m_tank->GetHp() <= 0.0f) { return; }
+	if (m_tank->GetHp() <= 0) { return; }
 	m_hpGauge->Render(m_tank->GetHpRatio());
 }
 
@@ -106,6 +106,9 @@ void PlayerTank::KeyBoardEvent(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 	using namespace DirectX;
+
+	// ”j‰ó‚³‚ê‚Ä‚¢‚é‚È‚ç‘ŠúƒŠƒ^[ƒ“
+	if (m_tank->GetHp() <= 0) { return; }
 
 	// ˆÚ“®ˆ—
 	Move(elapsedTime);
@@ -158,9 +161,9 @@ void PlayerTank::Move(float elapsedTime)
 
 	// ¶‰E‰ñ“]
 	if (keyboardState.A)
-		angle = DirectX::XMConvertToRadians(0.7f);
+		angle = DirectX::XMConvertToRadians(0.75f);
 	else if (keyboardState.D)
-		angle = DirectX::XMConvertToRadians(-0.7f);
+		angle = DirectX::XMConvertToRadians(-0.75f);
 
 	// ‘OŒãˆÚ“®
 	if (keyboardState.W)

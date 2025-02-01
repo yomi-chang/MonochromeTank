@@ -25,7 +25,7 @@ namespace
     std::unique_ptr<Game> g_game;
 }
 
-LPCWSTR g_szAppName = L"3DPG‰ž—p";
+LPCWSTR g_szAppName = L"MonochromeTank";
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 void ExitGame() noexcept;

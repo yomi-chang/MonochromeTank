@@ -178,6 +178,23 @@ void Resources::LoadResource()
 		m_selectTexture.GetAddressOf()
 	);
 
+	//	リザルトテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\ResultText.png",
+		nullptr,
+		m_resultTexture.GetAddressOf()
+	);
+
+	//	スキップテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\SkipUI.png",
+		nullptr,
+		m_skipTexture.GetAddressOf()
+	);
+
+
 	//	破壊演出テクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),

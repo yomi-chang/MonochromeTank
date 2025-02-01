@@ -1,7 +1,6 @@
 #pragma once
 
 class Tank;
-class EnemyHpGauge;
 
 class SelectAction
 {
@@ -28,13 +27,13 @@ private:
 	const float DISTANCE_HIGH = /*60.0f*/ 50.0f, DISTANCE_LOW = 10.0f;
 
 	// 体力閾値
-	const float HP_HIGH = 7.0f, HP_LOW = 3.0f;
+	const float HP_HIGH = 70.0f, HP_LOW = 30.0f;
 
 public:
 	SelectAction();
 	~SelectAction() = default;
 
-	void Initialize(Tank* tank, EnemyHpGauge* hp);
+	void Initialize(Tank* tank);
 
 	void Update();
 
@@ -44,8 +43,6 @@ private:
 
 	// 自機の情報
 	Tank* m_tank;
-	// 体力ゲージ
-	EnemyHpGauge* m_hpGauge;
 	// 全戦車の情報
 	std::vector<Tank*> m_otherTanks;
 
@@ -56,6 +53,9 @@ private:
 
 	// 追跡対象の戦車
 	Tank* m_targetTank;
+
+	// 追跡するようになる距離
+	float m_trackingDistance;
 
 public:
 	// 行動方法を返す
@@ -69,6 +69,9 @@ public:
 
 	// 追跡対象の戦車の設定
 	void SetTargetTank(Tank* targetTank) { m_targetTank = targetTank; }
+
+	// 追跡するようになる距離の設定
+	void SetTrackingDistance(float dis) { m_trackingDistance = dis; }
 
 private:
 	// ステータスの評価

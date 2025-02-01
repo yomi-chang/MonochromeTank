@@ -56,7 +56,6 @@ void EnemyTank::Initialize()
 
 	// “G‘Ì—ÍƒQ[ƒW‚ğ¶¬
 	m_hpGauge = std::make_unique<EnemyHpGauge>();
-	m_hpGauge->SetMaxHp(10.0f);
 
 	m_patrolPoint.emplace_back(Vector3{ 6.0f, 0.0f,  -6.0f });
 	m_patrolPoint.emplace_back(Vector3{ 0.0f, 0.0f,  6.0f });
@@ -75,7 +74,7 @@ void EnemyTank::Initialize()
 
 	// “GAI‚Ì¶¬
 	m_selectAction = std::make_unique<SelectAction>();
-	m_selectAction->Initialize(m_tank.get(), m_hpGauge.get());
+	m_selectAction->Initialize(m_tank.get());
 
 	m_patrol = std::make_unique<Patrol>();
 	switch (m_tankNumber)
@@ -83,14 +82,17 @@ void EnemyTank::Initialize()
 		case 1:
 			m_patrol->Initialize(m_tank.get());
 			m_patrol->SetPatrolPoints(m_patrolPoint);
+			m_selectAction->SetTrackingDistance(10.0f);
 			break;
 		case 2:
 			m_patrol->Initialize(m_tank.get());
 			m_patrol->SetPatrolPoints(m_patrolPoint2);
+			m_selectAction->SetTrackingDistance(12.0f);
 			break;
 		case 3:
 			m_patrol->Initialize(m_tank.get());
 			m_patrol->SetPatrolPoints(m_patrolPoint3);
+			m_selectAction->SetTrackingDistance(14.0f);
 			break;
 		default:
 			break;

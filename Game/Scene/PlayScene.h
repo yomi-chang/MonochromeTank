@@ -67,6 +67,10 @@ private:
 	// ポストプロセス
 	std::unique_ptr<DirectX::BasicPostProcess> m_postProcess;
 
+	// スキップUI
+	ID3D11ShaderResourceView* m_skipTexture;
+
+
 
 public:
 	PlayScene();

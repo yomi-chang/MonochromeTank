@@ -3,6 +3,11 @@
 
 class Tank;
 
+namespace mylib
+{
+	class SoundManager;
+}
+
 class SharedData final
 {
 public:
@@ -44,14 +49,26 @@ public:
 	// ステージ名
 	std::string GetStageName() { return m_stageName; }
 
+	// サウンドマネージャの設定
+	void SetSoundManager(mylib::SoundManager* soundManager) { m_soundManager = soundManager; }
+
+	// サウンドマネージャの取得
+	mylib::SoundManager* GetSoundManager() { return m_soundManager; }
+
 private:
-	// Graphicsクラスのインスタンスへのポインタ
+	// SharedDataクラスのインスタンスへのポインタ
 	static std::unique_ptr<SharedData> m_sharedData;
+
+	// サウンドマネージャー
+	mylib::SoundManager* m_soundManager;
 
 	// 勝利した戦車情報
 	std::unique_ptr<Tank> m_winnerTank;
 
+	// 戦車の数
 	int m_tankCount;
+
+	// ステージ
 	std::string m_stageName;
 };
 

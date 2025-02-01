@@ -92,7 +92,6 @@ void Bullet::Render()
 	using namespace DirectX::SimpleMath;
 
 	// ƒ‚ƒfƒ‹•`‰æ‚Ì‚½‚ß‚Ìƒ[ƒ‹ƒhs—ñ‚ðŒvŽZ‚·‚é
-	//Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	m_worldMatrix = Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) *
 		Matrix::CreateFromQuaternion(m_rotation) *
 		Matrix::CreateTranslation(m_position);
@@ -110,7 +109,7 @@ void Bullet::Render()
 	Vector3 tail = m_position;
 	tail.y -= 0.2f;
 	m_trail->SetPosition(head, tail);
-	m_trail->Render();
+	//m_trail->Render();
 }
 
 // –C’e‚ð•`‰æ‚·‚é

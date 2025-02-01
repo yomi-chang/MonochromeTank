@@ -13,6 +13,7 @@
 #include "Libraries/MyLib/DebugString.h"
 #include "Framework/InputManager.h"
 #include "Framework/Graphics.h"
+#include "Libraries/MyLib/SoundManager.h"
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -85,6 +86,9 @@ private:
 
     // シーンマネージャ
     std::unique_ptr<SceneManager>           m_sceneManager;
+
+    // サウンドマネージャ
+    std::unique_ptr<mylib::SoundManager>    m_soundManager;
 
     // グラフィックス
     Graphics* m_graphics;

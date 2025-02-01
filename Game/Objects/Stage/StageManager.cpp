@@ -62,13 +62,13 @@ void StageManager::Update(float elapsedTime)
 		wall->Update(elapsedTime);
 	}
 
-	m_wallGimmick->Update();
+	/*m_wallGimmick->Update();
 	if (m_wallGimmick->GetHit())
 	{
 		MoveWall();
-	}
+	}*/
 
-	m_fixedTurret->Update(elapsedTime);
+	//m_fixedTurret->Update(elapsedTime);
 }
 
 //---------------------------------------------------------
@@ -160,13 +160,13 @@ void StageManager::CreateStage()
 				case 1:		// 壁
 					m_walls.emplace_back(std::make_unique<Wall>(
 						Vector3(1.0f,2.0f,1.0f),
-						Vector3(x - (STAGESIZE / 2), 0.5f, y - (STAGESIZE / 2)), Wall::WallType::FIXED)
+						Vector3(static_cast<float>(x - (STAGESIZE / 2)), 0.5f, static_cast<float>(y - (STAGESIZE / 2))), Wall::WallType::FIXED)
 					);
 					break;
 				case 2:		// ギミック用壁
 					m_walls.emplace_back(std::make_unique<Wall>(
 						Vector3(1.0f, 2.0f, 1.0f),
-						Vector3(x - (STAGESIZE / 2), -2.0f, y - (STAGESIZE / 2)),
+						Vector3(static_cast<float>(x - (STAGESIZE / 2)), -2.0f, static_cast<float>(y - (STAGESIZE / 2))),
 						Wall::WallType::MOVE)
 					);
 					break;

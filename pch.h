@@ -99,3 +99,4 @@ namespace DX
 #include <WICTextureLoader.h>
 #include <Model.h>
 #include <GeometricPrimitive.h>
+#include <Audio.h>

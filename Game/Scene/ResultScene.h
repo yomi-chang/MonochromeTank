@@ -14,6 +14,7 @@ namespace mylib
 class Tank;
 class Floor;
 class Fade;
+class SkySphere;
 
 class ResultScene final :
     public IScene
@@ -22,9 +23,7 @@ private:
 	// グラフィックス
 	Graphics* m_graphics;
 
-	DirectX::SpriteBatch* m_spriteBatch;
-
-	DirectX::SpriteFont* m_spriteFont;
+	DirectX::SpriteBatch* m_spriteBatch;;
 
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
@@ -46,6 +45,13 @@ private:
 
 	// シーン遷移
 	std::unique_ptr<Fade> m_fade;
+
+	// テクスチャの切り取り座標
+	RECT m_texturePos;
+
+	// 天球
+	std::unique_ptr<SkySphere> m_skySphere;
+
 
 public:
 	ResultScene();
