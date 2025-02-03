@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Game/Particle/Smoke.h"
+#include "Game/Other/SharedData.h"
+#include "Libraries/MyLib/SoundManager.h"
+#include "Game/Other/Sounds.h"
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -223,5 +226,15 @@ void Tank::Detach(std::unique_ptr<IParts> parts)
 void Tank::Damage(int damage)
 {
 	// ダメージが０でないなら
-	if (m_hp > 0){ m_hp -= damage; }
+	if (m_hp > 0)
+	{
+		// ダメージ処理
+		m_hp -= damage;
+
+		// SEの再生
+		if (m_hp <= 0)
+			SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BREAK_SE);
+		else
+			SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_DAMAGE_SE);
+	}
 }

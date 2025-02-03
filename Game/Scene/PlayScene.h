@@ -3,7 +3,7 @@
 	@brief	プレイシーンクラス
 */
 #pragma once
-#include "IScene.h"
+#include "Interface/IScene.h"
 #include <PostProcess.h>
 
 class Graphics;
@@ -14,16 +14,13 @@ class CollisionManager;
 
 class MagazineUi;
 class Fade;
+class DamageEffect;
+class StageEffect;
 
 namespace mylib
 {
 	class DebugCamera;
 	class FollowCamera;
-}
-
-namespace DX
-{
-	class RenderTexture;
 }
 
 class PlayScene final :
@@ -36,6 +33,11 @@ private:
 		TPS,
 		DEBUG
 	};
+
+	// ダメージ演出時間
+	const float DAMAGE_EFFECT_TIME = 1.0f;
+
+	const RECT SKIP_UI_POS = { 1050,580,1260,700 };
 
 private:
 	Graphics* m_graphics;									// グラフィックス
@@ -62,15 +64,17 @@ private:
 	// シーン遷移
 	std::unique_ptr<Fade> m_fade;
 
-	// レンダーテクスチャ
-	std::unique_ptr<DX::RenderTexture> m_renderTexture;
-	// ポストプロセス
-	std::unique_ptr<DirectX::BasicPostProcess> m_postProcess;
-
 	// スキップUI
 	ID3D11ShaderResourceView* m_skipTexture;
 
+	// ダメージエフェクト
+	std::unique_ptr<DamageEffect> m_damageEffect;
 
+	// ステージエフェクト
+	std::unique_ptr<StageEffect> m_stageEffect;
+
+	// 時間
+	float m_time;
 
 public:
 	PlayScene();

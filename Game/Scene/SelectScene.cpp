@@ -49,9 +49,11 @@ SelectScene::~SelectScene()
 //---------------------------------------------------------
 void SelectScene::Initialize()
 {	
+	// BGMの再生
+	SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_SELECTSCENE_BGM);
+
 	// スプライトバッチを作成する
 	m_spriteBatch = m_graphics->GetSpriteBatch();
-
 
 	// 床の生成
 	m_floor = std::make_unique<Floor>(50);
@@ -125,11 +127,13 @@ void SelectScene::Update(float elapsedTime)
 	{
 		if (m_selectPos == SELECT_POS1) { m_selectPos = SELECT_POS2; }
 		else if (m_selectPos == SELECT_POS2) { m_selectPos = SELECT_POS3; }
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
 	}
 	if (kbTracker->IsKeyPressed(DirectX::Keyboard::W))
 	{
 		if (m_selectPos == SELECT_POS3) { m_selectPos = SELECT_POS2; }
 		else if (m_selectPos == SELECT_POS2) { m_selectPos = SELECT_POS1; }
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
 	}
 
 	// ステージ選択
@@ -140,12 +144,14 @@ void SelectScene::Update(float elapsedTime)
 			if (m_stageTexturePos == STAGE1) { m_stageTexturePos = STAGE2; }
 			else if (m_stageTexturePos == STAGE2) { m_stageTexturePos = STAGE3; }
 			else if (m_stageTexturePos == STAGE3) { m_stageTexturePos = STAGE1; }
+			SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
 		}
 		if (kbTracker->IsKeyPressed(DirectX::Keyboard::A))
 		{
 			if (m_stageTexturePos == STAGE1) { m_stageTexturePos= STAGE3; }
 			else if (m_stageTexturePos == STAGE2) { m_stageTexturePos = STAGE1; }
 			else if (m_stageTexturePos == STAGE3) { m_stageTexturePos = STAGE2; }
+			SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
 		}
 	}
 
@@ -157,12 +163,14 @@ void SelectScene::Update(float elapsedTime)
 			if (m_tankCountTexturePos == TANK_COUNT1) { m_tankCountTexturePos = TANK_COUNT2; }
 			else if (m_tankCountTexturePos == TANK_COUNT2) { m_tankCountTexturePos = TANK_COUNT3; }
 			else if (m_tankCountTexturePos == TANK_COUNT3) { m_tankCountTexturePos = TANK_COUNT1; }
+			SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
 		}
 		if (kbTracker->IsKeyPressed(DirectX::Keyboard::A))
 		{
 			if (m_tankCountTexturePos == TANK_COUNT1) { m_tankCountTexturePos = TANK_COUNT3; }
 			else if (m_tankCountTexturePos == TANK_COUNT2) { m_tankCountTexturePos = TANK_COUNT1; }
 			else if (m_tankCountTexturePos == TANK_COUNT3) { m_tankCountTexturePos = TANK_COUNT2; }
+			SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
 		}
 	}
 
@@ -170,6 +178,7 @@ void SelectScene::Update(float elapsedTime)
 	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Space) &&
 		m_selectPos == SELECT_POS3)
 	{
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
 		m_fade->FadeIn();
 	}
 

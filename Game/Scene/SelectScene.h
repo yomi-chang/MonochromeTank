@@ -3,7 +3,7 @@
 	@brief	タイトルシーンクラス
 */
 #pragma once
-#include "IScene.h"
+#include "Interface/IScene.h"
 #include "Framework/Graphics.h"
 
 namespace mylib

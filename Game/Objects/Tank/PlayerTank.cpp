@@ -26,7 +26,9 @@ PlayerTank::PlayerTank(
 	m_angle{},
 	m_tank{},
 	m_hpGauge{},
-	m_camera{}
+	m_camera{},
+	m_previousHp{},
+	m_isDamage{}
 {
 }
 
@@ -56,6 +58,7 @@ void PlayerTank::Initialize()
 	// HPゲージの作成
 	m_hpGauge = std::make_unique<HpGauge>();
 	m_hpGauge->Initialize(Vector2{ 200,50 });
+	m_previousHp = m_tank->GetHp();
 }
 
 //---------------------------------------------------------
@@ -63,6 +66,9 @@ void PlayerTank::Initialize()
 //---------------------------------------------------------
 void PlayerTank::Update(float elapsedTime)
 {
+	// ダメージを受けたかどうかのリセット
+	m_isDamage = false;
+
 	// 破壊されていたら処理しない
 	if (m_tank->GetDead()) { return; }
 
@@ -77,6 +83,14 @@ void PlayerTank::Update(float elapsedTime)
 	// 座標と回転角の更新
 	m_position = m_tank->GetPosition();
 	m_angle = m_tank->GetRotation();
+
+	// ダメージを受けていたらカメラを揺らす
+	if (m_previousHp != m_tank->GetHp())
+	{
+		m_isDamage = true;
+		m_camera->StartShakeCamera(15.0f, 0.05f, 0.4f);
+	}
+	m_previousHp = m_tank->GetHp();
 }
 
 //---------------------------------------------------------

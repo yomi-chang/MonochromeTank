@@ -33,8 +33,10 @@ public:
 	ID3D11ShaderResourceView* GetSelectTexture() { return m_selectTexture.Get(); }			// 設定選択テクスチャ
 	ID3D11ShaderResourceView* GetResultTexture() { return m_resultTexture.Get(); }			// リザルトテクスチャ
 	ID3D11ShaderResourceView* GetSkipTexture() { return m_skipTexture.Get(); }				// スキップテクスチャ
+	ID3D11ShaderResourceView* GetPressSpaceTexture() { return m_pressSpaceTexture.Get(); }	// プレススペーステクスチャ
 
 	ID3D11ShaderResourceView* GetBlackSmokeTexture() { return m_blackSmokeTexture.Get(); }	// 破壊演出テクスチャ
+	ID3D11ShaderResourceView* GetDamageEffectTexture() { return m_damageEffectTexture.Get(); }	// 破壊演出テクスチャ
 
 public:
 	Resources(Resources&&) = default;
@@ -79,8 +81,10 @@ private:
 		m_selectTexture{},
 		m_resultTexture{},
 		m_skipTexture{},
+		m_pressSpaceTexture{},
 
-		m_blackSmokeTexture{}
+		m_blackSmokeTexture{},
+		m_damageEffectTexture{}
 	{
 	}
 
@@ -149,9 +153,12 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_resultTexture;
 	// スキップUIテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_skipTexture;
+	// プレススペーステクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pressSpaceTexture;
 
 	// エフェクトテクスチャ============================================
 	// 破壊演出テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_blackSmokeTexture;
-
+	// ダメージ演出テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_damageEffectTexture;
 };

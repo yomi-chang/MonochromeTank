@@ -6,6 +6,9 @@
 #include <VertexTypes.h> 
 #include <WICTextureLoader.h> 
 
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 Floor::Floor(float size)
 	:
 	m_graphics{ Graphics::GetInstance()},
@@ -46,6 +49,9 @@ Floor::Floor(float size)
 	m_vertex[3] = DirectX::VertexPositionTexture(Vector3(-halfSize, 0.0f, -halfSize), Vector2(0.0f, halfSize));
 }
 
+//-------------------------------------------------------------------
+// 描画処理
+//-------------------------------------------------------------------
 void Floor::Render()
 {
 	using namespace DirectX::SimpleMath;

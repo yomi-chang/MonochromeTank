@@ -2,6 +2,9 @@
 #include "Game/EnemyAi/SelectAction.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 SelectAction::SelectAction()
 	:
 	m_action{},
@@ -14,6 +17,9 @@ SelectAction::SelectAction()
 {
 }
 
+//-------------------------------------------------------------------
+// 初期化処理
+//-------------------------------------------------------------------
 void SelectAction::Initialize(Tank* tank)
 {
 	// 自機の取得
@@ -23,6 +29,9 @@ void SelectAction::Initialize(Tank* tank)
 	m_action = Action::PATROL;
 }
 
+//-------------------------------------------------------------------
+// 更新処理
+//-------------------------------------------------------------------
 void SelectAction::Update()
 {
 	// ターゲットがいないときは巡回行動に
@@ -48,7 +57,9 @@ void SelectAction::Update()
 	m_action = Select();
 }
 
-// ステータスを評価する
+//-------------------------------------------------------------------
+// ステータスの評価
+//-------------------------------------------------------------------
 SelectAction::Evaluation SelectAction::EvaluateStates(float value, float high, float low)
 {
 	// ステータスが高閾値以上ならHIGHを返す
@@ -59,7 +70,9 @@ SelectAction::Evaluation SelectAction::EvaluateStates(float value, float high, f
 	return Evaluation::LOW;
 }
 
+//-------------------------------------------------------------------
 // 行動選択
+//-------------------------------------------------------------------
 SelectAction::Action SelectAction::Select()
 {
 	/*if (m_hp == Evaluation::HIGH)

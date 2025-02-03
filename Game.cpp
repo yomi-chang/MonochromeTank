@@ -88,9 +88,9 @@ void Game::Initialize(HWND window, int width, int height)
 
     // サウンドマネージャの作成
     m_soundManager = std::make_unique<mylib::SoundManager>();
-    //m_soundManager->Initialize();
+    m_soundManager->Initialize();
     // サウンドマネージャの設定
-    //SharedData::GetInstance()->SetSoundManager(m_soundManager.get());
+    SharedData::GetInstance()->SetSoundManager(m_soundManager.get());
 
     // デバッグストリングの設定
     m_graphics->SetDebugString(m_debugString.get());

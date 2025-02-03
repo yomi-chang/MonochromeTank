@@ -3,7 +3,7 @@
 	@brief	タイトルシーンクラス
 */
 #pragma once
-#include "IScene.h"
+#include "Interface/IScene.h"
 #include "Framework/Graphics.h"
 
 namespace mylib
@@ -29,6 +29,7 @@ private:
 
 	// テクスチャ
 	ID3D11ShaderResourceView* m_titleLogo;
+	ID3D11ShaderResourceView* m_pressSpace;
 
 	// テクスチャの半分の大きさ
 	DirectX::SimpleMath::Vector2 m_texCenter;

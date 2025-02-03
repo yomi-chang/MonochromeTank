@@ -1,6 +1,4 @@
 #pragma once
-#include"Libraries/Microsoft/RenderTexture.h"
-//#include <Windows.h>
 
 // 前方宣言
 class Graphics;
@@ -37,11 +35,6 @@ private:
 	ID3D11ShaderResourceView* m_reloadTexture;
 	ID3D11ShaderResourceView* m_gaugeTexture;
 
-
-	Microsoft::WRL::ComPtr<ID3D11RenderTargetView> m_renderTargetView;
-
-	std::unique_ptr<DX::RenderTexture> m_backBuffer;
-
 	// スプライトバッチ
 	DirectX::SpriteBatch* m_spriteBatch;
 
@@ -63,9 +56,6 @@ public:
 	void Render();
 
 private:
-	// シェーダの読み込み
-	void LoadShader();
-
 	// テクスチャの読み込み
 	void LoadTexture();
 

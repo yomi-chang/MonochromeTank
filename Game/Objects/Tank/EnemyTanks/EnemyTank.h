@@ -12,8 +12,6 @@ class Tracking;
 class Attack;
 class SphereCollider;
 
-class Smoke;
-
 class EnemyTank : IObject
 {
 private:
@@ -68,10 +66,6 @@ private:
 	std::unique_ptr<Patrol> m_patrol;				// 巡回行動
 	std::unique_ptr<Tracking> m_tracking;			// 追跡行動
 	std::unique_ptr<Attack> m_attack;				// 攻撃行動
-
-	// 倒されたときの演出
-	std::unique_ptr<Smoke> m_smokeEffect;
-
 
 public:
 	// 座標の取得

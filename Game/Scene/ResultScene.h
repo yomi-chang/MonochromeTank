@@ -3,7 +3,7 @@
 	@brief	リザルトシーンクラス
 */
 #pragma once
-#include "IScene.h"
+#include "Interface/IScene.h"
 #include "Framework/Graphics.h"
 
 namespace mylib
@@ -27,6 +27,7 @@ private:
 
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
+	ID3D11ShaderResourceView* m_pressSpace;
 
 	// テクスチャの半分の大きさ
 	DirectX::SimpleMath::Vector2 m_texCenter;

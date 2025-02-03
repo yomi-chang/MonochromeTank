@@ -27,6 +27,8 @@
 #include "Game/Objects/Stage/StageManager.h"
 #include "Game/Other/CollisionManager.h"
 #include "Game/Scene/Fade.h"
+#include "Game/Particle/DamageEffect.h"
+#include "Game/Particle/StageEffect.h"
 #include "Game/Other/SharedData.h"
 
 #include <cassert>
@@ -49,9 +51,10 @@ PlayScene::PlayScene()
 	m_stageManager{},
 	m_collisonManager{},
 	m_fade{},
-	m_renderTexture{},
-	m_postProcess{},
-	m_skipTexture{}
+	m_skipTexture{},
+	m_damageEffect{},
+	m_stageEffect{},
+	m_time{}
 {
 }
 
@@ -69,6 +72,9 @@ PlayScene::~PlayScene()
 void PlayScene::Initialize()
 {
 	using namespace DirectX::SimpleMath;
+
+	// BGMの再生
+	SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_PLAYSCENE_BGM);
 
 	// デバッグカメラを作成する
 	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
@@ -113,6 +119,14 @@ void PlayScene::Initialize()
 	m_fade = std::make_unique<Fade>(1.0f);
 	m_fade->FadeOut();
 
+	// ダメージエフェクト
+	m_damageEffect = std::make_unique<DamageEffect>();
+	m_damageEffect->Create();
+
+	// ステージエフェクト
+	m_stageEffect = std::make_unique<StageEffect>();
+	m_stageEffect->Create();
+
 	//全戦車の情報を持つ配列
 	std::vector<Tank*> tankPointers;
 	tankPointers.push_back(m_player->GetTank());
@@ -141,17 +155,8 @@ void PlayScene::Initialize()
 		m_stageManager->GetWallGimmick()
 	);
 
-	/*const auto& size = m_graphics->GetDeviceResources()->GetOutputSize();
-	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
-
-	m_renderTexture = std::make_unique<DX::RenderTexture>(DXGI_FORMAT_B8G8R8A8_UNORM);
-	m_renderTexture->SetDevice(device);
-	m_renderTexture->SetWindow(size);*/
-
 	//　スキップテクスチャの受け取り
 	m_skipTexture = Resources::GetInstance()->GetSkipTexture();
-
-	//m_postProcess = std::make_unique<DirectX::BasicPostProcess>(device);
 }
 
 //---------------------------------------------------------
@@ -236,6 +241,18 @@ void PlayScene::Update(float elapsedTime)
 	{
 		this->ChangeCameraType();
 	}*/
+
+	// 経過時間の設定
+	//m_damageEffect->SetElapsedTime(elapsedTime);
+	m_stageEffect->SetElapsedTime(elapsedTime);
+
+	// ダメージを食らったらヒットエフェクトを出す
+	if (m_player->GetDamage())
+		m_time = DAMAGE_EFFECT_TIME;
+
+	// 時間経過
+	if (m_time > 0)
+		m_time -= elapsedTime;
 }
 
 //---------------------------------------------------------
@@ -243,13 +260,6 @@ void PlayScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void PlayScene::Render()
 {
-	// レンダーターゲットをオフスクリーンに
-	/*auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto rtv = m_renderTexture->GetRenderTargetView();
-	auto defaultDSV = m_graphics->GetDeviceResources()->GetDepthStencilView();
-	context->ClearRenderTargetView(rtv, DirectX::Colors::White);
-	context->ClearDepthStencilView(defaultDSV, D3D11_CLEAR_DEPTH, 1.0f, 0);
-	context->OMSetRenderTargets(1, &rtv, defaultDSV);*/
 
 	// カメラタイプに応じたビュー行列の取得
 	auto view = DirectX::SimpleMath::Matrix::Identity;
@@ -291,26 +301,22 @@ void PlayScene::Render()
 	{
 		// スキップUIの表示
 		auto spriteBatch = m_graphics->GetSpriteBatch();
-		RECT rect = { 1050,580,1260,700 };
 		spriteBatch->Begin();
-		spriteBatch->Draw(m_skipTexture, rect);
+		spriteBatch->Draw(m_skipTexture, SKIP_UI_POS);
 		spriteBatch->End();
 	}
 	
+	// ステージエフェクト
+	m_stageEffect->Render();
+	// ダメージエフェクト
+	if (m_time > 0)
+	{
+		m_damageEffect->SetElapsedTime(m_time);
+		m_damageEffect->Render();
+	}
 	
 	// シーン遷移用
 	m_fade->Render();
-
-	// フレームバッファに切り替える
-	// 描画先をフレームバッファに戻す 
-	//auto defaultRTV = m_graphics->GetDeviceResources()->GetRenderTargetView();
-	//context->OMSetRenderTargets(1, &defaultRTV, nullptr);
-	// オフスクリーンの画像をSRVとして取得し、ポストプロセスをかける
-	// ポストエフェクトをかける
-	//auto srv = m_renderTexture->GetShaderResourceView();
-	//m_postProcess->SetEffect(BasicPostProcess::Monochrome);
-	//m_postProcess->SetSourceTexture(srv);
-	//m_postProcess->Process(context);
 }
 
 //---------------------------------------------------------

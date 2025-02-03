@@ -63,7 +63,7 @@
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h">
       <Filter>Libraries\MyLib</Filter>
     </ClInclude>
-    <ClInclude Include="Game\Scene\IScene.h">
+    <ClInclude Include="Interface\IScene.h">
       <Filter>Game\Scene</Filter>
     </ClInclude>
     <ClInclude Include="Game\Scene\TitleScene.h">
@@ -101,7 +101,6 @@
     <ClInclude Include="Game\Objects\Tank\EnemyTanks\EnemyTank.h" />
     <ClInclude Include="Game\Objects\Stage\StageManager.h" />
     <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
-    <ClInclude Include="Game\UserInterface\UserInterface.h" />
     <ClInclude Include="Game\UserInterface\MagazineUi.h" />
     <ClInclude Include="Libraries\Microsoft\ReadData.h" />
     <ClInclude Include="Libraries\Microsoft\RenderTexture.h" />
@@ -120,11 +119,13 @@
     <ClInclude Include="Game\EnemyAi\SelectAction.h" />
     <ClInclude Include="Game\Objects\Bullet\BulletTrail.h" />
     <ClInclude Include="Game\Particle\Smoke.h" />
-    <ClInclude Include="Game\EnemyAi\IEnemyAction.h" />
+    <ClInclude Include="Interface\IEnemyAction.h" />
     <ClInclude Include="Game\Scene\Fade.h" />
     <ClInclude Include="Game\Scene\SelectScene.h" />
     <ClInclude Include="Libraries\MyLib\SoundManager.h" />
     <ClInclude Include="Game\Other\Sounds.h" />
+    <ClInclude Include="Game\Particle\DamageEffect.h" />
+    <ClInclude Include="Game\Particle\StageEffect.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -175,7 +176,6 @@
     <ClCompile Include="Game\Objects\Tank\EnemyTanks\EnemyTank.cpp" />
     <ClCompile Include="Game\Objects\Stage\StageManager.cpp" />
     <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
-    <ClCompile Include="Game\UserInterface\UserInterface.cpp" />
     <ClCompile Include="Game\UserInterface\MagazineUi.cpp" />
     <ClCompile Include="Libraries\Microsoft\RenderTexture.cpp" />
     <ClCompile Include="Game\Objects\Stage\Floor.cpp" />
@@ -194,6 +194,8 @@
     <ClCompile Include="Game\Scene\Fade.cpp" />
     <ClCompile Include="Game\Scene\SelectScene.cpp" />
     <ClCompile Include="Libraries\MyLib\SoundManager.cpp" />
+    <ClCompile Include="Game\Particle\DamageEffect.cpp" />
+    <ClCompile Include="Game\Particle\StageEffect.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -205,15 +207,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="ClassDiagram.cd" />
-    <None Include="Game\Shader\Ui.hlsli" />
+    <None Include="Game\Shader\Effect.hlsli" />
     <None Include="Game\Shader\Trail\BulletTrail.hlsli" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Game\Shader\UiPS.hlsl" />
-    <FxCompile Include="Game\Shader\UiVS.hlsl" />
-    <FxCompile Include="Game\Shader\UiGS.hlsl" />
+    <FxCompile Include="Game\Shader\StageEffectPS.hlsl" />
+    <FxCompile Include="Game\Shader\StageEffectVS.hlsl" />
+    <FxCompile Include="Game\Shader\StageEffectGS.hlsl" />
     <FxCompile Include="Game\Shader\Trail\BulletTrailPS.hlsl" />
     <FxCompile Include="Game\Shader\Trail\BulletTrailVS.hlsl" />
+    <FxCompile Include="Game\Shader\DamageEffectGS.hlsl" />
+    <FxCompile Include="Game\Shader\DamageEffectPS.hlsl" />
+    <FxCompile Include="Game\Shader\DamageEffectVS.hlsl" />
   </ItemGroup>
 </Project>

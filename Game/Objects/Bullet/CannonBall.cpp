@@ -11,7 +11,9 @@ const DirectX::SimpleMath::Vector3 CannonBall::SPEED(0.0f, 0.0f, -0.12f);
 // 砲弾にかかる重力を定義する
 const DirectX::SimpleMath::Vector3 CannonBall::GRAVITY(0.0f, -0.05f, 0.0f);
 
+//-------------------------------------------------------------------
 // コンストラクタ
+//-------------------------------------------------------------------
 CannonBall::CannonBall(IBullet::BulletState bulletState)
 	:
 	m_position{},
@@ -26,12 +28,16 @@ CannonBall::CannonBall(IBullet::BulletState bulletState)
 {
 }
 
+//-------------------------------------------------------------------
 // デストラクタ
+//-------------------------------------------------------------------
 CannonBall::~CannonBall()
 {
 }
 
-// 初期化する
+//-------------------------------------------------------------------
+// 初期化処理
+//-------------------------------------------------------------------
 void CannonBall::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -44,7 +50,9 @@ void CannonBall::Initialize()
 	m_collider->CreateBoundingSphere(m_position, 0.125f);
 }
 
-// 更新する 
+//-------------------------------------------------------------------
+// 更新処理
+//-------------------------------------------------------------------
 void CannonBall::Update(float time)
 {
 	UNREFERENCED_PARAMETER(time);
@@ -88,13 +96,14 @@ void CannonBall::Update(float time)
 	}
 }
 
-// 描画する 
+//-------------------------------------------------------------------
+// 描画処理
+//-------------------------------------------------------------------
 void CannonBall::Render()
 {
 	using namespace DirectX::SimpleMath;
 
 	// モデル描画のためのワールド行列を計算する
-	//Quaternion rotationQuat = Quaternion::CreateFromYawPitchRoll(m_angleRL, m_angleUD, 0.0f);
 	m_worldMatrix = Matrix::CreateRotationY(DirectX::XMConvertToRadians(180.0f)) *
 		Matrix::CreateFromQuaternion(m_rotation) *
 		Matrix::CreateTranslation(m_position);
@@ -107,7 +116,9 @@ void CannonBall::Render()
 	DrawBullet();
 }
 
-// 砲弾を描画する
+//-------------------------------------------------------------------
+// 砲弾の描画
+//------------------------------------------------------------------
 void CannonBall::DrawBullet()
 {
 	using namespace DirectX::SimpleMath;
@@ -122,7 +133,9 @@ void CannonBall::DrawBullet()
 	m_bullet->Draw(m_worldMatrix, view, proj,DirectX::Colors::Black);
 }
 
-// Bulletオブジェクトの後処理をおこなう 
+//-------------------------------------------------------------------
+// 終了処理
+//-------------------------------------------------------------------
 void CannonBall::Finalize()
 {
 }

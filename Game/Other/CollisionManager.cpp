@@ -109,13 +109,13 @@ void CollisionManager::DetectCollisionTankAndOtherTanks()
 	for (auto& tank : m_tanks)
 	{
 		// ”j‰ó‚³‚ê‚Ä‚¢‚éê‡
-		if (tank->GetDead()) { continue; }
+		if (tank->GetHp() <= 0) { continue; }
 
 		for (auto& otherTank : m_tanks)
 		{
 			// Ž©‹@‚Ìê‡‚©‘ŠŽè‚ª”j‰ó‚³‚ê‚Ä‚¢‚éê‡
 			if (tank->GetTankNumber() == otherTank->GetTankNumber() ||
-				otherTank->GetDead())
+				otherTank->GetHp() <= 0)
 			{
 				continue;
 			}

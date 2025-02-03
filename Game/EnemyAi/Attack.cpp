@@ -58,7 +58,9 @@ void Attack::Update(float elapsedTime)
 	}
 }
 
+//-------------------------------------------------------------------
 // ’ÇÕ‘ÎÛ‚Ì•ûŒü‚ðŒü‚­
+//-------------------------------------------------------------------
 void Attack::LookTargetTank(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -92,6 +94,9 @@ void Attack::LookTargetTank(float elapsedTime)
 	m_tank->GetTurret()->RotateTurret(newAngle);
 }
 
+//-------------------------------------------------------------------
+// ˆÚ“®
+//-------------------------------------------------------------------
 void Attack::MoveAction(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -113,6 +118,9 @@ void Attack::MoveAction(float elapsedTime)
 	m_tank->GetBody()->Move(velocity);
 }
 
+//-------------------------------------------------------------------
+// ŽËŒ‚
+//-------------------------------------------------------------------
 void Attack::ShotAction(float elapsedTime)
 {
 	m_time += elapsedTime;

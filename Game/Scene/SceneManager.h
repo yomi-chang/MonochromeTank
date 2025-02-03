@@ -3,7 +3,7 @@
 	@brief	シーンマネージャクラス
 */
 #pragma once
-#include "IScene.h"
+#include "Interface/IScene.h"
 
 class SceneManager
 {

@@ -194,6 +194,14 @@ void Resources::LoadResource()
 		m_skipTexture.GetAddressOf()
 	);
 
+	//	プレススペーステクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\PressSpaceKey.png",
+		nullptr,
+		m_pressSpaceTexture.GetAddressOf()
+	);
+
 
 	//	破壊演出テクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
@@ -201,5 +209,13 @@ void Resources::LoadResource()
 		L"Resources\\Textures\\blackSmoke.png",
 		nullptr,
 		m_blackSmokeTexture.GetAddressOf()
+	);
+
+	//	ダメージ演出テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\DamageEffect.jpg",
+		nullptr,
+		m_damageEffectTexture.GetAddressOf()
 	);
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "IEnemyAction.h"
+#include "Interface/IEnemyAction.h"
 
 class Patrol : public IEnemyAction
 {

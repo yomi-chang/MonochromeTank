@@ -17,8 +17,9 @@
 #include "Game/EnemyAi/Tracking.h"
 #include "Game/EnemyAi/Attack.h"
 
-#include "Game/Particle/Smoke.h"
-
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 EnemyTank::EnemyTank(
 	int tankNumber,
 	DirectX::SimpleMath::Vector3 position
@@ -103,10 +104,6 @@ void EnemyTank::Initialize()
 
 	m_attack = std::make_unique<Attack>();
 	m_attack->Initialize(m_tank.get());
-
-	// やられたときの演出作成
-	m_smokeEffect = std::make_unique<Smoke>();
-	m_smokeEffect->Initialize();
 }
 
 void EnemyTank::Update(float elapsedTime)

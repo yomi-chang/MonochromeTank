@@ -1,5 +1,5 @@
 #pragma once
-#include "IEnemyAction.h"
+#include "Interface/IEnemyAction.h"
 
 class Attack : public IEnemyAction 
 {
@@ -45,6 +45,6 @@ private:
 	// ˆÚ“®
 	void MoveAction(float elapsedTime);
 
-	// UŒ‚
+	// ËŒ‚
 	void ShotAction(float elapsedTime);
 };

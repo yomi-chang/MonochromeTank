@@ -29,6 +29,7 @@ TitleScene::TitleScene()
 	m_spriteBatch{},
 	m_spriteFont{},
 	m_titleLogo{},
+	m_pressSpace{},
 	m_texCenter{},
 	m_isChangeScene{},
 	m_floor{},
@@ -50,13 +51,16 @@ TitleScene::~TitleScene()
 //---------------------------------------------------------
 void TitleScene::Initialize()
 {	
+	// BGMの再生
+	SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_TITLESCENE_BGM);
+
 	// スプライトバッチを作成する
 	m_spriteBatch = m_graphics->GetSpriteBatch();
 	m_spriteFont = m_graphics->GetFont();
 
 	// 画像の受け取り
 	m_titleLogo = Resources::GetInstance()->GetTitleLogoTexture();
-
+	m_pressSpace = Resources::GetInstance()->GetPressSpaceTexture();
 
 	/*
 		以下、テクスチャの大きさを求める→テクスチャの中心座標を計算する
@@ -207,12 +211,12 @@ void TitleScene::Render()
 		1.5f				// スケール(scale)
 	);
 
-	// 純粋にスプライトフォントで文字列を描画する方法
-	///m_spriteFont->DrawString(m_spriteBatch/*.get()*/, L"Title Scene", Vector2(10, 40));
-
-	wchar_t buf[32];
-	swprintf_s(buf, 32, L"right : %d, bottom : %d", rect.right, rect.bottom);
-	//m_spriteFont->DrawString(m_spriteBatch/*.get()*/, buf, Vector2(10,70));
+	rect = { 400,500,920,620 };
+	// UIの描画
+	m_spriteBatch->Draw(
+		m_pressSpace,
+		rect
+	);
 
 	// スプライトバッチの終わり
 	m_spriteBatch->End();

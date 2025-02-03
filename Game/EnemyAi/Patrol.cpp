@@ -78,20 +78,27 @@ void Patrol::Update(float elapsedTime)
 	}
 }
 
+//-------------------------------------------------------------------
 // 巡回地点の追加
+//-------------------------------------------------------------------
 void Patrol::AddPatrolPoint(DirectX::SimpleMath::Vector3 point)
 {
 	m_patrolPoints.push_back(point);
 	m_patrolPointVelue++;
 }
 
+//-------------------------------------------------------------------
 // 巡回地点の削除
+//-------------------------------------------------------------------
+
 void Patrol::ClearPatrolPoints()
 {
 	m_patrolPoints.clear();
 }
 
+//-------------------------------------------------------------------
 // 巡回地点の登録
+//-------------------------------------------------------------------
 void Patrol::SetPatrolPoints(std::vector<DirectX::SimpleMath::Vector3> patrolPoints)
 {
 	// 巡回地点の削除

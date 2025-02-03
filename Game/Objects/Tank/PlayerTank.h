@@ -52,6 +52,10 @@ private:
 	std::unique_ptr<HpGauge> m_hpGauge;
 	// カメラ
 	mylib::FollowCamera* m_camera;
+	// 1フレーム前の体力
+	int m_previousHp;
+	// ダメージを受けたかどうか
+	bool m_isDamage;
 
 
 private:
@@ -85,4 +89,7 @@ public:
 	
 	// 死亡しているかどうか
 	bool GetDead() { return m_tank->GetDead(); }
+
+	// ダメージを受けたかどうか
+	bool GetDamage() { return m_isDamage; }
 };

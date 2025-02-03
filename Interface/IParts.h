@@ -2,7 +2,6 @@
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 #include "Libraries/MyLib/DebugLog.h"
-
 class IParts
 {
 public:

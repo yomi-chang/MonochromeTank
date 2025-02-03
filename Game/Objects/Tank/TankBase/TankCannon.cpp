@@ -11,6 +11,10 @@
 #include "Libraries/MyLib/DebugLog.h"
 #include "Libraries/MyLib/Math.h"
 
+#include "Game/Other/SharedData.h"
+#include "Libraries/MyLib/SoundManager.h"
+#include "Game/Other/Sounds.h"
+
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
@@ -62,16 +66,6 @@ void TankCannon::Initialize()
 	// 戦車に砲身情報を渡す
 	m_tank->SetCannon(this);
 
-	// 連射弾配列を作成する
-	//m_bullets.resize(20);
-	//// 配列に連射弾を格納する
-	//for (int index = 0; index < 20; index++)
-	//{
-	//	// 連射弾を生成する
-	//	m_bullets[index] = std::make_unique<Bullet>(IBullet::UNUSED);
-	//	// 連射弾を初期化する
-	//	m_bullets[index]->Initialize();
-	//}
 	/// 連射弾の生成
 	for (int i = 0; i < 20; i++)
 	{
@@ -93,7 +87,7 @@ void TankCannon::Initialize()
 	m_reloadBulletType = BulletType::CANNONBALL;
 
 	// 弾のブレの半径(仮)
-	m_bulletBlurRadius = 1.5f;
+	m_bulletBlurRadius = 1.0f;
 
 	// 標準表示にする
 	m_displaySight = true;
@@ -210,8 +204,9 @@ void TankCannon::Shoot()
 				{
 					//「連射弾」を発射する
 					ShootBullet(bullet.get());
-					// 発射砲弾数をインクリメントする
-					//m_shotBulletNumber++;
+					// SEの再生
+					if(m_tank->GetTankNumber() == 0)
+						SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BULLET_SE);
 					break;
 				}
 			}
@@ -220,8 +215,17 @@ void TankCannon::Shoot()
 		case BulletType::CANNONBALL:
 			if (m_cannonBall->GetBulletState() == IBullet::UNUSED)
 			{
-				// 「砲弾」を発射する
+				//「砲弾」を発射する
 				ShootBullet(m_cannonBall.get());
+				// SEの再生
+				if (m_tank->GetTankNumber() == 0)
+					SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CANNONBALL_SE);
+			}
+			else
+			{
+				// SEの再生
+				if (m_tank->GetTankNumber() == 0)
+					SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_NONEBULLETS_SE);
 			}
 			break;
 	}
@@ -313,6 +317,10 @@ void TankCannon::Reload(float elapsedTime)
 		}
 
 		m_isReload = false;
+
+		// SEの再生
+		if (m_tank->GetTankNumber() == 0)
+			SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_RELOAD_SE);
 	}
 }
 

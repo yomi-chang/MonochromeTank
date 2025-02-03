@@ -8,7 +8,7 @@
 #include "StepTimer.h"
 
 // šinclude‚Ì’Ç‹Lš
-#include "Game/Scene/IScene.h"
+#include "Interface/IScene.h"
 #include "Game/Scene/SceneManager.h"
 #include "Libraries/MyLib/DebugString.h"
 #include "Framework/InputManager.h"

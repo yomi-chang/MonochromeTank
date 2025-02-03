@@ -49,8 +49,16 @@ void mylib::SoundManager::Initialize()
 	m_waveBank = std::make_unique<DirectX::WaveBank>(m_audioEngine.get(), L"Resources/Sounds/sounds.xwb");
 
 	// BGM‚ðƒ}ƒbƒv‚É“o˜^‚·‚é
-	//m_bgms.insert(BgmMap::value_type(XACT_WAVEBANK_SOUNDS_MAOU_BGM_8BIT28, m_waveBank->CreateInstance(XACT_WAVEBANK_SOUNDS_MAOU_BGM_8BIT28)));
-	//m_bgms.insert(BgmMap::value_type(XACT_WAVEBANK_SOUNDS_MAOU_BGM_8BIT29, m_waveBank->CreateInstance(XACT_WAVEBANK_SOUNDS_MAOU_BGM_8BIT29)));
+	m_bgms.insert(BgmMap::value_type(XACT_WAVEBANK_SOUNDS_TITLESCENE_BGM,
+		m_waveBank->CreateInstance(XACT_WAVEBANK_SOUNDS_TITLESCENE_BGM)));
+	m_bgms.insert(BgmMap::value_type(XACT_WAVEBANK_SOUNDS_SELECTSCENE_BGM,
+		m_waveBank->CreateInstance(XACT_WAVEBANK_SOUNDS_SELECTSCENE_BGM)));
+	m_bgms.insert(BgmMap::value_type(XACT_WAVEBANK_SOUNDS_PLAYSCENE_BGM,
+		m_waveBank->CreateInstance(XACT_WAVEBANK_SOUNDS_PLAYSCENE_BGM)));
+	m_bgms.insert(BgmMap::value_type(XACT_WAVEBANK_SOUNDS_RESULTSCENEWIN_BGM,
+		m_waveBank->CreateInstance(XACT_WAVEBANK_SOUNDS_RESULTSCENEWIN_BGM)));
+	m_bgms.insert(BgmMap::value_type(XACT_WAVEBANK_SOUNDS_RESULTSCENELOSE_BGM,
+		m_waveBank->CreateInstance(XACT_WAVEBANK_SOUNDS_RESULTSCENELOSE_BGM)));
 }
 
 //---------------------------------------------------------

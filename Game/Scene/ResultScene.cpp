@@ -32,7 +32,8 @@ ResultScene::ResultScene()
 	m_tank{},
 	m_camera{},
 	m_floor{},
-	m_texturePos{}
+	m_texturePos{},
+	m_pressSpace{}
 {
 }
 
@@ -52,17 +53,8 @@ void ResultScene::Initialize()
 	// スプライトバッチを作成する
 	m_spriteBatch = m_graphics->GetSpriteBatch();
 
-	//// 画像をロードする
-	//DX::ThrowIfFailed(
-	//	CreateWICTextureFromFile(
-	//		device,
-	//		L"Resources/Textures/Result.png",
-	//		nullptr,
-	//		m_texture.ReleaseAndGetAddressOf()
-	//	)
-	//);
-
 	m_texture = Resources::GetInstance()->GetResultTexture();
+	m_pressSpace = Resources::GetInstance()->GetPressSpaceTexture();
 
 	
 	Microsoft::WRL::ComPtr<ID3D11Resource> resource{};
@@ -95,10 +87,14 @@ void ResultScene::Initialize()
 	m_tank->GetCannon()->SetDisplaySight(false);
 	if (m_tank->GetTankNumber() == 0)
 	{
+		// BGMの再生
+		SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_RESULTSCENEWIN_BGM);
 		m_texturePos = { 0,0,700,100 };
 	}
 	else
 	{
+		// BGMの再生
+		SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_RESULTSCENELOSE_BGM);
 		m_texturePos = { 0,100,700,200 };
 	}
 
@@ -185,12 +181,11 @@ void ResultScene::Render()
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 
-	// ロゴの描画位置を決める
+	// 描画位置を決める
 	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
 	// 画像の中心を計算する
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 
-	// TRIDENTロゴを描画する
 	m_spriteBatch->Draw(
 		m_texture.Get(),	// テクスチャ(SRV)
 		pos,				// スクリーンの表示位置(originの描画位置)
@@ -199,6 +194,13 @@ void ResultScene::Render()
 		0.0f,				// 回転角(ラジアン)
 		m_texCenter,		// テクスチャの基準になる表示位置(描画中心)(origin)
 		1.0f				// スケール(scale)
+	);
+
+	rect = { 400,500,920,620 };
+	// UIの描画
+	m_spriteBatch->Draw(
+		m_pressSpace,
+		rect
 	);
 
 	// スプライトバッチの終わり
