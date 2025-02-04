@@ -38,7 +38,7 @@ private:
 	std::unique_ptr<Floor> m_floor;									// 床
 	std::unique_ptr<SkySphere> m_skySphere;							// 天球
 	std::unique_ptr<WallGimmick> m_wallGimmick;						// 壁ギミック
-	std::unique_ptr<FixedTurret> m_fixedTurret;						// 固定砲台
+	std::vector<std::unique_ptr<FixedTurret>> m_fixedTurrets;		// 固定砲台
 
 	// 配列サイズの宣言
 	static const int STAGESIZE = 20;
@@ -67,10 +67,20 @@ public:
 		}
 		return wallPointers;
 	}
+
 	// 壁ギミックの情報を渡す
 	WallGimmick* GetWallGimmick() { return m_wallGimmick.get(); }
+
 	// 固定砲台の情報を渡す
-	FixedTurret* GetFixedTurret() { return m_fixedTurret.get(); }
+	std::vector<FixedTurret*> GetFixedTurrets()
+	{
+		std::vector<FixedTurret*> turretPointers;
+		for (auto& fixedTurret : m_fixedTurrets)
+		{
+			turretPointers.push_back(fixedTurret.get());
+		}
+		return turretPointers;
+	}
 
 	// 壁を上げる処理
 	void MoveWall();

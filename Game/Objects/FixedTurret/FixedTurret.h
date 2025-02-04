@@ -1,4 +1,5 @@
 #pragma once
+// 固定砲台クラス
 
 class Tank;
 class IBullet;
@@ -6,7 +7,7 @@ class IBullet;
 class FixedTurret
 {
 public:
-	FixedTurret();
+	FixedTurret(DirectX::SimpleMath::Vector3 position);
 	~FixedTurret() = default;
 	void Initialize();
 	void Update(float elapsedTime);
@@ -18,7 +19,12 @@ private:
 	// リロード時間
 	const float RELOAD_TIME = 2.0f;
 	// 弾数
-	const int BULLET_CAPACITY = 20;
+	const int BULLET_CAPACITY = 500;
+	// 射程距離
+	const float MAX_RANGE = 15.0f;
+	// 回転速度
+	const float ROTATION_SPEED = 0.9f;
+
 
 	DirectX::SimpleMath::Vector3 m_position;			// 座標
 	DirectX::SimpleMath::Quaternion m_angle;			// 角度
@@ -38,6 +44,9 @@ public:
 	// 戦車情報の設定
 	void SetTanks(std::vector<Tank*> tanks) { m_tanks = tanks; }
 
+	// 弾情報の取得
+	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
+
 private:
 	// 砲弾を発射する
 	void ShootBullet(IBullet* bullet);
@@ -54,6 +63,5 @@ private:
 	void StartReload();
 
 private:
-	// デバッグ用モデル
-	std::unique_ptr<DirectX::GeometricPrimitive> m_box;
+	void ChangeTaegetTank();
 };

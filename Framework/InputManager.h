@@ -1,9 +1,5 @@
-/*
-	@file	InputManager.h
-	@brief	マウスとキーボードの入力を請け負うクラス
-*/
 #pragma once
-
+// 入力関係クラス
 class InputManager
 {
 private:

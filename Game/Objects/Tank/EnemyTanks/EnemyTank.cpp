@@ -42,10 +42,16 @@ EnemyTank::EnemyTank(
 {
 }
 
+//-------------------------------------------------------------------
+// デストラクタ
+//-------------------------------------------------------------------
 EnemyTank::~EnemyTank()
 {
 }
 
+//-------------------------------------------------------------------
+// 初期化処理
+//-------------------------------------------------------------------
 void EnemyTank::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -58,20 +64,19 @@ void EnemyTank::Initialize()
 	// 敵体力ゲージを生成
 	m_hpGauge = std::make_unique<EnemyHpGauge>();
 
-	m_patrolPoint.emplace_back(Vector3{ 6.0f, 0.0f,  -6.0f });
-	m_patrolPoint.emplace_back(Vector3{ 0.0f, 0.0f,  6.0f });
+	// 巡回ポイントデータ
 	m_patrolPoint.emplace_back(Vector3{ -6.0f, 0.0f, -6.0f });
+	m_patrolPoint.emplace_back(Vector3{  3.0f, 0.0f,  6.0f });
+	m_patrolPoint.emplace_back(Vector3{  6.0f, 0.0f, -6.0f });
 
-	// 仮のデータ
+	m_patrolPoint2.emplace_back(Vector3{  3.0f, 0.0f,  6.0f });
+	m_patrolPoint2.emplace_back(Vector3{  6.0f, 0.0f,  -6.0f });
 	m_patrolPoint2.emplace_back(Vector3{ -6.0f, 0.0f,  -6.0f });
-	m_patrolPoint2.emplace_back(Vector3{ -6.0f, 0.0f,  6.0f });
-	m_patrolPoint2.emplace_back(Vector3{ 3.0f, 0.0f, 6.0f });
 
-	m_patrolPoint3.emplace_back(Vector3{ 6.0f, 0.0f,  6.0f });
 	m_patrolPoint3.emplace_back(Vector3{ -6.0f, 0.0f,  6.0f });
-	m_patrolPoint3.emplace_back(Vector3{ 3.0f, 0.0f, -6.0f });
-
-	//m_tank->GetCannon()->ChangeBullet();
+	m_patrolPoint3.emplace_back(Vector3{ -6.0f, 0.0f, -6.0f });
+	m_patrolPoint3.emplace_back(Vector3{  6.0f, 0.0f, -6.0f });
+	m_patrolPoint3.emplace_back(Vector3{  6.0f, 0.0f,  6.0f });
 
 	// 敵AIの生成
 	m_selectAction = std::make_unique<SelectAction>();
@@ -106,6 +111,9 @@ void EnemyTank::Initialize()
 	m_attack->Initialize(m_tank.get());
 }
 
+//-------------------------------------------------------------------
+// 更新処理
+//-------------------------------------------------------------------
 void EnemyTank::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -181,6 +189,9 @@ void EnemyTank::Update(float elapsedTime)
 	}
 }
 
+//-------------------------------------------------------------------
+// 描画処理
+//-------------------------------------------------------------------
 void EnemyTank::Render()
 {
 	// 戦車の描画
@@ -191,11 +202,16 @@ void EnemyTank::Render()
 	m_hpGauge->Render(m_position,m_tank->GetHpRatio());
 }
 
+//-------------------------------------------------------------------
+// 終了処理
+//-------------------------------------------------------------------
 void EnemyTank::Finalize()
 {
 }
 
+//-------------------------------------------------------------------
 // 座標情報の受け取り
+//-------------------------------------------------------------------
 void EnemyTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 {
 	m_tank->GetBody()->SetCollisionVel(position);

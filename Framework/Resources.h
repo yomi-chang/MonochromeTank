@@ -2,7 +2,7 @@
 #include "Model.h"
 #include "Framework/Graphics.h"
 
-// Resourcesクラスを定義する
+// リソース管理クラス
 class Resources
 {
 public:

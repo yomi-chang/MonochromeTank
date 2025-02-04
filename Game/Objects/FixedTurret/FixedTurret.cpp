@@ -7,7 +7,7 @@
 
 #include "Framework/Graphics.h"
 
-FixedTurret::FixedTurret()
+FixedTurret::FixedTurret(DirectX::SimpleMath::Vector3 position)
 	:
 	m_position{},
 	m_angle{},
@@ -17,9 +17,10 @@ FixedTurret::FixedTurret()
 	m_model{},
 	m_shotTimer{},
 	m_reloadCount{},
-	m_isReload{},
-	m_box{}
+	m_isReload{}
 {
+	// 座標の受け取り
+	m_position = position;
 }
 
 void FixedTurret::Initialize()
@@ -30,20 +31,19 @@ void FixedTurret::Initialize()
 	m_model = Resources::GetInstance()->GetFixedTurretModel();
 
 	// 連射弾の生成
-	for (int i = 0; i <= 100; i++)
+	for (int i = 0; i <= BULLET_CAPACITY; i++)
 	{
 		m_bullets.push_back(std::make_unique<Bullet>(IBullet::UNUSED));
 		m_bullets[i]->Initialize();
 	}
 
-	m_position = Vector3{ 0.0f,2.0f,-5.0f };
+	// 初期の回転角設定
 	m_angle = Quaternion::CreateFromYawPitchRoll(
 		DirectX::XMConvertToRadians(180),
 		DirectX::XMConvertToRadians(-20), 0);
 
-	// デバッグ用モデルの描画
-	auto context = Graphics::GetInstance()->GetDeviceResources()->GetD3DDeviceContext();
-	m_box = DirectX::GeometricPrimitive::CreateBox(context, DirectX::SimpleMath::Vector3(0.1f, 0.1f, 0.1f));
+	// 追跡対象の戦車
+	m_targetTank = nullptr;
 }
 
 void FixedTurret::Update(float elapsedTime)
@@ -56,8 +56,18 @@ void FixedTurret::Update(float elapsedTime)
 		bullet->Update(elapsedTime);
 	}
 
-	// 追跡対象の戦車の選択
-	m_targetTank = m_tanks.at(0);
+	// 追跡対象の戦車の設定及び変更
+	ChangeTaegetTank();
+
+	// 追跡対象の戦車がいないなら処理しない
+	if (m_targetTank == nullptr) { return; }
+
+	mylib::DebugLog("追跡対象の番号",m_targetTank->GetTankNumber());
+
+	// 射程距離外なら処理しない
+	float distance = (m_targetTank->GetPosition() - m_position).LengthSquared();
+	if (distance >= MAX_RANGE) { return; }
+
 	// 追跡中の戦車の方向に向く処理
 	Vector3 delta = m_position - m_targetTank->GetPosition();
 	float angle1 = atan2(delta.x, delta.z);
@@ -66,8 +76,7 @@ void FixedTurret::Update(float elapsedTime)
 
 	// ゆっくりと回転するようにする
 	// 回転速度
-	float rotationSpeed = 0.9f;
-	float t = rotationSpeed * elapsedTime;
+	float t = ROTATION_SPEED * elapsedTime;
 	m_angle = DirectX::XMQuaternionSlerp(m_angle, target, t);
 
 	// 発射処理
@@ -75,11 +84,8 @@ void FixedTurret::Update(float elapsedTime)
 	//Reload(elapsedTime);
 	//StartReload();
 
-	// タイマーを減らす
-	if (m_shotTimer > 0.0f)
-	{
+	if(m_shotTimer > 0)
 		m_shotTimer -= elapsedTime;
-	}
 }
 
 void FixedTurret::Render()
@@ -97,21 +103,15 @@ void FixedTurret::Render()
  	world *= Matrix::CreateTranslation(m_position);
 	// 固定砲台の描画
 	Graphics::GetInstance()->DrawModel(m_model, world);
-
-	// デバッグ用のモデルの描画(消しておく)
-	/*auto view = Graphics::GetInstance()->GetViewMatrix();
-	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
-	Matrix boxMatrix = Matrix::CreateTranslation(this->GetMuzzlePosition());
-	m_box->Draw(boxMatrix, view, proj, DirectX::Colors::Red);*/
 }
 
 // 弾の発射
 void FixedTurret::ShootBullet(IBullet* bullet)
 {
 	// 「砲弾」位置を設定する
-	bullet->SetPosition(this->GetMuzzlePosition());
+	bullet->SetPosition(GetMuzzlePosition());
 	// コライダー座標の更新
-	bullet->SetColliderPosition(this->GetMuzzlePosition());
+	bullet->SetColliderPosition(GetMuzzlePosition());
 	// 「砲弾」角度を設定する
 	bullet->SetRotation(m_angle);
 	// 「砲弾」を発射する
@@ -124,7 +124,7 @@ DirectX::SimpleMath::Vector3 FixedTurret::GetMuzzlePosition()
 	using namespace DirectX::SimpleMath;
 
 	// 砲身の先端に対するオフセットベクトル
-	DirectX::SimpleMath::Vector3 muzzleOffset = DirectX::SimpleMath::Vector3(0.0f, 0.0f, -1.1f);
+	Vector3 muzzleOffset = Vector3(0.0f, 0.0f, -1.1f);
 	// Quaternion から Matrix を作成して Transform を適用
 	Matrix rotationMatrix = Matrix::CreateFromQuaternion(m_angle);
 	// 回転をオフセットに適用し、砲身の先端座標を計算
@@ -183,6 +183,26 @@ void FixedTurret::StartReload()
 			m_reloadCount = RELOAD_TIME;
 			m_isReload = true;
 			return;
+		}
+	}
+}
+
+// 追跡対象の戦車を変更及び設定する
+void FixedTurret::ChangeTaegetTank()
+{
+	// 一番近い戦車を追跡対象にする
+	float minDistance = std::numeric_limits<float>::max();
+	for (auto& tank : m_tanks)
+	{
+		// 固定砲台と戦車の距離を調べる
+		float distance = (tank->GetPosition() - m_position).LengthSquared();
+
+		// 一定範囲以内でかつ一番近いなら
+		if (distance <= MAX_RANGE &&
+			minDistance > distance)
+		{
+			minDistance = distance;
+			m_targetTank = tank;
 		}
 	}
 }

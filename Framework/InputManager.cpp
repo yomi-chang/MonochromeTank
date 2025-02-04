@@ -1,7 +1,5 @@
-/*
-	@file	InputManager.cpp
-	@brief	マウスとキーボードの入力を請け負うクラス
-*/
+// 入力関係クラス
+
 #include "pch.h"
 #include "InputManager.h"
 

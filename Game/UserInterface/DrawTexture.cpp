@@ -86,8 +86,8 @@ void DrawTexture::Render(DirectX::SimpleMath::Vector3 position)
 	ID3D11SamplerState* samplers[1] = { states->PointWrap() };
 	context->PSSetSamplers(0, 1, samplers);
 
-	//	深度バッファに書き込み参照する 
-	context->OMSetDepthStencilState(states->DepthDefault(), 0);
+	// 深度バッファ設定(一番手前に表示)
+	context->OMSetDepthStencilState(states->DepthNone(), 0);
 
 	//	カリングなし　
 	context->RSSetState(states->CullNone());

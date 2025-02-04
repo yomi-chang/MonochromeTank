@@ -47,8 +47,7 @@ void PlayerTank::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	// íÔ‚Ì¶¬
-	Vector3 initialPosition = Vector3::Zero;
-	m_tank = std::make_unique<Tank>(m_tankNumber,initialPosition, 0.0f);
+	m_tank = std::make_unique<Tank>(m_tankNumber,m_position, 0.0f);
 	m_tank->Initialize();
 	m_tank->SetMaxHp(50);
 

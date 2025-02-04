@@ -13,6 +13,7 @@
 #include "Game/Objects/Stage/Gimmick/WallGimmick.h"
 #include "Game/Objects/FixedTurret/FixedTurret.h"
 #include "Game/Objects/Stage/StageObject/SkySphere.h"
+#include "Game/Other/SharedData.h"
 
 #include "Game/Objects/Tank/TankBase/Tank.h"
 
@@ -24,7 +25,8 @@ StageManager::StageManager()
 	m_walls{},
 	m_floor{},
 	m_skySphere{},
-	m_wallGimmick{}
+	m_wallGimmick{},
+	m_fixedTurrets{} 
 {
 }
 
@@ -46,9 +48,11 @@ void StageManager::Initialize()
 	m_wallGimmick = std::make_unique<WallGimmick>();
 	m_wallGimmick->Initialize();
 
-	// 固定砲台の生成
-	m_fixedTurret = std::make_unique<FixedTurret>();
-	m_fixedTurret->Initialize();
+	// 固定砲台
+	for (auto& fixedTurret : m_fixedTurrets)
+	{
+		fixedTurret->Initialize();
+	}
 }
 
 //---------------------------------------------------------
@@ -68,7 +72,11 @@ void StageManager::Update(float elapsedTime)
 		MoveWall();
 	}*/
 
-	//m_fixedTurret->Update(elapsedTime);
+	// 固定砲台
+	for (auto& fixedTurret : m_fixedTurrets)
+	{
+		fixedTurret->Update(elapsedTime);
+	}
 }
 
 //---------------------------------------------------------
@@ -86,7 +94,12 @@ void StageManager::Render()
 	}
 	m_floor->Render();
 	//m_wallGimmick->Render();
-	//m_fixedTurret->Render();
+
+	// 固定砲台
+	for (auto& fixedTurret : m_fixedTurrets)
+	{
+		fixedTurret->Render();
+	}
 }
 
 // 壁を上げる処理
@@ -106,8 +119,11 @@ void StageManager::LoadFile()
 {
 	std::string str[STAGESIZE];
 
+	// ステージ名の取得
+	std::string stageName = SharedData::GetInstance()->GetStageName();
+
 	// ファイルの読み込み
-	std::ifstream file("Resources\\Stage\\SmallStage.csv");
+	std::ifstream file("Resources\\Stage\\" + stageName + ".csv");
 
 	// 正常に読み込めたかの確認
 	if (!file.is_open())
@@ -160,7 +176,8 @@ void StageManager::CreateStage()
 				case 1:		// 壁
 					m_walls.emplace_back(std::make_unique<Wall>(
 						Vector3(1.0f,2.0f,1.0f),
-						Vector3(static_cast<float>(x - (STAGESIZE / 2)), 0.5f, static_cast<float>(y - (STAGESIZE / 2))), Wall::WallType::FIXED)
+						Vector3(static_cast<float>(x - (STAGESIZE / 2)), 0.5f, static_cast<float>(y - (STAGESIZE / 2))),
+						Wall::WallType::FIXED)
 					);
 					break;
 				case 2:		// ギミック用壁
@@ -170,11 +187,20 @@ void StageManager::CreateStage()
 						Wall::WallType::MOVE)
 					);
 					break;
+				case 3:		// 固定砲台
+					m_fixedTurrets.emplace_back(std::make_unique<FixedTurret>(
+						Vector3(static_cast<float>(x - (STAGESIZE / 2)), 2.5f, static_cast<float>(y - (STAGESIZE / 2))))
+					);
+					break;
 				default:
 					break;
 			}
 		}
 	}
+
+	/*m_fixedTurrets.emplace_back(std::make_unique<FixedTurret>(
+		Vector3(0, 2.5f,0))
+	);*/
 }
 
 //---------------------------------------------------------
@@ -189,6 +215,11 @@ void StageManager::SetObjectData(
 	{
 		wall->SetCamera(camera);
 	}
+
 	m_wallGimmick->SetTanks(tanks);
-	m_fixedTurret->SetTanks(tanks);
+
+	for (auto& fixedTurret : m_fixedTurrets)
+	{
+		fixedTurret->SetTanks(tanks);
+	}
 }

@@ -4,8 +4,15 @@
 #include "Game/Collider/SphereCollider.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Game/Objects/Stage/Wall.h"
+#include "Game/Objects/FixedTurret/FixedTurret.h"
 
 CollisionManager::CollisionManager()
+	:
+	m_tanks{},
+	m_camera{},
+	m_fixedTurrets{},
+	m_walls{},
+	m_wallGimmick{}
 {
 }
 
@@ -29,6 +36,7 @@ void CollisionManager::Update()
 	// Ray‚Æ•Ç‚Ì“–‚½‚è”»’è
 	DetectCollisionRayAndWalls();
 
+	// •Ç‚Æ•ÇŒŸ’m—pƒRƒ‰ƒCƒ_[‚Ì“–‚½‚è”»’è
 	DetectCollisionWallAndAvoidCollider();
 }
 
@@ -40,6 +48,7 @@ void CollisionManager::DetectCollisionTankAndNomalBullets()
 		// ”j‰ó‚³‚ê‚Ä‚¢‚éê‡
 		if (tank->GetDead()) { continue; }
 
+		// ‘¼‚ÌíŽÔ‚Ì’e
 		for (auto& otherTank : m_tanks)
 		{
 			// Ž©‹@‚Ìê‡‚©‘ŠŽè‚ª”j‰ó‚³‚ê‚Ä‚¢‚éê‡
@@ -63,6 +72,24 @@ void CollisionManager::DetectCollisionTankAndNomalBullets()
 
 					// UŒ‚‚µ‚Ä‚«‚½íŽÔ‚Ìî•ñ‚ð‹L‰¯‚·‚é
 					tank->SetTargetTank(otherTank);
+				}
+			}
+		}
+
+		// ŒÅ’è–C‘ä‚Ì’e
+		for (auto& fixedTurret : m_fixedTurrets)
+		{
+			for (auto& bullet : fixedTurret->GetBullets())
+			{
+				// ’eŠÛ‚ª”ò‚ñ‚Å‚¢‚éA‚©‚Â“–‚½‚Á‚Ä‚¢‚é‚È‚ç
+				if (bullet->GetBulletState() == IBullet::FLYING &&
+					tank->GetCollider()->CheckTriggerCollider(bullet->GetBoundingSphere()))
+				{
+					// ’e‚ðŽg—pÏ‚Ý‚É‚·‚é
+					bullet->SetBulletState(IBullet::USED);
+
+					// ƒ_ƒ[ƒWˆ—
+					tank->Damage(1);
 				}
 			}
 		}

@@ -150,7 +150,7 @@ void PlayScene::Initialize()
 	m_collisonManager->SetObjectData(
 		tankPointers,
 		m_tpsCamera.get(),
-		m_stageManager->GetFixedTurret(),
+		m_stageManager->GetFixedTurrets(),
 		m_stageManager->GetWalls(),
 		m_stageManager->GetWallGimmick()
 	);
@@ -348,23 +348,23 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 void PlayScene::CreateTanks()
 {
 	// ÉvÉåÉCÉÑÅ[êÌé‘ÇÃê∂ê¨
-	m_player = std::make_unique<PlayerTank>(0, Vector3::Zero);
+	m_player = std::make_unique<PlayerTank>(0, Vector3{ -6.0f, 0.0f, 6.0f });
 	m_player->Initialize();
 
 	// ê›íËÇµÇΩêÌé‘ÇÃêîÇ…âûÇ∂ÇΩêÌé‘ÇÃê∂ê¨
 	switch (SharedData::GetInstance()->GetTankCount())
 	{
 		case 1:
-			m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 0.0f, 0.0f, -8.0f }));
+			m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 6.0f, 0.0f, -6.0f }));
 			break;
 		case 2:
-			m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 0.0f, 0.0f, -8.0f }));
-			m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -5.0f, 0.0f, -5.0f }));
+			m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 6.0f, 0.0f, -6.0f }));
+			m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -6.0f, 0.0f, -6.0f }));
 			break;
 		case 3:
-			m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 0.0f, 0.0f, -8.0f }));
-			m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -5.0f, 0.0f, -5.0f }));
-			m_enemies.push_back(std::make_unique<EnemyTank>(3, Vector3{ 3.0f, 0.0f, 5.0f }));
+			m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 6.0f, 0.0f, -6.0f }));
+			m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -6.0f, 0.0f, -6.0f }));
+			m_enemies.push_back(std::make_unique<EnemyTank>(3, Vector3{ 6.0f, 0.0f, 6.0f }));
 			break;
 		default:
 			break;
