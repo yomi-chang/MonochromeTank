@@ -26,8 +26,6 @@ using namespace DirectX::SimpleMath;
 TitleScene::TitleScene()
 	:
 	m_graphics{ Graphics::GetInstance()},
-	m_spriteBatch{},
-	m_spriteFont{},
 	m_titleLogo{},
 	m_pressSpace{},
 	m_texCenter{},
@@ -53,10 +51,6 @@ void TitleScene::Initialize()
 {	
 	// BGMの再生
 	SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_TITLESCENE_BGM);
-
-	// スプライトバッチを作成する
-	m_spriteBatch = m_graphics->GetSpriteBatch();
-	m_spriteFont = m_graphics->GetFont();
 
 	// 画像の受け取り
 	m_titleLogo = Resources::GetInstance()->GetTitleLogoTexture();
@@ -174,6 +168,7 @@ void TitleScene::Update(float elapsedTime)
 void TitleScene::Render()
 {
 	auto states = m_graphics->GetCommonStates();
+	auto spriteBatch = m_graphics->GetSpriteBatch();
 
 	// ビュー行列の取得
 	auto view = Matrix::CreateLookAt(
@@ -193,7 +188,7 @@ void TitleScene::Render()
 	}
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
+	spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 
 	// ロゴの描画位置を決める
 	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
@@ -201,7 +196,7 @@ void TitleScene::Render()
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 
 	// ロゴを描画する
-	m_spriteBatch->Draw(
+	spriteBatch->Draw(
 		m_titleLogo,	// テクスチャ(SRV)
 		pos,				// スクリーンの表示位置(originの描画位置)
 		nullptr,			// 矩形(RECT)
@@ -213,13 +208,13 @@ void TitleScene::Render()
 
 	rect = { 400,500,920,620 };
 	// UIの描画
-	m_spriteBatch->Draw(
+	spriteBatch->Draw(
 		m_pressSpace,
 		rect
 	);
 
 	// スプライトバッチの終わり
-	m_spriteBatch->End();
+	spriteBatch->End();
 
 	// シーン遷移用
 	m_fade->Render();

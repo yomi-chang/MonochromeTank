@@ -1,3 +1,7 @@
+/*
+	@file	EnemyTank.cpp
+	@brief	敵戦車クラス
+*/
 #include"pch.h"
 #include"Game/Objects/Tank/EnemyTanks/EnemyTank.h"
 
@@ -8,9 +12,6 @@
 
 #include "Game/UserInterface/EnemyHpGauge.h"
 #include "Game/Collider/SphereCollider.h"
-
-#include "Framework/InputManager.h"
-#include "Libraries/MyLib/Math.h"
 
 #include "Game/EnemyAi/SelectAction.h"
 #include "Game/EnemyAi/Patrol.h"
@@ -82,6 +83,7 @@ void EnemyTank::Initialize()
 	m_selectAction = std::make_unique<SelectAction>();
 	m_selectAction->Initialize(m_tank.get());
 
+	// 敵番号に応じた巡回地点の設定
 	m_patrol = std::make_unique<Patrol>();
 	switch (m_tankNumber)
 	{
@@ -154,7 +156,7 @@ void EnemyTank::Update(float elapsedTime)
 	if (m_tank->GetAvoidWall())
 	{
 		// 回避行動
-		float speed = elapsedTime * 2.0f;
+		float speed = elapsedTime * TANK_SPEED;
 		float angle = DirectX::XMConvertToRadians(0.7f);
 		Vector3 velocity = Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
 		// 移動させる

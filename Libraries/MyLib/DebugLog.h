@@ -1,3 +1,7 @@
+/*
+	@file	DebugLog.h
+	@brief	デバッグログ表示
+*/
 #pragma once
 
 namespace mylib

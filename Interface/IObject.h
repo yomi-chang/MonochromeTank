@@ -1,3 +1,7 @@
+/*
+	@file	IObject.h
+	@brief	Objectインターフェース
+*/
 #pragma once
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"

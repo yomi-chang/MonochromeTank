@@ -1,3 +1,7 @@
+/*
+	@file	Graphics.h
+	@brief	描画関係クラス
+*/
 #pragma once
 #include "DeviceResources.h"
 
@@ -6,7 +10,6 @@ namespace mylib
 	class DebugString;
 }
 
-// DirectX Graphicsクラス
 class Graphics final
 {
 public:

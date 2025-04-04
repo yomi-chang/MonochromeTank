@@ -1,3 +1,7 @@
+/*
+	@file	DamageEffect.cpp
+	@brief	ダメージエフェクトクラス
+*/
 #include "pch.h"
 #include "DamageEffect.h"
 #include "Framework/Resources.h"
@@ -10,7 +14,9 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> DamageEffect::INPUT_LAYOUT =
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 };
 
-
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 DamageEffect::DamageEffect()
 	:
 	m_graphics{ Graphics::GetInstance() },
@@ -26,7 +32,9 @@ DamageEffect::DamageEffect()
 {
 }
 
-// 生成関数
+//-------------------------------------------------------------------
+// 生成処理
+//-------------------------------------------------------------------
 void DamageEffect::Create()
 {
 	// シェーダのロード
@@ -42,6 +50,9 @@ void DamageEffect::Create()
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 }
 
+//-------------------------------------------------------------------
+// 描画処理
+//-------------------------------------------------------------------
 void DamageEffect::Render()
 {
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
@@ -111,6 +122,9 @@ void DamageEffect::Render()
 	context->PSSetShader(nullptr, nullptr, 0);
 }
 
+//-------------------------------------------------------------------
+// シェーダの読み込み
+//-------------------------------------------------------------------
 void DamageEffect::LoadShader()
 {
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
@@ -143,7 +157,9 @@ void DamageEffect::LoadShader()
 	);
 }
 
+//-------------------------------------------------------------------
 // バッファの作成
+//-------------------------------------------------------------------
 void DamageEffect::CreateCBuffer()
 {
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();

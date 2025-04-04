@@ -1,3 +1,7 @@
+/*
+	@file	IParent.h
+	@brief	Parentインターフェース
+*/
 #pragma once
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"

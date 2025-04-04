@@ -1,3 +1,7 @@
+/*
+	@file	StageItem.h
+	@brief	ステージアイテムクラス
+*/
 #pragma once
 
 class SphereCollider;

@@ -1,9 +1,15 @@
+/*
+	@file	SkySphere.cpp
+	@brief	天球クラス
+*/
 #include "pch.h"
 #include "Game/Objects/Stage/StageObject/SkySphere.h"
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
 
+//-------------------------------------------------------------------
 // コンストラクタ
+//-------------------------------------------------------------------
 SkySphere::SkySphere()
 {
 	// モデルの受け取り
@@ -11,7 +17,9 @@ SkySphere::SkySphere()
 }
 
 
+//-------------------------------------------------------------------
 // 描画処理
+//-------------------------------------------------------------------
 void SkySphere::Render()
 {
 	using namespace DirectX;
@@ -35,7 +43,7 @@ void SkySphere::Render()
 		}
 	);
 
-	// 天球の表示
+	// 天球の描画
 	Matrix world = Matrix::Identity;
 	Graphics::GetInstance()->DrawModel(m_skyModel, world);
 }

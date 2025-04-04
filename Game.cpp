@@ -24,6 +24,7 @@ Game::Game() noexcept(false)
     m_inputManager{},
     m_sceneManager{},
     m_soundManager{},
+    //m_parameter{},
     m_graphics{},
     m_hWnd{}
 {
@@ -97,6 +98,9 @@ void Game::Initialize(HWND window, int width, int height)
 
     // モデル、テクスチャの読み込み
     Resources::GetInstance()->LoadResource();
+
+    //m_parameter->LoadParameter();
+    Parameter::GetInstance()->LoadParameter();
 
     // シーンマネージャを初期化する
     m_sceneManager = std::make_unique<SceneManager>();

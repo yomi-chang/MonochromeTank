@@ -1,3 +1,7 @@
+/*
+	@file	LockOnCamera.cpp
+	@brief	移動可能なカメラクラス
+*/
 #include "pch.h"
 #include "Libraries/MyLib/LockOnCamera.h"
 

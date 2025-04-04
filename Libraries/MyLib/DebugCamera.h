@@ -82,10 +82,3 @@ namespace mylib
 		void CalculateRerativeScale(int windowWidth, int windowHeight);
 	};
 }
-
-/*
-	■変更履歴
-	・2024/03/30 getterを「const参照」に変更した
-	・2024/03/31 getter関数に「const」を付けた
-
-*/

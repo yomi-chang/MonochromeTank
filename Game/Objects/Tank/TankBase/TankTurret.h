@@ -1,3 +1,7 @@
+/*
+	@file	TankTurret.h
+	@brief	–C“ƒƒNƒ‰ƒX
+*/
 #pragma once
 #include "Interface/IParts.h"
 

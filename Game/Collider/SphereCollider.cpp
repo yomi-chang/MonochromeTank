@@ -1,3 +1,7 @@
+/*
+	@file	SphereCollider.cpp
+	@brief	‹…ó‚Ì“–‚½‚è”»’èƒNƒ‰ƒX
+*/
 #include "pch.h"
 #include "Game/Collider/SphereCollider.h"
 #include "Libraries/Microsoft/DebugDraw.h"

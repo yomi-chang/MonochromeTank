@@ -1,21 +1,24 @@
+/*
+	@file	Attack.h
+	@brief	ìGÇÃçUåÇèàóùÉNÉâÉX
+*/
 #pragma once
 #include "Interface/IEnemyAction.h"
 
 class Attack : public IEnemyAction 
 {
+private:
+	enum Action { SHOT, MOVE };
+	static constexpr float TANK_SPEED = 2.0f;
+	static constexpr float MOVE_TIME = 5.0f;
+	static constexpr float SHOT_TIME = 3.0f;
+
 public:
 	Attack();
 	~Attack() override = default;
 
 	void Initialize(Tank* tank) override;
 	void Update(float elapsedTime) override;
-
-private:
-	enum Action { SHOT,MOVE };
-	const float TANK_SPEED = 2.0f;
-
-	const float MOVE_TIME = 5.0f;
-	const float SHOT_TIME = 1.0f;
 
 private:
 	// é©ã@

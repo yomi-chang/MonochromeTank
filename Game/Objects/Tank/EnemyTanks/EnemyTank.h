@@ -1,3 +1,7 @@
+/*
+	@file	EnemyTank.h
+	@brief	“GíÔƒNƒ‰ƒX
+*/
 #pragma once
 #include "Interface/IObject.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
@@ -16,7 +20,7 @@ class EnemyTank : IObject
 {
 private:
 	// “G‘¬“x
-	const float TANK_SPEED = 2.0f;
+	static constexpr float TANK_SPEED = 2.0f;
 
 public:
 	EnemyTank(

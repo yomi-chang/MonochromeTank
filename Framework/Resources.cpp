@@ -1,3 +1,7 @@
+/*
+	@file	Resources.cpp
+	@brief	モデル、テクスチャ等のリソース管理クラス
+*/
 #include "pch.h"
 #include "Framework/Resources.h"
 
@@ -200,6 +204,14 @@ void Resources::LoadResource()
 		L"Resources\\Textures\\PressSpaceKey.png",
 		nullptr,
 		m_pressSpaceTexture.GetAddressOf()
+	);
+
+	//	プレイシーンの戦車カウントテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\TanksTexture.png",
+		nullptr,
+		m_tankCountTexture.GetAddressOf()
 	);
 
 

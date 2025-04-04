@@ -1,5 +1,8 @@
+/*
+	@file	FixedTurret.h
+	@brief	固定砲台クラス
+*/
 #pragma once
-// 固定砲台クラス
 
 class Tank;
 class IBullet;
@@ -15,15 +18,15 @@ public:
 
 private:
 	// 弾の発射インターバル
-	const float SHOT_INTERVAL = 0.3f;
+	static constexpr float SHOT_INTERVAL = 0.3f;
 	// リロード時間
-	const float RELOAD_TIME = 2.0f;
+	static constexpr float RELOAD_TIME = 2.0f;
 	// 弾数
-	const int BULLET_CAPACITY = 500;
+	static constexpr int BULLET_CAPACITY = 500;
 	// 射程距離
-	const float MAX_RANGE = 15.0f;
+	static constexpr float MAX_RANGE = 15.0f;
 	// 回転速度
-	const float ROTATION_SPEED = 0.9f;
+	static constexpr float ROTATION_SPEED = 0.9f;
 
 
 	DirectX::SimpleMath::Vector3 m_position;			// 座標

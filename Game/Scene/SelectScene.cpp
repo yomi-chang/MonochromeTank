@@ -27,7 +27,6 @@ using namespace DirectX::SimpleMath;
 SelectScene::SelectScene()
 	:
 	m_graphics{ Graphics::GetInstance() },
-	m_spriteBatch{},
 	m_isChangeScene{},
 	m_floor{},
 	m_fade{},
@@ -51,9 +50,6 @@ void SelectScene::Initialize()
 {	
 	// BGMの再生
 	SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_SELECTSCENE_BGM);
-
-	// スプライトバッチを作成する
-	m_spriteBatch = m_graphics->GetSpriteBatch();
 
 	// 床の生成
 	m_floor = std::make_unique<Floor>(50);
@@ -193,6 +189,7 @@ void SelectScene::Render()
 	using namespace DirectX::SimpleMath;
 
 	auto states = m_graphics->GetCommonStates();
+	auto spriteBatch = m_graphics->GetSpriteBatch();
 
 	// ビュー行列の取得
 	auto view = Matrix::CreateLookAt(
@@ -205,10 +202,10 @@ void SelectScene::Render()
 	m_floor->Render();
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
+	spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 
 	// チュートリアル表示
-	m_spriteBatch->Draw(
+	spriteBatch->Draw(
 		m_resources->GetManualTexture(),
 		Vector2{ 550,90 },
 		nullptr,
@@ -219,7 +216,7 @@ void SelectScene::Render()
 	);
 
 	// 設定フレーム
-	m_spriteBatch->Draw(
+	spriteBatch->Draw(
 		m_resources->GetSettingTexture(),
 		Vector2{ 40,70 },
 		nullptr,
@@ -230,7 +227,7 @@ void SelectScene::Render()
 	);
 
 	// ステージ
-	m_spriteBatch->Draw(
+	spriteBatch->Draw(
 		m_resources->GetStageTextTexture(),
 		Vector2{ 210,280 },
 		&m_stageTexturePos,
@@ -241,7 +238,7 @@ void SelectScene::Render()
 	);
 
 	// 戦車数
-	m_spriteBatch->Draw(
+	spriteBatch->Draw(
 		m_resources->GetCountTextTexture(),
 		Vector2{ 300,415 },
 		&m_tankCountTexturePos,
@@ -252,7 +249,7 @@ void SelectScene::Render()
 	);
 
 	// カーソル
-	m_spriteBatch->Draw(
+	spriteBatch->Draw(
 		m_resources->GetSelectTexture(),
 		m_selectPos,
 		nullptr,
@@ -263,7 +260,7 @@ void SelectScene::Render()
 	);
 
 	// スプライトバッチの終わり
-	m_spriteBatch->End();
+	spriteBatch->End();
 
 	// シーン遷移用
 	m_fade->Render();

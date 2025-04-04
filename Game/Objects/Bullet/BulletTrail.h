@@ -1,3 +1,7 @@
+/*
+	@file	BulletTrail.h
+	@brief	’e‚Ì‹OÕ‚ğ•\¦‚·‚éƒNƒ‰ƒX
+*/
 #pragma once
 
 class Graphics;

@@ -1,17 +1,21 @@
+/*
+	@file	Patrol.h
+	@brief	敵の巡回行動処理クラス
+*/
 #pragma once
 #include "Interface/IEnemyAction.h"
 
 class Patrol : public IEnemyAction
 {
+private:
+	static constexpr float TANK_SPEED = 2.0f;
+
 public:
 	Patrol();
 	~Patrol() override = default;
 
 	void Initialize(Tank* tank) override;
 	void Update(float elapsedTime) override;
-
-private:
-	const float TANK_SPEED = 2.0f;
 
 private:
 	// 巡回地点

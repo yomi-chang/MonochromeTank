@@ -1,6 +1,6 @@
 /*
 	@file	IScene.h
-	@brief	シーンのインターフェイスクラス
+	@brief	Sceneインターフェイスクラス
 */
 #pragma once
 #include "Game/Other/SharedData.h"

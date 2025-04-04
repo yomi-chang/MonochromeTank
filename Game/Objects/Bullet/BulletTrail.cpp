@@ -1,3 +1,7 @@
+/*
+	@file	BulletTrail.cpp
+	@brief	’e‚Ì‹OÕ‚ğ•\¦‚·‚éƒNƒ‰ƒX
+*/
 #include "pch.h"
 #include "Game/Objects/Bullet/BulletTrail.h"
 #include "Framework/Graphics.h"

@@ -1,7 +1,12 @@
+/*
+	@file	IEnemyAction.h
+	@brief	EnemyActionインターフェース
+*/
 #pragma once
 #include "Libraries/MyLib/DebugLog.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Libraries/MyLib/Math.h"
+#include "Game/Other/Parameter.h"
 
 class IEnemyAction
 {

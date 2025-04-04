@@ -1,3 +1,7 @@
+/*
+	@file	SelectAction.cpp
+	@brief	敵の行動選択クラス
+*/
 #include "pch.h"
 #include "Game/EnemyAi/SelectAction.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
@@ -48,13 +52,22 @@ void SelectAction::Update()
 	// 追跡対象の戦車との距離を調べる
 	float distance = (m_targetTank->GetPosition() - m_tank->GetPosition()).LengthSquared();
 	// 体力の取得
-	float hp = static_cast<float>(m_tank->GetHp());
+	//float hp = static_cast<float>(m_tank->GetHp());
 	// ステータスの評価
-	m_distance = EvaluateStates(distance, DISTANCE_HIGH, DISTANCE_LOW);
-	m_hp = EvaluateStates(hp, HP_HIGH, HP_LOW);
-
+	//m_distance = EvaluateStates(distance, DISTANCE_HIGH, DISTANCE_LOW);
+	//m_hp = EvaluateStates(hp, HP_HIGH, HP_LOW);
 	// 行動選択
-	m_action = Select();
+	//m_action = Select();
+
+	// 距離が近いなら攻撃
+	if (distance <= m_trackingDistance)
+	{
+		m_action = Action::ATTACK;
+	}
+	else
+	{
+		m_action = Action::TRACKING;
+	}
 }
 
 //-------------------------------------------------------------------

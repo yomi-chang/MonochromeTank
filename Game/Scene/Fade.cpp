@@ -1,8 +1,15 @@
+/*
+	@file	Fade.h
+	@brief	シーン遷移フェードクラス
+*/
 #include "pch.h"
 #include "Game/Scene/Fade.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 Fade::Fade(float alpha)
 	:
 	m_alpha{},
@@ -16,16 +23,19 @@ Fade::Fade(float alpha)
 	m_alpha = alpha;
 }
 
+//-------------------------------------------------------------------
+// 更新処理
+//-------------------------------------------------------------------
 void Fade::Update(float elapsedTime)
 {
 	// 不透明度の設定
 	switch (m_fadeType)
 	{
 		case Fade::FADEIN:
-			m_alpha += elapsedTime;
+			m_alpha += elapsedTime * FADE_SPEED;
 			break;
 		case Fade::FADEOUT:
-			m_alpha -= elapsedTime;
+			m_alpha -= elapsedTime * FADE_SPEED;
 			break;
 		default:
 			break;
@@ -33,11 +43,14 @@ void Fade::Update(float elapsedTime)
 	m_color.w = m_alpha;
 }
 
+//-------------------------------------------------------------------
+// 描画処理
+//-------------------------------------------------------------------
 void Fade::Render()
 {
 	auto spriteBatch = Graphics::GetInstance()->GetSpriteBatch();
 
-	RECT rect = { 0,0,1280,720 };
+	RECT rect = Graphics::GetInstance()->GetDeviceResources()->GetOutputSize();
 
 	// 描画
 	spriteBatch->Begin();
@@ -45,6 +58,9 @@ void Fade::Render()
 	spriteBatch->End();
 }
 
+//-------------------------------------------------------------------
+// フェードの終了確認
+//-------------------------------------------------------------------
 bool Fade::FinishFade()
 {
 	// フェード処理が終了していたらtrueを返す

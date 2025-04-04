@@ -1,3 +1,7 @@
+/*
+	@file	Floor.cpp
+	@brief	床クラス
+*/
 #include "pch.h"
 #include "Game/Objects/Stage/Floor.h"
 #include "Framework/Graphics.h"
@@ -71,10 +75,6 @@ void Floor::Render()
 	// カリング
 	context->RSSetState(states->CullClockwise());
 	context->RSSetState(states->CullNone());
-
-	//	不透明のみ描画する設定 
-	//m_batchEffect->SetAlphaFunction(D3D11_COMPARISON_NOT_EQUAL);
-	//m_batchEffect->SetReferenceAlpha(0);
 
 	Matrix world = Matrix::CreateTranslation(Vector3::Zero);
 	m_batchEffect->SetWorld(world);

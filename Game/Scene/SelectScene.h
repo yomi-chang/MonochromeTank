@@ -1,6 +1,6 @@
 /*
-	@file	TitleScene.h
-	@brief	タイトルシーンクラス
+	@file	SelectScene.h
+	@brief	セレクトシーンクラス
 */
 #pragma once
 #include "Interface/IScene.h"
@@ -20,24 +20,22 @@ class SelectScene final :
     public IScene
 {
 private:
-	const DirectX::SimpleMath::Vector2 SELECT_POS1 = { 100,283 };
-	const DirectX::SimpleMath::Vector2 SELECT_POS2 = { 100,427 };
-	const DirectX::SimpleMath::Vector2 SELECT_POS3 = { 140,560 };
+	static constexpr DirectX::SimpleMath::Vector2 SELECT_POS1 = { 100,283 };
+	static constexpr DirectX::SimpleMath::Vector2 SELECT_POS2 = { 100,427 };
+	static constexpr DirectX::SimpleMath::Vector2 SELECT_POS3 = { 140,560 };
 
-	const RECT STAGE1 = { 0,0,450,100 };
-	const RECT STAGE2 = { 0,115,450,215 };
-	const RECT STAGE3 = { 0,230,450,330 };
+	static constexpr RECT STAGE1 = { 0,0,450,100 };
+	static constexpr RECT STAGE2 = { 0,115,450,215 };
+	static constexpr RECT STAGE3 = { 0,230,450,330 };
 
-	const RECT TANK_COUNT1 = { 0,0,90,150 };
-	const RECT TANK_COUNT2 = { 90,0,180,150 };
-	const RECT TANK_COUNT3 = { 180,0,260,150 };
+	static constexpr RECT TANK_COUNT1 = { 0,0,90,150 };
+	static constexpr RECT TANK_COUNT2 = { 90,0,180,150 };
+	static constexpr RECT TANK_COUNT3 = { 180,0,260,150 };
 
 private:
 	// グラフィックス
 	Graphics* m_graphics;
 	Resources* m_resources;
-
-	DirectX::SpriteBatch* m_spriteBatch;
 
 	// シーンチェンジフラグ
 	bool m_isChangeScene;

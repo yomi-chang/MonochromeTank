@@ -4,7 +4,9 @@
 #include <fstream>
 #include <assert.h>
 
-
+//-------------------------------------------------------------------
+// ファイルの読み込み
+//-------------------------------------------------------------------
 mylib::BinaryFile mylib::BinaryFile::LoadFile(const wchar_t * fileName)
 {
 	BinaryFile bin;

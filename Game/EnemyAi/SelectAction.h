@@ -1,3 +1,7 @@
+/*
+	@file	SelectAction.h
+	@brief	敵の行動選択クラス
+*/
 #pragma once
 
 class Tank;
@@ -24,7 +28,7 @@ private:
 	};
 
 	// 距離閾値
-	const float DISTANCE_HIGH = /*60.0f*/ 50.0f, DISTANCE_LOW = 10.0f;
+	const float DISTANCE_HIGH = 50.0f, DISTANCE_LOW = 10.0f;
 
 	// 体力閾値
 	const float HP_HIGH = 70.0f, HP_LOW = 30.0f;

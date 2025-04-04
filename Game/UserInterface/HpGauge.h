@@ -1,11 +1,16 @@
+/*
+	@file	HpGauge.h
+	@brief	自機体力クラス
+*/
 #pragma once
 #include "Framework/Graphics.h"
 
+// 自機体力クラス
 class HpGauge
 {
 private:
-	const RECT HP_POSITION = { 50,620,350,650 };
-	const RECT STATUS_FRAME = { 10,600,360,670 };
+	static constexpr RECT HP_POSITION = { 50,620,350,650 };
+	static constexpr RECT STATUS_FRAME = { 10,600,360,670 };
 
 public:
 	// コンストラクタ

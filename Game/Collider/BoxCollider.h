@@ -1,3 +1,7 @@
+/*
+	@file	BoxCollider.h
+	@brief	” ó‚Ì“–‚½‚è”»’èƒNƒ‰ƒX
+*/
 #pragma once
 #include "Framework/Graphics.h"
 

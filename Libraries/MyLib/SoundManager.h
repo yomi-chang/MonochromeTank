@@ -1,3 +1,7 @@
+/*
+	@file	SoundManager.h
+	@brief	サウンド管理クラス
+*/
 #pragma once
 #include <unordered_map>
 #include "Game/Other/Sounds.h"

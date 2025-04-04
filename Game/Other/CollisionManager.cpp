@@ -1,3 +1,7 @@
+/*
+	@file	CollisionManager.cpp
+	@brief	当たり判定管理クラス
+*/
 #include "pch.h"
 #include "Game/Other/CollisionManager.h"
 #include "Game/Collider/BoxCollider.h"
@@ -6,6 +10,9 @@
 #include "Game/Objects/Stage/Wall.h"
 #include "Game/Objects/FixedTurret/FixedTurret.h"
 
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 CollisionManager::CollisionManager()
 	:
 	m_tanks{},
@@ -16,6 +23,9 @@ CollisionManager::CollisionManager()
 {
 }
 
+//-------------------------------------------------------------------
+// 更新処理
+//-------------------------------------------------------------------
 void CollisionManager::Update()
 {
 	// 戦車の砲弾の当たり判定
@@ -40,7 +50,7 @@ void CollisionManager::Update()
 	DetectCollisionWallAndAvoidCollider();
 }
 
-// 戦車と連射弾の当たり判定
+// 戦車と連射弾
 void CollisionManager::DetectCollisionTankAndNomalBullets()
 {
 	for (auto& tank : m_tanks)
@@ -96,7 +106,7 @@ void CollisionManager::DetectCollisionTankAndNomalBullets()
 	}
 }
 
-// 戦車と砲弾の当たり判定
+// 戦車と砲弾
 void CollisionManager::DetectCollisionTankAndCannonBall()
 {
 	for (auto& tank : m_tanks)
@@ -130,7 +140,7 @@ void CollisionManager::DetectCollisionTankAndCannonBall()
 	}
 }
 
-// 戦車同士の当たり判定
+// 戦車同士
 void CollisionManager::DetectCollisionTankAndOtherTanks()
 {
 	for (auto& tank : m_tanks)
@@ -147,6 +157,7 @@ void CollisionManager::DetectCollisionTankAndOtherTanks()
 				continue;
 			}
 
+			// 押し戻し処理
 			DirectX::SimpleMath::Vector3 collisionVel = tank->GetCollider()->CheckCollisionCollider(otherTank->GetBoundingBox());
 			collisionVel.y = 0.0f;
 			otherTank->GetBody()->SetCollisionVel(collisionVel);
@@ -154,7 +165,7 @@ void CollisionManager::DetectCollisionTankAndOtherTanks()
 	}
 }
 
-// 戦車と壁の当たり判定
+// 戦車と壁
 void CollisionManager::DetectCollisionTankAndWalls()
 {
 	for (auto& wall : m_walls)
@@ -167,9 +178,11 @@ void CollisionManager::DetectCollisionTankAndWalls()
 			// 壁のコライダー受け取り
 			BoxCollider* wallCollider = wall->GetCollider();
 
+			// 押し戻し処理
 			DirectX::SimpleMath::Vector3 collisionVel = wallCollider->CheckCollisionCollider(tank->GetBoundingBox());
 			collisionVel.y = 0.0f;
 			tank->GetBody()->SetCollisionVel(collisionVel);
+			
 			// 壁に触れている間重力を無効にする
 			if (wallCollider->CheckTriggerCollider(tank->GetBoundingBox()))
 				tank->GetBody()->SetGravity(false);
@@ -177,7 +190,7 @@ void CollisionManager::DetectCollisionTankAndWalls()
 	}
 }
 
-// 弾と壁の当たり判定
+// 弾と壁
 void CollisionManager::DetectCollisionBulletsAndWalls()
 {
 	for (auto& tank : m_tanks)
@@ -209,7 +222,7 @@ void CollisionManager::DetectCollisionBulletsAndWalls()
 	}
 }
 
-// Rayと壁の当たり判定
+// Rayと壁
 void CollisionManager::DetectCollisionRayAndWalls()
 {
 	using namespace DirectX::SimpleMath;
@@ -293,6 +306,7 @@ void CollisionManager::DetectCollisionRayAndWalls()
 	}
 }
 
+// 壁と回避用コライダー
 void CollisionManager::DetectCollisionWallAndAvoidCollider()
 {
 	using namespace DirectX::SimpleMath;

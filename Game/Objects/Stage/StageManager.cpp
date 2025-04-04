@@ -1,3 +1,7 @@
+/*
+	@file	StageManager.cpp
+	@brief	ステージの管理クラス
+*/
 #include"pch.h"
 
 #include<iostream>
@@ -197,10 +201,6 @@ void StageManager::CreateStage()
 			}
 		}
 	}
-
-	/*m_fixedTurrets.emplace_back(std::make_unique<FixedTurret>(
-		Vector3(0, 2.5f,0))
-	);*/
 }
 
 //---------------------------------------------------------

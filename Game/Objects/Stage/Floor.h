@@ -1,3 +1,7 @@
+/*
+	@file	Floor.h
+	@brief	°ƒNƒ‰ƒX
+*/
 #pragma once
 #include <PrimitiveBatch.h>
 #include <VertexTypes.h>

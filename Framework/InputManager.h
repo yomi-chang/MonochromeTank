@@ -1,5 +1,9 @@
+/*
+	@file	InputManager.h
+	@brief	入力関係クラス
+*/
 #pragma once
-// 入力関係クラス
+
 class InputManager
 {
 private:

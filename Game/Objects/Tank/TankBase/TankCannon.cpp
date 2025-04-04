@@ -1,3 +1,7 @@
+/*
+	@file	TankCannon.h
+	@brief	砲身クラス
+*/
 #include "pch.h"
 #include "Game/Objects/Tank/TankBase/TankCannon.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
@@ -14,6 +18,7 @@
 #include "Game/Other/SharedData.h"
 #include "Libraries/MyLib/SoundManager.h"
 #include "Game/Other/Sounds.h"
+
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -42,7 +47,8 @@ TankCannon::TankCannon(
 	m_bulletBlurRadius{},
 	m_drawTexture{},
 	m_tank{},
-	m_displaySight{}
+	m_displaySight{},
+	m_isShot{}
 {
 	// 戦車情報の受け取り
 	m_tank = tank;
@@ -86,9 +92,6 @@ void TankCannon::Initialize()
 	m_bulletType = BulletType::CANNONBALL;
 	m_reloadBulletType = BulletType::CANNONBALL;
 
-	// 弾のブレの半径(仮)
-	m_bulletBlurRadius = 1.0f;
-
 	// 標準表示にする
 	m_displaySight = true;
 }
@@ -119,6 +122,17 @@ void TankCannon::Update(
 		m_shotTimer -= elapsedTime;
 	}
 
+	// 弾を発射しているなら少しずつ弾が散っていくようにする
+	if (m_isShot)
+	{
+		m_bulletBlurRadius += elapsedTime;
+	}
+	else
+	{
+		// 弾が散らない状況にする
+		m_bulletBlurRadius = 0.0f;
+	}
+
 	// リロード処理
 	Reload(elapsedTime);
 }
@@ -138,9 +152,9 @@ void TankCannon::Render()
 	m_cannonBall->Render();
 
 	// ワールド行列の生成
-	m_worldMatrix = Matrix::CreateScale(0.09f) *
+	m_worldMatrix = Matrix::CreateScale(Tank::TANK_SIZE) *
 		Matrix::CreateFromQuaternion(m_cannonRotation) *
-		Matrix::CreateTranslation(Vector3(0.0f, 0.0f, -0.0f)) *
+		Matrix::CreateTranslation(Vector3(0.0f, 0.0f, 0.0f)) *
 		Matrix::CreateFromQuaternion(m_currentRotation) *
 		Matrix::CreateTranslation(m_currentPosition);
 
@@ -190,6 +204,9 @@ void TankCannon::ShootBullet(IBullet* bullet)
 //---------------------------------------------------------
 void TankCannon::Shoot()
 {
+	// 弾を撃っている状態にする
+	m_isShot = true;
+
 	if (m_shotTimer > 0.0f)
 		return;
 
@@ -230,7 +247,7 @@ void TankCannon::Shoot()
 			break;
 	}
 	// 発射インターバルを設定する
-	m_shotTimer = SHOT_INTERVAL;
+	m_shotTimer = Parameter::SHOT_INTERVAL;
 }
 
 //---------------------------------------------------------
@@ -262,7 +279,7 @@ void TankCannon::StartReload()
 				// 弾が1発でも使用されていたらリロード可能
 				if (bullet->GetBulletState() == IBullet::USED)
 				{
-					m_reloadCount = BULLET_RELOAD_TIME;
+					m_reloadCount = Parameter::BULLET_RELOAD_TIME;
 					m_reloadBulletType = BulletType::BULLET;
 					m_isReload = true;
 					mylib::DebugLog("連射弾のリロード開始");
@@ -274,7 +291,7 @@ void TankCannon::StartReload()
 		case BulletType::CANNONBALL:
 			if (m_cannonBall->GetBulletState() == IBullet::USED)
 			{
-				m_reloadCount = CANNONBALL_RELOAD_TIME;
+				m_reloadCount = Parameter::CANNONBALL_RELOAD_TIME;
 				m_reloadBulletType = BulletType::CANNONBALL;
 				m_isReload = true;
 				mylib::DebugLog("砲弾のリロード開始");
@@ -335,11 +352,11 @@ DirectX::SimpleMath::Quaternion TankCannon::GetShotRotation()
 	Quaternion shotRotation = m_cannonRotation * m_currentRotation;
 
 	// 角度をランダムな値を利用してずらす
-	shotRotation *= Quaternion::CreateFromYawPitchRoll(
+	/*shotRotation *= Quaternion::CreateFromYawPitchRoll(
 		mylib::Random(XMConvertToRadians(-m_bulletBlurRadius), XMConvertToRadians(m_bulletBlurRadius)),
 		mylib::Random(XMConvertToRadians(-m_bulletBlurRadius), XMConvertToRadians(m_bulletBlurRadius)),
 		0.0f
-	);
+	);*/
 
 	return shotRotation;
 }

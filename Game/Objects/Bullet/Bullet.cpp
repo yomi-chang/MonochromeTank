@@ -1,13 +1,13 @@
+/*
+	@file	Bullet.cpp
+	@brief	˜AŽË’eƒNƒ‰ƒX
+*/
 #include "pch.h"
 #include "Game/Objects/Bullet/Bullet.h"
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Game/Objects/Bullet/BulletTrail.h"
-
-
-// –C’e‘¬“x‚ð’è‹`‚·‚é
-const DirectX::SimpleMath::Vector3 Bullet::SPEED(0.0f, 0.0f, -0.3f);
 
 //-------------------------------------------------------------------
 // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
@@ -18,9 +18,8 @@ Bullet::Bullet(IBullet::BulletState bulletState)
 	m_position{},
 	m_rotation{},
 	m_velocity{},
-	m_gravity(DirectX::SimpleMath::Vector3(0.0f, -9.8f, 0.0f)),
 	m_worldMatrix{},
-	m_bulletState(bulletState),
+	m_bulletState{ bulletState },
 	m_collider{},
 	m_bullet{},
 	m_count{}
@@ -41,7 +40,7 @@ void Bullet::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	// –C’eƒ‚ƒfƒ‹‚Ìì¬
+	// ’eƒ‚ƒfƒ‹‚Ìì¬
 	m_bullet = DirectX::GeometricPrimitive::CreateSphere(m_graphics->GetDeviceResources()->GetD3DDeviceContext(), 0.1f);
 
 	// ƒXƒtƒBƒAƒRƒ‰ƒCƒ_[‚Ìì¬
@@ -106,11 +105,11 @@ void Bullet::Render()
 		Matrix::CreateFromQuaternion(m_rotation) *
 		Matrix::CreateTranslation(m_position);
 
-	// –C’e‚ª–¢Žg—p‚©Žg—pÏ‚Ý‚Ìê‡‚Í•`‰æ‚µ‚È‚¢
+	// ’e‚ª–¢Žg—p‚©Žg—pÏ‚Ý‚Ìê‡‚Í•`‰æ‚µ‚È‚¢
 	if (m_bulletState == UNUSED || m_bulletState == USED)
 		return;
 
-	// –C’e‚ð•`‰æ‚·‚é
+	// ’e‚ð•`‰æ‚·‚é
 	DrawBullet();
 
 	// ƒgƒŒƒCƒ‹‚Ì•`‰æ
@@ -123,7 +122,7 @@ void Bullet::Render()
 }
 
 //-------------------------------------------------------------------
-// –C’e‚Ì•`‰æ
+// ’e‚Ì•`‰æ
 //-------------------------------------------------------------------
 void Bullet::DrawBullet()
 {
@@ -135,7 +134,7 @@ void Bullet::DrawBullet()
 	// ƒRƒ‰ƒCƒ_[‚Ì•`‰æ
 	m_collider->Render();
 
-	// ’eŠÛ‚Ì•`‰æ
+	// ’e‚Ì•`‰æ
 	m_bullet->Draw(m_worldMatrix, view, proj, DirectX::Colors::Silver);
 }
 

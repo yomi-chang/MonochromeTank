@@ -1,3 +1,7 @@
+/*
+    @file	MagazineUi.cpp
+    @brief	弾関係UIクラス
+*/
 #include "pch.h"
 #include "Game/UserInterface/MagazineUi.h"
 
@@ -7,6 +11,9 @@
 
 #include "Game/Objects/Tank/PlayerTank.h"
 
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 MagazineUi::MagazineUi()
     : 
     m_windowHeight{},
@@ -26,6 +33,9 @@ MagazineUi::MagazineUi()
     m_graphics->GetScreenSize(m_windowWidth, m_windowHeight);
 }
 
+//-------------------------------------------------------------------
+// 初期化処理
+//-------------------------------------------------------------------
 void MagazineUi::Initialize()
 {
     using namespace DirectX;
@@ -36,13 +46,14 @@ void MagazineUi::Initialize()
 
     // スプライトバッチの受け取り
     m_spriteBatch = m_graphics->GetSpriteBatch();
-    m_spriteFont = m_graphics->GetFont();
 
     m_reloadPos = RELOAD_GAUGE_BACK;
     m_reloadPos.right = RELOAD_GAUGE_BACK.left;
 }
 
-// 描画
+//-------------------------------------------------------------------
+// 描画処理
+//-------------------------------------------------------------------
 void MagazineUi::Render()
 {
     using namespace DirectX;
@@ -81,7 +92,9 @@ void MagazineUi::Render()
     m_spriteBatch->End();
 }
 
+//-------------------------------------------------------------------
 // テクスチャの読み込み
+//-------------------------------------------------------------------
 void MagazineUi::LoadTexture()
 {
     m_cannonTexture = Resources::GetInstance()->GetCannonBallTexture();

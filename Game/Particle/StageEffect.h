@@ -1,3 +1,7 @@
+/*
+	@file	StageEffect.h
+	@brief	ステージエフェクトクラス
+*/
 #pragma once
 #include "Framework/Graphics.h"
 

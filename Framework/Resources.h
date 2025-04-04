@@ -1,8 +1,11 @@
+/*
+	@file	Resources.h
+	@brief	モデル、テクスチャ等のリソース管理クラス
+*/
 #pragma once
 #include "Model.h"
 #include "Framework/Graphics.h"
 
-// リソース管理クラス
 class Resources
 {
 public:
@@ -34,6 +37,7 @@ public:
 	ID3D11ShaderResourceView* GetResultTexture() { return m_resultTexture.Get(); }			// リザルトテクスチャ
 	ID3D11ShaderResourceView* GetSkipTexture() { return m_skipTexture.Get(); }				// スキップテクスチャ
 	ID3D11ShaderResourceView* GetPressSpaceTexture() { return m_pressSpaceTexture.Get(); }	// プレススペーステクスチャ
+	ID3D11ShaderResourceView* GetTankCountTexture() { return m_tankCountTexture.Get(); }	// プレイシーン戦車カウントテクスチャ
 
 	ID3D11ShaderResourceView* GetBlackSmokeTexture() { return m_blackSmokeTexture.Get(); }	// 破壊演出テクスチャ
 	ID3D11ShaderResourceView* GetDamageEffectTexture() { return m_damageEffectTexture.Get(); }	// 破壊演出テクスチャ
@@ -82,6 +86,7 @@ private:
 		m_resultTexture{},
 		m_skipTexture{},
 		m_pressSpaceTexture{},
+		m_tankCountTexture{},
 
 		m_blackSmokeTexture{},
 		m_damageEffectTexture{}
@@ -155,6 +160,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_skipTexture;
 	// プレススペーステクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pressSpaceTexture;
+	// プレイシーン戦車カウントテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tankCountTexture;
 
 	// エフェクトテクスチャ============================================
 	// 破壊演出テクスチャ

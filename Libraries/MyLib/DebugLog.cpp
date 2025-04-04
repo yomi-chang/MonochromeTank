@@ -1,3 +1,7 @@
+/*
+	@file	DebugLog.cpp
+	@brief	デバッグログ表示
+*/
 #include "pch.h"
 #include "Libraries/MyLib/DebugLog.h"
 

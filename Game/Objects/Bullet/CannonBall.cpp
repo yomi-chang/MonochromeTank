@@ -1,16 +1,13 @@
+/*
+	@file	CannonBall.cpp
+	@brief	–C’eƒNƒ‰ƒX
+*/
 #include "pch.h"
 #include "Game/Objects/Bullet/CannonBall.h"
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
 
 #include "Libraries/MyLib/DebugLog.h"
-
-// –C’e‘¬“x‚ð’è‹`‚·‚é
-const DirectX::SimpleMath::Vector3 CannonBall::SPEED(0.0f, 0.0f, -0.12f);
-
-// –C’e‚É‚©‚©‚éd—Í‚ð’è‹`‚·‚é
-const DirectX::SimpleMath::Vector3 CannonBall::GRAVITY(0.0f, -0.05f, 0.0f);
-
 //-------------------------------------------------------------------
 // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 //-------------------------------------------------------------------
@@ -130,7 +127,7 @@ void CannonBall::DrawBullet()
 	m_collider->Render();
 
 	// –C’e‚Ì•`‰æ
-	m_bullet->Draw(m_worldMatrix, view, proj,DirectX::Colors::Black);
+	m_bullet->Draw(m_worldMatrix, view, proj,DirectX::Colors::LightGray);
 }
 
 //-------------------------------------------------------------------

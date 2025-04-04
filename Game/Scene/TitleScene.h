@@ -23,10 +23,6 @@ private:
 	// グラフィックス
 	Graphics* m_graphics;
 
-	DirectX::SpriteBatch* m_spriteBatch;
-
-	DirectX::SpriteFont* m_spriteFont;
-
 	// テクスチャ
 	ID3D11ShaderResourceView* m_titleLogo;
 	ID3D11ShaderResourceView* m_pressSpace;

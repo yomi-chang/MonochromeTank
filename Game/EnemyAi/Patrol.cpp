@@ -1,3 +1,8 @@
+/*
+	@file	Patrol.cpp
+	@brief	敵の巡回行動処理クラス
+*/
+
 #include "pch.h"
 #include "Game/EnemyAi/Patrol.h"
 
@@ -30,13 +35,17 @@ void Patrol::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
+	// 速度の受け取り
+	float speed = Parameter::GetInstance()->GetEnemySpeed();
+	speed *= elapsedTime;
+
 	// 探している挙動
 	m_time += elapsedTime;
 	m_tank->GetTurret()->RotateTurret(sinf(m_time) / 2.0f);
 
 
 	// 進行方向ベクトル
-	Vector3 heading = Vector3::Transform(Vector3::Forward * TANK_SPEED * elapsedTime, m_tank->GetRotation());
+	Vector3 heading = Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
 
 	// ゴールへ向かうベクトル
 	Vector3 toGoal = m_patrolPoints[m_currentPoint] - m_tank->GetPosition();

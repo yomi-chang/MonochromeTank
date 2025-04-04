@@ -1,6 +1,11 @@
+/*
+	@file	TankCannon.h
+	@brief	砲身クラス
+*/
 #pragma once
 #include "Interface/IParts.h"
 #include "Interface/IBullet.h"
+#include "Game/Other/Parameter.h"
 
 class Tank;
 class Wall;
@@ -8,6 +13,10 @@ class DrawTexture;
 
 class TankCannon : public IParts
 {
+private:
+	// マウス感度倍率
+	static constexpr float MOUSE_SENCIBITY = 0.001f;
+
 public:
 	// 弾の種類
 	enum BulletType
@@ -16,17 +25,6 @@ public:
 		CANNONBALL		// 砲弾
 	};
 
-public:
-	// 各種弾におけるリロード時間
-	const float BULLET_RELOAD_TIME = 1.0f;
-	const float CANNONBALL_RELOAD_TIME = 2.0f;
-
-	// インターバル
-	const float SHOT_INTERVAL = 0.2f;
-	const float ENEMY_SHOT_INTERVAL = 1.0f;
-
-	// 照準の射程距離
-	const float MAX_RANGE = 4.0f;
 public:
 	// コンストラクタ
 	TankCannon(
@@ -74,6 +72,7 @@ private:
 	BulletType m_reloadBulletType;						// リロードしている弾の種類
 	float m_shotTimer;									// 砲弾発射タイマー
 	float m_bulletBlurRadius;							// 弾のブレの半径
+	bool m_isShot;										// 弾を発射しているかどうか
 	
 	std::unique_ptr<DrawTexture> m_drawTexture;			// 画像の描画
 
@@ -95,6 +94,8 @@ public:
 
 	// 発射
 	void Shoot();
+	// 発射終了
+	void FinishShoot() { m_isShot = false; }
 
 	// 発射する弾の変更
 	void ChangeBullet();
@@ -115,14 +116,14 @@ public:
 	BulletType GetCurrentBullet() { return m_bulletType; }
 
 	// リロードがどれだけ完了しているかの割合を渡す
-	float GetCannonReloadRatio() { return 1.0f - (m_reloadCount / CANNONBALL_RELOAD_TIME); }
-	float GetBulletReloadRatio() { return 1.0f - (m_reloadCount / BULLET_RELOAD_TIME); }
+	float GetCannonReloadRatio() { return 1.0f - (m_reloadCount / Parameter::CANNONBALL_RELOAD_TIME); }
+	float GetBulletReloadRatio() { return 1.0f - (m_reloadCount / Parameter::BULLET_RELOAD_TIME); }
 
 	// 銃口の座標を取得する
 	DirectX::SimpleMath::Vector3 GetMuzzlePosition();
 
 	// Rayの射程の取得
-	float GetMaxRange() { return MAX_RANGE; }
+	float GetMaxRange() { return Parameter::MAX_RANGE; }
 
 	// 発射方向の取得
 	DirectX::SimpleMath::Quaternion GetMuzzleRotation() { return m_cannonRotation * m_currentRotation; }

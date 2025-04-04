@@ -1,3 +1,7 @@
+/*
+	@file	Wall.cpp
+	@brief	壁クラス
+*/
 #include "pch.h"
 #include "Game/Objects/Stage/Wall.h"
 #include "Framework/Graphics.h"
@@ -37,7 +41,9 @@ Wall::Wall(
 	m_wallType = type;
 }
 
+//-------------------------------------------------------------------
 // デストラクタ
+//-------------------------------------------------------------------
 Wall::~Wall()
 {
 }
@@ -95,14 +101,19 @@ void Wall::DetectCollision()
 	m_camera->SetEyePosition(m_camera->GetEyePosition() + m_collider->CheckCollisionCollider(m_camera->GetBoundingSphere()));
 }
 
+
+//---------------------------------------------------------
 // 壁をゆっくり上げる処理
+//---------------------------------------------------------
 void Wall::RaiseWall(float elapsedTime)
 {
 	if (m_position.y < 0.5f)
 		m_position.y += 0.5f * elapsedTime;
 }
 
-// 壁をゆっくりと下げる処理
+//---------------------------------------------------------
+// 壁をゆっくり下げる処理
+//---------------------------------------------------------
 void Wall::LowerWall(float elapsedTime)
 {
 	if (m_position.y >= -1.0f)

@@ -1,3 +1,7 @@
+/*
+	@file	Tank.cpp
+	@brief	íÔƒNƒ‰ƒX
+*/
 #include "pch.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Game/Particle/Smoke.h"
@@ -170,14 +174,13 @@ void Tank::Render()
 	m_basicEffect->Apply(context);
 
 	// ‰e‚Ìƒpƒ‰ƒ[ƒ^
-	float radius = 1.1f;
 	Vector3 position = GetPosition();
 
 	// ‰eƒ|ƒŠƒSƒ“‚Ì’¸“_î•ñ‚ğİ’è‚·‚éF‰e‚ğ°‚©‚ç0.01f•‚‚©‚¹‚é
-	m_vertices[0].position = Vector3(-radius, 0.01f, -radius) + position;
-	m_vertices[1].position = Vector3(radius,  0.01f, -radius) + position;
-	m_vertices[2].position = Vector3(-radius, 0.01f, radius) + position;
-	m_vertices[3].position = Vector3(radius,  0.01f, radius) + position;
+	m_vertices[0].position = Vector3(-RADIUS, 0.01f, -RADIUS) + position;
+	m_vertices[1].position = Vector3( RADIUS, 0.01f, -RADIUS) + position;
+	m_vertices[2].position = Vector3(-RADIUS, 0.01f,  RADIUS) + position;
+	m_vertices[3].position = Vector3( RADIUS, 0.01f,  RADIUS) + position;
 
 	// ‰eƒ|ƒŠƒSƒ“‚ğ•`‰æ‚·‚é
 	m_primitiveBatch->Begin();

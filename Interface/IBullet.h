@@ -1,7 +1,10 @@
+/*
+	@file	IBullet.h
+	@brief	Bulletインターフェース
+*/
 #pragma once
 #include "pch.h"
 
-// IBulletインターフェース
 class IBullet
 {
 public:

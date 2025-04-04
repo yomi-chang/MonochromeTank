@@ -1,3 +1,7 @@
+/*
+	@file	EnemyHpGauge.cpp
+	@brief	敵体力クラス
+*/
 #include "pch.h"
 #include "Game/UserInterface/EnemyHpGauge.h"
 #include <PrimitiveBatch.h> 
@@ -6,6 +10,9 @@
 
 using namespace DirectX;
 
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 EnemyHpGauge::EnemyHpGauge()
 	:
 	m_alpha{},
@@ -35,10 +42,16 @@ EnemyHpGauge::EnemyHpGauge()
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(context);
 }
 
+//-------------------------------------------------------------------
+// デストラクタ
+//-------------------------------------------------------------------
 EnemyHpGauge::~EnemyHpGauge()
 {
 }
 
+//-------------------------------------------------------------------
+// 描画処理
+//-------------------------------------------------------------------
 void EnemyHpGauge::Render(
 	DirectX::SimpleMath::Vector3 position,
 	float hpRatio

@@ -1,3 +1,7 @@
+/*
+	@file	BoxCollider.cpp
+	@brief	” ó‚Ì“–‚½‚è”»’èƒNƒ‰ƒX
+*/
 #include "pch.h"
 #include "Game/Collider/BoxCollider.h"
 #include "Libraries/Microsoft/DebugDraw.h"

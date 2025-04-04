@@ -1,5 +1,5 @@
 ﻿/*
-	@file	DebugCamera.h
+	@file	DebugCamera.cpp
 	@brief	デバッグ用カメラクラス
 */
 #include "pch.h"
@@ -32,7 +32,7 @@ mylib::DebugCamera::DebugCamera()
 }
 
 //---------------------------------------------------------
-// 初期化する
+// 初期化処理
 //---------------------------------------------------------
 void mylib::DebugCamera::Initialize(int screenWidth,int screenHeight)
 {
@@ -41,11 +41,10 @@ void mylib::DebugCamera::Initialize(int screenWidth,int screenHeight)
 
 	// マウスのホイール値をリセット
 	Mouse::Get().ResetScrollWheelValue();
-	//!! DirectX::Mouseはシングルトンなので…
 }
 
 //---------------------------------------------------------
-// 更新する
+// 更新処理
 //---------------------------------------------------------
 void mylib::DebugCamera::Update()
 {

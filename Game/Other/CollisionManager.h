@@ -1,5 +1,8 @@
+/*
+	@file	CollisionManager.h
+	@brief	当たり判定管理クラス
+*/
 #pragma once
-
 class Tank;
 class FixedTurret;
 class Wall;
@@ -10,7 +13,7 @@ namespace mylib
 	class FollowCamera;
 }
 
-
+// 衝突判定クラス
 class CollisionManager
 {
 public:

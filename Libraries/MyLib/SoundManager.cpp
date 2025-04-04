@@ -1,3 +1,7 @@
+/*
+	@file	SoundManager.cpp
+	@brief	サウンド管理クラス
+*/
 #include "pch.h"
 #include "Libraries/MyLib/SoundManager.h"
 
@@ -32,7 +36,7 @@ mylib::SoundManager::~SoundManager()
 }
 
 //---------------------------------------------------------
-// 初期化する
+// 初期化処理
 //---------------------------------------------------------
 void mylib::SoundManager::Initialize()
 {
@@ -62,7 +66,7 @@ void mylib::SoundManager::Initialize()
 }
 
 //---------------------------------------------------------
-// 更新する
+// 更新処理
 //---------------------------------------------------------
 void mylib::SoundManager::Update()
 {
@@ -78,7 +82,7 @@ void mylib::SoundManager::Update()
 }
 
 //---------------------------------------------------------
-// SEを再生する
+// SEの再生
 //---------------------------------------------------------
 void mylib::SoundManager::PlaySE(XACT_WAVEBANK_SOUNDS seName)
 {
@@ -86,7 +90,7 @@ void mylib::SoundManager::PlaySE(XACT_WAVEBANK_SOUNDS seName)
 }
 
 //---------------------------------------------------------
-// BGMを再生する
+// BGMの再生
 //---------------------------------------------------------
 void mylib::SoundManager::PlayBGM(XACT_WAVEBANK_SOUNDS bgmName)
 {
@@ -104,7 +108,7 @@ void mylib::SoundManager::PlayBGM(XACT_WAVEBANK_SOUNDS bgmName)
 }
 
 //---------------------------------------------------------
-// BGMを停止する
+// BGMの停止
 //---------------------------------------------------------
 void mylib::SoundManager::StopBGM()
 {

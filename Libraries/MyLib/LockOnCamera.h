@@ -1,3 +1,7 @@
+/*
+	@file	LockOnCamera.h
+	@brief	移動可能なカメラクラス
+*/
 #pragma once
 
 namespace mylib

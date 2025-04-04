@@ -23,8 +23,6 @@ private:
 	// グラフィックス
 	Graphics* m_graphics;
 
-	DirectX::SpriteBatch* m_spriteBatch;;
-
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 	ID3D11ShaderResourceView* m_pressSpace;

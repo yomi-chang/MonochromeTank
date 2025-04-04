@@ -1,3 +1,7 @@
+/*
+	@file	CannonBall.h
+	@brief	砲弾クラス
+*/
 #pragma once
 #include "Interface/IBullet.h"
 #include "Framework/Graphics.h"
@@ -5,11 +9,12 @@
 
 class CannonBall : public IBullet
 {
-public:
-	// 砲弾スピードを定義する
-	static const DirectX::SimpleMath::Vector3 SPEED;
-
-	static const DirectX::SimpleMath::Vector3 GRAVITY;
+// 定数
+private:
+	// 弾速
+	static constexpr DirectX::SimpleMath::Vector3 SPEED = DirectX::SimpleMath::Vector3(0.0f, 0.0f, -0.12f);
+	// 重力
+	static constexpr DirectX::SimpleMath::Vector3 GRAVITY = DirectX::SimpleMath::Vector3(0.0f, -0.05f, 0.0f);
 
 public:
 	// 位置を取得する 

@@ -1,3 +1,7 @@
+/*
+    @file	EnemyHpGauge.h
+    @brief	敵体力クラス
+*/
 #pragma once
 #include <PrimitiveBatch.h>
 #include <VertexTypes.h>
@@ -17,9 +21,6 @@ public:
 private:
     //	入力レイアウト 
     Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-
-    //	共通ステートオブジェクトへのポインタ
-    //std::unique_ptr<DirectX::CommonStates> m_status;
 
     //	エフェクト 
     std::unique_ptr<DirectX::BasicEffect> m_basicEffect;

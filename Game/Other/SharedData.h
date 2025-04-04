@@ -1,3 +1,7 @@
+/*
+	@file	SharedData.h
+	@brief	共有情報管理クラス
+*/
 #pragma once
 #include "Game/Objects/Tank/TankBase/Tank.h"
 
@@ -11,14 +15,12 @@ namespace mylib
 class SharedData final
 {
 public:
-	// Graphicsクラスのインスタンスを取得する
+	// SharedDataクラスのインスタンスを取得する
 	static SharedData* const GetInstance();
 
 public:
 	// デストラクタ
 	~SharedData();
-	// 初期化する
-	void Initialize();
 	
 private:
 	// コンストラクタ

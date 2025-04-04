@@ -1,3 +1,7 @@
+/*
+	@file	Wall.h
+	@brief	•ÇƒNƒ‰ƒX
+*/
 #pragma once
 #include "Game/Collider/BoxCollider.h"
 

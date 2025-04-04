@@ -1,3 +1,7 @@
+/*
+	@file	StageManager.h
+	@brief	ステージの管理クラス
+*/
 #pragma once
 #include "Game/Objects/Stage/Floor.h"
 #include "Game/Objects/Stage/Gimmick/WallGimmick.h"
@@ -15,6 +19,7 @@ namespace mylib
 	class FollowCamera;
 }
 
+// ステージ管理クラス
 class StageManager
 {
 public:

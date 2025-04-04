@@ -1,3 +1,7 @@
+/*
+	@file	PlayerTank.h
+	@brief	自機クラス
+*/
 #pragma once
 #include "Interface/IObject.h"
 #include "Libraries/MyLib/FollowCamera.h"
@@ -14,6 +18,7 @@ namespace mylib
 	class FollowCamera;
 }
 
+// 自機クラス
 class PlayerTank : IObject
 {
 private:

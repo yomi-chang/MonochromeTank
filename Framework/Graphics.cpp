@@ -1,3 +1,7 @@
+/*
+	@file	Graphics.cpp
+	@brief	描画関係クラス
+*/
 #include "pch.h"
 #include "Graphics.h"
 
@@ -42,6 +46,24 @@ Graphics::Graphics()
 // デストラクタ
 Graphics::~Graphics()
 {
+	// unique_ptr を明示的に解放
+	m_deviceResources.reset();
+	m_commonStates.reset();
+	m_spriteBatch.reset();
+	m_spriteFont.reset();
+	m_basicEffect.reset();
+	m_primitiveBatch.reset();
+	m_effectFactory.reset();
+
+	// 生ポインタを解放
+	if (m_device)
+		m_device = nullptr;
+	if (m_context)
+	{
+		m_context->ClearState();
+		m_context->Flush();
+		m_context = nullptr;
+	}
 }
 
 // 初期化する

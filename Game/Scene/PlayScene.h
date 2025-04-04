@@ -35,9 +35,12 @@ private:
 	};
 
 	// ダメージ演出時間
-	const float DAMAGE_EFFECT_TIME = 1.0f;
+	static constexpr float DAMAGE_EFFECT_TIME = 1.0f;
 
-	const RECT SKIP_UI_POS = { 1050,580,1260,700 };
+	static constexpr RECT SKIP_UI_POS = { 1050,580,1260,700 };
+
+	static constexpr int FONT_SIZE_X = 90;
+	static constexpr int FONT_SIZE_Y = 150;
 
 private:
 	Graphics* m_graphics;									// グラフィックス
@@ -75,6 +78,9 @@ private:
 
 	// 時間
 	float m_time;
+
+	// 生存している戦車
+	int m_surviveTank;
 
 public:
 	PlayScene();

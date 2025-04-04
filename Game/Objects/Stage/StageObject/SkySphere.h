@@ -1,3 +1,7 @@
+/*
+	@file	SkySphere.h
+	@brief	“V‹…ƒNƒ‰ƒX
+*/
 #pragma once
 
 class SkySphere

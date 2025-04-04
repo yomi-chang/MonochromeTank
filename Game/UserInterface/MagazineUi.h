@@ -1,3 +1,7 @@
+/*
+	@file	MagazineUi.h
+	@brief	弾関係UIクラス
+*/
 #pragma once
 
 // 前方宣言
@@ -5,19 +9,20 @@ class Graphics;
 class InputManager;
 class PlayerTank;
 
+// 残弾数UIクラス
 class MagazineUi
 {
 private:
 	// UI座標の定数
-	const RECT MAIN_BULLET_FRAME = { 1000,625,1195,700 };
-	const RECT SUB_BULLET_FRAME = { 1140,590,1270,645 };
-	const RECT MAIN_BULLET_UI = { 1010,635,1100,675 };
-	const RECT SUB_BULLET_UI = { 1200,600,1265,630 };
-	const RECT RELOAD_GAUGE_BACK = { 1010,685,1170,695 };
+	static constexpr RECT MAIN_BULLET_FRAME = { 1000,625,1195,700 };
+	static constexpr RECT SUB_BULLET_FRAME = { 1140,590,1270,645 };
+	static constexpr RECT MAIN_BULLET_UI = { 1010,635,1100,675 };
+	static constexpr RECT SUB_BULLET_UI = { 1200,600,1265,630 };
+	static constexpr RECT RELOAD_GAUGE_BACK = { 1010,685,1170,695 };
 
-	const int FONT_SIZE = 12;
-	const int BASE_POS_X = 15;
-	const float FONT_SCALE = 3.0f;
+	static constexpr int FONT_SIZE = 12;
+	static constexpr int BASE_POS_X = 15;
+	static constexpr float FONT_SCALE = 3.0f;
 
 private:
 	// グラフィックス
@@ -37,9 +42,6 @@ private:
 
 	// スプライトバッチ
 	DirectX::SpriteBatch* m_spriteBatch;
-
-	// スプライトフォント
-	DirectX::SpriteFont* m_spriteFont;
 	
 	// ゲージ座標
 	RECT m_reloadPos;

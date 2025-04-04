@@ -1,3 +1,7 @@
+/*
+	@file	Smoke.h
+	@brief	破壊エフェクトクラス
+*/
 #pragma once
 
 class Graphics;

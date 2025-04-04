@@ -1,3 +1,7 @@
+/*
+	@file	Tracking.cpp
+	@brief	“G‚Ì’ÇÕs“®ƒNƒ‰ƒX
+*/
 #include "pch.h"
 #include "Game/EnemyAi/Tracking.h"
 

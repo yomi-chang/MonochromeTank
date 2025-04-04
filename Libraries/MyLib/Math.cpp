@@ -1,3 +1,7 @@
+/*
+	@file	Math.cpp
+	@brief	•Ö—˜ŠÖ”
+*/
 #include "Libraries/MyLib/Math.h"
 #include "pch.h"
 #include <random>
@@ -10,7 +14,7 @@ namespace mylib
 		return std::max(min, std::min(value, max));;
 	}
 
-	// ƒ‰ƒ“ƒ_ƒ€ŠÖ”
+	// —”¶¬
 	float Random(float min, float max)
 	{
 		std::random_device seed_gen;

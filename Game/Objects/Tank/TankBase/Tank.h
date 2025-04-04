@@ -1,3 +1,7 @@
+/*
+	@file	Tank.h
+	@brief	戦車クラス
+*/
 #pragma once
 #include "Interface/IParent.h"
 #include "Interface/IParts.h"
@@ -12,21 +16,23 @@
 class TankBody;
 class TankTurret;
 class TankCannon;
-
 class BoxCollider;
 class SphereCollider;
-
 class Smoke;
 
 class Tank : public IParent
 {
-private:
+public:
+	// 戦車のサイズ
+	static constexpr float TANK_SIZE = 0.09f;
 	// コライダーのサイズ
-	const DirectX::SimpleMath::Vector3 COLLIDER_SIZE = DirectX::SimpleMath::Vector3(1.3f, 0.7f, 1.3f);
+	static constexpr DirectX::SimpleMath::Vector3 COLLIDER_SIZE = DirectX::SimpleMath::Vector3(1.3f, 0.7f, 1.3f);
 	// コライダーを上にずらす
-	const float COLLIDER_POSITION = 0.5f;
+	static constexpr float COLLIDER_POSITION = 0.5f;
 	// 体力
-	const float DEFAULT_HP = 10;
+	static constexpr float DEFAULT_HP = 10;
+	// 影の半径
+	static constexpr float RADIUS = 1.1f;
 public:
 	// コンストラクタ
 	Tank(
@@ -75,12 +81,11 @@ private:
 	std::unique_ptr<SphereCollider> m_avoidCollider;		// 回避用コライダー
 	std::vector<Tank*> m_otherTanks;						// 自分以外の戦車
 	std::unique_ptr<Smoke> m_smokeEffect;					// 倒されたときのエフェクト
-	int m_maxHp;									// 最大体力
-	int  m_hp;										// 体力
+	int m_maxHp;											// 最大体力
+	int  m_hp;												// 体力
 	bool m_isDead;											// 死亡しているかどうか
 	Tank* m_targetTank;										// 攻撃してきた他の戦車
 	bool m_isAvoidWall;										// 壁の回避
-
 
 public:
 	// 車体情報の設定

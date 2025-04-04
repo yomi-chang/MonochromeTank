@@ -1,3 +1,7 @@
+/*
+	@file	TankBody.cpp
+	@brief	車体クラス
+*/
 #include "pch.h"
 #include "Game/Objects/Tank/TankBase/TankBody.h"
 #include "Game/Objects/Tank/TankBase/TankTurret.h"
@@ -42,7 +46,7 @@ void TankBody::Initialize()
 {
 	using namespace DirectX::SimpleMath;
 
-	// 砲塔の生成(車体の中心から0.3f高い座標に生成)
+	// 砲塔の生成
 	Attach(std::make_unique<TankTurret>(m_tank,Vector3(0.0f, 0.0f, 0.0f), 0.0f));
 
 	// モデルの取得
@@ -88,7 +92,7 @@ void TankBody::Render()
 	using namespace DirectX::SimpleMath;
 
 	// ワールド行列の生成
-	m_worldMatrix = Matrix::CreateScale(0.09f) *
+	m_worldMatrix = Matrix::CreateScale(Tank::TANK_SIZE) *
 		Matrix::CreateFromQuaternion(m_currentRotation) *
 		Matrix::CreateTranslation(m_currentPosition);
 

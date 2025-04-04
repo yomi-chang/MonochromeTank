@@ -1,3 +1,7 @@
+/*
+	@file	Math.h
+	@brief	•Ö—˜ŠÖ”
+*/
 #pragma once
 
 namespace mylib

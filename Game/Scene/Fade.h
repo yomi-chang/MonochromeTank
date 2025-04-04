@@ -1,9 +1,16 @@
+/*
+	@file	Fade.h
+	@brief	シーン遷移フェードクラス
+*/
 #pragma once
 
 class Fade
 {
 public:
 	enum FadeType { NONE, FADEIN, FADEOUT };
+
+private:
+	static constexpr float FADE_SPEED = 2.0f;
 
 public:
 	Fade(float alpha);

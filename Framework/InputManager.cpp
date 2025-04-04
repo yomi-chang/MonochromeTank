@@ -1,5 +1,7 @@
-// 入力関係クラス
-
+/*
+	@file	InputManager.cpp
+	@brief	入力関係クラス
+*/
 #include "pch.h"
 #include "InputManager.h"
 

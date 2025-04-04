@@ -1,8 +1,14 @@
+/*
+	@file	HpGauge.cpp
+	@brief	自機体力クラス
+*/
 #include "pch.h"
 #include "Game/UserInterface/HpGauge.h"
 #include "Framework/Resources.h"
 
+//-------------------------------------------------------------------
 // コンストラクタ
+//-------------------------------------------------------------------
 HpGauge::HpGauge()
 	:
 	m_graphics{ Graphics::GetInstance() },
@@ -11,7 +17,9 @@ HpGauge::HpGauge()
 {
 }
 
+//-------------------------------------------------------------------
 // 初期化処理
+//-------------------------------------------------------------------
 void HpGauge::Initialize(DirectX::SimpleMath::Vector2 position)
 {
 	using namespace DirectX;
@@ -30,7 +38,9 @@ void HpGauge::Initialize(DirectX::SimpleMath::Vector2 position)
 
 }
 
+//-------------------------------------------------------------------
 // 描画処理
+//-------------------------------------------------------------------
 void HpGauge::Render(float hpRatio)
 {
 	using namespace DirectX;

@@ -1,3 +1,7 @@
+/*
+	@file	Attack.cpp
+	@brief	“G‚ÌUŒ‚ˆ—ƒNƒ‰ƒX
+*/
 #include "pch.h"
 #include "Game/EnemyAi/Attack.h"
 #include "Libraries/MyLib/Math.h"
@@ -14,6 +18,7 @@ Attack::Attack()
 	m_shotTime{}
 {
 }
+
 //-------------------------------------------------------------------
 // ‰Šú‰»ˆ—
 //-------------------------------------------------------------------
@@ -23,10 +28,10 @@ void Attack::Initialize(Tank* tank)
 	m_currentAction = Action::SHOT;
 
 	// ‰Šú‚ÌˆÚ“®ŠÔ‚Ìİ’è
-	m_moveTime = mylib::Random(1.0f, 5.0f);
+	m_moveTime = mylib::Random(1.0f, MOVE_TIME);
 
 	// ‰Šú‚ÌUŒ‚ŠÔ‚Ìİ’è
-	m_shotTime = mylib::Random(1.0f, 3.0f);
+	m_shotTime = mylib::Random(1.0f, SHOT_TIME);
 }
 
 //-------------------------------------------------------------------
@@ -43,6 +48,7 @@ void Attack::Update(float elapsedTime)
 	// ËŒ‚ˆ—
 	m_tank->GetCannon()->StartReload();
 	m_tank->GetCannon()->Shoot();
+	m_tank->GetCannon()->FinishShoot();
 
 	// s“®
 	switch (m_currentAction)
@@ -65,7 +71,8 @@ void Attack::LookTargetTank(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
 
-
+	// ƒpƒ‰ƒ[ƒ^‚Ìó‚¯æ‚è
+	const auto& parameter = Parameter::GetInstance();
 
 	// “G‚Ì•ûŒüƒxƒNƒgƒ‹‚ÌŒvZ
 	Vector3 delta = m_tank->GetPosition() - m_targetTank->GetPosition();
@@ -75,7 +82,9 @@ void Attack::LookTargetTank(float elapsedTime)
 	float targetAngle = angleRadians - m_tank->GetRotation().ToEuler().y;
 
 	// –C“ƒ‰ñ“]‚Ì§ŒÀ
-	targetAngle = mylib::Clamp(targetAngle, DirectX::XMConvertToRadians(-45.0f), DirectX::XMConvertToRadians(45.0f));
+	float min = parameter->GetTurretAngleMin();
+	float max = parameter->GetTurretAngleMax();
+	targetAngle = mylib::Clamp(targetAngle, DirectX::XMConvertToRadians(min), DirectX::XMConvertToRadians(max));
 
 	// Œ»İ‚Ì–C“ƒ‚Ì‰ñ“]Šp“x
 	float currentAngle = m_tank->GetTurret()->GetTurretRotation().ToEuler().y;
@@ -84,11 +93,10 @@ void Attack::LookTargetTank(float elapsedTime)
 	float angleDifference = targetAngle - currentAngle;
 
 	// ‚ä‚Á‚­‚è‰ñ“]‚·‚é‚½‚ß‚Ì‘¬“x§Œä
-	float rotationSpeed = 1.5f;
-	float t = rotationSpeed * elapsedTime;
+	float rotationSpeed = parameter->GetEnemyRotationSpeed() * elapsedTime;
 
 	// •âŠÔŒã‚Ì‰ñ“]Šp“x
-	float newAngle = currentAngle + angleDifference * t;
+	float newAngle = currentAngle + angleDifference * rotationSpeed;
 
 	// –C“ƒ‚Ì‰ñ“]
 	m_tank->GetTurret()->RotateTurret(newAngle);
@@ -108,7 +116,7 @@ void Attack::MoveAction(float elapsedTime)
 		m_time = 0.0f;
 		m_currentAction = Action::SHOT;
 		// ˆÚ“®ŠÔ‚ğÄ“xİ’è
-		m_moveTime = mylib::Random(1.0f, 5.0f);
+		m_moveTime = mylib::Random(1.0f, MOVE_TIME);
 	}
 
 	// ˆÚ“®
@@ -129,7 +137,7 @@ void Attack::ShotAction(float elapsedTime)
 		m_time = 0.0f;
 		m_currentAction = Action::MOVE;
 		// ‰Šú‚ÌUŒ‚ŠÔ‚Ìİ’è
-		m_shotTime = mylib::Random(1.0f, 3.0f);
+		m_shotTime = mylib::Random(1.0f, SHOT_TIME);
 	}
 
 	// ËŒ‚ˆ—

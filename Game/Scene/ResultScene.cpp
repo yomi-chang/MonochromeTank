@@ -25,7 +25,6 @@ using namespace DirectX::SimpleMath;
 ResultScene::ResultScene()
 	:
 	m_graphics{Graphics::GetInstance()},
-	m_spriteBatch{},
 	m_texture{},
 	m_texCenter{},
 	m_isChangeScene{},
@@ -50,13 +49,10 @@ ResultScene::~ResultScene()
 //---------------------------------------------------------
 void ResultScene::Initialize()
 {
-	// スプライトバッチを作成する
-	m_spriteBatch = m_graphics->GetSpriteBatch();
-
+	// テクスチャの受け取り
 	m_texture = Resources::GetInstance()->GetResultTexture();
 	m_pressSpace = Resources::GetInstance()->GetPressSpaceTexture();
 
-	
 	Microsoft::WRL::ComPtr<ID3D11Resource> resource{};
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D{};
 	D3D11_TEXTURE2D_DESC desc{};
@@ -160,6 +156,7 @@ void ResultScene::Update(float elapsedTime)
 void ResultScene::Render()
 {
 	auto states = m_graphics->GetCommonStates();
+	auto spriteBatch = m_graphics->GetSpriteBatch();
 
 	// ビュー行列の取得
 	auto view = Matrix::CreateLookAt(
@@ -179,14 +176,14 @@ void ResultScene::Render()
 	m_skySphere->Render();
 
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	m_spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
+	spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 
 	// 描画位置を決める
 	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
 	// 画像の中心を計算する
 	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
 
-	m_spriteBatch->Draw(
+	spriteBatch->Draw(
 		m_texture.Get(),	// テクスチャ(SRV)
 		pos,				// スクリーンの表示位置(originの描画位置)
 		&m_texturePos,		// 矩形(RECT)
@@ -198,13 +195,13 @@ void ResultScene::Render()
 
 	rect = { 400,500,920,620 };
 	// UIの描画
-	m_spriteBatch->Draw(
+	spriteBatch->Draw(
 		m_pressSpace,
 		rect
 	);
 
 	// スプライトバッチの終わり
-	m_spriteBatch->End();
+	spriteBatch->End();
 }
 
 //---------------------------------------------------------

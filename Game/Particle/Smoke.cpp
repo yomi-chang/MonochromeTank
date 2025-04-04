@@ -1,3 +1,7 @@
+/*
+	@file	Smoke.cpp
+	@brief	破壊エフェクトクラス
+*/
 #include "pch.h"
 #include "Game/Particle/Smoke.h"
 #include "Framework/Graphics.h"
@@ -7,6 +11,9 @@
 #include <VertexTypes.h> 
 #include <WICTextureLoader.h> 
 
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 Smoke::Smoke()
 	:
 	m_smokeTexture{},
@@ -16,6 +23,9 @@ Smoke::Smoke()
 {
 }
 
+//-------------------------------------------------------------------
+// 初期化処理
+//-------------------------------------------------------------------
 void Smoke::Initialize()
 {
 	using namespace DirectX;
@@ -46,6 +56,9 @@ void Smoke::Initialize()
 	m_alpha = 1.0f;
 }
 
+//-------------------------------------------------------------------
+// 更新処理
+//-------------------------------------------------------------------
 void Smoke::Update(float elapsedTime)
 {
 	// 画像の不透明度を下げていく
@@ -56,6 +69,9 @@ void Smoke::Update(float elapsedTime)
 		m_isPlay = true;
 }
 
+//-------------------------------------------------------------------
+// 描画処理
+//-------------------------------------------------------------------
 void Smoke::Render(DirectX::SimpleMath::Vector3 position)
 {
 	using namespace DirectX;

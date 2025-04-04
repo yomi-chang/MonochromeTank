@@ -33,6 +33,7 @@
 
 #include <cassert>
 
+
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
@@ -54,7 +55,8 @@ PlayScene::PlayScene()
 	m_skipTexture{},
 	m_damageEffect{},
 	m_stageEffect{},
-	m_time{}
+	m_time{},
+	m_surviveTank{}
 {
 }
 
@@ -212,19 +214,19 @@ void PlayScene::Update(float elapsedTime)
 	m_stageManager->Update(elapsedTime);
 
 	// 生存戦車確認
-	int surviveTank = 0;
+	m_surviveTank = 0;
 	// プレイヤー
-	if (!m_player->GetDead()){ surviveTank++;}
+	if (!m_player->GetDead()){ m_surviveTank++;}
 	// やられているならカメラ変更
 	else{ m_cameraType = CameraType::DEBUG;}
 	// 敵
 	for (auto& enemy : m_enemies)
 	{
-		if (!enemy->GetDead()) { surviveTank++; }
+		if (!enemy->GetDead()) { m_surviveTank++; }
 	}
 
 	// 生存している戦車が1台だけならフェード開始
-	if (surviveTank == 1){ m_fade->FadeIn();}
+	if (m_surviveTank == 1){ m_fade->FadeIn();}
 
 	// キーボードステートの取得
 	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
@@ -236,14 +238,7 @@ void PlayScene::Update(float elapsedTime)
 		m_fade->FadeIn();
 	}
 
-	// Cキーを押すことでデバッグカメラとTPSカメラを切り替える
-	/*if (kbTracker->IsKeyPressed(DirectX::Keyboard::C))
-	{
-		this->ChangeCameraType();
-	}*/
-
 	// 経過時間の設定
-	//m_damageEffect->SetElapsedTime(elapsedTime);
 	m_stageEffect->SetElapsedTime(elapsedTime);
 
 	// ダメージを食らったらヒットエフェクトを出す
@@ -260,7 +255,6 @@ void PlayScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void PlayScene::Render()
 {
-
 	// カメラタイプに応じたビュー行列の取得
 	auto view = DirectX::SimpleMath::Matrix::Identity;
 	switch (m_cameraType)
@@ -305,6 +299,35 @@ void PlayScene::Render()
 		spriteBatch->Draw(m_skipTexture, SKIP_UI_POS);
 		spriteBatch->End();
 	}
+
+	// 残り戦車の表示
+	auto spriteBatch = m_graphics->GetSpriteBatch();
+	spriteBatch->Begin();
+	spriteBatch->Draw(
+		Resources::GetInstance()->GetTankCountTexture(),
+		DirectX::XMFLOAT2(975, 25),
+		nullptr,
+		DirectX::Colors::White,
+		0.0f,
+		DirectX::XMFLOAT2(0, 0),
+		DirectX::XMFLOAT2(0.5f, 0.5f)
+	);
+	
+	m_surviveTank-=2;
+	RECT rect = { 0,0,0,0 };
+	rect.left = m_surviveTank * FONT_SIZE_X;
+	rect.right = rect.left + FONT_SIZE_X;
+	rect.bottom = FONT_SIZE_Y;
+	spriteBatch->Draw(
+		Resources::GetInstance()->GetCountTextTexture(),
+		DirectX::XMFLOAT2(1200, 50),
+		&rect,
+		DirectX::Colors::White,
+		0.0f,
+		Vector2{ 50,50 },
+		Vector2{ 0.5f,0.5f }
+	);
+	spriteBatch->End();
 	
 	// ステージエフェクト
 	m_stageEffect->Render();

@@ -1,3 +1,7 @@
+/*
+	@file	Sounds.h
+	@brief	‰¹Œ¹
+*/
 #pragma once
 
 enum XACT_WAVEBANK_SOUNDS : unsigned int

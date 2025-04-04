@@ -1,3 +1,7 @@
+/*
+	@file	PlayerTank.cpp
+	@brief	自機クラス
+*/
 #include "pch.h"
 #include "Game/Objects/Tank/PlayerTank.h"
 
@@ -12,6 +16,7 @@
 #include "Framework/InputManager.h"
 #include "Libraries/MyLib/Math.h"
 #include "Libraries/MyLib/DebugLog.h"
+#include "Game/Other/Parameter.h"
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -138,7 +143,13 @@ void PlayerTank::KeyBoardEvent(float elapsedTime)
 			m_tank->GetCannon()->GetCannonBall()->GetBulletState() == IBullet::UNUSED)
 			m_camera->StartShakeCamera(25.0f, 0.05f, 0.5f);
 
+		// 発射
 		m_tank->GetCannon()->Shoot();
+	}
+	else
+	{
+		// 発射終了
+		m_tank->GetCannon()->FinishShoot();
 	}
 
 	// 弾の変更
@@ -166,17 +177,19 @@ void PlayerTank::Move(float elapsedTime)
 
 	// キーボードステートの取得
 	const auto& keyboardState = InputManager::GetInstance()->GetKeyboardState();
+	// パラメータの取得
+	const auto& parameter = Parameter::GetInstance();
 
 	// 変数宣言
 	Vector3 velocity = Vector3::Zero;
-	float speed = elapsedTime * 3.0f;
+	float speed = elapsedTime * parameter->GetPlayerSpeed();
 	float angle = 0.0f;
 
 	// 左右回転
 	if (keyboardState.A)
-		angle = DirectX::XMConvertToRadians(0.75f);
+		angle = DirectX::XMConvertToRadians(parameter->GetPlayerRotationSpeed());
 	else if (keyboardState.D)
-		angle = DirectX::XMConvertToRadians(-0.75f);
+		angle = DirectX::XMConvertToRadians(-parameter->GetPlayerRotationSpeed());
 
 	// 前後移動
 	if (keyboardState.W)
@@ -204,11 +217,16 @@ void PlayerTank::RotateTurretCannon()
 	// マウスステートの取得
 	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
 
+	// パラメータの取得
+	const auto& parameter = Parameter::GetInstance();
+
 	// 砲塔の回転量
 	float rotationY = static_cast<float>(mouseState.x) * 0.001f;
 	// 砲塔角度をオイラー角に変換
 	float eulerAngle = m_tank->GetTurretRotation().ToEuler().y - rotationY;
 	// 砲塔回転の制限
+	float min = parameter->GetTurretAngleMin();
+	float max = parameter->GetTurretAngleMax();
 	eulerAngle = mylib::Clamp(eulerAngle, TURRET_ANGLE_MIN, TURRET_ANGLE_MAX);
 	// 回転情報を砲塔に伝える
 	m_tank->GetTurret()->RotateTurret(eulerAngle);

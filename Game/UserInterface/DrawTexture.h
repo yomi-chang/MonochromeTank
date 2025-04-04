@@ -1,3 +1,7 @@
+/*
+	@file	DrawTexture.h
+	@brief	シーンにテクスチャを描画するクラス
+*/
 #pragma once
 #include "Framework/Graphics.h"
 #include <PrimitiveBatch.h>

@@ -1,3 +1,7 @@
+/*
+	@file	DrawTexture.cpp
+	@brief	シーンにテクスチャを描画するクラス
+*/
 #include "pch.h"
 #include "Game/UserInterface/DrawTexture.h"
 #include "Framework/Graphics.h"

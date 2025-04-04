@@ -1,3 +1,7 @@
+/*
+	@file	TankBody.h
+	@brief	Ô‘ÌƒNƒ‰ƒX
+*/
 #pragma once
 #include "Interface/IParts.h"
 
