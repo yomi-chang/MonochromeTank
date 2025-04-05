@@ -24,7 +24,6 @@ Game::Game() noexcept(false)
     m_inputManager{},
     m_sceneManager{},
     m_soundManager{},
-    //m_parameter{},
     m_graphics{},
     m_hWnd{}
 {
@@ -90,6 +89,7 @@ void Game::Initialize(HWND window, int width, int height)
     // サウンドマネージャの作成
     m_soundManager = std::make_unique<mylib::SoundManager>();
     m_soundManager->Initialize();
+
     // サウンドマネージャの設定
     SharedData::GetInstance()->SetSoundManager(m_soundManager.get());
 
@@ -99,7 +99,7 @@ void Game::Initialize(HWND window, int width, int height)
     // モデル、テクスチャの読み込み
     Resources::GetInstance()->LoadResource();
 
-    //m_parameter->LoadParameter();
+    // パラメータの読み込み
     Parameter::GetInstance()->LoadParameter();
 
     // シーンマネージャを初期化する

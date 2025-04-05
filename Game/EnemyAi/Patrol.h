@@ -3,9 +3,9 @@
 	@brief	“G‚Ì„‰ñs“®ˆ—ƒNƒ‰ƒX
 */
 #pragma once
-#include "Interface/IEnemyAction.h"
+#include "Interface/IState.h"
 
-class Patrol : public IEnemyAction
+class Patrol : public IState
 {
 private:
 	static constexpr float TANK_SPEED = 2.0f;

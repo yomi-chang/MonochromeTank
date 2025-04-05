@@ -181,7 +181,6 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Game\Particle\DamageEffect.h" />
-    <ClInclude Include="Game\Scene\DamageEffect.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="Framework\Graphics.h" />
     <ClInclude Include="Framework\InputManager.h" />
@@ -190,7 +189,7 @@
     <ClInclude Include="Game\Collider\BoxCollider.h" />
     <ClInclude Include="Game\Collider\SphereCollider.h" />
     <ClInclude Include="Game\EnemyAi\Attack.h" />
-    <ClInclude Include="Interface\IEnemyAction.h" />
+    <ClInclude Include="Interface\IState.h" />
     <ClInclude Include="Game\EnemyAi\Patrol.h" />
     <ClInclude Include="Game\EnemyAi\SelectAction.h" />
     <ClInclude Include="Game\EnemyAi\Tracking.h" />
@@ -216,6 +215,7 @@
     <ClInclude Include="Game\Particle\Smoke.h" />
     <ClInclude Include="Game\Particle\StageEffect.h" />
     <ClInclude Include="Game\Scene\Fade.h" />
+    <ClInclude Include="Interface\IObserver.h" />
     <ClInclude Include="Interface\IScene.h" />
     <ClInclude Include="Game\Scene\PlayScene.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
@@ -243,6 +243,8 @@
     <ClInclude Include="Libraries\MyLib\Math.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
     <ClInclude Include="Game\Other\Parameter.h" />
+    <ClInclude Include="Message\Message.h" />
+    <ClInclude Include="Message\Messenger.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Libraries\MyLib\SoundManager.h" />
     <ClInclude Include="StepTimer.h" />
@@ -301,6 +303,7 @@
     <ClCompile Include="Libraries\MyLib\Math.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Game\Other\Parameter.cpp" />
+    <ClCompile Include="Message\Messenger.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

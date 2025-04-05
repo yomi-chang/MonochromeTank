@@ -1,3 +1,7 @@
+/*
+	@file	DamageEffect.h
+	@brief	ダメージエフェクトクラス
+*/
 #pragma once
 #include "Framework/Graphics.h"
 

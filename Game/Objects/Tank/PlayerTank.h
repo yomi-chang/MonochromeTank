@@ -97,4 +97,7 @@ public:
 
 	// ダメージを受けたかどうか
 	bool GetDamage() { return m_isDamage; }
+
+	// メッセージを取得する
+	void OnMessegeAccepted(Message::MessageID messageID) {};
 };

@@ -5,9 +5,10 @@
 #pragma once
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
+#include "Interface/IObserver.h"
 #include "Libraries/MyLib/DebugLog.h"
 
-class IObject
+class IObject : public IObserver
 {
 public:
 	// デストラクタ

@@ -39,7 +39,8 @@ EnemyTank::EnemyTank(
 	m_currentPoint{},
 	m_patrol{},
 	m_tracking{},
-	m_attack{}
+	m_attack{},
+	m_currentState{}
 {
 }
 
@@ -83,8 +84,9 @@ void EnemyTank::Initialize()
 	m_selectAction = std::make_unique<SelectAction>();
 	m_selectAction->Initialize(m_tank.get());
 
-	// 敵番号に応じた巡回地点の設定
+	// 巡回行動の生成
 	m_patrol = std::make_unique<Patrol>();
+	// 敵番号に応じた巡回地点の設定
 	switch (m_tankNumber)
 	{
 		case 1:
@@ -106,11 +108,16 @@ void EnemyTank::Initialize()
 			break;
 	}
 
+	// 追跡行動の生成
 	m_tracking = std::make_unique<Tracking>();
 	m_tracking->Initialize(m_tank.get());
 
+	// 攻撃行動の生成
 	m_attack = std::make_unique<Attack>();
 	m_attack->Initialize(m_tank.get());
+
+	// 初期状態を追跡行動に
+	m_currentState = m_patrol.get();
 }
 
 //-------------------------------------------------------------------
@@ -189,6 +196,9 @@ void EnemyTank::Update(float elapsedTime)
 		default:
 			break;
 	}
+
+	// 行動の更新処理
+	//m_currentState->Update(elapsedTime);
 }
 
 //-------------------------------------------------------------------
@@ -219,6 +229,9 @@ void EnemyTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 	m_tank->GetBody()->SetCollisionVel(position);
 }
 
+//-------------------------------------------------------------------
+// 他の戦車情報の設定
+//-------------------------------------------------------------------
 void EnemyTank::SetOtherTanks(std::vector<Tank*> tanks)
 {
 	m_tanks = tanks;
@@ -226,9 +239,27 @@ void EnemyTank::SetOtherTanks(std::vector<Tank*> tanks)
 	m_selectAction->SetOtherTanks(tanks);
 }
 
-void EnemyTank::ChangeTargetTank()
+//-------------------------------------------------------------------
+// メッセージの取得
+//-------------------------------------------------------------------
+void EnemyTank::OnMessegeAccepted(Message::MessageID messageID)
 {
-	
+	// 取得したメッセージに応じた処理
+	switch (messageID)
+	{
+	case Message::PATROL:
+		// 巡回行動に遷移
+		this->ChangeState(m_patrol.get());
+		break;
+		// 追跡行動に遷移
+	case Message::TRACKING:
+		this->ChangeState(m_tracking.get());
+		break;
+		// 攻撃行動に遷移
+	case Message::ATTACK:
+		this->ChangeState(m_attack.get());
+		break;
+	}
 }
 
 

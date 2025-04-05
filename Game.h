@@ -14,7 +14,6 @@
 #include "Framework/InputManager.h"
 #include "Framework/Graphics.h"
 #include "Libraries/MyLib/SoundManager.h"
-#include "Game/Other/Parameter.h"
 
 
 // A basic game implementation that creates a D3D11 device and
@@ -96,9 +95,6 @@ private:
 
     // インプットマネージャー
     InputManager* m_inputManager;
-
-    // パラメータークラス
-    //std::unique_ptr<Parameter>              m_parameter;
 
     // Device resources.
     //std::unique_ptr<DX::DeviceResources>    m_deviceResources;

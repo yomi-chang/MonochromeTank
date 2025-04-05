@@ -3,9 +3,9 @@
 	@brief	敵の追跡行動クラス
 */
 #pragma once
-#include "Interface/IEnemyAction.h"
+#include "Interface/IState.h"
 
-class Tracking : public IEnemyAction
+class Tracking : public IState
 {
 private:
 	// 戦車の速度

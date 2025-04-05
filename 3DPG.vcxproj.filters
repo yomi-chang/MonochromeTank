@@ -119,15 +119,17 @@
     <ClInclude Include="Game\EnemyAi\SelectAction.h" />
     <ClInclude Include="Game\Objects\Bullet\BulletTrail.h" />
     <ClInclude Include="Game\Particle\Smoke.h" />
-    <ClInclude Include="Interface\IEnemyAction.h" />
+    <ClInclude Include="Interface\IState.h" />
     <ClInclude Include="Game\Scene\Fade.h" />
     <ClInclude Include="Game\Scene\SelectScene.h" />
     <ClInclude Include="Libraries\MyLib\SoundManager.h" />
     <ClInclude Include="Game\Other\Sounds.h" />
-    <ClInclude Include="Game\Scene\DamageEffect.h" />
     <ClInclude Include="Game\Particle\StageEffect.h" />
     <ClInclude Include="Game\Other\Parameter.h" />
     <ClInclude Include="Game\Particle\DamageEffect.h" />
+    <ClInclude Include="Message\Message.h" />
+    <ClInclude Include="Message\Messenger.h" />
+    <ClInclude Include="Interface\IObserver.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -199,6 +201,7 @@
     <ClCompile Include="Game\Particle\DamageEffect.cpp" />
     <ClCompile Include="Game\Particle\StageEffect.cpp" />
     <ClCompile Include="Game\Other\Parameter.cpp" />
+    <ClCompile Include="Message\Messenger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

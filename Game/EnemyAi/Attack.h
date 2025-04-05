@@ -3,9 +3,9 @@
 	@brief	“G‚ÌUŒ‚ˆ—ƒNƒ‰ƒX
 */
 #pragma once
-#include "Interface/IEnemyAction.h"
+#include "Interface/IState.h"
 
-class Attack : public IEnemyAction 
+class Attack : public IState
 {
 private:
 	enum Action { SHOT, MOVE };

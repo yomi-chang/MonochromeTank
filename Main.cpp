@@ -8,6 +8,10 @@
 // ★追記★
 #include "Libraries/MyLib/MemoryLeakDetector.h"
 
+#include <d3d11.h>
+#include <wrl/client.h>  // ComPtr を使うため
+#include "Framework/Graphics.h"
+
 using namespace DirectX;
 
 #ifdef __clang__
@@ -148,12 +152,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     g_game.reset();
 
-    /*IDXGIDebug* dxgiDebug = nullptr;
-    if (SUCCEEDED(DXGIGetDebugInterface1(0, IID_PPV_ARGS(&dxgiDebug))))
+    // Direct3Dの終了処理を行う前に追加
+#if defined(_DEBUG)
+    auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
+    Microsoft::WRL::ComPtr<ID3D11Debug> debug;
+    if (SUCCEEDED(device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(debug.GetAddressOf()))))
     {
-        dxgiDebug->ReportLiveObjects(DXGI_DEBUG_ALL, DXGI_DEBUG_RLO_ALL);
-        dxgiDebug->Release();
-    }*/
+        // デバッグ情報を出力
+        debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);  // 詳細な情報を表示
+    }
+#endif
 
     CoUninitialize();
 

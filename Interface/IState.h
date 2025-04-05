@@ -1,6 +1,6 @@
 /*
-	@file	IEnemyAction.h
-	@brief	EnemyActionインターフェース
+	@file	IState.h
+	@brief	IStateインターフェース
 */
 #pragma once
 #include "Libraries/MyLib/DebugLog.h"
@@ -8,11 +8,11 @@
 #include "Libraries/MyLib/Math.h"
 #include "Game/Other/Parameter.h"
 
-class IEnemyAction
+class IState
 {
 public:
 	// デストラクタ
-	virtual ~IEnemyAction() = default;
+	virtual ~IState() = default;
 	// 初期化処理
 	virtual void Initialize(Tank* tank) = 0;
 	// 更新処理

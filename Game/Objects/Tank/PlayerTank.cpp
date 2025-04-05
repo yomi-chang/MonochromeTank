@@ -254,6 +254,9 @@ void PlayerTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 //---------------------------------------------------------
 TankCannon* PlayerTank::GetTankCannon() { return m_tank->GetCannon(); }
 
+//---------------------------------------------------------
+// ‘¼íÔî•ñ‚Ìæ“¾
+//---------------------------------------------------------
 void PlayerTank::SetOtherTanks(std::vector<Tank*> tanks)
 {
 	m_tank->SetOtherTanks(tanks);
