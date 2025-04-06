@@ -15,6 +15,7 @@ Patrol::Patrol()
 	m_patrolPointVelue{},
 	m_currentPoint{},
 	m_tank{},
+	m_otherTanks{},
 	m_time{}
 {
 }
@@ -53,9 +54,7 @@ void Patrol::Update(float elapsedTime)
 	// 移動処理
 	m_tank->GetBody()->Move(heading);
 
-	/*
-		自機をターゲットの方向へ徐々に回転する
-	*/
+	//　自機をターゲットの方向へ徐々に回転する
 	// 「自機の進行方向ベクトル」と「ターゲットの方向」からcosθを計算する
 	float cosTheta = heading.Dot(toGoal) / (toGoal.Length() * heading.Length());
 
@@ -70,7 +69,6 @@ void Patrol::Update(float elapsedTime)
 	theta = std::min(10.0f, theta);
 
 	// 右側に行きたい場合は角度の符号を付け替える
-	// ZX平面上にあるベクトルの向きはYのプラスマイナスで判断する
 	if (heading.Cross(toGoal).y < 0.0f)
 	{
 		theta *= (-1.0f);
@@ -85,6 +83,9 @@ void Patrol::Update(float elapsedTime)
 		m_currentPoint++;
 		m_currentPoint %= m_patrolPointVelue;
 	}
+
+	// 索敵
+	this->ScoutOtherTank();
 }
 
 //-------------------------------------------------------------------
@@ -118,6 +119,37 @@ void Patrol::SetPatrolPoints(std::vector<DirectX::SimpleMath::Vector3> patrolPoi
 
 	// 巡回地点数の取得
 	m_patrolPointVelue = static_cast<int>(m_patrolPoints.size());
+}
+
+//-------------------------------------------------------------------
+// 他戦車の索敵
+//-------------------------------------------------------------------
+void Patrol::ScoutOtherTank()
+{
+	// 追跡中の戦車がいるなら早期リターン
+	if (m_tank->GetTargetTank() != nullptr) { return; }
+
+	// 他の戦車が一定範囲に存在するなら追跡対象にして追跡行動に遷移
+	for (auto& otherTank : m_otherTanks)
+	{
+		// 自機の場合か相手が破壊されている場合は処理しない
+		if (otherTank->GetTankNumber() == m_tank->GetTankNumber() ||
+			otherTank->GetHp() <= 0)
+		{
+			continue;
+		}
+
+		// 距離の確認
+		float distance = (otherTank->GetPosition() - m_tank->GetPosition()).LengthSquared();
+		if (distance <= 5.0f)
+		{
+			// 追跡対象の設定
+			m_targetTank = otherTank;
+			// 追跡行動にする
+			Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::TRACKING);
+			break;
+		}
+	}
 }
 
 

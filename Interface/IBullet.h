@@ -30,14 +30,14 @@ public:
 	virtual void SetColliderPosition(DirectX::SimpleMath::Vector3 position) = 0;
 
 public:
-	// 仮想デストラクタ
+	// デストラクタ
 	virtual ~IBullet() = default;
-	// 初期化する
+	// 初期化処理
 	virtual void Initialize() = 0;
-	// 更新する
+	// 更新処理
 	virtual void Update(float time) = 0;
-	// 描画する
+	// 描画処理
 	virtual void Render() = 0;
-	// 後処理を行う
+	// 終了処理
 	virtual void Finalize() = 0;
 };

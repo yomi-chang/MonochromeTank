@@ -11,6 +11,7 @@ class PlayerTank;
 class EnemyTank;
 class StageManager;
 class CollisionManager;
+class ProgressionManager;
 
 class MagazineUi;
 class Fade;
@@ -58,8 +59,9 @@ private:
 	std::vector<std::unique_ptr<EnemyTank>> m_enemies;		// 敵戦車(配列管理)
 
 	// マネージャー
-	std::unique_ptr<StageManager> m_stageManager;			// ステージマネージャー
-	std::unique_ptr<CollisionManager> m_collisonManager;	// コリジョンマネージャー
+	std::unique_ptr<StageManager> m_stageManager;				// ステージマネージャー
+	std::unique_ptr<CollisionManager> m_collisonManager;		// コリジョンマネージャー
+	std::unique_ptr<ProgressionManager> m_progressionManager;	// 進行管理マネージャー
 
 	// 残弾数UI
 	std::unique_ptr<MagazineUi> m_magazine;

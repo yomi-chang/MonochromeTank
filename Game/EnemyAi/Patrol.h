@@ -4,6 +4,7 @@
 */
 #pragma once
 #include "Interface/IState.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
 
 class Patrol : public IState
 {
@@ -11,11 +12,18 @@ private:
 	static constexpr float TANK_SPEED = 2.0f;
 
 public:
+	// コンストラクタ
 	Patrol();
+	// デストラクタ
 	~Patrol() override = default;
-
+	// 初期化処理
 	void Initialize(Tank* tank) override;
+	// 更新処理
 	void Update(float elapsedTime) override;
+	// 追跡対象の戦車の取得
+	Tank* GetTargetTank() override { return m_targetTank; }
+	// 追跡対象の戦車の設定
+	void SetTargetTank(Tank* targetTank) override { m_targetTank = targetTank; }
 
 private:
 	// 巡回地点
@@ -26,10 +34,17 @@ private:
 	unsigned int m_currentPoint;
 	// 自機の情報
 	Tank* m_tank;
+	// 追跡対象の戦車
+	Tank* m_targetTank;
+	// 他戦車情報
+	std::vector<Tank*> m_otherTanks;
 	// タイマー
 	float m_time;
 
 public:
+	// 他戦車情報の設定
+	void SetOtherTanks(std::vector<Tank*> tanks) { m_otherTanks = tanks; }
+
 	// 巡回地点の追加
 	void AddPatrolPoint(DirectX::SimpleMath::Vector3 point);
 
@@ -38,4 +53,9 @@ public:
 
 	// 巡回地点の登録
 	void SetPatrolPoints(std::vector<DirectX::SimpleMath::Vector3> patrolPoints);
+
+
+private:
+	// 索敵処理
+	void ScoutOtherTank();
 };

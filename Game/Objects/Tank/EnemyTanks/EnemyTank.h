@@ -72,6 +72,7 @@ private:
 	std::unique_ptr<Tracking> m_tracking;			// 追跡行動
 	std::unique_ptr<Attack> m_attack;				// 攻撃行動
 
+	// 現在の状態
 	IState* m_currentState;
 
 public:
@@ -95,6 +96,8 @@ public:
 	void SetTargetTank(Tank* targetTank) { m_targetTank = targetTank; }
 	// 状態の変更
 	void ChangeState(IState* newState) { m_currentState = newState; }
+	// 状態の取得
+	IState* GetCurrentState() { return m_currentState; }
 	// メッセージの取得
 	void OnMessegeAccepted(Message::MessageID messageID);
 };

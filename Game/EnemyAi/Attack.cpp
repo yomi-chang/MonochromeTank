@@ -144,3 +144,19 @@ void Attack::ShotAction(float elapsedTime)
 	m_tank->GetCannon()->StartReload();
 	m_tank->GetCannon()->Shoot();
 }
+
+//-------------------------------------------------------------------
+// 追跡対象の戦車が離れている
+//-------------------------------------------------------------------
+void Attack::IsTargetTankFar()
+{
+	// 追跡対象の戦車との距離を調べる
+	float distance = (m_targetTank->GetPosition() - m_tank->GetPosition()).LengthSquared();
+
+	// 追跡対象の戦車に接近したなら攻撃行動開始
+	if (distance <= 10.0f)
+	{
+		// 追跡行動にする
+		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::TRACKING);
+	}
+}

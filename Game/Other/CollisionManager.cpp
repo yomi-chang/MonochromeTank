@@ -237,7 +237,7 @@ void CollisionManager::DetectCollisionRayAndWalls()
 		// 破壊されている場合
 		if (tank->GetDead()) { continue; }
 
-		// プレイヤーは判定を行わない
+		// プレイヤーのみ判定を行う
 		if (tank->GetTankNumber() == 0) 
 		{
 			// Rayの作成

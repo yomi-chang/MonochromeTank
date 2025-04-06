@@ -35,7 +35,6 @@ void Tracking::Update(float elapsedTime)
 	using namespace DirectX::SimpleMath;
 
 	// 追跡中の敵の方向を向く
-	// 敵の方向ベクトルの計算
 	Vector3 delta = m_tank->GetPosition() - m_targetTank->GetPosition();
 	float angleRadians = atan2(delta.x, delta.z);
 	
@@ -98,4 +97,23 @@ void Tracking::Update(float elapsedTime)
 
 	// 角度を更新する
 	m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(theta), 0.0f, 0.0f));
+
+	// 追跡対象の戦車に接近
+	this->IsTargetTankNear();
+}
+
+//-------------------------------------------------------------------
+// 追跡対象の戦車に接近
+//-------------------------------------------------------------------
+void Tracking::IsTargetTankNear()
+{
+	// 追跡対象の戦車との距離を調べる
+	float distance = (m_targetTank->GetPosition() - m_tank->GetPosition()).LengthSquared();
+
+	// 追跡対象の戦車に接近したなら攻撃行動開始
+	if (distance <= 2.5f)
+	{
+		// 攻撃行動にする
+		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::ATTACK);
+	}
 }

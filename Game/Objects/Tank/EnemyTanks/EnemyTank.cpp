@@ -18,6 +18,8 @@
 #include "Game/EnemyAi/Tracking.h"
 #include "Game/EnemyAi/Attack.h"
 
+#include "Message/Messenger.h"
+
 //-------------------------------------------------------------------
 // ƒRƒ“ƒXƒgƒ‰ƒNƒ^
 //-------------------------------------------------------------------
@@ -42,6 +44,8 @@ EnemyTank::EnemyTank(
 	m_attack{},
 	m_currentState{}
 {
+	// íŽÔ”Ô†‚ÆíŽÔ‚Ì“o˜^
+	Messenger::GetInstance()->Register(m_tankNumber, this);
 }
 
 //-------------------------------------------------------------------
@@ -142,22 +146,22 @@ void EnemyTank::Update(float elapsedTime)
 		m_targetTank = m_tank->GetTargetTank();
 
 	// „‰ñs“®’†‚È‚çˆê’è”ÍˆÍ‚É‚¢‚é“G‚ð’ÇÕ‘ÎÛ‚É‚·‚é
-	if (m_selectAction->GetAction() == SelectAction::Action::PATROL &&
-		m_selectAction->GetTargetTank() == nullptr)
-	{
-		for (auto& tank : m_tanks)
-		{
-			// Ž©‹@‚Å‚Í”»’è‚µ‚È‚¢
-			if (tank->GetTankNumber() == m_tank->GetTankNumber()) { continue; }
+	//if (m_selectAction->GetAction() == SelectAction::Action::PATROL &&
+	//	m_selectAction->GetTargetTank() == nullptr)
+	//{
+	//	for (auto& tank : m_tanks)
+	//	{
+	//		// Ž©‹@‚Å‚Í”»’è‚µ‚È‚¢
+	//		if (tank->GetTankNumber() == m_tank->GetTankNumber()) { continue; }
 
-			float distance = (tank->GetPosition() - m_tank->GetPosition()).LengthSquared();
-			if (distance <= 5.0f)
-			{
-				m_targetTank = tank;
-				break;
-			}
-		}
-	}
+	//		float distance = (tank->GetPosition() - m_tank->GetPosition()).LengthSquared();
+	//		if (distance <= 5.0f)
+	//		{
+	//			m_targetTank = tank;
+	//			break;
+	//		}
+	//	}
+	//}
 
 	// •Ç‰ñ”ðs“®
 	if (m_tank->GetAvoidWall())
@@ -174,7 +178,7 @@ void EnemyTank::Update(float elapsedTime)
 	}
 
 
-	m_selectAction->SetTargetTank(m_targetTank);
+	/*m_selectAction->SetTargetTank(m_targetTank);
 	m_selectAction->Update();
 	m_tracking->SetTargetTank(m_targetTank);
 	m_attack->SetTargetTank(m_targetTank);
@@ -195,10 +199,20 @@ void EnemyTank::Update(float elapsedTime)
 			break;
 		default:
 			break;
+	}*/
+
+	// ’ÇÕ‘ÎÛ‚ª”j‰ó‚³‚ê‚½‚ç„‰ñs“®‚ÉˆÚs
+	if (m_targetTank != nullptr)
+	{
+		if (m_targetTank->GetHp() <= 0)
+		{
+			m_targetTank = nullptr;
+			Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::PATROL);
+		}
 	}
 
 	// s“®‚ÌXVˆ—
-	//m_currentState->Update(elapsedTime);
+	m_currentState->Update(elapsedTime);
 }
 
 //-------------------------------------------------------------------
@@ -237,6 +251,7 @@ void EnemyTank::SetOtherTanks(std::vector<Tank*> tanks)
 	m_tanks = tanks;
 	m_tank->SetOtherTanks(tanks);
 	m_selectAction->SetOtherTanks(tanks);
+	m_patrol->SetOtherTanks(tanks);
 }
 
 //-------------------------------------------------------------------
@@ -248,18 +263,27 @@ void EnemyTank::OnMessegeAccepted(Message::MessageID messageID)
 	switch (messageID)
 	{
 	case Message::PATROL:
+		// ’ÇÕ‘ÎÛ‚ÌíŽÔ‚Ì“o˜^‰ðœ(”O‚Ìˆ×s‚Á‚Ä‚¨‚­)
+		m_targetTank = nullptr;
 		// „‰ñs“®‚É‘JˆÚ
 		this->ChangeState(m_patrol.get());
 		break;
-		// ’ÇÕs“®‚É‘JˆÚ
 	case Message::TRACKING:
+		// ’ÇÕ‘ÎÛ‚ÌíŽÔ‚ÌŽæ“¾
+		m_targetTank = m_currentState->GetTargetTank();
+		// ’ÇÕs“®‚É‘JˆÚ
 		this->ChangeState(m_tracking.get());
 		break;
-		// UŒ‚s“®‚É‘JˆÚ
 	case Message::ATTACK:
+		// ’ÇÕ‘ÎÛ‚ÌíŽÔ‚ÌŽæ“¾
+		m_targetTank = m_currentState->GetTargetTank();
+		// UŒ‚s“®‚É‘JˆÚ
 		this->ChangeState(m_attack.get());
 		break;
 	}
+
+	// ’ÇÕ‘ÎÛ‚ÌíŽÔ‚ÌÝ’è
+	m_currentState->SetTargetTank(m_targetTank);
 }
 
 

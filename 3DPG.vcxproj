@@ -247,6 +247,7 @@
     <ClInclude Include="Message\Messenger.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Libraries\MyLib\SoundManager.h" />
+    <ClInclude Include="Game\Other\ProgressionManager.h" />
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +312,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="Libraries\MyLib\SoundManager.cpp" />
+    <ClCompile Include="Game\Other\ProgressionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -15,8 +15,14 @@ public:
 	Tracking();
 	~Tracking() override = default;
 
+	// ‰Šú‰»ˆ—
 	void Initialize(Tank* tank) override;
+	// XVˆ—
 	void Update(float elapsedTime) override;
+	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìæ“¾
+	Tank* GetTargetTank() override { return m_targetTank; }
+	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìİ’è
+	void SetTargetTank(Tank* targetTank) override { m_targetTank = targetTank; }
 
 private:
 	// ’ÇÕ‘ÎÛ‚ÌíÔ
@@ -25,7 +31,7 @@ private:
 	// ©‹@‚Ìî•ñ
 	Tank* m_tank;
 
-public:
-	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìİ’è
-	void SetTargetTank(Tank* tank) { m_targetTank = tank; }
+private:
+	// ’ÇÕ‘ÎÛ‚ÌíÔ‚ÉÚ‹ß
+	void IsTargetTankNear();
 };

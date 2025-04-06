@@ -7,6 +7,7 @@
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Libraries/MyLib/Math.h"
 #include "Game/Other/Parameter.h"
+#include "Message/Messenger.h"
 
 class IState
 {
@@ -17,4 +18,8 @@ public:
 	virtual void Initialize(Tank* tank) = 0;
 	// XVˆ—
 	virtual void Update(float elapsedTime) = 0;
+	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìæ“¾
+	virtual Tank* GetTargetTank() = 0;
+	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìİ’è
+	virtual void SetTargetTank(Tank* targetTank) = 0;
 };

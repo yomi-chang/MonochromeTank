@@ -26,6 +26,7 @@
 
 #include "Game/Objects/Stage/StageManager.h"
 #include "Game/Other/CollisionManager.h"
+#include "Game/Other/ProgressionManager.h"
 #include "Game/Scene/Fade.h"
 #include "Game/Particle/DamageEffect.h"
 #include "Game/Particle/StageEffect.h"
@@ -51,6 +52,7 @@ PlayScene::PlayScene()
 	m_enemies{},
 	m_stageManager{},
 	m_collisonManager{},
+	m_progressionManager{},
 	m_fade{},
 	m_skipTexture{},
 	m_damageEffect{},
@@ -156,6 +158,10 @@ void PlayScene::Initialize()
 		m_stageManager->GetWalls(),
 		m_stageManager->GetWallGimmick()
 	);
+
+	// 進行管理マネージャー
+	m_progressionManager = std::make_unique<ProgressionManager>();
+	m_progressionManager->Initialize(tankPointers);
 
 	//　スキップテクスチャの受け取り
 	m_skipTexture = Resources::GetInstance()->GetSkipTexture();
@@ -331,6 +337,7 @@ void PlayScene::Render()
 	
 	// ステージエフェクト
 	m_stageEffect->Render();
+
 	// ダメージエフェクト
 	if (m_time > 0)
 	{

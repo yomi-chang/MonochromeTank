@@ -12,6 +12,7 @@
 
 #include "Game/Collider/BoxCollider.h"
 #include "Game/Collider/SphereCollider.h"
+#include "Interface/IState.h"
 
 class TankBody;
 class TankTurret;

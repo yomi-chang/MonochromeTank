@@ -17,8 +17,14 @@ public:
 	Attack();
 	~Attack() override = default;
 
+	// ‰Šú‰»ˆ—
 	void Initialize(Tank* tank) override;
+	// XVˆ—
 	void Update(float elapsedTime) override;
+	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìæ“¾
+	Tank* GetTargetTank() override { return m_targetTank; }
+	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìİ’è
+	void SetTargetTank(Tank* targetTank) override { m_targetTank = targetTank; }
 
 private:
 	// ©‹@
@@ -37,10 +43,6 @@ private:
 	// UŒ‚ŠÔ
 	float m_shotTime;
 
-public:
-	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìİ’è
-	void SetTargetTank(Tank* tank) { m_targetTank = tank; }
-
 private:
 	// ’ÇÕ‘ÎÛ‚Ì•ûŒü‚ÉŒü‚­
 	void LookTargetTank(float elapsedTime);
@@ -50,4 +52,7 @@ private:
 
 	// ËŒ‚
 	void ShotAction(float elapsedTime);
+
+	// ’ÇÕ‘ÎÛ‚©‚ç‹——£‚ª—£‚ê‚Ä‚¢‚é
+	void IsTargetTankFar();
 };
