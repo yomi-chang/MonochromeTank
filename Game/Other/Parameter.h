@@ -23,100 +23,102 @@ private:
 	// コピーコンストラクタは許容しない
 	Parameter(const Parameter& object) = delete;
 
-	
-
 private:
 	// 戦車の回転制限
-	float m_turretAngleMin;
+	float m_turretAngleMin;								// 砲塔の角度制限
 	float m_turretAngleMax;
-	float m_cannonAngleMin;
+	float m_cannonAngleMin;								// 砲身の角度制限
 	float m_cannonAngleMax;
-
 	// 自機
-	float m_playerSpeed;
-	float m_playerRotationSpeed;
-
-	// 敵戦車の速度
-	float m_enemySpeed;
-	float m_enemyRotationSpeed;
-
-
-	// 自機
-	//static constexpr float PLAYER_SPEED = 3.0f;
-	//static constexpr float PLAYER_ROTATION_SPEED = 0.75f;
-
-	// 敵戦車の速度
-	//static constexpr float ENEMY_SPEED = 2.0f;
-	
-public:
-	// 連射弾の弾数
-	static constexpr int BULLET_COUNT = 30;
-
-	// 各種弾のリロード時間
-	static constexpr float BULLET_RELOAD_TIME = 1.0f;
-	static constexpr float CANNONBALL_RELOAD_TIME = 2.0f;
-
-	// 射撃インターバル
-	static constexpr float SHOT_INTERVAL = 0.15f;
-	static constexpr float ENEMY_SHOT_INTERVAL = 1.0f;
-
+	float m_playerSpeed;								// 自機の移動速度
+	float m_playerRotationSpeed;						// 自機の回転速度
+	int   m_playerHp;									// 自機の体力
+	// 敵戦車
+	float m_enemySpeed;									// 敵戦車の移動速度
+	float m_enemyRotationSpeed;							// 敵戦車の回転速度
+	int   m_enemyHp;									// 敵戦車の体力
+	// 弾
+	float m_shotInterval;								// 射撃のインターバル
+	// 連射弾
+	int   m_bulletCount;								// 弾数
+	float m_bulletReloadTime;							// リロード時間
+	float m_bulletSurvivalTime;							// 生存時間
+	DirectX::SimpleMath::Vector3 m_bulletSpeed;			// 速度
+	float m_bulletColliderRadius;						// コライダーの大きさ
+	// 砲弾
+	float m_cannonBallReloadTime;						// リロード時間
+	float m_cannonBallSurvivalTime;						// 生存時間
+	DirectX::SimpleMath::Vector3 m_cannonBallSpeed;		// 速度
+	DirectX::SimpleMath::Vector3 m_cannonBallGravity;	// 重力
+	float m_cannonBallColliderRadius;					// コライダー大きさ
+	// 壁サイズ
+	DirectX::SimpleMath::Vector3 m_wallSize;			// 壁サイズ
+	// 索敵範囲
+	float m_scoutRadius;		
+	// 攻撃開始範囲
+	float m_attackStartRadius;
+	// 攻撃終了範囲
+	float m_attackFinishRadius;
+	// フェード速度
+	float m_fadeSpeed;
 	// 照準の射程距離
-	static constexpr float MAX_RANGE = 4.0f;
+	float m_maxRange;
+	// 巡回地点
+	using PatrolRoute = std::vector<DirectX::SimpleMath::Vector3>;
+	std::vector<PatrolRoute> m_patrolRoutes;
 
 public:
 	// パラメータの読み込み
 	void LoadParameter();
 
-	// 戦車の回転制限の取得
+	// 戦車の回転制限
 	float GetTurretAngleMin() { return m_turretAngleMin; }
 	float GetTurretAngleMax() { return m_turretAngleMax; }
 	float GetCannonAngleMin() { return m_cannonAngleMin; }
 	float GetCannonAngleMax() { return m_cannonAngleMax; }
-	// プレイヤーの速度の取得
+	// 自機
 	float GetPlayerSpeed() { return m_playerSpeed; }
-	// プレイヤーの回転速度の取得
 	float GetPlayerRotationSpeed() { return m_playerRotationSpeed; }
-	// 敵戦車の速度の取得
+	int   GetPlayerHp() { return m_playerHp; }
+	// 弾
+	float GetShotInterval() { return m_shotInterval; }
+	// 敵戦車
 	float GetEnemySpeed() { return m_enemySpeed; }
-	// 敵戦車の回転速度の取得
 	float GetEnemyRotationSpeed() { return m_enemyRotationSpeed; }
+	int   GetEnemyHp() { return m_enemyHp; }
+	// 連射弾
+	int   GetBulletCount() { return m_bulletCount; }
+	float GetBulletReloadTime() { return m_bulletReloadTime; }
+	float GetBulletSurvivalTime() { return m_bulletSurvivalTime; }
+	DirectX::SimpleMath::Vector3 GetBulletSpeed() { return m_bulletSpeed; }
+	float GetBulletColliderRadius() { return m_bulletColliderRadius; }
+	// 砲弾
+	float GetCannonBallReloadTime() { return m_cannonBallReloadTime; }
+	float GetCannonBallSurvivalTime() { return m_cannonBallSurvivalTime; }
+	DirectX::SimpleMath::Vector3 GetCannonBallSpeed() { return m_cannonBallSpeed; }
+	DirectX::SimpleMath::Vector3 GetCannonBallGravity() { return m_cannonBallGravity; }
+	float GetCannonBallColliderRadius() { return m_cannonBallColliderRadius; }
+	// 壁サイズ
+	DirectX::SimpleMath::Vector3 GetWallSize() { return m_wallSize; }
+	// 索敵範囲
+	float GetScoutRadius() { return m_scoutRadius; }
+	// 攻撃開始範囲
+	float GetAttackStartRadius() { return m_attackStartRadius; }
+	// 攻撃終了範囲
+	float GetAttackFinishRadius() { return m_attackFinishRadius; }
+	// フェード速度
+	float GetFadeSpeed() { return m_fadeSpeed; }
+	// 照準の射程距離
+	float GetMaxRange() { return m_maxRange; }
+
+	// 巡回ルートの数の取得
+	int GetPatrolRouteSize() { return static_cast<int>(m_patrolRoutes.size()); }
+	// 巡回ルートの取得
+	std::vector<DirectX::SimpleMath::Vector3> GetPatrolRoute(int routeNumber) { return m_patrolRoutes.at(routeNumber); }
 
 	
 private:
 	// Parameterクラスのインスタンスへのポインタ
-	static std::unique_ptr<Parameter> m_parameter;
-
-	
-
-	// マウス感度倍率
-	//static constexpr float
-
-
-	//// パラメータ
-	//// 連射弾
-	//DirectX::SimpleMath::Vector3 BULLET_SPEED = DirectX::SimpleMath::Vector3(0.0f, 0.0f, -0.3f);
-	//float BULLET_SURVIVAL_TIME = 1.5f;
-
-	//// 砲弾
-	//DirectX::SimpleMath::Vector3 CANNONBALL_GRAVITY = DirectX::SimpleMath::Vector3(0.0f, -0.05f, 0.0f);
-	//DirectX::SimpleMath::Vector3 CANNONBALL_SPEED = DirectX::SimpleMath::Vector3(0.0f, 0.0f, -0.12f);
-
-	//// ステージ
-	//int STAGE_SIZE;
-	//DirectX::SimpleMath::Vector3 WALL_SIZE;
-
-	//// 戦車
-	//DirectX::SimpleMath::Vector3 COLLIDER_SIZE;
-	//float DEFAULT_HP;
-
-	//// 敵戦車
-	//float ENEMY_TANK_SPEED;
-	//float SEARCH_DISTANCE;
-
-	//// 戦車の数
-	//int TankCount;
-	//
-	//DirectX::SimpleMath::Vector3 TankPosition;
-	
+	static std::unique_ptr<Parameter> m_parameter;	
 };
 

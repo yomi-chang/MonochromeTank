@@ -9,13 +9,14 @@ class Fade
 public:
 	enum FadeType { NONE, FADEIN, FADEOUT };
 
-private:
-	static constexpr float FADE_SPEED = 2.0f;
-
 public:
+	// コンストラクタ
 	Fade(float alpha);
-	~Fade() = default;
+	// デストラクタ
+	~Fade();
+	// 更新処理
 	void Update(float elapsedTime);
+	// 描画処理
 	void Render();
 
 private:

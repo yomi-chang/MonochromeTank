@@ -45,7 +45,7 @@ TitleScene::~TitleScene()
 }
 
 //---------------------------------------------------------
-// 初期化する
+// 初期化処理
 //---------------------------------------------------------
 void TitleScene::Initialize()
 {	
@@ -67,7 +67,7 @@ void TitleScene::Initialize()
 
 	// テクスチャの情報を取得する================================
 	// テクスチャをID3D11Resourceとして見る
-	m_titleLogo->GetResource(resource.GetAddressOf());
+	m_titleLogo->GetResource(resource.ReleaseAndGetAddressOf());
 
 	// ID3D11ResourceをID3D11Texture2Dとして見る
 	resource.As(&tex2D);
@@ -125,7 +125,7 @@ void TitleScene::Initialize()
 }
 
 //---------------------------------------------------------
-// 更新する
+// 更新処理
 //---------------------------------------------------------
 void TitleScene::Update(float elapsedTime)
 {
@@ -163,7 +163,7 @@ void TitleScene::Update(float elapsedTime)
 }
 
 //---------------------------------------------------------
-// 描画する
+// 描画処理
 //---------------------------------------------------------
 void TitleScene::Render()
 {
@@ -221,7 +221,7 @@ void TitleScene::Render()
 }
 
 //---------------------------------------------------------
-// 後始末する
+// 終了処理
 //---------------------------------------------------------
 void TitleScene::Finalize()
 {
@@ -229,7 +229,7 @@ void TitleScene::Finalize()
 }
 
 //---------------------------------------------------------
-// 次のシーンIDを取得する
+// 次のシーンIDの取得
 //---------------------------------------------------------
 IScene::SceneID TitleScene::GetNextSceneID() const
 {

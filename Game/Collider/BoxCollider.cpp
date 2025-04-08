@@ -17,6 +17,13 @@ BoxCollider::BoxCollider()
 }
 
 /// <summary>
+/// デストラクタ
+/// </summary>
+BoxCollider::~BoxCollider()
+{
+}
+
+/// <summary>
 /// バウンディングボックスの作成
 /// </summary>
 /// <param name="centerPosition">中心座標</param>

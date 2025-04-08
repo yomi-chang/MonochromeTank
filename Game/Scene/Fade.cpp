@@ -6,6 +6,7 @@
 #include "Game/Scene/Fade.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
+#include "Game/Other/Parameter.h"
 
 //-------------------------------------------------------------------
 // コンストラクタ
@@ -24,18 +25,28 @@ Fade::Fade(float alpha)
 }
 
 //-------------------------------------------------------------------
+// デストラクタ
+//-------------------------------------------------------------------
+Fade::~Fade()
+{
+}
+
+//-------------------------------------------------------------------
 // 更新処理
 //-------------------------------------------------------------------
 void Fade::Update(float elapsedTime)
 {
+	// フェード速度の受け取り
+	float fadeSpeed = Parameter::GetInstance()->GetFadeSpeed();
+
 	// 不透明度の設定
 	switch (m_fadeType)
 	{
 		case Fade::FADEIN:
-			m_alpha += elapsedTime * FADE_SPEED;
+			m_alpha += elapsedTime * fadeSpeed;
 			break;
 		case Fade::FADEOUT:
-			m_alpha -= elapsedTime * FADE_SPEED;
+			m_alpha -= elapsedTime * fadeSpeed;
 			break;
 		default:
 			break;

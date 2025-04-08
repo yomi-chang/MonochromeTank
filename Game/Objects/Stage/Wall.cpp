@@ -75,8 +75,8 @@ void Wall::Render()
 	DetectCollision();
 
 	Matrix world = Matrix::CreateTranslation(m_position);
-	auto view = m_graphics->GetViewMatrix();
-	auto proj = m_graphics->GetProjectionMatrix();
+	auto& view = m_graphics->GetViewMatrix();
+	auto& proj = m_graphics->GetProjectionMatrix();
 
 	// コライダーの描画
 	m_collider->Render(DirectX::Colors::Black);

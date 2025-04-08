@@ -43,6 +43,22 @@ private:
 	static constexpr int FONT_SIZE_X = 90;
 	static constexpr int FONT_SIZE_Y = 150;
 
+public:
+	// コンストラクタ
+	PlayScene();
+	// デストラクタ
+	~PlayScene() override;
+	// 初期化処理
+	void Initialize() override;
+	// 更新処理
+	void Update(float elapsedTime) override;
+	// 描画処理
+	void Render() override;
+	// 終了処理
+	void Finalize() override;
+	// 次のシーンIDの取得
+	SceneID GetNextSceneID() const;
+
 private:
 	Graphics* m_graphics;									// グラフィックス
 
@@ -83,17 +99,6 @@ private:
 
 	// 生存している戦車
 	int m_surviveTank;
-
-public:
-	PlayScene();
-	~PlayScene() override;
-
-	void Initialize() override;
-	void Update(float elapsedTime)override;
-	void Render() override;
-	void Finalize() override;
-
-	SceneID GetNextSceneID() const;
 
 private:
 	// デバッグカメラと切り替える

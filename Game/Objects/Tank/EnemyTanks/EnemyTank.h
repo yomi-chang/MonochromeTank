@@ -24,19 +24,20 @@ private:
 	static constexpr float TANK_SPEED = 2.0f;
 
 public:
+	// コンストラクタ
 	EnemyTank(
 		int tankNumber,
 		DirectX::SimpleMath::Vector3 position
 	);
-
+	// デストラクタ
 	~EnemyTank() override;
-
+	// 初期化処理
 	void Initialize()override;
-
+	// 更新処理
 	void Update(float elapsedTime) override;
-
+	// 描画処理
 	void Render()override;
-
+	// 終了処理
 	void Finalize()override;
 
 private:
@@ -57,14 +58,6 @@ private:
 	Tank* m_targetTank;
 	// 全戦車の情報
 	std::vector<Tank*> m_tanks;
-
-	// 移動関係
-	// 巡回地点
-	std::vector<DirectX::SimpleMath::Vector3> m_patrolPoint;
-	std::vector<DirectX::SimpleMath::Vector3> m_patrolPoint2;
-	std::vector<DirectX::SimpleMath::Vector3> m_patrolPoint3;
-	// 現在の番号
-	unsigned int m_currentPoint;
 
 	// AI関係
 	std::unique_ptr<SelectAction> m_selectAction;	// 行動選択

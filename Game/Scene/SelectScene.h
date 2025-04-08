@@ -32,41 +32,39 @@ private:
 	static constexpr RECT TANK_COUNT2 = { 90,0,180,150 };
 	static constexpr RECT TANK_COUNT3 = { 180,0,260,150 };
 
+public:
+	// コンストラクタ
+	SelectScene();
+	// デストラクタ
+	~SelectScene() override;
+	// 初期化処理
+	void Initialize() override;
+	// 更新処理
+	void Update(float elapsedTime) override;
+	// 描画処理
+	void Render() override;
+	// 終了処理
+	void Finalize() override;
+	// 次のシーンIDの取得
+	SceneID GetNextSceneID() const;
+
 private:
 	// グラフィックス
 	Graphics* m_graphics;
 	Resources* m_resources;
-
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
-
-
 	// カメラ
 	std::unique_ptr<mylib::LockOnCamera> m_camera;
-
 	// 床
 	std::unique_ptr<Floor> m_floor;
-
 	// シーン遷移
 	std::unique_ptr<Fade> m_fade;
-
 	// 選択テクスチャ回転
 	float m_selectAngle;
 	DirectX::SimpleMath::Vector2 m_selectPos;
-
 	RECT m_stageTexturePos;
 	RECT m_tankCountTexturePos;
-
-public:
-	SelectScene();
-    ~SelectScene() override;
-
-    void Initialize() override;
-    void Update(float elapsedTime)override;
-    void Render() override;
-    void Finalize() override;
-
-    SceneID GetNextSceneID() const;
 
 private:
 	// ステージ設定の設定

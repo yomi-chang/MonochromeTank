@@ -49,7 +49,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\Target.png",
 		nullptr,
-		m_targetTexture.GetAddressOf()
+		m_targetTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	照準ロックテクスチャのロード 
@@ -57,7 +57,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\TargetLock.png",
 		nullptr,
-		m_targetLockTexture.GetAddressOf()
+		m_targetLockTexture.ReleaseAndGetAddressOf()
 	);
 
 	// 丸影テクスチャのロード
@@ -65,7 +65,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\Shadow.png",
 		nullptr,
-		m_shadowTexture.GetAddressOf()
+		m_shadowTexture.ReleaseAndGetAddressOf()
 	);
 
 	// 床のロード
@@ -73,7 +73,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\floorTexture.png",
 		nullptr,
-		m_floorTexture.GetAddressOf()
+		m_floorTexture.ReleaseAndGetAddressOf()
 	);
 
 
@@ -83,7 +83,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\box_1x1.png",
 		nullptr,
-		m_boxTexture.GetAddressOf()
+		m_boxTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	砲弾テクスチャのロード 
@@ -91,7 +91,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\CannonBall.png",
 		nullptr,
-		m_cannonBallTexture.GetAddressOf()
+		m_cannonBallTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	連射弾テクスチャのロード 
@@ -99,7 +99,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\Bullet.png",
 		nullptr,
-		m_bulletTexture.GetAddressOf()
+		m_bulletTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	フレームテクスチャのロード 
@@ -107,7 +107,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\Frame.png",
 		nullptr,
-		m_frameTexture.GetAddressOf()
+		m_frameTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	リロードテキストテクスチャのロード 
@@ -115,7 +115,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\ReloadText.png",
 		nullptr,
-		m_reloadTexture.GetAddressOf()
+		m_reloadTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	タイトルロゴテクスチャのロード 
@@ -123,7 +123,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\TitleLogo.png",
 		nullptr,
-		m_titleLogoTexture.GetAddressOf()
+		m_titleLogoTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	スペースキーテクスチャのロード 
@@ -131,7 +131,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\space.png",
 		nullptr,
-		m_spaceKeyTexture.GetAddressOf()
+		m_spaceKeyTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	フォントテクスチャのロード 
@@ -139,7 +139,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\font.png",
 		nullptr,
-		m_fontTexture.GetAddressOf()
+		m_fontTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	マニュアルテクスチャのロード 
@@ -147,7 +147,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\Manual.png",
 		nullptr,
-		m_manualTexture.GetAddressOf()
+		m_manualTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	設定フレームテクスチャのロード 
@@ -155,7 +155,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\Setting.png",
 		nullptr,
-		m_settingTexture.GetAddressOf()
+		m_settingTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	戦車カウント用テキストテクスチャのロード 
@@ -163,7 +163,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\countText.png",
 		nullptr,
-		m_countTextTexture.GetAddressOf()
+		m_countTextTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	ステージ用テキストテクスチャのロード 
@@ -171,7 +171,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\StageText.png",
 		nullptr,
-		m_stageTextTexture.GetAddressOf()
+		m_stageTextTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	設定選択テクスチャのロード 
@@ -179,7 +179,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\Gear.png",
 		nullptr,
-		m_selectTexture.GetAddressOf()
+		m_selectTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	リザルトテクスチャのロード 
@@ -187,7 +187,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\ResultText.png",
 		nullptr,
-		m_resultTexture.GetAddressOf()
+		m_resultTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	スキップテクスチャのロード 
@@ -195,7 +195,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\SkipUI.png",
 		nullptr,
-		m_skipTexture.GetAddressOf()
+		m_skipTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	プレススペーステクスチャのロード 
@@ -203,7 +203,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\PressSpaceKey.png",
 		nullptr,
-		m_pressSpaceTexture.GetAddressOf()
+		m_pressSpaceTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	プレイシーンの戦車カウントテクスチャのロード 
@@ -211,7 +211,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\TanksTexture.png",
 		nullptr,
-		m_tankCountTexture.GetAddressOf()
+		m_tankCountTexture.ReleaseAndGetAddressOf()
 	);
 
 
@@ -220,7 +220,7 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\blackSmoke.png",
 		nullptr,
-		m_blackSmokeTexture.GetAddressOf()
+		m_blackSmokeTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	ダメージ演出テクスチャのロード 
@@ -228,6 +228,6 @@ void Resources::LoadResource()
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\DamageEffect.jpg",
 		nullptr,
-		m_damageEffectTexture.GetAddressOf()
+		m_damageEffectTexture.ReleaseAndGetAddressOf()
 	);
 }

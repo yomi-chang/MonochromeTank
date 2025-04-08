@@ -4,6 +4,7 @@
 */
 #pragma once
 #include "pch.h"
+#include "Game/Other/Parameter.h"
 
 class IBullet
 {
@@ -22,10 +23,8 @@ public:
 	virtual BulletState GetBulletState() const = 0;
 	// 砲弾の状態を設定する
 	virtual void SetBulletState(BulletState bulletState) = 0;
-
 	// コライダーの取得
 	virtual DirectX::BoundingSphere* GetBoundingSphere() = 0;
-
 	// コライダーの座標の設定
 	virtual void SetColliderPosition(DirectX::SimpleMath::Vector3 position) = 0;
 

@@ -13,7 +13,7 @@
 //-------------------------------------------------------------------
 // コンストラクタ
 //-------------------------------------------------------------------
-Floor::Floor(float size)
+Floor::Floor(int size)
 	:
 	m_graphics{ Graphics::GetInstance()},
 	m_inputLayout{ m_graphics->GetInputLayout() },
@@ -38,7 +38,7 @@ Floor::Floor(float size)
 	device->CreateInputLayout(
 		VertexPositionTexture::InputElements,
 		VertexPositionTexture::InputElementCount,
-		shaderByteCode, byteCodeLength, m_inputLayout.GetAddressOf()
+		shaderByteCode, byteCodeLength, m_inputLayout.ReleaseAndGetAddressOf()
 	);
 
 	// プリミティブバッチ作成
@@ -46,11 +46,18 @@ Floor::Floor(float size)
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 
 	// 頂点情報の設定
-	float halfSize = size / 2 - 0.5f;
+	float halfSize = static_cast<float>(size) / 2 - 0.5f;
 	m_vertex[0] = DirectX::VertexPositionTexture(Vector3(-halfSize, 0.0f, halfSize), Vector2(0.0f, 0.0f));
 	m_vertex[1] = DirectX::VertexPositionTexture(Vector3(halfSize, 0.0f, halfSize), Vector2(halfSize, 0.0f));
 	m_vertex[2] = DirectX::VertexPositionTexture(Vector3(halfSize, 0.0f, -halfSize), Vector2(halfSize, halfSize));
 	m_vertex[3] = DirectX::VertexPositionTexture(Vector3(-halfSize, 0.0f, -halfSize), Vector2(0.0f, halfSize));
+}
+
+//-------------------------------------------------------------------
+// デストラクタ
+//-------------------------------------------------------------------
+Floor::~Floor()
+{
 }
 
 //-------------------------------------------------------------------
@@ -61,8 +68,8 @@ void Floor::Render()
 	using namespace DirectX::SimpleMath;
 
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto view = m_graphics->GetViewMatrix();
-	auto proj = m_graphics->GetProjectionMatrix();
+	Matrix view = m_graphics->GetViewMatrix();
+	Matrix proj = m_graphics->GetProjectionMatrix();
 	auto states = m_graphics->GetCommonStates();
 
 	//	テクスチャサンプラーの設定（クランプテクスチャアドレッシングモード） 

@@ -35,10 +35,6 @@ EnemyTank::EnemyTank(
 	m_time{},
 	m_targetTank{},
 	m_tank{},
-	m_patrolPoint{},
-	m_patrolPoint2{},
-	m_patrolPoint3{},
-	m_currentPoint{},
 	m_patrol{},
 	m_tracking{},
 	m_attack{},
@@ -65,52 +61,20 @@ void EnemyTank::Initialize()
 	// 戦車の生成
 	m_tank = std::make_unique<Tank>(m_tankNumber,m_position, DirectX::XMConvertToRadians(180.0f));
 	m_tank->Initialize();
-	m_tank->SetMaxHp(50);
+	m_tank->SetMaxHp(Parameter::GetInstance()->GetEnemyHp());
 
 	// 敵体力ゲージを生成
 	m_hpGauge = std::make_unique<EnemyHpGauge>();
-
-	// 巡回ポイントデータ
-	m_patrolPoint.emplace_back(Vector3{ -6.0f, 0.0f, -6.0f });
-	m_patrolPoint.emplace_back(Vector3{  3.0f, 0.0f,  6.0f });
-	m_patrolPoint.emplace_back(Vector3{  6.0f, 0.0f, -6.0f });
-
-	m_patrolPoint2.emplace_back(Vector3{  3.0f, 0.0f,  6.0f });
-	m_patrolPoint2.emplace_back(Vector3{  6.0f, 0.0f,  -6.0f });
-	m_patrolPoint2.emplace_back(Vector3{ -6.0f, 0.0f,  -6.0f });
-
-	m_patrolPoint3.emplace_back(Vector3{ -6.0f, 0.0f,  6.0f });
-	m_patrolPoint3.emplace_back(Vector3{ -6.0f, 0.0f, -6.0f });
-	m_patrolPoint3.emplace_back(Vector3{  6.0f, 0.0f, -6.0f });
-	m_patrolPoint3.emplace_back(Vector3{  6.0f, 0.0f,  6.0f });
 
 	// 敵AIの生成
 	m_selectAction = std::make_unique<SelectAction>();
 	m_selectAction->Initialize(m_tank.get());
 
 	// 巡回行動の生成
+	auto parameter = Parameter::GetInstance();
 	m_patrol = std::make_unique<Patrol>();
-	// 敵番号に応じた巡回地点の設定
-	switch (m_tankNumber)
-	{
-		case 1:
-			m_patrol->Initialize(m_tank.get());
-			m_patrol->SetPatrolPoints(m_patrolPoint);
-			m_selectAction->SetTrackingDistance(10.0f);
-			break;
-		case 2:
-			m_patrol->Initialize(m_tank.get());
-			m_patrol->SetPatrolPoints(m_patrolPoint2);
-			m_selectAction->SetTrackingDistance(12.0f);
-			break;
-		case 3:
-			m_patrol->Initialize(m_tank.get());
-			m_patrol->SetPatrolPoints(m_patrolPoint3);
-			m_selectAction->SetTrackingDistance(14.0f);
-			break;
-		default:
-			break;
-	}
+	m_patrol->Initialize(m_tank.get());
+	m_patrol->SetPatrolPoints(parameter->GetPatrolRoute(m_tankNumber - 1));
 
 	// 追跡行動の生成
 	m_tracking = std::make_unique<Tracking>();
@@ -130,6 +94,7 @@ void EnemyTank::Initialize()
 void EnemyTank::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
+	auto parameter = Parameter::GetInstance();
 
 	// 戦車の更新
 	m_tank->Update(elapsedTime);
@@ -145,29 +110,22 @@ void EnemyTank::Update(float elapsedTime)
 	if(m_tank->GetTargetTank() != nullptr)
 		m_targetTank = m_tank->GetTargetTank();
 
-	// 巡回行動中なら一定範囲にいる敵を追跡対象にする
-	//if (m_selectAction->GetAction() == SelectAction::Action::PATROL &&
-	//	m_selectAction->GetTargetTank() == nullptr)
-	//{
-	//	for (auto& tank : m_tanks)
-	//	{
-	//		// 自機では判定しない
-	//		if (tank->GetTankNumber() == m_tank->GetTankNumber()) { continue; }
-
-	//		float distance = (tank->GetPosition() - m_tank->GetPosition()).LengthSquared();
-	//		if (distance <= 5.0f)
-	//		{
-	//			m_targetTank = tank;
-	//			break;
-	//		}
-	//	}
-	//}
+	// 追跡対象が破壊されたら巡回行動に移行
+	if (m_targetTank != nullptr)
+	{
+		if (m_targetTank->GetHp() <= 0 || m_targetTank->GetDead())
+		{
+			m_tank->SetTargetTank(nullptr);
+			m_targetTank = nullptr;
+			Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::PATROL);
+		}
+	}
 
 	// 壁回避行動
 	if (m_tank->GetAvoidWall())
 	{
 		// 回避行動
-		float speed = elapsedTime * TANK_SPEED;
+		float speed = elapsedTime * parameter->GetEnemySpeed();
 		float angle = DirectX::XMConvertToRadians(0.7f);
 		Vector3 velocity = Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
 		// 移動させる
@@ -175,40 +133,6 @@ void EnemyTank::Update(float elapsedTime)
 		// 回転させる
 		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(angle, 0.0f, 0.0f));
 		return;
-	}
-
-
-	/*m_selectAction->SetTargetTank(m_targetTank);
-	m_selectAction->Update();
-	m_tracking->SetTargetTank(m_targetTank);
-	m_attack->SetTargetTank(m_targetTank);
-	switch (m_selectAction->GetAction())
-	{
-		case  SelectAction::Action::NONE:
-			break;
-		case SelectAction::Action::PATROL:
-			m_patrol->Update(elapsedTime);
-			mylib::DebugLog("パトロール");
-			break;
-		case SelectAction::Action::TRACKING:
-			m_tracking->Update(elapsedTime);
-			mylib::DebugLog("追跡行動");
-		case SelectAction::Action::ATTACK:
-			m_attack->Update(elapsedTime);
-			mylib::DebugLog("攻撃");
-			break;
-		default:
-			break;
-	}*/
-
-	// 追跡対象が破壊されたら巡回行動に移行
-	if (m_targetTank != nullptr)
-	{
-		if (m_targetTank->GetHp() <= 0)
-		{
-			m_targetTank = nullptr;
-			Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::PATROL);
-		}
 	}
 
 	// 行動の更新処理

@@ -20,6 +20,13 @@ WallGimmick::WallGimmick()
 }
 
 //-------------------------------------------------------------------
+// デストラクタ
+//-------------------------------------------------------------------
+WallGimmick::~WallGimmick()
+{
+}
+
+//-------------------------------------------------------------------
 // 初期化処理
 //-------------------------------------------------------------------
 void WallGimmick::Initialize()
@@ -64,8 +71,8 @@ void WallGimmick::Render()
 {
 	using namespace DirectX::SimpleMath;
 	Matrix matrix = Matrix::CreateTranslation(m_position);
-	auto view = Graphics::GetInstance()->GetViewMatrix();
-	auto proj = Graphics::GetInstance()->GetProjectionMatrix();
+	Matrix view = Graphics::GetInstance()->GetViewMatrix();
+	Matrix proj = Graphics::GetInstance()->GetProjectionMatrix();
 
 	m_box->Draw(matrix, view, proj, DirectX::Colors::Red);
 	m_collider->Render();

@@ -21,28 +21,22 @@ namespace mylib
 // 自機クラス
 class PlayerTank : IObject
 {
-private:
-	// 砲塔の回転制限
-	const float TURRET_ANGLE_MIN = DirectX::XMConvertToRadians(-45.0f);
-	const float TURRET_ANGLE_MAX = DirectX::XMConvertToRadians(45.0f);
-	// 砲身の回転制限
-	const float CANNON_ANGLE_MIN = DirectX::XMConvertToRadians(-7.5f);
-	const float CANNON_ANGLE_MAX = DirectX::XMConvertToRadians(22.5f);
-
 public:
+	// コンストラクタ
 	PlayerTank(
 		int tankNumber,
 		DirectX::SimpleMath::Vector3 position
 	);
-
-	~PlayerTank()override;
-
-	void Initialize()override;
-
-	void Update(float elapsedTime)override;
-
-	void Render()override;
-	void Finalize()override;
+	// デストラクタ
+	~PlayerTank() override;
+	// 初期化処理
+	void Initialize() override;
+	// 更新処理
+	void Update(float elapsedTime) override;
+	// 描画処理
+	void Render() override;
+	// 終了処理
+	void Finalize() override;
 
 private:
 	// 戦車番号
@@ -99,5 +93,5 @@ public:
 	bool GetDamage() { return m_isDamage; }
 
 	// メッセージを取得する
-	void OnMessegeAccepted(Message::MessageID messageID) {};
+	void OnMessegeAccepted(Message::MessageID messageID);
 };

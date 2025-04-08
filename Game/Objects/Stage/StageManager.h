@@ -25,16 +25,12 @@ class StageManager
 public:
 	// コンストラクタ
 	StageManager();
-
 	// デストラクタ
-	~StageManager() = default;
-
+	~StageManager();
 	// 初期化処理
 	void Initialize();
-
 	// 更新処理
 	void Update(float elapsedTime);
-
 	// 描画処理
 	void Render();
 
@@ -42,7 +38,7 @@ private:
 	std::vector<std::unique_ptr<Wall>> m_walls;						// 壁
 	std::unique_ptr<Floor> m_floor;									// 床
 	std::unique_ptr<SkySphere> m_skySphere;							// 天球
-	std::unique_ptr<WallGimmick> m_wallGimmick;						// 壁ギミック
+	std::unique_ptr<WallGimmick> m_wallGimmick;					// 壁ギミック
 	std::vector<std::unique_ptr<FixedTurret>> m_fixedTurrets;		// 固定砲台
 
 	// 配列サイズの宣言

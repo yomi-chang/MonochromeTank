@@ -21,6 +21,13 @@ Patrol::Patrol()
 }
 
 //-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
+Patrol::~Patrol()
+{
+}
+
+//-------------------------------------------------------------------
 // 初期化処理
 //-------------------------------------------------------------------
 void Patrol::Initialize(Tank* tank)
@@ -100,7 +107,6 @@ void Patrol::AddPatrolPoint(DirectX::SimpleMath::Vector3 point)
 //-------------------------------------------------------------------
 // 巡回地点の削除
 //-------------------------------------------------------------------
-
 void Patrol::ClearPatrolPoints()
 {
 	m_patrolPoints.clear();
@@ -141,7 +147,7 @@ void Patrol::ScoutOtherTank()
 
 		// 距離の確認
 		float distance = (otherTank->GetPosition() - m_tank->GetPosition()).LengthSquared();
-		if (distance <= 5.0f)
+		if (distance <= Parameter::GetInstance()->GetScoutRadius())
 		{
 			// 追跡対象の設定
 			m_targetTank = otherTank;

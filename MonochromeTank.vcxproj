@@ -19,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <RootNamespace>_3DPG</RootNamespace>
+    <RootNamespace>_MonochromeTank</RootNamespace>
     <ProjectGuid>{9606f935-c8db-41f0-88df-fe4670116909}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
@@ -198,7 +198,6 @@
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
     <ClInclude Include="Game\Objects\FixedTurret\FixedTurret.h" />
     <ClInclude Include="Game\Objects\Stage\Gimmick\WallGimmick.h" />
-    <ClInclude Include="Game\Objects\Stage\Item\StageItem.h" />
     <ClInclude Include="Game\Objects\Tank\EnemyTanks\EnemyTank.h" />
     <ClInclude Include="Game\Objects\Tank\TankBase\Tank.h" />
     <ClInclude Include="Game\Objects\Tank\TankBase\TankBody.h" />
@@ -268,7 +267,6 @@
     <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
     <ClCompile Include="Game\Objects\FixedTurret\FixedTurret.cpp" />
     <ClCompile Include="Game\Objects\Stage\Gimmick\WallGimmick.cpp" />
-    <ClCompile Include="Game\Objects\Stage\Item\StageItem.cpp" />
     <ClCompile Include="Game\Objects\Tank\EnemyTanks\EnemyTank.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankBase\Tank.cpp" />
     <ClCompile Include="Game\Objects\Tank\TankBase\TankBody.cpp" />

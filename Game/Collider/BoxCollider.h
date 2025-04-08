@@ -8,20 +8,18 @@
 class BoxCollider
 {
 public:
-	DirectX::BoundingBox* GetBoundingBox() { return &m_boundingBox; }
-
-public:
 	// コンストラクタ
 	BoxCollider();
-
-	// バウンディングスフィアの作成
+	// デストラクタ
+	~BoxCollider();
+	// バウンディングボックスの作成
 	void CreateBoundingBox(DirectX::SimpleMath::Vector3 centerPosition, DirectX::SimpleMath::Vector3 size);
-
 	// 更新処理
 	void Update(DirectX::SimpleMath::Vector3 centerPosition);
-
 	// 描画処理
 	void Render(DirectX::XMVECTOR color = DirectX::Colors::Aqua);
+	// バウンディングボックス取得
+	DirectX::BoundingBox* GetBoundingBox() { return &m_boundingBox; }
 
 	// 当たっているかどうかの判定
 	DirectX::SimpleMath::Vector3 CheckCollisionCollider(DirectX::BoundingSphere* boundingSphere);
@@ -33,6 +31,6 @@ private:
 	// グラフィックス
 	Graphics* m_graphics;
 
-	// バウンディングスフィア
+	// バウンディングボックス
 	DirectX::BoundingBox m_boundingBox;
 };

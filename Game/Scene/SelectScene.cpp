@@ -44,7 +44,7 @@ SelectScene::~SelectScene()
 }
 
 //---------------------------------------------------------
-// 初期化する
+// 初期化処理
 //---------------------------------------------------------
 void SelectScene::Initialize()
 {	
@@ -89,7 +89,7 @@ void SelectScene::Initialize()
 }
 
 //---------------------------------------------------------
-// 更新する
+// 更新処理
 //---------------------------------------------------------
 void SelectScene::Update(float elapsedTime)
 {
@@ -182,7 +182,7 @@ void SelectScene::Update(float elapsedTime)
 }
 
 //---------------------------------------------------------
-// 描画する
+// 描画処理
 //---------------------------------------------------------
 void SelectScene::Render()
 {
@@ -267,7 +267,7 @@ void SelectScene::Render()
 }
 
 //---------------------------------------------------------
-// 後始末する
+// 終了処理
 //---------------------------------------------------------
 void SelectScene::Finalize()
 {
@@ -275,7 +275,7 @@ void SelectScene::Finalize()
 }
 
 //---------------------------------------------------------
-// 次のシーンIDを取得する
+// 次のシーンIDの取得
 //---------------------------------------------------------
 IScene::SceneID SelectScene::GetNextSceneID() const
 {
@@ -294,7 +294,7 @@ IScene::SceneID SelectScene::GetNextSceneID() const
 //---------------------------------------------------------
 void SelectScene::SetStageSetting()
 {
-	int tankCount;
+	int tankCount = 0;
 	std::string stageName;
 
 	// 戦車の数

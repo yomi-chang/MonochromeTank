@@ -152,16 +152,16 @@ int WINAPI wWinMain(_In_ HINSTANCE hInstance, _In_opt_ HINSTANCE hPrevInstance, 
 
     g_game.reset();
 
-    // Direct3Dの終了処理を行う前に追加
-#if defined(_DEBUG)
-    auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
-    Microsoft::WRL::ComPtr<ID3D11Debug> debug;
-    if (SUCCEEDED(device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(debug.GetAddressOf()))))
-    {
-        // デバッグ情報を出力
-        debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);  // 詳細な情報を表示
-    }
-#endif
+    // 解放されていないオブジェクトを出力する
+//#if defined(_DEBUG)
+//    auto device = Graphics::GetInstance()->GetDeviceResources()->GetD3DDevice();
+//    Microsoft::WRL::ComPtr<ID3D11Debug> debug;
+//    if (SUCCEEDED(device->QueryInterface(__uuidof(ID3D11Debug), reinterpret_cast<void**>(debug.GetAddressOf()))))
+//    {
+//        // デバッグ情報を出力
+//        debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);  // 詳細な情報を表示
+//    }
+//#endif
 
     CoUninitialize();
 

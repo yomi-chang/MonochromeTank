@@ -17,8 +17,10 @@ namespace mylib
 class CollisionManager
 {
 public:
+	// コンストラクタ
 	CollisionManager();
-	~CollisionManager() = default;
+	// デストラクタ
+	~CollisionManager();
 	// 更新処理
 	void Update();
 

@@ -18,6 +18,7 @@
 #include "Game/Objects/FixedTurret/FixedTurret.h"
 #include "Game/Objects/Stage/StageObject/SkySphere.h"
 #include "Game/Other/SharedData.h"
+#include "Game/Other/Parameter.h"
 
 #include "Game/Objects/Tank/TankBase/Tank.h"
 
@@ -31,6 +32,13 @@ StageManager::StageManager()
 	m_skySphere{},
 	m_wallGimmick{},
 	m_fixedTurrets{} 
+{
+}
+
+//---------------------------------------------------------
+// デストラクタ
+//---------------------------------------------------------
+StageManager::~StageManager()
 {
 }
 
@@ -159,9 +167,9 @@ void StageManager::LoadFile()
 void StageManager::CreateStage()
 {
 	using namespace DirectX::SimpleMath;
+	auto parameter = Parameter::GetInstance();
 
-	// 土台の作成
-	//m_walls.emplace_back(std::make_unique<Wall>(Vector3(40.0f, 1.0f, 40.0f), Vector3::Zero));
+	// 床の作成
 	m_floor = std::make_unique<Floor>(STAGESIZE);
 	m_floor->SetTexture(Resources::GetInstance()->GetFloorTexture());
 
@@ -169,9 +177,6 @@ void StageManager::CreateStage()
 	{
 		for (int x = 0; x < STAGESIZE; x++)
 		{
-			// 土台の描画
-			//m_walls.emplace_back(std::make_unique<Wall>(Vector3::One, Vector3(x - (STAGESIZE / 2), 0.0f, y - (STAGESIZE / 2))));
-
 			// 数値に応じたオブジェクトの生成
 			switch (m_data[y][x])
 			{
@@ -179,14 +184,14 @@ void StageManager::CreateStage()
 					continue;
 				case 1:		// 壁
 					m_walls.emplace_back(std::make_unique<Wall>(
-						Vector3(1.0f,2.0f,1.0f),
+						parameter->GetWallSize(),
 						Vector3(static_cast<float>(x - (STAGESIZE / 2)), 0.5f, static_cast<float>(y - (STAGESIZE / 2))),
 						Wall::WallType::FIXED)
 					);
 					break;
 				case 2:		// ギミック用壁
 					m_walls.emplace_back(std::make_unique<Wall>(
-						Vector3(1.0f, 2.0f, 1.0f),
+						parameter->GetWallSize(),
 						Vector3(static_cast<float>(x - (STAGESIZE / 2)), -2.0f, static_cast<float>(y - (STAGESIZE / 2))),
 						Wall::WallType::MOVE)
 					);

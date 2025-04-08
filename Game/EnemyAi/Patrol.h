@@ -8,14 +8,11 @@
 
 class Patrol : public IState
 {
-private:
-	static constexpr float TANK_SPEED = 2.0f;
-
 public:
 	// コンストラクタ
 	Patrol();
 	// デストラクタ
-	~Patrol() override = default;
+	~Patrol() override;
 	// 初期化処理
 	void Initialize(Tank* tank) override;
 	// 更新処理

@@ -54,7 +54,7 @@ void PlayerTank::Initialize()
 	// íÔ‚Ì¶¬
 	m_tank = std::make_unique<Tank>(m_tankNumber,m_position, 0.0f);
 	m_tank->Initialize();
-	m_tank->SetMaxHp(50);
+	m_tank->SetMaxHp(Parameter::GetInstance()->GetPlayerHp());
 
 	// À•W‚Ìİ’è
 	m_position = m_tank->GetPosition();
@@ -227,7 +227,7 @@ void PlayerTank::RotateTurretCannon()
 	// –C“ƒ‰ñ“]‚Ì§ŒÀ
 	float min = parameter->GetTurretAngleMin();
 	float max = parameter->GetTurretAngleMax();
-	eulerAngle = mylib::Clamp(eulerAngle, TURRET_ANGLE_MIN, TURRET_ANGLE_MAX);
+	eulerAngle = mylib::Clamp(eulerAngle, min, max);
 	// ‰ñ“]î•ñ‚ğ–C“ƒ‚É“`‚¦‚é
 	m_tank->GetTurret()->RotateTurret(eulerAngle);
 
@@ -236,7 +236,9 @@ void PlayerTank::RotateTurretCannon()
 	// –CgŠp“x‚ğƒIƒCƒ‰[Šp‚É•ÏŠ·(ó‚¯æ‚Á‚½’l‚ğ•ÏŠ·)
 	eulerAngle = m_tank->GetCannonRotation().ToEuler().x - rotationX;
 	// –Cg‰ñ“]‚Ì§ŒÀ
-	eulerAngle = mylib::Clamp(eulerAngle, CANNON_ANGLE_MIN, CANNON_ANGLE_MAX);
+	min = parameter->GetCannonAngleMin();
+	max = parameter->GetCannonAngleMax();
+	eulerAngle = mylib::Clamp(eulerAngle, min, max);
 	// ‰ñ“]î•ñ‚ğ–Cg‚É“`‚¦‚é
 	m_tank->GetCannon()->RotateCannon(eulerAngle);
 }
@@ -252,7 +254,18 @@ void PlayerTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 //---------------------------------------------------------
 // –Cgî•ñ‚Ìæ“¾
 //---------------------------------------------------------
-TankCannon* PlayerTank::GetTankCannon() { return m_tank->GetCannon(); }
+TankCannon* PlayerTank::GetTankCannon() 
+{
+	return m_tank->GetCannon(); 
+}
+
+//---------------------------------------------------------
+// ƒƒbƒZ[ƒW‚Ìó‚¯æ‚è
+//---------------------------------------------------------
+void PlayerTank::OnMessegeAccepted(Message::MessageID messageID)
+{
+	UNREFERENCED_PARAMETER(messageID);
+}
 
 //---------------------------------------------------------
 // ‘¼íÔî•ñ‚Ìæ“¾

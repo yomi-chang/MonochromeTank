@@ -7,14 +7,11 @@
 
 class Tracking : public IState
 {
-private:
-	// 戦車の速度
-	static constexpr float TANK_SPEED = 2.0f;
-
 public:
+	// コンストラクタ
 	Tracking();
-	~Tracking() override = default;
-
+	// デストラクタ
+	~Tracking() override;
 	// 初期化処理
 	void Initialize(Tank* tank) override;
 	// 更新処理
@@ -27,7 +24,6 @@ public:
 private:
 	// 追跡対象の戦車
 	Tank* m_targetTank;
-
 	// 自機の情報
 	Tank* m_tank;
 

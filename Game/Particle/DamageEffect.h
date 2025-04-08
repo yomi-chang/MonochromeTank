@@ -9,12 +9,13 @@ class DamageEffect
 {
 public:
 	static const std::vector<D3D11_INPUT_ELEMENT_DESC> INPUT_LAYOUT;
-
+	// コンストラクタ
 	DamageEffect();
-	~DamageEffect() = default;
-	
+	// デストラクタ
+	~DamageEffect();
+	// 生成処理
 	void Create();
-
+	// 描画処理
 	void Render();
 
 public:

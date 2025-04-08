@@ -16,6 +16,13 @@ Tracking::Tracking()
 }
 
 //-------------------------------------------------------------------
+// デストラクタ
+//-------------------------------------------------------------------
+Tracking::~Tracking()
+{
+}
+
+//-------------------------------------------------------------------
 // 初期化処理
 //-------------------------------------------------------------------
 void Tracking::Initialize(Tank* tank)
@@ -33,6 +40,8 @@ void Tracking::Update(float elapsedTime)
 	if (m_targetTank == nullptr) { return; }
 
 	using namespace DirectX::SimpleMath;
+	auto parameter = Parameter::GetInstance();
+	float speed = parameter->GetEnemySpeed() * elapsedTime;
 
 	// 追跡中の敵の方向を向く
 	Vector3 delta = m_tank->GetPosition() - m_targetTank->GetPosition();
@@ -64,7 +73,7 @@ void Tracking::Update(float elapsedTime)
 
 	// 敵を追跡する
 	// 進行方向ベクトル
-	Vector3 heading = Vector3::Transform(Vector3::Forward * TANK_SPEED * elapsedTime, m_tank->GetRotation());
+	Vector3 heading = Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
 
 	// 自機からターゲットへ向かうベクトル
 	Vector3 toTarget = m_targetTank->GetPosition() - m_tank->GetPosition();
@@ -111,7 +120,7 @@ void Tracking::IsTargetTankNear()
 	float distance = (m_targetTank->GetPosition() - m_tank->GetPosition()).LengthSquared();
 
 	// 追跡対象の戦車に接近したなら攻撃行動開始
-	if (distance <= 2.5f)
+	if (distance <= Parameter::GetInstance()->GetAttackStartRadius())
 	{
 		// 攻撃行動にする
 		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::ATTACK);

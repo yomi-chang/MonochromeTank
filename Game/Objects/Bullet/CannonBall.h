@@ -9,44 +9,20 @@
 
 class CannonBall : public IBullet
 {
-// 定数
-private:
-	// 弾速
-	static constexpr DirectX::SimpleMath::Vector3 SPEED = DirectX::SimpleMath::Vector3(0.0f, 0.0f, -0.12f);
-	// 重力
-	static constexpr DirectX::SimpleMath::Vector3 GRAVITY = DirectX::SimpleMath::Vector3(0.0f, -0.05f, 0.0f);
-
-public:
-	// 位置を取得する 
-	DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
-	// 位置を設定する
-	virtual void SetPosition(const DirectX::SimpleMath::Vector3& position) { m_position = position; };
-	// 砲弾の回転角の設定
-	void SetRotation(const DirectX::SimpleMath::Quaternion& rotation) { m_rotation = rotation; }
-	// 砲弾が発射されているかどうかを取得する
-	IBullet::BulletState GetBulletState() const { return m_bulletState; }
-	// 砲弾の状態を設定する
-	void SetBulletState(IBullet::BulletState bulletState) { m_bulletState = bulletState; }
-	// コライダーの取得
-	DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
-
-	// コライダー座標の設定
-	void SetColliderPosition(DirectX::SimpleMath::Vector3 position) { m_collider->Update(position); }
-
 public:
 	// コンストラクタ
 	CannonBall(IBullet::BulletState bulletState);
 	// デストラクタ
 	~CannonBall();
-	// 初期化する
+	// 初期化処理
 	void Initialize();
-	// Bulletオブジェクトを更新する 
+	// 更新処理 
 	inline void Update(float time);
-	// Bulletオブジェクトを描画する 
+	// 描画処理 
 	inline void Render();
-	// 砲弾を描画する
+	// 弾描画
 	inline void DrawBullet();
-	// Bulletオブジェクトの後処理をおこなう 
+	// 終了処理 
 	void Finalize();
 
 private:
@@ -66,6 +42,24 @@ private:
 	std::unique_ptr<SphereCollider> m_collider;
 	// ジオメトリックプリミティブ
 	std::unique_ptr<DirectX::GeometricPrimitive> m_bullet;
-
+	// 経過時間
 	float m_elapsedTime;
+
+public:
+	// 位置を取得する 
+	DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
+	// 位置を設定する
+	virtual void SetPosition(const DirectX::SimpleMath::Vector3& position) { m_position = position; };
+	// 砲弾の回転角の設定
+	void SetRotation(const DirectX::SimpleMath::Quaternion& rotation) { m_rotation = rotation; }
+	// 砲弾が発射されているかどうかを取得する
+	IBullet::BulletState GetBulletState() const { return m_bulletState; }
+	// 砲弾の状態を設定する
+	void SetBulletState(IBullet::BulletState bulletState) { m_bulletState = bulletState; }
+	// コライダーの取得
+	DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
+
+	// コライダー座標の設定
+	void SetColliderPosition(DirectX::SimpleMath::Vector3 position) { m_collider->Update(position); }
+
 };

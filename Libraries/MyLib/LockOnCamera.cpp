@@ -20,9 +20,15 @@ mylib::LockOnCamera::LockOnCamera()
 }
 
 //-------------------------------------------------------------------
+// デストラクタ
+//-------------------------------------------------------------------
+mylib::LockOnCamera::~LockOnCamera()
+{
+}
+
+//-------------------------------------------------------------------
 // 初期化する
 //-------------------------------------------------------------------
-
 void mylib::LockOnCamera::Initialize()
 {
 
@@ -40,9 +46,6 @@ void mylib::LockOnCamera::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
 	using namespace DirectX::SimpleMath;
-
-	// 戦車の座標の角度の情報を受け取る
-	//m_followUpTargetQuaternion = m_tank->GetRotation();
 
 	// 基準になる「eye」を計算する
 	DirectX::SimpleMath::Vector3 eye{ 0.0f, m_height, m_distance };

@@ -19,47 +19,42 @@ class SkySphere;
 class ResultScene final :
     public IScene
 {
+public:
+	// コンストラクタ
+	ResultScene();
+	// デストラクタ
+	~ResultScene() override;
+	// 初期化処理
+	void Initialize() override;
+	// 更新処理
+	void Update(float elapsedTime) override;
+	// 描画処理
+	void Render() override;
+	// 終了処理
+	void Finalize() override;
+	// 次のシーンIDの取得
+	SceneID GetNextSceneID() const;
+
 private:
 	// グラフィックス
 	Graphics* m_graphics;
-
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 	ID3D11ShaderResourceView* m_pressSpace;
-
 	// テクスチャの半分の大きさ
 	DirectX::SimpleMath::Vector2 m_texCenter;
-
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
-
 	// 勝利した戦車
 	Tank* m_tank;
-
 	// カメラ
 	std::unique_ptr<mylib::LockOnCamera> m_camera;
-
 	// 床
 	std::unique_ptr<Floor> m_floor;
-
 	// シーン遷移
 	std::unique_ptr<Fade> m_fade;
-
 	// テクスチャの切り取り座標
 	RECT m_texturePos;
-
 	// 天球
 	std::unique_ptr<SkySphere> m_skySphere;
-
-
-public:
-	ResultScene();
-    ~ResultScene() override;
-
-    void Initialize() override;
-    void Update(float elapsedTime)override;
-    void Render() override;
-    void Finalize() override;
-
-    SceneID GetNextSceneID() const;
 };

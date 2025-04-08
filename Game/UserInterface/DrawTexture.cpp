@@ -37,7 +37,7 @@ DrawTexture::DrawTexture()
 	device->CreateInputLayout(
 		VertexPositionTexture::InputElements,
 		VertexPositionTexture::InputElementCount,
-		shaderByteCode, byteCodeLength, m_inputLayout.GetAddressOf()
+		shaderByteCode, byteCodeLength, m_inputLayout.ReleaseAndGetAddressOf()
 	);
 
 	// プリミティブバッチ作成

@@ -15,31 +15,24 @@ private:
 public:
 	// コンストラクタ
 	HpGauge();
-
 	// デストラクタ
-	~HpGauge() = default;
-
+	~HpGauge();
+	// 初期化処理
 	void Initialize(DirectX::SimpleMath::Vector2 position);
+	// 描画処理
 	void Render(float hpRatio);
-
-	// 体力ゲージ
-	RECT m_hpGaugePosition;
-
-
 
 private:
 	// グラフィックス
 	Graphics* m_graphics;
-
 	// スプライトバッチ
 	DirectX::SpriteBatch* m_spriteBatch;
-
 	// ゲージ画像
 	ID3D11ShaderResourceView* m_texture;
-
 	// 座標
 	DirectX::SimpleMath::Vector2 m_position;
-
 	// 死亡しているかどうか
 	bool m_isDead;
+	// 体力ゲージ
+	RECT m_hpGaugePosition;
 };

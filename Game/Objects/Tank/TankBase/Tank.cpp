@@ -40,6 +40,8 @@ Tank::Tank(
 	m_targetTank{},
 	m_isAvoidWall{}
 {
+	// ‘Ì—Í‚Ì‰Šú’l‚Ìİ’è
+	SetMaxHp(1);
 }
 
 //---------------------------------------------------------
@@ -100,9 +102,6 @@ void Tank::Initialize()
 	// ”j‰ó‚Ì‰‰oì¬
 	m_smokeEffect = std::make_unique<Smoke>();
 	m_smokeEffect->Initialize();
-
-	// ‘Ì—Í‚Ì‰Šú’l‚Ìİ’è
-	SetMaxHp(10);
 }
 
 //---------------------------------------------------------

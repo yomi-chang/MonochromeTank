@@ -9,13 +9,15 @@ class Graphics;
 class Smoke
 {
 public:
+	// コンストラクタ
 	Smoke();
-	~Smoke() = default;
-
+	// デストラクタ
+	~Smoke();
+	// 初期化処理
 	void Initialize();
-
+	// 更新処理
 	void Update(float elapsedTime);
-
+	// 描画処理
 	void Render(DirectX::SimpleMath::Vector3 position);
 
 private:

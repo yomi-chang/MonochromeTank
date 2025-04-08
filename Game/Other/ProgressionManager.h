@@ -11,13 +11,10 @@ class ProgressionManager
 public:
 	// コンストラクタ
 	ProgressionManager();
-
 	// デストラクタ
 	~ProgressionManager();
-
 	// 初期化処理
 	void Initialize(std::vector<Tank*> tanks);
-
 	// 更新処理
 	void Update();
 

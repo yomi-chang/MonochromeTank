@@ -7,8 +7,10 @@
 class SkySphere
 {
 public:
+	// コンストラクタ
 	SkySphere();
-
+	// デストラクタ
+	~SkySphere();
 	// 描画処理
 	void Render();
 

@@ -10,12 +10,12 @@
 class DrawTexture
 {
 public:
+	// コンストラクタ
 	DrawTexture();
+	// デストラクタ
 	~DrawTexture();
-
 	// 描画処理
 	void Render(DirectX::SimpleMath::Vector3 position);
-
 	// 画像のセット
 	void SetTexture(ID3D11ShaderResourceView* texture) { m_texture  = texture; }
 
@@ -23,16 +23,12 @@ public:
 private:
 	// グラフィックス
 	Graphics* m_graphics;
-
 	// 入力レイアウト
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;
-
 	//	エフェクト 
 	std::unique_ptr<DirectX::AlphaTestEffect> m_batchEffect;
-
 	//	プリミティブバッチ 
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_primitiveBatch;
-
 	// テクスチャハンドル 
 	ID3D11ShaderResourceView* m_texture;
 };

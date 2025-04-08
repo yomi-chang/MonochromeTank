@@ -116,14 +116,14 @@ public:
 	BulletType GetCurrentBullet() { return m_bulletType; }
 
 	// ƒŠƒ[ƒh‚ª‚Ç‚ê‚¾‚¯Š®—¹‚µ‚Ä‚¢‚é‚©‚ÌŠ„‡‚ð“n‚·
-	float GetCannonReloadRatio() { return 1.0f - (m_reloadCount / Parameter::CANNONBALL_RELOAD_TIME); }
-	float GetBulletReloadRatio() { return 1.0f - (m_reloadCount / Parameter::BULLET_RELOAD_TIME); }
+	float GetCannonReloadRatio() { return 1.0f - (m_reloadCount / Parameter::GetInstance()->GetCannonBallReloadTime()); }
+	float GetBulletReloadRatio() { return 1.0f - (m_reloadCount / Parameter::GetInstance()->GetBulletReloadTime()); }
 
 	// eŒû‚ÌÀ•W‚ðŽæ“¾‚·‚é
 	DirectX::SimpleMath::Vector3 GetMuzzlePosition();
 
 	// Ray‚ÌŽË’ö‚ÌŽæ“¾
-	float GetMaxRange() { return Parameter::MAX_RANGE; }
+	float GetMaxRange() { return Parameter::GetInstance()->GetMaxRange(); }
 
 	// ”­ŽË•ûŒü‚ÌŽæ“¾
 	DirectX::SimpleMath::Quaternion GetMuzzleRotation() { return m_cannonRotation * m_currentRotation; }

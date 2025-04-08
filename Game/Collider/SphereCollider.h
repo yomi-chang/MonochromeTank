@@ -8,20 +8,16 @@
 class SphereCollider
 {
 public:
-	DirectX::BoundingSphere* GetBoundingSphere() { return &m_boundingSphere; }
-
-public:
 	// コンストラクタ
 	SphereCollider();
-
 	// バウンディングスフィアの作成
 	void CreateBoundingSphere(DirectX::SimpleMath::Vector3 position, float radius);
-
 	// 更新処理
 	void Update(DirectX::SimpleMath::Vector3 position);
-
 	// 描画処理
 	void Render(DirectX::XMVECTOR color = DirectX::Colors::Aqua);
+	// バウンディングスフィアの取得
+	DirectX::BoundingSphere* GetBoundingSphere() { return &m_boundingSphere; }
 
 	// 当たっているかどうかの判定
 	DirectX::SimpleMath::Vector3 CheckCollisionCollider(DirectX::BoundingSphere* boundingSphere);

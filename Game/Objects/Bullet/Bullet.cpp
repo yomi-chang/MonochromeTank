@@ -45,13 +45,14 @@ void Bullet::Initialize()
 
 	// スフィアコライダーの作成
 	m_collider = std::make_unique<SphereCollider>();
-	m_collider->CreateBoundingSphere(m_position, 0.05f);
+	m_collider->CreateBoundingSphere(m_position, Parameter::GetInstance()->GetBulletColliderRadius());
 
 	// トレイルの作成
 	m_trail = std::make_unique<BulletTrail>();
 	m_trail->Initialize(2);
 
-	m_count = SURVIVAL_TIME;
+	// 弾の生存時間の設定
+	m_count = Parameter::GetInstance()->GetBulletSurvivalTime();
 }
 
 //-------------------------------------------------------------------
@@ -61,6 +62,8 @@ void Bullet::Update(float time)
 {
 	UNREFERENCED_PARAMETER(time);
 	using namespace DirectX::SimpleMath;
+	auto parameter = Parameter::GetInstance();
+	Vector3 speed = parameter->GetBulletSpeed() * time;
 
 	// 使用可能もしくは使用済みの場合
 	if (m_bulletState == USED)
@@ -71,12 +74,12 @@ void Bullet::Update(float time)
 	else if(m_bulletState == UNUSED)
 	{
 		// 生存時間の設定
-		m_count = SURVIVAL_TIME;
+		m_count = parameter->GetBulletSurvivalTime();
 		return;
 	}
 
 	// 速度を計算する
-	m_velocity = Vector3::Transform(SPEED,m_rotation);
+	m_velocity = Vector3::Transform(speed, m_rotation);
 
 	// 位置を計算する
 	m_position += m_velocity;

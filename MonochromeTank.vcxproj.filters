@@ -105,7 +105,6 @@
     <ClInclude Include="Libraries\Microsoft\ReadData.h" />
     <ClInclude Include="Libraries\Microsoft\RenderTexture.h" />
     <ClInclude Include="Game\Objects\Stage\Floor.h" />
-    <ClInclude Include="Game\Objects\Stage\Item\StageItem.h" />
     <ClInclude Include="Interface\IParent.h" />
     <ClInclude Include="Interface\IParts.h" />
     <ClInclude Include="Game\Objects\Stage\Gimmick\WallGimmick.h" />
@@ -184,7 +183,6 @@
     <ClCompile Include="Game\UserInterface\MagazineUi.cpp" />
     <ClCompile Include="Libraries\Microsoft\RenderTexture.cpp" />
     <ClCompile Include="Game\Objects\Stage\Floor.cpp" />
-    <ClCompile Include="Game\Objects\Stage\Item\StageItem.cpp" />
     <ClCompile Include="Game\Objects\Stage\Gimmick\WallGimmick.cpp" />
     <ClCompile Include="Game\Objects\FixedTurret\FixedTurret.cpp" />
     <ClCompile Include="Game\Other\CollisionManager.cpp" />

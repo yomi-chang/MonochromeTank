@@ -68,6 +68,8 @@ void TankBody::Update(
 	const DirectX::SimpleMath::Quaternion& currentRotation
 )
 {
+	UNREFERENCED_PARAMETER(currentPosition);
+
 	// d—Í‚ð‚©‚¯‚é
 	if (m_currentPosition.y > 0.0f && m_gravityEnabled)
 		m_currentPosition.y -= 0.1f;

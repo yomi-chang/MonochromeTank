@@ -33,11 +33,13 @@ namespace mylib
 		float m_height;
 
 	public:
+		// コンストラクタ
 		LockOnCamera();
-		~LockOnCamera() = default;
-
+		// デストラクタ
+		~LockOnCamera();
+		// 初期化処理
 		void Initialize();
-
+		// 更新処理
 		void Update(float elapsedTime);
 
 		// getter

@@ -20,6 +20,13 @@ Attack::Attack()
 }
 
 //-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
+Attack::~Attack()
+{
+}
+
+//-------------------------------------------------------------------
 // 初期化処理
 //-------------------------------------------------------------------
 void Attack::Initialize(Tank* tank)
@@ -62,6 +69,9 @@ void Attack::Update(float elapsedTime)
 		default:
 			break;
 	}
+
+	// 追跡対象の戦車が離れていたなら
+	this->IsTargetTankFar();
 }
 
 //-------------------------------------------------------------------
@@ -84,7 +94,7 @@ void Attack::LookTargetTank(float elapsedTime)
 	// 砲塔回転の制限
 	float min = parameter->GetTurretAngleMin();
 	float max = parameter->GetTurretAngleMax();
-	targetAngle = mylib::Clamp(targetAngle, DirectX::XMConvertToRadians(min), DirectX::XMConvertToRadians(max));
+	targetAngle = mylib::Clamp(targetAngle, min, max);
 
 	// 現在の砲塔の回転角度
 	float currentAngle = m_tank->GetTurret()->GetTurretRotation().ToEuler().y;
@@ -108,6 +118,8 @@ void Attack::LookTargetTank(float elapsedTime)
 void Attack::MoveAction(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
+	auto parameter = Parameter::GetInstance();
+	float speed = parameter->GetEnemySpeed() * elapsedTime;
 
 	// 時間経過
 	m_time += elapsedTime;
@@ -120,7 +132,7 @@ void Attack::MoveAction(float elapsedTime)
 	}
 
 	// 移動
-	Vector3 velocity = Vector3::Transform(Vector3::Forward * (TANK_SPEED * elapsedTime), m_tank->GetRotation());
+	Vector3 velocity = Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
 
 	// 移動処理
 	m_tank->GetBody()->Move(velocity);
@@ -153,8 +165,8 @@ void Attack::IsTargetTankFar()
 	// 追跡対象の戦車との距離を調べる
 	float distance = (m_targetTank->GetPosition() - m_tank->GetPosition()).LengthSquared();
 
-	// 追跡対象の戦車に接近したなら攻撃行動開始
-	if (distance <= 10.0f)
+	// 追跡対象の戦車が離れているなら追跡行動にする
+	if (distance >= Parameter::GetInstance()->GetAttackFinishRadius())
 	{
 		// 追跡行動にする
 		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::TRACKING);

@@ -56,11 +56,13 @@ namespace mylib
 		float m_shakeCount;
 
 	public:
+		// コンストラクタ
 		FollowCamera();
-		~FollowCamera() = default;
-
+		// デストラクタ
+		~FollowCamera();
+		// 初期化処理
 		void Initialize(Tank* tank);
-
+		// 更新処理
 		void Update(float elapsedTime);
 
 		// getter

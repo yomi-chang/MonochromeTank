@@ -19,14 +19,19 @@ namespace mylib
 		DirectX::SoundEffectInstance* m_currentBGM;
 
 	public:
+		// コンストラクタ
 		SoundManager();
+		// デストラクタ
 		~SoundManager();
-
+		// 初期化処理
 		void Initialize();
+		// 更新処理
 		void Update();
-
+		// SEの再生
 		void PlaySE(XACT_WAVEBANK_SOUNDS seName);
+		// BGMの再生
 		void PlayBGM(XACT_WAVEBANK_SOUNDS bgmName);
+		// BGMの停止
 		void StopBGM();
 	};
 }

@@ -66,6 +66,9 @@ TankCannon::~TankCannon()
 //---------------------------------------------------------
 void TankCannon::Initialize()
 {
+	// パラメータの受け取り
+	auto parameter = Parameter::GetInstance();
+
 	// モデルの取得
 	m_model = Resources::GetInstance()->GetTankCannonModel();
 
@@ -73,7 +76,7 @@ void TankCannon::Initialize()
 	m_tank->SetCannon(this);
 
 	/// 連射弾の生成
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < parameter->GetBulletCount(); i++)
 	{
 		m_bullets.push_back(std::make_unique<Bullet>(IBullet::UNUSED));
 		m_bullets[i]->Initialize();
@@ -247,7 +250,7 @@ void TankCannon::Shoot()
 			break;
 	}
 	// 発射インターバルを設定する
-	m_shotTimer = Parameter::SHOT_INTERVAL;
+	m_shotTimer = Parameter::GetInstance()->GetShotInterval();
 }
 
 //---------------------------------------------------------
@@ -269,6 +272,9 @@ void TankCannon::StartReload()
 	// リロード開始
 	if (m_isReload) { return; }
 
+	// パラメータの受け取り
+	auto parameter = Parameter::GetInstance();
+
 	// どの弾をリロードするか
 	switch (m_bulletType)
 	{
@@ -279,7 +285,7 @@ void TankCannon::StartReload()
 				// 弾が1発でも使用されていたらリロード可能
 				if (bullet->GetBulletState() == IBullet::USED)
 				{
-					m_reloadCount = Parameter::BULLET_RELOAD_TIME;
+					m_reloadCount = parameter->GetBulletReloadTime();
 					m_reloadBulletType = BulletType::BULLET;
 					m_isReload = true;
 					mylib::DebugLog("連射弾のリロード開始");
@@ -291,7 +297,7 @@ void TankCannon::StartReload()
 		case BulletType::CANNONBALL:
 			if (m_cannonBall->GetBulletState() == IBullet::USED)
 			{
-				m_reloadCount = Parameter::CANNONBALL_RELOAD_TIME;
+				m_reloadCount = parameter->GetCannonBallReloadTime();
 				m_reloadBulletType = BulletType::CANNONBALL;
 				m_isReload = true;
 				mylib::DebugLog("砲弾のリロード開始");

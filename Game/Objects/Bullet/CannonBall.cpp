@@ -44,7 +44,7 @@ void CannonBall::Initialize()
 
 	// スフィアコライダーの作成
 	m_collider = std::make_unique<SphereCollider>();
-	m_collider->CreateBoundingSphere(m_position, 0.125f);
+	m_collider->CreateBoundingSphere(m_position, Parameter::GetInstance()->GetCannonBallColliderRadius());
 }
 
 //-------------------------------------------------------------------
@@ -54,6 +54,9 @@ void CannonBall::Update(float time)
 {
 	UNREFERENCED_PARAMETER(time);
 	using namespace DirectX::SimpleMath;
+	auto parameter = Parameter::GetInstance();
+	Vector3 speed = parameter->GetCannonBallSpeed() * time;
+	Vector3 gravity = parameter->GetCannonBallGravity() * time;
 
 	// 使用可能もしくは使用済みの場合
 	if (m_bulletState == USED)
@@ -71,16 +74,16 @@ void CannonBall::Update(float time)
 	m_elapsedTime += time;
 
 	// 一定時間経過していたら使用済みにする
-	if (m_elapsedTime >= 5.0f)
+	if (m_elapsedTime >= parameter->GetCannonBallSurvivalTime())
 	{
 		SetBulletState(IBullet::USED);
 	}
 
 	// 速度を計算する（初速度）
-	Vector3 initialVelocity = Vector3::Transform(SPEED, Matrix::CreateFromQuaternion(m_rotation));
+	Vector3 initialVelocity = Vector3::Transform(speed, Matrix::CreateFromQuaternion(m_rotation));
 
 	// 速度に重力の影響を加えて位置を計算する
-	m_velocity = initialVelocity + (GRAVITY * m_elapsedTime);
+	m_velocity = initialVelocity + (gravity * m_elapsedTime);
 	m_position += m_velocity;
 
 	// コライダーの座標を更新
