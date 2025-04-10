@@ -59,7 +59,7 @@ void Tank::Initialize()
 	using namespace DirectX::SimpleMath;
 	using namespace DirectX;
 
-	// 車体の生成(地面から0.5f高い座標に生成)
+	// 車体の生成
 	Attach(std::make_unique<TankBody>(this,Vector3(0.0f, 0.0f, 0.0f), 0.0f));
 
 	// 現在位置の更新

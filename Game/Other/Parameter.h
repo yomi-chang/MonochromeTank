@@ -30,6 +30,7 @@ private:
 	float m_cannonAngleMin;								// 砲身の角度制限
 	float m_cannonAngleMax;
 	// 自機
+	DirectX::SimpleMath::Vector3 m_playerPosition;		// 自機の初期座標
 	float m_playerSpeed;								// 自機の移動速度
 	float m_playerRotationSpeed;						// 自機の回転速度
 	int   m_playerHp;									// 自機の体力
@@ -45,12 +46,14 @@ private:
 	float m_bulletSurvivalTime;							// 生存時間
 	DirectX::SimpleMath::Vector3 m_bulletSpeed;			// 速度
 	float m_bulletColliderRadius;						// コライダーの大きさ
+	int   m_bulletDamage;								// ダメージ
 	// 砲弾
 	float m_cannonBallReloadTime;						// リロード時間
 	float m_cannonBallSurvivalTime;						// 生存時間
 	DirectX::SimpleMath::Vector3 m_cannonBallSpeed;		// 速度
 	DirectX::SimpleMath::Vector3 m_cannonBallGravity;	// 重力
 	float m_cannonBallColliderRadius;					// コライダー大きさ
+	int   m_cannonBallDamage;							// ダメージ
 	// 壁サイズ
 	DirectX::SimpleMath::Vector3 m_wallSize;			// 壁サイズ
 	// 索敵範囲
@@ -77,6 +80,7 @@ public:
 	float GetCannonAngleMin() { return m_cannonAngleMin; }
 	float GetCannonAngleMax() { return m_cannonAngleMax; }
 	// 自機
+	DirectX::SimpleMath::Vector3 GetPlayerPosition() { return m_playerPosition; }
 	float GetPlayerSpeed() { return m_playerSpeed; }
 	float GetPlayerRotationSpeed() { return m_playerRotationSpeed; }
 	int   GetPlayerHp() { return m_playerHp; }
@@ -92,12 +96,14 @@ public:
 	float GetBulletSurvivalTime() { return m_bulletSurvivalTime; }
 	DirectX::SimpleMath::Vector3 GetBulletSpeed() { return m_bulletSpeed; }
 	float GetBulletColliderRadius() { return m_bulletColliderRadius; }
+	int   GetBulletDamage() { return m_bulletDamage; }
 	// 砲弾
 	float GetCannonBallReloadTime() { return m_cannonBallReloadTime; }
 	float GetCannonBallSurvivalTime() { return m_cannonBallSurvivalTime; }
 	DirectX::SimpleMath::Vector3 GetCannonBallSpeed() { return m_cannonBallSpeed; }
 	DirectX::SimpleMath::Vector3 GetCannonBallGravity() { return m_cannonBallGravity; }
 	float GetCannonBallColliderRadius() { return m_cannonBallColliderRadius; }
+	int   GetCannonBallDamage() { return m_cannonBallDamage; }
 	// 壁サイズ
 	DirectX::SimpleMath::Vector3 GetWallSize() { return m_wallSize; }
 	// 索敵範囲

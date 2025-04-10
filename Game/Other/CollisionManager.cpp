@@ -9,6 +9,7 @@
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Game/Objects/Stage/Wall.h"
 #include "Game/Objects/FixedTurret/FixedTurret.h"
+#include "Game/Other/Parameter.h"
 
 //-------------------------------------------------------------------
 // コンストラクタ
@@ -85,7 +86,7 @@ void CollisionManager::DetectCollisionTankAndNomalBullets()
 					bullet->SetBulletState(IBullet::USED);
 
 					// ダメージ処理
-					tank->Damage(1);
+					tank->Damage(Parameter::GetInstance()->GetBulletDamage());
 
 					// 攻撃してきた戦車の情報を記憶する
 					tank->SetTargetTank(otherTank);
@@ -106,7 +107,7 @@ void CollisionManager::DetectCollisionTankAndNomalBullets()
 					bullet->SetBulletState(IBullet::USED);
 
 					// ダメージ処理
-					tank->Damage(1);
+					tank->Damage(Parameter::GetInstance()->GetBulletDamage());
 				}
 			}
 		}
@@ -138,7 +139,7 @@ void CollisionManager::DetectCollisionTankAndCannonBall()
 				otherTank->GetCannon()->GetCannonBall()->SetBulletState(IBullet::USED);
 
 				// ダメージ処理
-				tank->Damage(10);
+				tank->Damage(Parameter::GetInstance()->GetCannonBallDamage());
 
 				// 攻撃してきた戦車の情報を記憶する
 				tank->SetTargetTank(otherTank);
@@ -235,7 +236,7 @@ void CollisionManager::DetectCollisionRayAndWalls()
 	using namespace DirectX::SimpleMath;
 
 	Vector3 rayDirection;
-	float rayDistance = 4.0f;
+	float rayDistance = 0.0f;
 	float hitDistance = 0.0f;
 	bool isHit = false;
 

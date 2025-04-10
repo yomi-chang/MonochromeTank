@@ -31,6 +31,7 @@
 #include "Game/Particle/DamageEffect.h"
 #include "Game/Particle/StageEffect.h"
 #include "Game/Other/SharedData.h"
+#include "Game/Other/Parameter.h"
 
 #include <cassert>
 
@@ -378,7 +379,7 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 void PlayScene::CreateTanks()
 {
 	// ƒvƒŒƒCƒ„[íÔ‚Ì¶¬
-	m_player = std::make_unique<PlayerTank>(0, Vector3{ -6.0f, 0.0f, 6.0f });
+	m_player = std::make_unique<PlayerTank>(0, Parameter::GetInstance()->GetPlayerPosition());
 	m_player->Initialize();
 
 	// İ’è‚µ‚½íÔ‚Ì”‚É‰‚¶‚½íÔ‚Ì¶¬

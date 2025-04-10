@@ -5,6 +5,7 @@
 #pragma once
 
 class Tank;
+class Messenger;
 
 class ProgressionManager
 {
@@ -21,5 +22,8 @@ public:
 private:
 	// 戦車
 	std::vector<Tank*> m_tanks;
+
+	// メッセンジャー
+	Messenger* m_messenger;
 };
 

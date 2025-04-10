@@ -58,7 +58,6 @@ public:
 	void SetBulletState(IBullet::BulletState bulletState) { m_bulletState = bulletState; }
 	// コライダーの取得
 	DirectX::BoundingSphere* GetBoundingSphere() { return m_collider->GetBoundingSphere(); }
-
 	// コライダー座標の設定
 	void SetColliderPosition(DirectX::SimpleMath::Vector3 position) { m_collider->Update(position); }
 

@@ -11,7 +11,8 @@
 //-------------------------------------------------------------------
 ProgressionManager::ProgressionManager()
 	:
-	m_tanks{}
+	m_tanks{},
+	m_messenger{}
 {
 }
 
@@ -31,7 +32,7 @@ void ProgressionManager::Initialize(std::vector<Tank*> tanks)
 	m_tanks = tanks;
 
 	// メッセンジャーの取得
-	//m_messenger = Messenger::GetInstance();
+	m_messenger = Messenger::GetInstance();
 }
 
 //-------------------------------------------------------------------
@@ -39,4 +40,5 @@ void ProgressionManager::Initialize(std::vector<Tank*> tanks)
 //-------------------------------------------------------------------
 void ProgressionManager::Update()
 {
+
 }

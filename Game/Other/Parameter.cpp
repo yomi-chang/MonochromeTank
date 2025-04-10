@@ -32,6 +32,7 @@ Parameter::Parameter()
     m_turretAngleMax{},
     m_cannonAngleMin{},
     m_cannonAngleMax{},
+    m_playerPosition{},
     m_playerSpeed{},
     m_playerRotationSpeed{},
     m_playerHp{},
@@ -44,11 +45,13 @@ Parameter::Parameter()
     m_bulletSurvivalTime{},
     m_bulletSpeed{},
     m_bulletColliderRadius{},
+    m_bulletDamage{},
     m_cannonBallReloadTime{},
     m_cannonBallSurvivalTime{},
     m_cannonBallSpeed{},
     m_cannonBallGravity{},
     m_cannonBallColliderRadius{},
+    m_cannonBallDamage{},
     m_wallSize{},
     m_scoutRadius{},
     m_attackStartRadius{},
@@ -92,6 +95,9 @@ void Parameter::LoadParameter()
     m_turretAngleMax = XMConvertToRadians(j["TURRET_ANGLE_MAX"].get<float>());
     m_cannonAngleMin = XMConvertToRadians(j["CANNON_ANGLE_MIN"].get<float>());
     m_cannonAngleMax = XMConvertToRadians(j["CANNON_ANGLE_MAX"].get<float>());
+    m_playerPosition.x = j["PLAYER_POSITION"]["x"].get<float>();
+    m_playerPosition.y = j["PLAYER_POSITION"]["y"].get<float>();
+    m_playerPosition.z = j["PLAYER_POSITION"]["z"].get<float>();
     m_playerSpeed    = j["PLAYER_SPEED"].get<float>();
     m_playerRotationSpeed = j["PLAYER_ROTATION_SPEED"].get<float>();
     m_playerHp = j["PLAYER_HP"].get<int>();
@@ -106,6 +112,7 @@ void Parameter::LoadParameter()
     m_bulletSpeed.y = j["BULLET_SPEED"]["y"].get<float>();
     m_bulletSpeed.z = j["BULLET_SPEED"]["z"].get<float>();
     m_bulletColliderRadius = j["BULLET_COLLIDER_RADIUS"].get<float>();
+    m_bulletDamage = j["BULLET_DAMAGE"].get<int>();
     m_cannonBallReloadTime = j["CANNONBALL_RELOAD_TIME"].get<float>();
     m_cannonBallSurvivalTime = j["CANNONBALL_SURVIVAL_TIME"].get<float>();
     m_cannonBallSpeed.x = j["CANNONBALL_SPEED"]["x"].get<float>();
@@ -115,6 +122,7 @@ void Parameter::LoadParameter()
     m_cannonBallGravity.y = j["CANNONBALL_GRAVITY"]["y"].get<float>();
     m_cannonBallGravity.z = j["CANNONBALL_GRAVITY"]["z"].get<float>();
     m_cannonBallColliderRadius = j["CANNONBALL_COLLIDER_RADIUS"].get<float>();
+    m_cannonBallDamage = j["CANNONBALL_DAMAGE"].get<int>();
     m_wallSize.x = j["WALL_SIZE"]["x"].get<float>();
     m_wallSize.y = j["WALL_SIZE"]["y"].get<float>();
     m_wallSize.z = j["WALL_SIZE"]["z"].get<float>();

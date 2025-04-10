@@ -107,9 +107,13 @@ void EnemyTank::Update(float elapsedTime)
 	m_angle = m_tank->GetRotation();
 
 	// UŒ‚‚ğó‚¯‚Ä‚¢‚½ê‡’ÇÕ‘ÎÛ‚ÌíÔ‚ğØ‚è‘Ö‚¦‚é
-	if(m_tank->GetTargetTank() != nullptr)
+	if (m_tank->GetTargetTank() != nullptr)
+	{
 		m_targetTank = m_tank->GetTargetTank();
-
+		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::TRACKING);
+		m_tank->SetTargetTank(nullptr);
+	}
+		
 	// ’ÇÕ‘ÎÛ‚ª”j‰ó‚³‚ê‚½‚ç„‰ñs“®‚ÉˆÚs
 	if (m_targetTank != nullptr)
 	{
@@ -194,7 +198,10 @@ void EnemyTank::OnMessegeAccepted(Message::MessageID messageID)
 		break;
 	case Message::TRACKING:
 		// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìæ“¾
-		m_targetTank = m_currentState->GetTargetTank();
+		if (m_targetTank == nullptr)
+		{
+			m_targetTank = m_currentState->GetTargetTank();
+		}
 		// ’ÇÕs“®‚É‘JˆÚ
 		this->ChangeState(m_tracking.get());
 		break;
