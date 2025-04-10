@@ -83,31 +83,23 @@ void Attack::LookTargetTank(float elapsedTime)
 
 	// ƒpƒ‰ƒ[ƒ^‚ÌŽó‚¯Žæ‚è
 	const auto& parameter = Parameter::GetInstance();
-
 	// “G‚Ì•ûŒüƒxƒNƒgƒ‹‚ÌŒvŽZ
 	Vector3 delta = m_tank->GetPosition() - m_targetTank->GetPosition();
 	float angleRadians = atan2(delta.x, delta.z);
-
 	// ŽÔ‘Ì‚Ì‰ñ“]‚ðl—¶‚µ‚Ä–Ú•W‚ÌŠp“x‚ðŒvŽZ
 	float targetAngle = angleRadians - m_tank->GetRotation().ToEuler().y;
-
 	// –C“ƒ‰ñ“]‚Ì§ŒÀ
 	float min = parameter->GetTurretAngleMin();
 	float max = parameter->GetTurretAngleMax();
 	targetAngle = mylib::Clamp(targetAngle, min, max);
-
 	// Œ»Ý‚Ì–C“ƒ‚Ì‰ñ“]Šp“x
 	float currentAngle = m_tank->GetTurret()->GetTurretRotation().ToEuler().y;
-
 	// –Ú•WŠp“x‚ÆŒ»Ý‚ÌŠp“x‚Æ‚Ì·‚ð‹‚ßALerp•âŠÔ‚Å‰ñ“]
 	float angleDifference = targetAngle - currentAngle;
-
 	// ‚ä‚Á‚­‚è‰ñ“]‚·‚é‚½‚ß‚Ì‘¬“x§Œä
 	float rotationSpeed = parameter->GetEnemyRotationSpeed() * elapsedTime;
-
 	// •âŠÔŒã‚Ì‰ñ“]Šp“x
 	float newAngle = currentAngle + angleDifference * rotationSpeed;
-
 	// –C“ƒ‚Ì‰ñ“]
 	m_tank->GetTurret()->RotateTurret(newAngle);
 }

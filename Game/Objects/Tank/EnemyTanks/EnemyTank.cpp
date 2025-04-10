@@ -17,6 +17,7 @@
 #include "Game/EnemyAi/Patrol.h"
 #include "Game/EnemyAi/Tracking.h"
 #include "Game/EnemyAi/Attack.h"
+#include "Game/EnemyAi/Shot.h"
 
 #include "Message/Messenger.h"
 
@@ -38,6 +39,7 @@ EnemyTank::EnemyTank(
 	m_patrol{},
 	m_tracking{},
 	m_attack{},
+	m_shot{},
 	m_currentState{}
 {
 	// íÔ”Ô†‚ÆíÔ‚Ì“o˜^
@@ -62,6 +64,8 @@ void EnemyTank::Initialize()
 	m_tank = std::make_unique<Tank>(m_tankNumber,m_position, DirectX::XMConvertToRadians(180.0f));
 	m_tank->Initialize();
 	m_tank->SetMaxHp(Parameter::GetInstance()->GetEnemyHp());
+	// –CgŠp“x‚Ì’²®
+	m_tank->GetCannon()->RotateCannon(0.1f);
 
 	// “G‘Ì—ÍƒQ[ƒW‚ğ¶¬
 	m_hpGauge = std::make_unique<EnemyHpGauge>();
@@ -83,6 +87,10 @@ void EnemyTank::Initialize()
 	// UŒ‚s“®‚Ì¶¬
 	m_attack = std::make_unique<Attack>();
 	m_attack->Initialize(m_tank.get());
+
+	// ËŒ‚s“®‚Ì¶¬
+	m_shot = std::make_unique<Shot>();
+	m_shot->Initialize(m_tank.get());
 
 	// ‰Šúó‘Ô‚ğ’ÇÕs“®‚É
 	m_currentState = m_patrol.get();
@@ -176,7 +184,6 @@ void EnemyTank::SetPosition(DirectX::SimpleMath::Vector3 position)
 //-------------------------------------------------------------------
 void EnemyTank::SetOtherTanks(std::vector<Tank*> tanks)
 {
-	m_tanks = tanks;
 	m_tank->SetOtherTanks(tanks);
 	m_selectAction->SetOtherTanks(tanks);
 	m_patrol->SetOtherTanks(tanks);

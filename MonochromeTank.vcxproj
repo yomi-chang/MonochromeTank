@@ -247,6 +247,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Libraries\MyLib\SoundManager.h" />
     <ClInclude Include="Game\Other\ProgressionManager.h" />
+    <ClInclude Include="Game\EnemyAi\Shot.h" />
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -311,6 +312,7 @@
     </ClCompile>
     <ClCompile Include="Libraries\MyLib\SoundManager.cpp" />
     <ClCompile Include="Game\Other\ProgressionManager.cpp" />
+    <ClCompile Include="Game\EnemyAi\Shot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
