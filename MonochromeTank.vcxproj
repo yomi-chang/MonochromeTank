@@ -233,7 +233,6 @@
     <ClInclude Include="Libraries\Microsoft\DebugDraw.h" />
     <ClInclude Include="Libraries\Microsoft\ReadData.h" />
     <ClInclude Include="Libraries\Microsoft\RenderTexture.h" />
-    <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Libraries\MyLib\DebugCamera.h" />
     <ClInclude Include="Libraries\MyLib\DebugLog.h" />
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
@@ -293,7 +292,6 @@
     <ClCompile Include="Game\UserInterface\MagazineUi.cpp" />
     <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp" />
     <ClCompile Include="Libraries\Microsoft\RenderTexture.cpp" />
-    <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugCamera.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugLog.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />

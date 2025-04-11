@@ -56,9 +56,7 @@ void TitleScene::Initialize()
 	m_titleLogo = Resources::GetInstance()->GetTitleLogoTexture();
 	m_pressSpace = Resources::GetInstance()->GetPressSpaceTexture();
 
-	/*
-		以下、テクスチャの大きさを求める→テクスチャの中心座標を計算する
-	*/
+
 	// 一時的な変数の宣言
 	Microsoft::WRL::ComPtr<ID3D11Resource> resource{};
 	Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D{};
@@ -82,11 +80,11 @@ void TitleScene::Initialize()
 	// テクスチャの中心位置を計算する
 	m_texCenter = texSize / 2.0f;
 
-
 	// 床の生成
-	m_floor = std::make_unique<Floor>(50);
+	m_floor = std::make_unique<Floor>(FLOOR_SIZE);
 	m_floor->SetTexture(Resources::GetInstance()->GetFloorTexture());
 
+	// 戦車の生成
 	m_tanks.push_back(std::make_unique<Tank>(1, Vector3{ -1.5f, 0.1f, -1.5f }, DirectX::XMConvertToRadians(-135.0f)));
 	m_tanks.push_back(std::make_unique<Tank>(2, Vector3{ 1.5f, 0.1f, -1.5f }, DirectX::XMConvertToRadians(135.0f)));
 	m_tanks.push_back(std::make_unique<Tank>(3, Vector3{ -1.5f, 0.1f, 1.5f }, DirectX::XMConvertToRadians(-45.0f)));
@@ -111,10 +109,10 @@ void TitleScene::Initialize()
 	// TPSカメラの生成
 	m_camera = std::make_unique<mylib::LockOnCamera>();
 	m_camera->Initialize();
-	m_camera->SetTargetPosition(Vector3(0, 0, 0));
-	m_camera->SetDistance(1.0f);
-	m_camera->SetHeight(3.0f);
-	m_camera->SetEyePosition(DirectX::SimpleMath::Vector3(0.0f, 5.0f, 5.0f));
+	m_camera->SetTargetPosition(Vector3::Zero);
+	m_camera->SetDistance(CAMERA_DISTANCE);
+	m_camera->SetHeight(CAMERA_HEIGHT);
+	m_camera->SetEyePosition(CAMERA_EYE_POSITION);
 
 	// シーン遷移用
 	m_fade = std::make_unique<Fade>(1.0f);
@@ -131,32 +129,25 @@ void TitleScene::Update(float elapsedTime)
 {
 	// 宣言をしたが、実際は使用していない変数
 	UNREFERENCED_PARAMETER(elapsedTime);
-
 	// フェード
 	m_fade->Update(elapsedTime);
-
 	// 敵戦車の更新
 	for (auto& tank : m_tanks)
 	{
 		tank->Update(elapsedTime);
 	}
-
-	// フォローカメラを更新する
+	// カメラを更新する
 	m_camera->Update(elapsedTime);
-
 	// フェードイン中でフェードが終了しているならシーン遷移
 	if (m_fade->GetFadeType() == Fade::FADEIN &&
 		m_fade->FinishFade())
 	{
 		m_isChangeScene = true;
 	}
-
 	// フェードが終了していないなら早期リターン
 	if (!m_fade->FinishFade()){ return; }
-	
 	// キーボードステートの取得
 	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
-
 	// スペースキーが押されたらフェード開始
 	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
 		m_fade->FadeIn();
@@ -197,22 +188,19 @@ void TitleScene::Render()
 
 	// ロゴを描画する
 	spriteBatch->Draw(
-		m_titleLogo,	// テクスチャ(SRV)
-		pos,				// スクリーンの表示位置(originの描画位置)
-		nullptr,			// 矩形(RECT)
-		Colors::White,		// 背景色
-		0.0f,				// 回転角(ラジアン)
-		m_texCenter,		// テクスチャの基準になる表示位置(描画中心)(origin)
-		1.5f				// スケール(scale)
+		m_titleLogo,		
+		pos,				
+		nullptr,			
+		Colors::White,		
+		0.0f,				
+		m_texCenter,		
+		1.5f				
 	);
-
-	rect = { 400,500,920,620 };
 	// UIの描画
 	spriteBatch->Draw(
 		m_pressSpace,
-		rect
+		UI_POS
 	);
-
 	// スプライトバッチの終わり
 	spriteBatch->End();
 

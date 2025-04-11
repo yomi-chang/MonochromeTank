@@ -32,14 +32,12 @@ private:
 	enum CameraType
 	{
 		TPS,
-		DEBUG
+		DEATH
 	};
 
-	// ダメージ演出時間
-	static constexpr float DAMAGE_EFFECT_TIME = 1.0f;
-
+	// UI座標
 	static constexpr RECT SKIP_UI_POS = { 1050,580,1260,700 };
-
+	// フォントサイズ
 	static constexpr int FONT_SIZE_X = 90;
 	static constexpr int FONT_SIZE_Y = 150;
 
@@ -71,7 +69,6 @@ private:
 
 	// オブジェクト
 	std::unique_ptr<PlayerTank> m_player;					// プレイヤー
-
 	std::vector<std::unique_ptr<EnemyTank>> m_enemies;		// 敵戦車(配列管理)
 
 	// マネージャー
@@ -101,8 +98,6 @@ private:
 	int m_surviveTank;
 
 private:
-	// デバッグカメラと切り替える
-	void ChangeCameraType();
-
+	// 戦車の生成
 	void CreateTanks();
 };

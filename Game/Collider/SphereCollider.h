@@ -10,6 +10,8 @@ class SphereCollider
 public:
 	// コンストラクタ
 	SphereCollider();
+	// デストラクタ
+	~SphereCollider();
 	// バウンディングスフィアの作成
 	void CreateBoundingSphere(DirectX::SimpleMath::Vector3 position, float radius);
 	// 更新処理

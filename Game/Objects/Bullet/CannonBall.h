@@ -7,6 +7,8 @@
 #include "Framework/Graphics.h"
 #include "Game/Collider/SphereCollider.h"
 
+class BulletTrail;
+
 class CannonBall : public IBullet
 {
 public:
@@ -44,6 +46,8 @@ private:
 	std::unique_ptr<DirectX::GeometricPrimitive> m_bullet;
 	// 経過時間
 	float m_elapsedTime;
+	// トレイル
+	std::unique_ptr<BulletTrail> m_trail;
 
 public:
 	// 位置を取得する 

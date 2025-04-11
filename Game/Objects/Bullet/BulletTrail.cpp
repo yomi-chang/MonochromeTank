@@ -9,19 +9,20 @@
 
 BulletTrail::BulletTrail()
 	:
-	m_bufferSize{},
 	m_posArray{},
 	m_primitiveBatch{},
+	m_maxTrail{},
 	m_graphics{ Graphics::GetInstance()}
 {
 }
 
-void BulletTrail::Initialize(int bufferSize)
+void BulletTrail::Initialize(int trailCount)
 {
-	m_bufferSize = bufferSize;
-
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
+
+	// 表示するトレイルの数の設定
+	m_maxTrail = trailCount;
 
 	// エフェクト作成
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
@@ -42,30 +43,14 @@ void BulletTrail::Initialize(int bufferSize)
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 }
 
-void BulletTrail::Update()
-{
-	////データを更新
-	//for (size_t i = posArray.size() - 1; i > 0; --i)
-	//{
-	//	posArray[i] = posArray[i - 1];
-	//}
-	//posArray.front() = tempPos;
-	//tempPos = PosBuffer();
-}
-
 void BulletTrail::Render()
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
 	// 座標情報が2つ未満なら早期リターン
-	if (m_posArray.size() < 2) { return; }
+	if (m_posArray.size() <= 1) { return; }
 
-	//頂点データを更新する
-	/*float amount = 1.0f / (usedPosArray.size() - 1);
-	float v = 0;
-	vertex.clear();
-	vertex.resize(usedPosArray.size() * 2);*/
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = m_graphics->GetCommonStates();
 	// 座標の指定
@@ -75,7 +60,7 @@ void BulletTrail::Render()
 	// 描画に深度値を適応
 	context->OMSetDepthStencilState(states->DepthRead(), 0);
 	// 裏面カリングの設定
-	context->RSSetState(states->CullCounterClockwise());
+	context->RSSetState(states->CullNone());
 	// テクスチャサンプラにリニアクランプを適用
 	ID3D11SamplerState* sampler = states->LinearClamp();
 	context->PSSetSamplers(0, 1, &sampler);
@@ -89,28 +74,30 @@ void BulletTrail::Render()
 	m_basicEffect->Apply(context);
 
 	// bufferSize分回す
-	for (int i = 1; i < m_bufferSize; i++)
+	for (int i = 1; i < m_posArray.size(); i++)
 	{
 		VertexPositionTexture vertex[4] =
 		{
-			VertexPositionTexture(m_posArray[i].head,		Vector2(0.0f, 0.0f)),
-			VertexPositionTexture(m_posArray[i].tail,		Vector2(1.0f, 0.0f)),
-			VertexPositionTexture(m_posArray[i - 1].head,	Vector2(0.0f, 1.0f)),
-			VertexPositionTexture(m_posArray[i - 1].tail,	Vector2(1.0f, 1.0f))
+			VertexPositionTexture(m_posArray[i].top,		Vector2(0.0f, 0.0f)),
+			VertexPositionTexture(m_posArray[i].bottom,		Vector2(1.0f, 0.0f)),
+			VertexPositionTexture(m_posArray[i - 1].top,	Vector2(0.0f, 1.0f)),
+			VertexPositionTexture(m_posArray[i - 1].bottom,	Vector2(1.0f, 1.0f))
 		};
-		//v += amount;
 		m_primitiveBatch->Begin();
 		m_primitiveBatch->DrawQuad(vertex[0], vertex[1], vertex[3], vertex[2]);
 		m_primitiveBatch->End();
 	}
-
-	//　配列情報をクリアする
-	//m_posArray.clear();
 }
 
 // 座標の受け取り
-void BulletTrail::SetPosition(DirectX::SimpleMath::Vector3& head, DirectX::SimpleMath::Vector3& tail)
+void BulletTrail::SetPosition(DirectX::SimpleMath::Vector3 top, DirectX::SimpleMath::Vector3 bottom)
 {
+	// 古い座標を削除
+	if (m_posArray.size() > m_maxTrail)
+	{
+		m_posArray.erase(m_posArray.begin(), m_posArray.begin() + (m_posArray.size() - m_maxTrail));
+	}
+
 	// 座標情報の受け取り
-	m_posArray.push_back(PosBuffer{ head, tail });
+	m_posArray.push_back(PosBuffer{ top, bottom });
 }

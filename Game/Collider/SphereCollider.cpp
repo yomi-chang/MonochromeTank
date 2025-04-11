@@ -6,13 +6,20 @@
 #include "Game/Collider/SphereCollider.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 
-/// <summary>
-/// コンストラクタ
-/// </summary>
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 SphereCollider::SphereCollider()
 	:
 	m_boundingSphere{},
 	m_graphics{ Graphics::GetInstance() }
+{
+}
+
+//-------------------------------------------------------------------
+// デストラクタ
+//-------------------------------------------------------------------
+SphereCollider::~SphereCollider()
 {
 }
 
@@ -41,9 +48,9 @@ void SphereCollider::Update(DirectX::SimpleMath::Vector3 centerPosition)
 }
 
 
-/// <summary>
-/// 描画処理
-/// </summary>
+//-------------------------------------------------------------------
+// 描画処理
+//-------------------------------------------------------------------
 void SphereCollider::Render(DirectX::XMVECTOR color)
 {
 	// 当たり判定の表示(デバッグビルドでのみ表示)
@@ -96,9 +103,47 @@ DirectX::SimpleMath::Vector3 SphereCollider::CheckCollisionCollider(DirectX::Bou
 DirectX::SimpleMath::Vector3 SphereCollider::CheckCollisionCollider(DirectX::BoundingBox* boundingBox)
 {
 	using namespace DirectX::SimpleMath;
-	return Vector3::Zero;
+	if (!m_boundingSphere.Intersects(*boundingBox)) { return Vector3::Zero; }
 
-	//ToDo 押し戻しの追加
+	// AABB用のmin/maxを計算する
+	Vector3 aMin = boundingBox->Center - boundingBox->Extents;
+	Vector3 aMax = boundingBox->Center + boundingBox->Extents;
+	Vector3 bMin = m_boundingSphere.Center - Vector3(m_boundingSphere.Radius, m_boundingSphere.Radius, m_boundingSphere.Radius);
+	Vector3 bMax = m_boundingSphere.Center + Vector3(m_boundingSphere.Radius, m_boundingSphere.Radius, m_boundingSphere.Radius);
+
+	// 各軸の差分を計算する
+	float dx1 = aMin.x - bMax.x;
+	float dx2 = aMax.x - bMin.x;
+	float dy1 = aMin.y - bMax.y;
+	float dy2 = aMax.y - bMin.y;
+	float dz1 = aMin.z - bMax.z;
+	float dz2 = aMax.z - bMin.z;
+
+	// 各軸について、絶対値の小さい方を軸のめり込み量とする：AABBの重なった部分を特定する
+	float dx = abs(dx1) < abs(dx2) ? dx1 : dx2;
+	float dy = abs(dy1) < abs(dy2) ? dy1 : dy2;
+	float dz = abs(dz1) < abs(dz2) ? dz1 : dz2;
+
+	// 押し戻しベクトル
+	Vector3 pushBackVec = Vector3::Zero;
+
+	// めり込みが一番小さい軸を押し戻す
+	if (abs(dx) <= abs(dy) && abs(dx) <= abs(dz))
+	{
+		pushBackVec.x += dx;
+	}
+	else if (abs(dz) <= abs(dx) && abs(dz) <= abs(dy))
+	{
+		pushBackVec.z += dz;
+	}
+	else
+	{
+		pushBackVec.y += dy;
+	}
+
+	// 押し戻す
+	m_boundingSphere.Center = m_boundingSphere.Center + pushBackVec;
+	return pushBackVec;
 }
 
 /// <summary>

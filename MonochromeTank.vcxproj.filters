@@ -100,7 +100,6 @@
     <ClInclude Include="Game\Objects\Tank\PlayerTank.h" />
     <ClInclude Include="Game\Objects\Tank\EnemyTanks\EnemyTank.h" />
     <ClInclude Include="Game\Objects\Stage\StageManager.h" />
-    <ClInclude Include="Libraries\MyLib\BinaryFile.h" />
     <ClInclude Include="Game\UserInterface\MagazineUi.h" />
     <ClInclude Include="Libraries\Microsoft\ReadData.h" />
     <ClInclude Include="Libraries\Microsoft\RenderTexture.h" />
@@ -179,7 +178,6 @@
     <ClCompile Include="Game\Objects\Tank\PlayerTank.cpp" />
     <ClCompile Include="Game\Objects\Tank\EnemyTanks\EnemyTank.cpp" />
     <ClCompile Include="Game\Objects\Stage\StageManager.cpp" />
-    <ClCompile Include="Libraries\MyLib\BinaryFile.cpp" />
     <ClCompile Include="Game\UserInterface\MagazineUi.cpp" />
     <ClCompile Include="Libraries\Microsoft\RenderTexture.cpp" />
     <ClCompile Include="Game\Objects\Stage\Floor.cpp" />

@@ -6,9 +6,9 @@
 #include "Game/Collider/BoxCollider.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 
-/// <summary>
-/// コンストラクタ
-/// </summary>
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 BoxCollider::BoxCollider()
 	:
 	m_boundingBox{},
@@ -16,9 +16,9 @@ BoxCollider::BoxCollider()
 {
 }
 
-/// <summary>
-/// デストラクタ
-/// </summary>
+//-------------------------------------------------------------------
+// デストラクタ
+//-------------------------------------------------------------------
 BoxCollider::~BoxCollider()
 {
 }
@@ -47,9 +47,9 @@ void BoxCollider::Update(DirectX::SimpleMath::Vector3 centerPosition)
 	m_boundingBox.Center = centerPosition;
 }
 
-/// <summary>
-/// 描画処理
-/// </summary>
+//-------------------------------------------------------------------
+// 描画処理
+//-------------------------------------------------------------------
 void BoxCollider::Render(DirectX::XMVECTOR color)
 {
 	// 当たり判定の表示(デバッグビルドでのみ表示)

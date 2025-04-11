@@ -6,8 +6,8 @@
 #include "Game/Objects/Bullet/CannonBall.h"
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
+#include "Game/Objects/Bullet/BulletTrail.h"
 
-#include "Libraries/MyLib/DebugLog.h"
 //-------------------------------------------------------------------
 // コンストラクタ
 //-------------------------------------------------------------------
@@ -21,7 +21,8 @@ CannonBall::CannonBall(IBullet::BulletState bulletState)
 	m_graphics{Graphics::GetInstance()},
 	m_collider{},
 	m_bullet{},
-	m_elapsedTime{}
+	m_elapsedTime{},
+	m_trail{}
 {
 }
 
@@ -42,6 +43,10 @@ void CannonBall::Initialize()
 	// 砲弾モデルの作成
 	m_bullet = DirectX::GeometricPrimitive::CreateSphere(m_graphics->GetDeviceResources()->GetD3DDeviceContext(),0.25f);
 
+	// トレイルの作成
+	m_trail = std::make_unique<BulletTrail>();
+	m_trail->Initialize(Parameter::GetInstance()->GetCannonBallMaxTrail());
+
 	// スフィアコライダーの作成
 	m_collider = std::make_unique<SphereCollider>();
 	m_collider->CreateBoundingSphere(m_position, Parameter::GetInstance()->GetCannonBallColliderRadius());
@@ -61,6 +66,8 @@ void CannonBall::Update(float time)
 	// 使用可能もしくは使用済みの場合
 	if (m_bulletState == USED)
 	{
+		// トレイルの座標の削除
+		m_trail->DeletePosBuffer();
 		return;
 	}
 	else if (m_bulletState == UNUSED)
@@ -114,6 +121,13 @@ void CannonBall::Render()
 
 	// 砲弾を描画する
 	DrawBullet();
+
+	// トレイルの描画
+	Vector3 width = Matrix::CreateFromQuaternion(m_rotation).Right() * Parameter::GetInstance()->GetCannonBallWidth();
+	Vector3 right = m_position + width;
+	Vector3 left = m_position - width;
+	m_trail->SetPosition(right, left);
+	m_trail->Render();
 }
 
 //-------------------------------------------------------------------

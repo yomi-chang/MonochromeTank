@@ -225,7 +225,7 @@ void PlayScene::Update(float elapsedTime)
 	// プレイヤー
 	if (!m_player->GetDead()){ m_surviveTank++;}
 	// やられているならカメラ変更
-	else{ m_cameraType = CameraType::DEBUG;}
+	else{ m_cameraType = CameraType::DEATH;}
 	// 敵
 	for (auto& enemy : m_enemies)
 	{
@@ -239,7 +239,7 @@ void PlayScene::Update(float elapsedTime)
 	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
 	
 	// デバッグカメラでスペースキーを押したらフェード開始
-	if (m_cameraType == CameraType::DEBUG &&
+	if (m_cameraType == CameraType::DEATH &&
 		kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
 	{
 		m_fade->FadeIn();
@@ -250,7 +250,7 @@ void PlayScene::Update(float elapsedTime)
 
 	// ダメージを食らったらヒットエフェクトを出す
 	if (m_player->GetDamage())
-		m_time = DAMAGE_EFFECT_TIME;
+		m_time = Parameter::GetInstance()->GetDamageEffectTime();
 
 	// 時間経過
 	if (m_time > 0)
@@ -274,7 +274,7 @@ void PlayScene::Render()
 			);
 			Graphics::GetInstance()->SetViewMatrix(view);
 			break;
-		case CameraType::DEBUG:
+		case CameraType::DEATH:
 			view = m_debugCamera->GetViewMatrix();
 			Graphics::GetInstance()->SetViewMatrix(view);
 			break;
@@ -378,24 +378,26 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 //---------------------------------------------------------
 void PlayScene::CreateTanks()
 {
+	auto parameter = Parameter::GetInstance();
+
 	// プレイヤー戦車の生成
-	m_player = std::make_unique<PlayerTank>(0, Parameter::GetInstance()->GetPlayerPosition());
+	m_player = std::make_unique<PlayerTank>(0, parameter->GetPlayerPosition());
 	m_player->Initialize();
 
 	// 設定した戦車の数に応じた戦車の生成
 	switch (SharedData::GetInstance()->GetTankCount())
 	{
 		case 1:
-			m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 6.0f, 0.0f, -6.0f }));
+			m_enemies.push_back(std::make_unique<EnemyTank>(1, parameter->GetEnemyPosition(0)));
 			break;
 		case 2:
-			m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 6.0f, 0.0f, -6.0f }));
-			m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -6.0f, 0.0f, -6.0f }));
+			m_enemies.push_back(std::make_unique<EnemyTank>(1, parameter->GetEnemyPosition(0)));
+			m_enemies.push_back(std::make_unique<EnemyTank>(2, parameter->GetEnemyPosition(1)));
 			break;
 		case 3:
-			m_enemies.push_back(std::make_unique<EnemyTank>(1, Vector3{ 6.0f, 0.0f, -6.0f }));
-			m_enemies.push_back(std::make_unique<EnemyTank>(2, Vector3{ -6.0f, 0.0f, -6.0f }));
-			m_enemies.push_back(std::make_unique<EnemyTank>(3, Vector3{ 6.0f, 0.0f, 6.0f }));
+			m_enemies.push_back(std::make_unique<EnemyTank>(1, parameter->GetEnemyPosition(0)));
+			m_enemies.push_back(std::make_unique<EnemyTank>(2, parameter->GetEnemyPosition(1)));
+			m_enemies.push_back(std::make_unique<EnemyTank>(3, parameter->GetEnemyPosition(2)));
 			break;
 		default:
 			break;
@@ -407,28 +409,3 @@ void PlayScene::CreateTanks()
 		enemy->Initialize();
 	}
 }
-
-//---------------------------------------------------------
-// カメラタイプを変更する
-//---------------------------------------------------------
-void PlayScene::ChangeCameraType()
-{
-	// 選択されていない方のカメラタイプにする
-	switch (m_cameraType)
-	{
-		case PlayScene::TPS:
-			m_cameraType = CameraType::DEBUG;
-			// マウスカーソルの解放
-			InputManager::GetInstance()->UnLockMouseCursor();
-			break;
-		case PlayScene::DEBUG:
-			m_cameraType = CameraType::TPS;
-			// マウスカーソルの固定
-			InputManager::GetInstance()->LockMouseCursor();
-			break;
-		default:
-			break;
-	}
-}
-
-

@@ -19,6 +19,13 @@ class Fade;
 class TitleScene final :
     public IScene
 {
+private:
+	static constexpr int FLOOR_SIZE = 20;
+	static constexpr float CAMERA_DISTANCE = 1.0f;
+	static constexpr float CAMERA_HEIGHT = 3.0f;
+	static constexpr DirectX::SimpleMath::Vector3 CAMERA_EYE_POSITION = DirectX::SimpleMath::Vector3(0.0f, 5.0f, 5.0f);
+	static constexpr RECT UI_POS = { 400,500,920,620 };
+
 public:
 	// コンストラクタ
 	TitleScene();

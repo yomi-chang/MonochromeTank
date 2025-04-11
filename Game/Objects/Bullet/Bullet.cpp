@@ -14,7 +14,7 @@
 //-------------------------------------------------------------------
 Bullet::Bullet(IBullet::BulletState bulletState)
 	:
-	m_graphics{Graphics::GetInstance()},
+	m_graphics{ Graphics::GetInstance() },
 	m_position{},
 	m_rotation{},
 	m_velocity{},
@@ -22,7 +22,8 @@ Bullet::Bullet(IBullet::BulletState bulletState)
 	m_bulletState{ bulletState },
 	m_collider{},
 	m_bullet{},
-	m_count{}
+	m_count{},
+	m_trail{}
 {
 }
 
@@ -49,7 +50,7 @@ void Bullet::Initialize()
 
 	// トレイルの作成
 	m_trail = std::make_unique<BulletTrail>();
-	m_trail->Initialize(2);
+	m_trail->Initialize(Parameter::GetInstance()->GetBulletMaxTrail());
 
 	// 弾の生存時間の設定
 	m_count = Parameter::GetInstance()->GetBulletSurvivalTime();
@@ -68,7 +69,8 @@ void Bullet::Update(float time)
 	// 使用可能もしくは使用済みの場合
 	if (m_bulletState == USED)
 	{
-
+		// トレイルの座標の削除
+		m_trail->DeletePosBuffer();
 		return;
 	}
 	else if(m_bulletState == UNUSED)
@@ -116,12 +118,11 @@ void Bullet::Render()
 	DrawBullet();
 
 	// トレイルの描画
-	Vector3 head = m_position;
-	head.y += 0.2f;
-	Vector3 tail = m_position;
-	tail.y -= 0.2f;
-	m_trail->SetPosition(head, tail);
-	//m_trail->Render();
+	Vector3 width = Matrix::CreateFromQuaternion(m_rotation).Right() * Parameter::GetInstance()->GetBulletWidth();
+	Vector3 right = m_position + width;
+	Vector3 left = m_position - width;
+	m_trail->SetPosition(right, left);
+	m_trail->Render();
 }
 
 //-------------------------------------------------------------------
