@@ -203,6 +203,9 @@ void PlayerTank::Move(float elapsedTime)
 	if (keyboardState.W && keyboardState.S)
 		velocity = Vector3::Zero;
 		
+	// ˆÚ“®‚à‚µ‚­‚Í‰ñ“]‚ğ‚µ‚Ä‚¢‚È‚¢‚È‚ç‘ŠúƒŠƒ^[ƒ“
+	if (angle == 0.0f && velocity == Vector3::Zero) { return; }
+
 	// ˆÚ“®‚³‚¹‚é
 	m_tank->GetBody()->Move(velocity);
 	// ‰ñ“]‚³‚¹‚é
@@ -216,12 +219,17 @@ void PlayerTank::RotateTurretCannon()
 {
 	// ƒ}ƒEƒXƒXƒe[ƒg‚Ìæ“¾
 	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
-
 	// ƒpƒ‰ƒ[ƒ^‚Ìæ“¾
 	const auto& parameter = Parameter::GetInstance();
 
 	// –C“ƒ‚Ì‰ñ“]—Ê
 	float rotationY = static_cast<float>(mouseState.x) * 0.001f;
+	// –Cg‚Ì‰ñ“]—Ê
+	float rotationX = static_cast<float>(mouseState.y) * 0.001f;
+
+	// ‰ñ“]‚µ‚Ä‚¢‚È‚¢‚È‚ç‘ŠúƒŠƒ^[ƒ“
+	if (rotationY == 0.0f && rotationX == 0.0f) { return; }
+
 	// –C“ƒŠp“x‚ğƒIƒCƒ‰[Šp‚É•ÏŠ·
 	float eulerAngle = m_tank->GetTurretRotation().ToEuler().y - rotationY;
 	// –C“ƒ‰ñ“]‚Ì§ŒÀ
@@ -230,9 +238,7 @@ void PlayerTank::RotateTurretCannon()
 	eulerAngle = mylib::Clamp(eulerAngle, min, max);
 	// ‰ñ“]î•ñ‚ğ–C“ƒ‚É“`‚¦‚é
 	m_tank->GetTurret()->RotateTurret(eulerAngle);
-
-	// –Cg‚Ì‰ñ“]—Ê
-	float rotationX = static_cast<float>(mouseState.y) * 0.001f;
+	
 	// –CgŠp“x‚ğƒIƒCƒ‰[Šp‚É•ÏŠ·(ó‚¯æ‚Á‚½’l‚ğ•ÏŠ·)
 	eulerAngle = m_tank->GetCannonRotation().ToEuler().x - rotationX;
 	// –Cg‰ñ“]‚Ì§ŒÀ

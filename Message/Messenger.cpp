@@ -44,7 +44,7 @@ void Messenger::Dispatch(int objectID, Message::MessageID messageID)
 	// メッセージを送信するオブジェクトが見つかった場合
 	if (it != m_objects.end())
 	{
-		// 送信するオブジェクトのメッセージハンドラを呼び出す
+		// 送信するオブジェクトあのメッセージハンドラを呼び出す
 		it->second->OnMessegeAccepted(messageID);
 	}
 }

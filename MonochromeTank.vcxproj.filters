@@ -129,6 +129,7 @@
     <ClInclude Include="Message\Messenger.h" />
     <ClInclude Include="Interface\IObserver.h" />
     <ClInclude Include="Game\Other\ProgressionManager.h" />
+    <ClInclude Include="Game\EnemyAi\Shot.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -200,6 +201,7 @@
     <ClCompile Include="Game\Other\Parameter.cpp" />
     <ClCompile Include="Message\Messenger.cpp" />
     <ClCompile Include="Game\Other\ProgressionManager.cpp" />
+    <ClCompile Include="Game\EnemyAi\Shot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

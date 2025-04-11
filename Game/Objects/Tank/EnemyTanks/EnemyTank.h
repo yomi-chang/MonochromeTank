@@ -15,6 +15,7 @@ class SelectAction;
 class Patrol;
 class Tracking;
 class Attack;
+class Shot;
 class SphereCollider;
 
 class EnemyTank : IObject
@@ -56,14 +57,13 @@ private:
 
 	// 追跡対象の戦車
 	Tank* m_targetTank;
-	// 全戦車の情報
-	std::vector<Tank*> m_tanks;
 
 	// AI関係
 	std::unique_ptr<SelectAction> m_selectAction;	// 行動選択
 	std::unique_ptr<Patrol> m_patrol;				// 巡回行動
 	std::unique_ptr<Tracking> m_tracking;			// 追跡行動
 	std::unique_ptr<Attack> m_attack;				// 攻撃行動
+	std::unique_ptr<Shot> m_shot;					// 射撃行動
 
 	// 現在の状態
 	IState* m_currentState;
