@@ -97,7 +97,6 @@ private:
     InputManager* m_inputManager;
 
     // Device resources.
-    //std::unique_ptr<DX::DeviceResources>    m_deviceResources;
     DX::DeviceResources* m_deviceResources;
 
     // ウィンドウハンドル

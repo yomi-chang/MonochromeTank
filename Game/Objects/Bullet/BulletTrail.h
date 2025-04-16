@@ -8,6 +8,16 @@ class Graphics;
 
 class BulletTrail
 {
+public:
+	// コンストラクタ
+	BulletTrail();
+	// デストラクタ
+	~BulletTrail();
+	// 初期化処理
+	void Initialize(int trailCount);
+	// 描画処理 
+	void Render();
+
 private:
 	// 弾の座標
 	struct PosBuffer
@@ -29,11 +39,8 @@ private:
 	int m_maxTrail;
 
 public:
-	BulletTrail();
-	~BulletTrail() = default;
-	// 初期化処理　長さを決める
-	void Initialize(int trailCount);
-	void Render();											//描画
+	// 座標の受け取り
 	void SetPosition(DirectX::SimpleMath::Vector3 top, DirectX::SimpleMath::Vector3 bottom);
+	// 配列の削除
 	void DeletePosBuffer() { m_posArray.clear(); }
 };

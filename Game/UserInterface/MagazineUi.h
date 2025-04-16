@@ -24,6 +24,16 @@ private:
 	static constexpr int BASE_POS_X = 15;
 	static constexpr float FONT_SCALE = 3.0f;
 
+public:
+	// コンストラクタ
+	MagazineUi();
+	// デストラクタ
+	~MagazineUi() = default;
+	// 初期化処理
+	void Initialize();
+	// 描画処理
+	void Render();
+
 private:
 	// グラフィックス
 	Graphics* m_graphics;
@@ -39,37 +49,22 @@ private:
 	ID3D11ShaderResourceView* m_frameTexture;
 	ID3D11ShaderResourceView* m_reloadTexture;
 	ID3D11ShaderResourceView* m_gaugeTexture;
-
 	// スプライトバッチ
 	DirectX::SpriteBatch* m_spriteBatch;
-	
 	// ゲージ座標
 	RECT m_reloadPos;
 
-	
 public:
-	// コンストラクタ
-	MagazineUi();
-	// デストラクタ
-	~MagazineUi() = default;
-	// 初期化処理
-	void Initialize();
-	// 描画処理
-	void Render();
+	// プレイヤー設定
+	void SetPlayer(PlayerTank* player) { m_player = player; }
+	// 選択されている弾のUI
+	void MainBulletUi();
+	// 選択されていない弾のUI
+	void SubBulletUi();
+	// 残弾数の確認
+	int CheckBulletValue();
 
 private:
 	// テクスチャの読み込み
 	void LoadTexture();
-
-public:
-	void SetPlayer(PlayerTank* player) { m_player = player; }
-
-	// 選択されている弾のUI
-	void MainBulletUi();
-
-	// 選択されていない弾のUI
-	void SubBulletUi();
-
-	// 残弾数の確認
-	int CheckBulletValue();
 };

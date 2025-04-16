@@ -9,6 +9,7 @@
 #include "Framework/Resources.h"
 #include "Game/Other/SharedData.h"
 
+// ƒQ[ƒ€I—¹‚ÌŠÖ”
 extern void ExitGame() noexcept;
 
 using namespace DirectX;

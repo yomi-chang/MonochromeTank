@@ -21,9 +21,6 @@ public:
 	};
 
 public:
-	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
-
-public:
 	// コンストラクタ
 	Wall(
 		DirectX::SimpleMath::Vector3 scale,
@@ -38,6 +35,20 @@ public:
 	void Render();
 	// 終了処理
 	void Finalize();
+
+private:
+	std::unique_ptr<DirectX::GeometricPrimitive> m_model;		// ジオメトリックプリミティブ
+	DirectX::SimpleMath::Vector3 m_position;					// 座標	
+	std::unique_ptr<BoxCollider> m_collider;					// コライダー
+	mylib::FollowCamera* m_camera;								// カメラ
+	Graphics* m_graphics;										// グラフィックス	
+	DirectX::SimpleMath::Vector4 m_color;						// カラー
+	WallType m_wallType;										// 壁の種類
+	bool m_isActive;
+
+public:
+	// カメラの設定
+	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 	// コライダーの取得
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
 	// コライダーのポインタの取得
@@ -49,15 +60,6 @@ public:
 	// 壁が上がっているかどうかの取得
 	bool GetActiveWall() { return m_isActive; }
 
-private:
-	std::unique_ptr<DirectX::GeometricPrimitive> m_model;		// ジオメトリックプリミティブ
-	DirectX::SimpleMath::Vector3 m_position;					// 座標	
-	std::unique_ptr<BoxCollider> m_collider;					// コライダー
-	mylib::FollowCamera* m_camera;								// カメラ
-	Graphics* m_graphics;										// グラフィックス	
-	DirectX::SimpleMath::Vector4 m_color;						// カラー
-	WallType m_wallType;										// 壁の種類
-	bool m_isActive;
 private:
 	// 衝突判定
 	void DetectCollision();

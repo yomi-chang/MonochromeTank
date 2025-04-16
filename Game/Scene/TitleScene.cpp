@@ -20,19 +20,23 @@
 using namespace DirectX;
 using namespace DirectX::SimpleMath;
 
+// ゲーム終了の関数
+extern void ExitGame() noexcept;
+
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
 TitleScene::TitleScene()
 	:
-	m_graphics{ Graphics::GetInstance()},
+	m_graphics{ Graphics::GetInstance() },
 	m_titleLogo{},
-	m_pressSpace{},
-	m_texCenter{},
+	m_cursorUi{},
 	m_isChangeScene{},
 	m_floor{},
 	m_tanks{},
-	m_fade{}
+	m_fade{},
+	m_currentSelectUi{},
+	m_cursorAngle{}
 {
 }
 
@@ -54,31 +58,8 @@ void TitleScene::Initialize()
 
 	// 画像の受け取り
 	m_titleLogo = Resources::GetInstance()->GetTitleLogoTexture();
-	m_pressSpace = Resources::GetInstance()->GetPressSpaceTexture();
-
-
-	// 一時的な変数の宣言
-	Microsoft::WRL::ComPtr<ID3D11Resource> resource{};
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D{};
-	D3D11_TEXTURE2D_DESC desc{};
-	Vector2 texSize{};
-
-	// テクスチャの情報を取得する================================
-	// テクスチャをID3D11Resourceとして見る
-	m_titleLogo->GetResource(resource.ReleaseAndGetAddressOf());
-
-	// ID3D11ResourceをID3D11Texture2Dとして見る
-	resource.As(&tex2D);
-
-	// テクスチャ情報を取得する
-	tex2D->GetDesc(&desc);
-
-	// テクスチャサイズを取得し、float型に変換する
-	texSize.x = static_cast<float>(desc.Width);
-	texSize.y = static_cast<float>(desc.Height);
-
-	// テクスチャの中心位置を計算する
-	m_texCenter = texSize / 2.0f;
+	m_titleText = Resources::GetInstance()->GetTitleTextTexture();
+	m_cursorUi = Resources::GetInstance()->GetCursorTexture();
 
 	// 床の生成
 	m_floor = std::make_unique<Floor>(FLOOR_SIZE);
@@ -120,6 +101,9 @@ void TitleScene::Initialize()
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
+
+	// 初期に選択されているUIの設定
+	m_currentSelectUi = UI::START;
 }
 
 //---------------------------------------------------------
@@ -129,15 +113,19 @@ void TitleScene::Update(float elapsedTime)
 {
 	// 宣言をしたが、実際は使用していない変数
 	UNREFERENCED_PARAMETER(elapsedTime);
+
 	// フェード
 	m_fade->Update(elapsedTime);
+
 	// 敵戦車の更新
 	for (auto& tank : m_tanks)
 	{
 		tank->Update(elapsedTime);
 	}
+
 	// カメラを更新する
 	m_camera->Update(elapsedTime);
+
 	// フェードイン中でフェードが終了しているならシーン遷移
 	if (m_fade->GetFadeType() == Fade::FADEIN &&
 		m_fade->FinishFade())
@@ -146,11 +134,26 @@ void TitleScene::Update(float elapsedTime)
 	}
 	// フェードが終了していないなら早期リターン
 	if (!m_fade->FinishFade()){ return; }
+
 	// キーボードステートの取得
 	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
-	// スペースキーが押されたらフェード開始
+
+	// スペースキーが押された場合
 	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
-		m_fade->FadeIn();
+	{
+		// 選択されているUIごとの実行
+		this->PressSelectUi();
+	}
+
+	// 上キーか下キーが押されたらカーソル移動
+	if (kbTracker->IsKeyPressed(DirectX::Keyboard::W) ||
+		kbTracker->IsKeyPressed(DirectX::Keyboard::S))
+	{
+		// カーソル移動
+		this->MoveCursor();
+	}
+
+	m_cursorAngle += elapsedTime * CURSOR_SPEED;
 }
 
 //---------------------------------------------------------
@@ -178,31 +181,8 @@ void TitleScene::Render()
 		tank->Render();
 	}
 
-	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
-
-	// ロゴの描画位置を決める
-	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
-	// 画像の中心を計算する
-	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
-
-	// ロゴを描画する
-	spriteBatch->Draw(
-		m_titleLogo,		
-		pos,				
-		nullptr,			
-		Colors::White,		
-		0.0f,				
-		m_texCenter,		
-		1.5f				
-	);
 	// UIの描画
-	spriteBatch->Draw(
-		m_pressSpace,
-		UI_POS
-	);
-	// スプライトバッチの終わり
-	spriteBatch->End();
+	this->DrawUi();
 
 	// シーン遷移用
 	m_fade->Render();
@@ -229,4 +209,101 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
+}
+
+//---------------------------------------------------------
+// UIの描画
+//---------------------------------------------------------
+void TitleScene::DrawUi()
+{
+	auto states = m_graphics->GetCommonStates();
+	auto spriteBatch = m_graphics->GetSpriteBatch();
+
+	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
+	spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
+
+	// ロゴを描画する
+	Vector2 pos{ Screen::CENTER_X, Screen::BOTTOM / 3.0f };
+	spriteBatch->Draw(
+		m_titleLogo,
+		pos,
+		nullptr,
+		Colors::White,
+		0.0f,
+		mylib::GetTextureCenter(m_titleLogo),
+		LOGO_SCALE
+	);
+
+	// タイトルテキストの表示
+	pos = { Screen::CENTER_X, Screen::CENTER_Y + Screen::CENTER_Y / 2 };
+	spriteBatch->Draw(
+		m_titleText,
+		pos,
+		nullptr,
+		Colors::White,
+		0.0f,
+		mylib::GetTextureCenter(m_titleText),
+		TITLE_TEXT_SCALE
+	);
+
+	// 選択しているUI
+	switch (m_currentSelectUi)
+	{
+	case TitleScene::START:
+		spriteBatch->Draw(
+			m_cursorUi,
+			Vector2(Screen::CENTER_X - 200, Screen::CENTER_Y + 120),
+			nullptr,
+			Colors::White,
+			m_cursorAngle,
+			mylib::GetTextureCenter(m_cursorUi),
+			CURSOR_SCALE
+		);
+		break;
+	case TitleScene::EXIT:
+		spriteBatch->Draw(
+			m_cursorUi,
+			Vector2(Screen::CENTER_X - 200, Screen::CENTER_Y + Screen::BOTTOM / 3),
+			nullptr,
+			Colors::White,
+			m_cursorAngle,
+			mylib::GetTextureCenter(m_cursorUi),
+			CURSOR_SCALE
+		);
+		break;
+	default:
+		break;
+	}
+
+	// スプライトバッチの終わり
+	spriteBatch->End();
+}
+
+//---------------------------------------------------------
+// カーソルの移動
+//---------------------------------------------------------
+void TitleScene::MoveCursor()
+{
+	// 選択されていない方のUIを選択する
+	m_currentSelectUi = m_currentSelectUi == UI::START ? UI::EXIT : UI::START;
+}
+
+//---------------------------------------------------------
+// 選択されているUIの決定
+//---------------------------------------------------------
+void TitleScene::PressSelectUi()
+{
+	switch (m_currentSelectUi)
+	{
+	case TitleScene::START:
+		// フェード開始
+		m_fade->FadeIn();
+		break;
+	case TitleScene::EXIT:
+		// ゲーム終了
+		ExitGame();
+		break;
+	default:
+		break;
+	}
 }

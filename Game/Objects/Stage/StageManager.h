@@ -40,13 +40,10 @@ private:
 	std::unique_ptr<SkySphere> m_skySphere;							// 天球
 	std::unique_ptr<WallGimmick> m_wallGimmick;					// 壁ギミック
 	std::vector<std::unique_ptr<FixedTurret>> m_fixedTurrets;		// 固定砲台
-
 	// 配列サイズの宣言
 	static const int STAGESIZE = 20;
-
 	// 土台
 	int m_base[STAGESIZE][STAGESIZE];
-
 	// データを入れておくサイズ
 	int m_data[STAGESIZE][STAGESIZE];
 
@@ -56,8 +53,6 @@ public:
 		std::vector<Tank*> tanks,
 		mylib::FollowCamera* camera
 	);
-
-	// ステージのデータを渡す
 	// 壁の情報を渡す
 	std::vector<Wall*> GetWalls() 
 	{
@@ -68,10 +63,8 @@ public:
 		}
 		return wallPointers;
 	}
-
 	// 壁ギミックの情報を渡す
 	WallGimmick* GetWallGimmick() { return m_wallGimmick.get(); }
-
 	// 固定砲台の情報を渡す
 	std::vector<FixedTurret*> GetFixedTurrets()
 	{
@@ -82,14 +75,12 @@ public:
 		}
 		return turretPointers;
 	}
-
 	// 壁を上げる処理
 	void MoveWall();
 
 private:
 	// 外部ファイルの読み込み
 	void LoadFile();
-
 	// ステージの生成
 	void CreateStage();
 };

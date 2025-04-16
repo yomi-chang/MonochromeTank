@@ -17,7 +17,6 @@ public:
 private:
 	// コンストラクタ
 	Parameter();
-
 	// 代入は許容しない
 	void operator=(const Parameter& object) = delete;
 	// コピーコンストラクタは許容しない
@@ -135,7 +134,6 @@ public:
 	// 巡回ルートの取得
 	std::vector<DirectX::SimpleMath::Vector3> GetPatrolRoute(int routeNumber) { return m_patrolRoutes.at(routeNumber); }
 
-	
 private:
 	// Parameterクラスのインスタンスへのポインタ
 	static std::unique_ptr<Parameter> m_parameter;	

@@ -25,11 +25,22 @@ public:
 private:
 	// コンストラクタ
 	SharedData();
-
 	// 代入は許容しない
 	void operator=(const SharedData& object) = delete;
 	// コピーコンストラクタは許容しない
 	SharedData(const SharedData& object) = delete;
+
+private:
+	// SharedDataクラスのインスタンスへのポインタ
+	static std::unique_ptr<SharedData> m_sharedData;
+	// サウンドマネージャー
+	mylib::SoundManager* m_soundManager;
+	// 勝利した戦車情報
+	std::unique_ptr<Tank> m_winnerTank;
+	// 戦車の数
+	int m_tankCount;
+	// ステージ
+	std::string m_stageName;
 
 public:
 	// 勝利した戦車情報の設定
@@ -38,7 +49,6 @@ public:
 	}
 	// 勝利した戦車情報の取得
 	Tank* GetWinnerTank() { return m_winnerTank.get(); }
-
 	// セレクトのデータの設定
 	void SetSelectData(int tankCount, std::string stageName)
 	{
@@ -47,30 +57,11 @@ public:
 	}
 	// 戦車の数の取得
 	int GetTankCount() { return m_tankCount; }
-
-	// ステージ名
+	// ステージ名の取得
 	std::string GetStageName() { return m_stageName; }
-
 	// サウンドマネージャの設定
 	void SetSoundManager(mylib::SoundManager* soundManager) { m_soundManager = soundManager; }
-
 	// サウンドマネージャの取得
 	mylib::SoundManager* GetSoundManager() { return m_soundManager; }
-
-private:
-	// SharedDataクラスのインスタンスへのポインタ
-	static std::unique_ptr<SharedData> m_sharedData;
-
-	// サウンドマネージャー
-	mylib::SoundManager* m_soundManager;
-
-	// 勝利した戦車情報
-	std::unique_ptr<Tank> m_winnerTank;
-
-	// 戦車の数
-	int m_tankCount;
-
-	// ステージ
-	std::string m_stageName;
 };
 

@@ -33,11 +33,12 @@ public:
 	ID3D11ShaderResourceView* GetSettingTexture() { return m_settingTexture.Get(); }		// 設定フレームテクスチャ
 	ID3D11ShaderResourceView* GetCountTextTexture() { return m_countTextTexture.Get(); }	// 戦車のカウント用テキストテクスチャ
 	ID3D11ShaderResourceView* GetStageTextTexture() { return m_stageTextTexture.Get(); }	// ステージ用テキストテクスチャ
-	ID3D11ShaderResourceView* GetSelectTexture() { return m_selectTexture.Get(); }			// 設定選択テクスチャ
+	ID3D11ShaderResourceView* GetCursorTexture() { return m_cursorTexture.Get(); }			// 設定カーソルテクスチャ
 	ID3D11ShaderResourceView* GetResultTexture() { return m_resultTexture.Get(); }			// リザルトテクスチャ
 	ID3D11ShaderResourceView* GetSkipTexture() { return m_skipTexture.Get(); }				// スキップテクスチャ
 	ID3D11ShaderResourceView* GetPressSpaceTexture() { return m_pressSpaceTexture.Get(); }	// プレススペーステクスチャ
 	ID3D11ShaderResourceView* GetTankCountTexture() { return m_tankCountTexture.Get(); }	// プレイシーン戦車カウントテクスチャ
+	ID3D11ShaderResourceView* GetTitleTextTexture() { return m_titleTextTexture.Get(); }	// タイトルテキストテクスチャ
 
 	ID3D11ShaderResourceView* GetBlackSmokeTexture() { return m_blackSmokeTexture.Get(); }	// 破壊演出テクスチャ
 	ID3D11ShaderResourceView* GetDamageEffectTexture() { return m_damageEffectTexture.Get(); }	// 破壊演出テクスチャ
@@ -82,11 +83,12 @@ private:
 		m_settingTexture{},
 		m_countTextTexture{},
 		m_stageTextTexture{},
-		m_selectTexture{},
+		m_cursorTexture{},
 		m_resultTexture{},
 		m_skipTexture{},
 		m_pressSpaceTexture{},
 		m_tankCountTexture{},
+		m_titleTextTexture{},
 
 		m_blackSmokeTexture{},
 		m_damageEffectTexture{}
@@ -152,8 +154,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_countTextTexture;
 	// ステージ用テキストテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_stageTextTexture;
-	// 設定選択テクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_selectTexture;
+	// 設定カーソルテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_cursorTexture;
 	// リザルトテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_resultTexture;
 	// スキップUIテクスチャ
@@ -162,6 +164,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pressSpaceTexture;
 	// プレイシーン戦車カウントテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tankCountTexture;
+	// タイトルテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_titleTextTexture;
 
 	// エフェクトテクスチャ============================================
 	// 破壊演出テクスチャ

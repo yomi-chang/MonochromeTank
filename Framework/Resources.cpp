@@ -174,12 +174,12 @@ void Resources::LoadResource()
 		m_stageTextTexture.ReleaseAndGetAddressOf()
 	);
 
-	//	設定選択テクスチャのロード 
+	//	設定カーソルテクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
 		L"Resources\\Textures\\Gear.png",
 		nullptr,
-		m_selectTexture.ReleaseAndGetAddressOf()
+		m_cursorTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	リザルトテクスチャのロード 
@@ -212,6 +212,14 @@ void Resources::LoadResource()
 		L"Resources\\Textures\\TanksTexture.png",
 		nullptr,
 		m_tankCountTexture.ReleaseAndGetAddressOf()
+	);
+
+	//	タイトルテキストテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\TitleText.png",
+		nullptr,
+		m_titleTextTexture.ReleaseAndGetAddressOf()
 	);
 
 

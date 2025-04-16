@@ -218,6 +218,8 @@ void EnemyTank::OnMessegeAccepted(Message::MessageID messageID)
 		// UŒ‚s“®‚É‘JˆÚ
 		this->ChangeState(m_attack.get());
 		break;
+	default:
+		break;
 	}
 
 	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìİ’è

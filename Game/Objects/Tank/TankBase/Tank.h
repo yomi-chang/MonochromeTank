@@ -30,8 +30,6 @@ public:
 	static constexpr DirectX::SimpleMath::Vector3 COLLIDER_SIZE = DirectX::SimpleMath::Vector3(1.3f, 0.7f, 1.3f);
 	// コライダーを上にずらす
 	static constexpr float COLLIDER_POSITION = 0.5f;
-	// 体力
-	static constexpr float DEFAULT_HP = 10;
 	// 影の半径
 	static constexpr float RADIUS = 1.1f;
 public:

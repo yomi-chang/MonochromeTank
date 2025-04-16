@@ -238,7 +238,7 @@
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
     <ClInclude Include="Libraries\MyLib\FollowCamera.h" />
     <ClInclude Include="Libraries\MyLib\LockOnCamera.h" />
-    <ClInclude Include="Libraries\MyLib\Math.h" />
+    <ClInclude Include="Libraries\MyLib\Utils.h" />
     <ClInclude Include="Libraries\MyLib\MemoryLeakDetector.h" />
     <ClInclude Include="Game\Other\Parameter.h" />
     <ClInclude Include="Message\Message.h" />
@@ -298,7 +298,7 @@
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
     <ClCompile Include="Libraries\MyLib\FollowCamera.cpp" />
     <ClCompile Include="Libraries\MyLib\LockOnCamera.cpp" />
-    <ClCompile Include="Libraries\MyLib\Math.cpp" />
+    <ClCompile Include="Libraries\MyLib\Utils.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Game\Other\Parameter.cpp" />
     <ClCompile Include="Message\Messenger.cpp" />
@@ -319,7 +319,6 @@
     <Manifest Include="settings.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Game\Shader\Trail\BulletTrail.hlsli" />
     <None Include="Game\Shader\Effect.hlsli" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -347,18 +346,6 @@
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">5.0</ShaderModel>
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
       <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Release|x64'">5.0</ShaderModel>
-    </FxCompile>
-    <FxCompile Include="Game\Shader\Trail\BulletTrailPS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Pixel</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Pixel</ShaderType>
-    </FxCompile>
-    <FxCompile Include="Game\Shader\Trail\BulletTrailVS.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Vertex</ShaderType>
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Vertex</ShaderType>
     </FxCompile>
     <FxCompile Include="Game\Shader\StageEffectGS.hlsl">
       <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Geometry</ShaderType>

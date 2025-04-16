@@ -59,7 +59,6 @@ public:
 
 private:
 	Graphics* m_graphics;									// グラフィックス
-
 	bool m_isChangeScene;									// シーンチェンジフラグ
 
 	// カメラ関係
@@ -78,22 +77,16 @@ private:
 
 	// 残弾数UI
 	std::unique_ptr<MagazineUi> m_magazine;
-
 	// シーン遷移
 	std::unique_ptr<Fade> m_fade;
-
 	// スキップUI
 	ID3D11ShaderResourceView* m_skipTexture;
-
 	// ダメージエフェクト
 	std::unique_ptr<DamageEffect> m_damageEffect;
-
 	// ステージエフェクト
 	std::unique_ptr<StageEffect> m_stageEffect;
-
 	// 時間
 	float m_time;
-
 	// 生存している戦車
 	int m_surviveTank;
 

@@ -56,22 +56,11 @@ private:
 	// ダメージを受けたかどうか
 	bool m_isDamage;
 
-
-private:
-	// キーボードイベント
-	void KeyBoardEvent(float elapsedTime);
-	// 移動処理
-	void Move(float elapsedTime);
-	// 回転処理
-	void RotateTurretCannon();
-
 public:
 	// 他戦車情報受け渡し
 	void SetOtherTanks(std::vector<Tank*> tanks);
 	// カメラ情報の受け取り
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
-
-
 	// 座標の取得
 	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; }
 	// 座標の受け取り
@@ -82,16 +71,20 @@ public:
 	TankCannon* GetTankCannon();
 	// 戦車情報の取得
 	Tank* GetTank() { return m_tank.get(); }
-
 	// Tankの所有権を移動する（新しいメソッド）
 	std::unique_ptr<Tank> ReleaseTank() { return std::move(m_tank);}
-	
 	// 死亡しているかどうか
 	bool GetDead() { return m_tank->GetDead(); }
-
 	// ダメージを受けたかどうか
 	bool GetDamage() { return m_isDamage; }
-
 	// メッセージを取得する
 	void OnMessegeAccepted(Message::MessageID messageID);
+
+private:
+	// キーボードイベント
+	void KeyBoardEvent(float elapsedTime);
+	// 移動処理
+	void Move(float elapsedTime);
+	// 回転処理
+	void RotateTurretCannon();
 };

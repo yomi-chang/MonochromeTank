@@ -70,7 +70,7 @@ void FixedTurret::Update(float elapsedTime)
 	}
 
 	// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìİ’è‹y‚Ñ•ÏX
-	ChangeTaegetTank();
+	ChangeTargetTank();
 
 	// ’ÇÕ‘ÎÛ‚ÌíÔ‚ª‚¢‚È‚¢‚È‚çˆ—‚µ‚È‚¢
 	if (m_targetTank == nullptr) { return; }
@@ -216,7 +216,7 @@ void FixedTurret::StartReload()
 //-------------------------------------------------------------------
 // ’ÇÕ‘ÎÛ‚ÌíÔ‚ğ•ÏX‹y‚Ñİ’è‚·‚é
 //-------------------------------------------------------------------
-void FixedTurret::ChangeTaegetTank()
+void FixedTurret::ChangeTargetTank()
 {
 	// ˆê”Ô‹ß‚¢íÔ‚ğ’ÇÕ‘ÎÛ‚É‚·‚é
 	float minDistance = std::numeric_limits<float>::max();

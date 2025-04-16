@@ -19,7 +19,6 @@ public:
 	// 画像のセット
 	void SetTexture(ID3D11ShaderResourceView* texture) { m_texture  = texture; }
 
-
 private:
 	// グラフィックス
 	Graphics* m_graphics;

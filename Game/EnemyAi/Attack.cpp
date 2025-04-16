@@ -4,7 +4,7 @@
 */
 #include "pch.h"
 #include "Game/EnemyAi/Attack.h"
-#include "Libraries/MyLib/Math.h"
+#include "Libraries/MyLib/Utils.h"
 
 //-------------------------------------------------------------------
 // コンストラクタ

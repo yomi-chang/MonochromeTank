@@ -30,12 +30,12 @@ public:
 private:
 	// グラフィックス
 	Graphics* m_graphics;
-	// 速度
-	DirectX::SimpleMath::Vector3 m_velocity;
 	// 位置
 	DirectX::SimpleMath::Vector3 m_position;
 	// 角度
 	DirectX::SimpleMath::Quaternion m_rotation;
+	// 速度
+	DirectX::SimpleMath::Vector3 m_velocity;
 	// ワールド行列
 	DirectX::SimpleMath::Matrix m_worldMatrix;
 	// 弾が発射されているかどうかを示す

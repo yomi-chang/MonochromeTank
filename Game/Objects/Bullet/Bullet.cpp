@@ -22,8 +22,8 @@ Bullet::Bullet(IBullet::BulletState bulletState)
 	m_bulletState{ bulletState },
 	m_collider{},
 	m_bullet{},
-	m_count{},
-	m_trail{}
+	m_trail{},
+	m_count{}
 {
 }
 

@@ -24,7 +24,16 @@ private:
 	static constexpr float CAMERA_DISTANCE = 1.0f;
 	static constexpr float CAMERA_HEIGHT = 3.0f;
 	static constexpr DirectX::SimpleMath::Vector3 CAMERA_EYE_POSITION = DirectX::SimpleMath::Vector3(0.0f, 5.0f, 5.0f);
-	static constexpr RECT UI_POS = { 400,500,920,620 };
+	static constexpr float LOGO_SCALE = 1.8f;
+	static constexpr float TITLE_TEXT_SCALE = 0.8f;
+	static constexpr float CURSOR_SCALE = 1.0f;
+	static constexpr float CURSOR_SPEED = 2.0f;
+
+	enum UI
+	{
+		START,
+		EXIT
+	};
 
 public:
 	// コンストラクタ
@@ -47,9 +56,8 @@ private:
 	Graphics* m_graphics;
 	// テクスチャ
 	ID3D11ShaderResourceView* m_titleLogo;
-	ID3D11ShaderResourceView* m_pressSpace;
-	// テクスチャの半分の大きさ
-	DirectX::SimpleMath::Vector2 m_texCenter;
+	ID3D11ShaderResourceView* m_titleText;
+	ID3D11ShaderResourceView* m_cursorUi;
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 	// カメラ
@@ -60,4 +68,16 @@ private:
 	std::vector<std::unique_ptr<Tank>> m_tanks;
 	// シーン遷移
 	std::unique_ptr<Fade> m_fade;
+	// 選択されているもの
+	UI m_currentSelectUi;
+	// カーソルの角度
+	float m_cursorAngle;
+
+private:
+	// UIの描画
+	void DrawUi();
+	// カーソルの移動
+	void MoveCursor();
+	// 選択されているUIの決定
+	void PressSelectUi();
 };

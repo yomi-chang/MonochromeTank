@@ -87,7 +87,7 @@
     <ClInclude Include="Game\Objects\Bullet\CannonBall.h" />
     <ClInclude Include="Game\Scene\ResultScene.h" />
     <ClInclude Include="Framework\InputManager.h" />
-    <ClInclude Include="Libraries\MyLib\Math.h" />
+    <ClInclude Include="Libraries\MyLib\Utils.h" />
     <ClInclude Include="Game\UserInterface\EnemyHpGauge.h" />
     <ClInclude Include="Game\Objects\Stage\Wall.h" />
     <ClInclude Include="Libraries\MyLib\DebugLog.h" />
@@ -167,7 +167,7 @@
     <ClCompile Include="Game\Objects\Bullet\CannonBall.cpp" />
     <ClCompile Include="Game\Scene\ResultScene.cpp" />
     <ClCompile Include="Framework\InputManager.cpp" />
-    <ClCompile Include="Libraries\MyLib\Math.cpp" />
+    <ClCompile Include="Libraries\MyLib\Utils.cpp" />
     <ClCompile Include="Game\UserInterface\EnemyHpGauge.cpp" />
     <ClCompile Include="Game\Objects\Stage\Wall.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugLog.cpp" />
@@ -214,14 +214,11 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Game\Shader\Effect.hlsli" />
-    <None Include="Game\Shader\Trail\BulletTrail.hlsli" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Game\Shader\StageEffectPS.hlsl" />
     <FxCompile Include="Game\Shader\StageEffectVS.hlsl" />
     <FxCompile Include="Game\Shader\StageEffectGS.hlsl" />
-    <FxCompile Include="Game\Shader\Trail\BulletTrailPS.hlsl" />
-    <FxCompile Include="Game\Shader\Trail\BulletTrailVS.hlsl" />
     <FxCompile Include="Game\Shader\DamageEffectGS.hlsl" />
     <FxCompile Include="Game\Shader\DamageEffectPS.hlsl" />
     <FxCompile Include="Game\Shader\DamageEffectVS.hlsl" />

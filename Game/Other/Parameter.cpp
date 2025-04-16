@@ -81,7 +81,6 @@ Parameter::~Parameter()
 void Parameter::LoadParameter()
 {
     using namespace DirectX;
-
     std::string fileName = "Resources\\Data\\parameter.json";
 
     // ƒtƒ@ƒCƒ‹“Ç‚İ‚İ

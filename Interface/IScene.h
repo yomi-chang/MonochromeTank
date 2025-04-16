@@ -6,6 +6,7 @@
 #include "Game/Other/SharedData.h"
 #include "Game/Other/Sounds.h"
 #include "Libraries/MyLib/SoundManager.h"
+#include "Libraries/MyLib/Utils.h"
 
 class IScene
 {

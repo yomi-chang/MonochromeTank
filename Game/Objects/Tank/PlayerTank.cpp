@@ -14,7 +14,7 @@
 #include "Game/UserInterface/HpGauge.h"
 
 #include "Framework/InputManager.h"
-#include "Libraries/MyLib/Math.h"
+#include "Libraries/MyLib/Utils.h"
 #include "Libraries/MyLib/DebugLog.h"
 #include "Game/Other/Parameter.h"
 

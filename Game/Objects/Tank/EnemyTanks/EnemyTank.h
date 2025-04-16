@@ -20,10 +20,6 @@ class SphereCollider;
 
 class EnemyTank : IObject
 {
-private:
-	// 敵速度
-	static constexpr float TANK_SPEED = 2.0f;
-
 public:
 	// コンストラクタ
 	EnemyTank(
@@ -54,7 +50,6 @@ private:
 	std::unique_ptr<EnemyHpGauge> m_hpGauge;
 	// タイマー
 	float m_time;
-
 	// 追跡対象の戦車
 	Tank* m_targetTank;
 

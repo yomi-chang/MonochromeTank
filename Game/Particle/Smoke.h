@@ -23,7 +23,6 @@ public:
 private:
 	// 煙画像
 	ID3D11ShaderResourceView* m_smokeTexture;
-
 	// エフェクトの再生中かどうか
 	bool m_isPlay;
 	// 不透明度

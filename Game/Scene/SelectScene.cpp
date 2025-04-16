@@ -250,7 +250,7 @@ void SelectScene::Render()
 
 	// ƒJ[ƒ\ƒ‹
 	spriteBatch->Draw(
-		m_resources->GetSelectTexture(),
+		m_resources->GetCursorTexture(),
 		m_selectPos,
 		nullptr,
 		DirectX::Colors::White,

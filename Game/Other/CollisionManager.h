@@ -24,6 +24,14 @@ public:
 	// 更新処理
 	void Update();
 
+private:
+	// 各オブジェクト
+	std::vector<Tank*> m_tanks;					// 戦車
+	mylib::FollowCamera* m_camera;				// カメラ		
+	std::vector<FixedTurret*> m_fixedTurrets;	// 固定砲台
+	std::vector<Wall*> m_walls;					// 壁
+	WallGimmick* m_wallGimmick;					// 壁ギミック
+
 public:
 	// オブジェクトの設定
 	void SetObjectData(
@@ -40,13 +48,6 @@ public:
 		m_walls = walls;
 		m_wallGimmick = wallGimmick;
 	}
-private:
-	// 各オブジェクト
-	std::vector<Tank*> m_tanks;					// 戦車
-	mylib::FollowCamera* m_camera;				// カメラ		
-	std::vector<FixedTurret*> m_fixedTurrets;	// 固定砲台
-	std::vector<Wall*> m_walls;					// 壁
-	WallGimmick* m_wallGimmick;					// 壁ギミック
 
 private:
 	// 戦車と連射弾の当たり判定

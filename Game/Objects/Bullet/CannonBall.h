@@ -22,7 +22,7 @@ public:
 	inline void Update(float time);
 	// •`‰æˆ— 
 	inline void Render();
-	// ’e•`‰æ
+	// ’e•`‰æˆ—
 	inline void DrawBullet();
 	// I—¹ˆ— 
 	void Finalize();

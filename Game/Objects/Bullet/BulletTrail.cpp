@@ -7,15 +7,30 @@
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 
+//-------------------------------------------------------------------
+// コンストラクタ
+//-------------------------------------------------------------------
 BulletTrail::BulletTrail()
 	:
 	m_posArray{},
+	m_inputLayout{},
+	m_basicEffect{},
 	m_primitiveBatch{},
 	m_maxTrail{},
 	m_graphics{ Graphics::GetInstance()}
 {
 }
 
+//-------------------------------------------------------------------
+// デストラクタ
+//-------------------------------------------------------------------
+BulletTrail::~BulletTrail()
+{
+}
+
+//-------------------------------------------------------------------
+// 初期化処理
+//-------------------------------------------------------------------
 void BulletTrail::Initialize(int trailCount)
 {
 	using namespace DirectX;
@@ -43,12 +58,15 @@ void BulletTrail::Initialize(int trailCount)
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 }
 
+//-------------------------------------------------------------------
+// 描画処理
+//-------------------------------------------------------------------
 void BulletTrail::Render()
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
-	// 座標情報が2つ未満なら早期リターン
+	// 座標情報が2つないなら早期リターン
 	if (m_posArray.size() <= 1) { return; }
 
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
@@ -73,7 +91,7 @@ void BulletTrail::Render()
 	m_basicEffect->SetTexture(Resources::GetInstance()->GetBoxTexture());
 	m_basicEffect->Apply(context);
 
-	// bufferSize分回す
+	// 座標設定
 	for (int i = 1; i < m_posArray.size(); i++)
 	{
 		VertexPositionTexture vertex[4] =
@@ -89,7 +107,9 @@ void BulletTrail::Render()
 	}
 }
 
+//-------------------------------------------------------------------
 // 座標の受け取り
+//-------------------------------------------------------------------
 void BulletTrail::SetPosition(DirectX::SimpleMath::Vector3 top, DirectX::SimpleMath::Vector3 bottom)
 {
 	// 古い座標を削除
