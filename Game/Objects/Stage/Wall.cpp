@@ -6,14 +6,13 @@
 #include "Game/Objects/Stage/Wall.h"
 #include "Framework/Graphics.h"
 #include "Libraries/MyLib/FollowCamera.h"
-#include "Libraries/MyLib/DebugLog.h"
 
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
 Wall::Wall(
-	DirectX::SimpleMath::Vector3 scale,
-	DirectX::SimpleMath::Vector3 position,
+	const DirectX::SimpleMath::Vector3& scale,
+	const DirectX::SimpleMath::Vector3& position,
 	WallType type
 )
 	:

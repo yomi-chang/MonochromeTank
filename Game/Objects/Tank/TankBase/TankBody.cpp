@@ -136,7 +136,7 @@ void TankBody::Detach(std::unique_ptr<IParts> parts)
 //---------------------------------------------------------
 // ˆÚ“®ˆ—
 //---------------------------------------------------------
-void TankBody::Move(DirectX::SimpleMath::Vector3 velocity)
+void TankBody::Move(const DirectX::SimpleMath::Vector3& velocity)
 {
 	// ‘¬“x‚Ì‰ÁZ
 	m_currentPosition += velocity;
@@ -145,7 +145,7 @@ void TankBody::Move(DirectX::SimpleMath::Vector3 velocity)
 //---------------------------------------------------------
 // ‰ñ“]ˆ—
 //---------------------------------------------------------
-void TankBody::Rotate(DirectX::SimpleMath::Quaternion rotation)
+void TankBody::Rotate(const DirectX::SimpleMath::Quaternion& rotation)
 {
 	// ‰ñ“]‚ğ‰Á‚¦‚é
 	m_bodyRotation *= rotation;

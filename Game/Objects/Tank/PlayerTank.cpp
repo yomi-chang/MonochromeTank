@@ -14,8 +14,6 @@
 #include "Game/UserInterface/HpGauge.h"
 
 #include "Framework/InputManager.h"
-#include "Libraries/MyLib/Utils.h"
-#include "Libraries/MyLib/DebugLog.h"
 #include "Game/Other/Parameter.h"
 
 //---------------------------------------------------------
@@ -23,7 +21,7 @@
 //---------------------------------------------------------
 PlayerTank::PlayerTank(
 	int tankNumber,
-	DirectX::SimpleMath::Vector3 position
+	const DirectX::SimpleMath::Vector3& position
 )
 	:
 	m_tankNumber{ tankNumber },
@@ -141,8 +139,9 @@ void PlayerTank::KeyBoardEvent(float elapsedTime)
 		// –C’e‚ª”­ŽË‚³‚ê‚½‚Æ‚«‚Ì‚ÝƒJƒƒ‰‚ð—h‚ç‚·
 		if (m_tank->GetCannon()->GetCurrentBullet() == TankCannon::BulletType::CANNONBALL &&
 			m_tank->GetCannon()->GetCannonBall()->GetBulletState() == IBullet::UNUSED)
+		{
 			m_camera->StartShakeCamera(25.0f, 0.05f, 0.5f);
-
+		}
 		// ”­ŽË
 		m_tank->GetCannon()->Shoot();
 	}
@@ -252,7 +251,7 @@ void PlayerTank::RotateTurretCannon()
 //---------------------------------------------------------
 // À•W‚ÌŽó‚¯“n‚µ
 //---------------------------------------------------------
-void PlayerTank::SetPosition(DirectX::SimpleMath::Vector3 position)
+void PlayerTank::SetPosition(const DirectX::SimpleMath::Vector3& position)
 {
 	m_tank->GetBody()->SetCollisionVel(position);
 }

@@ -117,6 +117,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -167,6 +168,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/Zc:__cplusplus %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -234,7 +236,6 @@
     <ClInclude Include="Libraries\Microsoft\ReadData.h" />
     <ClInclude Include="Libraries\Microsoft\RenderTexture.h" />
     <ClInclude Include="Libraries\MyLib\DebugCamera.h" />
-    <ClInclude Include="Libraries\MyLib\DebugLog.h" />
     <ClInclude Include="Libraries\MyLib\DebugString.h" />
     <ClInclude Include="Libraries\MyLib\FollowCamera.h" />
     <ClInclude Include="Libraries\MyLib\LockOnCamera.h" />
@@ -243,6 +244,7 @@
     <ClInclude Include="Game\Other\Parameter.h" />
     <ClInclude Include="Message\Message.h" />
     <ClInclude Include="Message\Messenger.h" />
+    <ClInclude Include="Game\UserInterface\PauseMenu.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Libraries\MyLib\SoundManager.h" />
     <ClInclude Include="Game\Other\ProgressionManager.h" />
@@ -294,7 +296,6 @@
     <ClCompile Include="Libraries\Microsoft\DebugDraw.cpp" />
     <ClCompile Include="Libraries\Microsoft\RenderTexture.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugCamera.cpp" />
-    <ClCompile Include="Libraries\MyLib\DebugLog.cpp" />
     <ClCompile Include="Libraries\MyLib\DebugString.cpp" />
     <ClCompile Include="Libraries\MyLib\FollowCamera.cpp" />
     <ClCompile Include="Libraries\MyLib\LockOnCamera.cpp" />
@@ -302,6 +303,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Game\Other\Parameter.cpp" />
     <ClCompile Include="Message\Messenger.cpp" />
+    <ClCompile Include="Game\UserInterface\PauseMenu.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>

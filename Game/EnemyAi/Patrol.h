@@ -43,13 +43,13 @@ public:
 	void SetOtherTanks(std::vector<Tank*> tanks) { m_otherTanks = tanks; }
 
 	// 巡回地点の追加
-	void AddPatrolPoint(DirectX::SimpleMath::Vector3 point);
+	void AddPatrolPoint(const DirectX::SimpleMath::Vector3& point);
 
 	// 巡回地点の削除
 	void ClearPatrolPoints();
 
 	// 巡回地点の登録
-	void SetPatrolPoints(std::vector<DirectX::SimpleMath::Vector3> patrolPoints);
+	void SetPatrolPoints(const std::vector<DirectX::SimpleMath::Vector3>& patrolPoints);
 
 
 private:

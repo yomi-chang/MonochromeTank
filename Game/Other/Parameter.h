@@ -86,14 +86,14 @@ public:
 	float GetCannonAngleMin() { return m_cannonAngleMin; }
 	float GetCannonAngleMax() { return m_cannonAngleMax; }
 	// é©ã@
-	DirectX::SimpleMath::Vector3 GetPlayerPosition() { return m_playerPosition; }
+	const DirectX::SimpleMath::Vector3& GetPlayerPosition() { return m_playerPosition; }
 	float GetPlayerSpeed() { return m_playerSpeed; }
 	float GetPlayerRotationSpeed() { return m_playerRotationSpeed; }
 	int   GetPlayerHp() { return m_playerHp; }
 	// íe
 	float GetShotInterval() { return m_shotInterval; }
 	// ìGêÌé‘
-	DirectX::SimpleMath::Vector3 GetEnemyPosition(int number) { return m_enemyPositions.at(number); }
+	const DirectX::SimpleMath::Vector3& GetEnemyPosition(int number) { return m_enemyPositions.at(number); }
 	float GetEnemySpeed() { return m_enemySpeed; }
 	float GetEnemyRotationSpeed() { return m_enemyRotationSpeed; }
 	int   GetEnemyHp() { return m_enemyHp; }
@@ -101,7 +101,7 @@ public:
 	int   GetBulletCount() { return m_bulletCount; }
 	float GetBulletReloadTime() { return m_bulletReloadTime; }
 	float GetBulletSurvivalTime() { return m_bulletSurvivalTime; }
-	DirectX::SimpleMath::Vector3 GetBulletSpeed() { return m_bulletSpeed; }
+	const DirectX::SimpleMath::Vector3& GetBulletSpeed() { return m_bulletSpeed; }
 	float GetBulletColliderRadius() { return m_bulletColliderRadius; }
 	int   GetBulletDamage() { return m_bulletDamage; }
 	int   GetBulletMaxTrail() { return m_bulletMaxTrail; }
@@ -109,14 +109,14 @@ public:
 	// ñCíe
 	float GetCannonBallReloadTime() { return m_cannonBallReloadTime; }
 	float GetCannonBallSurvivalTime() { return m_cannonBallSurvivalTime; }
-	DirectX::SimpleMath::Vector3 GetCannonBallSpeed() { return m_cannonBallSpeed; }
-	DirectX::SimpleMath::Vector3 GetCannonBallGravity() { return m_cannonBallGravity; }
+	const DirectX::SimpleMath::Vector3& GetCannonBallSpeed() { return m_cannonBallSpeed; }
+	const DirectX::SimpleMath::Vector3& GetCannonBallGravity() { return m_cannonBallGravity; }
 	float GetCannonBallColliderRadius() { return m_cannonBallColliderRadius; }
 	int   GetCannonBallDamage() { return m_cannonBallDamage; }
 	int   GetCannonBallMaxTrail() { return m_cannonBallMaxTrail; }
 	float GetCannonBallWidth() { return m_cannonBallTrailWidth; }
 	// ï«ÉTÉCÉY
-	DirectX::SimpleMath::Vector3 GetWallSize() { return m_wallSize; }
+	const DirectX::SimpleMath::Vector3& GetWallSize() { return m_wallSize; }
 	// çıìGîÕàÕ
 	float GetScoutRadius() { return m_scoutRadius; }
 	// çUåÇäJénîÕàÕ

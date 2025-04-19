@@ -84,57 +84,42 @@ private:
 	
 public:
 	// 砲身の角度の取得
-	DirectX::SimpleMath::Quaternion GetCannonRotation() { return m_cannonRotation; }
-
+	const DirectX::SimpleMath::Quaternion& GetCannonRotation() { return m_cannonRotation; }
 	// 砲身の回転
 	void RotateCannon(float angle);
-
 	// 砲弾を発射する
 	void ShootBullet(IBullet* bullet);
-
 	// 発射
 	void Shoot();
 	// 発射終了
 	void FinishShoot() { m_isShot = false; }
-
 	// 発射する弾の変更
 	void ChangeBullet();
-
 	// リロード開始
 	void StartReload();
-
 	// Rayが壁と当たったかどうかと当たった座標を設定
 	void SetRayInfo(bool isHit, DirectX::SimpleMath::Vector3 hitPosition);
-
 	// 「連射弾」を参照する
 	std::vector<std::unique_ptr<IBullet>>& GetBullets() { return m_bullets; };
-
 	// 「砲弾」を参照する
 	std::unique_ptr<IBullet>& GetCannonBall() { return m_cannonBall; }
-
 	// 現在の弾情報を渡す
 	BulletType GetCurrentBullet() { return m_bulletType; }
-
 	// リロードがどれだけ完了しているかの割合を渡す
 	float GetCannonReloadRatio() { return 1.0f - (m_reloadCount / Parameter::GetInstance()->GetCannonBallReloadTime()); }
 	float GetBulletReloadRatio() { return 1.0f - (m_reloadCount / Parameter::GetInstance()->GetBulletReloadTime()); }
-
 	// 銃口の座標を取得する
 	DirectX::SimpleMath::Vector3 GetMuzzlePosition();
-
 	// Rayの射程の取得
 	float GetMaxRange() { return Parameter::GetInstance()->GetMaxRange(); }
-
 	// 発射方向の取得
-	DirectX::SimpleMath::Quaternion GetMuzzleRotation() { return m_cannonRotation * m_currentRotation; }
-
+	const DirectX::SimpleMath::Quaternion& GetMuzzleRotation() { return m_cannonRotation * m_currentRotation; }
 	// 照準を表示するかどうかの設定
 	void SetDisplaySight(bool display) { m_displaySight = display; }
 
 private:
 	// リロード処理
 	void Reload(float elapsedTime);
-
 	// ずらした射撃方向を取得する
 	DirectX::SimpleMath::Quaternion GetShotRotation();
 };

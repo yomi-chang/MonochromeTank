@@ -24,7 +24,7 @@ public:
 	// コンストラクタ
 	EnemyTank(
 		int tankNumber,
-		DirectX::SimpleMath::Vector3 position
+		const DirectX::SimpleMath::Vector3& position
 	);
 	// デストラクタ
 	~EnemyTank() override;
@@ -65,13 +65,13 @@ private:
 
 public:
 	// 座標の取得
-	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; }
+	const DirectX::SimpleMath::Vector3& GetPosition() { return m_position; }
 	// 回転角の取得
-	DirectX::SimpleMath::Quaternion GetAngle() { return m_angle; }
+	const DirectX::SimpleMath::Quaternion& GetAngle() { return m_angle; }
 	// 死亡情報を渡す
 	bool GetDead() { return m_tank->GetDead(); }
 	// 座標の受け取り
-	void SetPosition(DirectX::SimpleMath::Vector3 position);
+	void SetPosition(const DirectX::SimpleMath::Vector3& position);
 	// 戦車情報の取得
 	Tank* GetTank() { return m_tank.get(); }
 	// Tankの所有権を移動する（新しいメソッド）

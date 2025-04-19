@@ -23,8 +23,8 @@ public:
 public:
 	// コンストラクタ
 	Wall(
-		DirectX::SimpleMath::Vector3 scale,
-		DirectX::SimpleMath::Vector3 position,
+		const DirectX::SimpleMath::Vector3& scale,
+		const DirectX::SimpleMath::Vector3& position,
 		WallType type
 	);
 	// デストラクタ

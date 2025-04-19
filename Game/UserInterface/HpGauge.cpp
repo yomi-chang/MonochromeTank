@@ -27,7 +27,7 @@ HpGauge::~HpGauge()
 //-------------------------------------------------------------------
 // ‰Šú‰»ˆ—
 //-------------------------------------------------------------------
-void HpGauge::Initialize(DirectX::SimpleMath::Vector2 position)
+void HpGauge::Initialize(const DirectX::SimpleMath::Vector2& position)
 {
 	using namespace DirectX;
 

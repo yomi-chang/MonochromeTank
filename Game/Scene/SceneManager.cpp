@@ -32,16 +32,16 @@ SceneManager::~SceneManager()
 }
 
 //---------------------------------------------------------
-// 初期化する
+// 初期化処理
 //---------------------------------------------------------
 void SceneManager::Initialize()
 {
-	// 最初のシーンを設定する
+	// 最初のシーンの設定
 	ChangeScene(IScene::SceneID::TITLE);
 }
 
 //---------------------------------------------------------
-// 更新する
+// 更新処理
 //---------------------------------------------------------
 void SceneManager::Update(float elapsedTime)
 {
@@ -50,15 +50,15 @@ void SceneManager::Update(float elapsedTime)
 	// 説明用変数：次のシーン
 	const IScene::SceneID nextSceneID = m_currentScene->GetNextSceneID();
 
-	// シーンを変更しないとき
+	// シーンを変更しない場合
 	if (nextSceneID == IScene::SceneID::NONE) return;
 
-	// シーンを変更するとき
+	// シーンを変更する場合
 	ChangeScene(nextSceneID);
 }
 
 //---------------------------------------------------------
-// 描画する
+// 描画処理
 //---------------------------------------------------------
 void SceneManager::Render()
 {
@@ -66,7 +66,7 @@ void SceneManager::Render()
 }
 
 //---------------------------------------------------------
-// 後始末する
+// 終了処理
 //---------------------------------------------------------
 void SceneManager::Finalize()
 {
@@ -74,7 +74,7 @@ void SceneManager::Finalize()
 }
 
 //---------------------------------------------------------
-// シーンを変更する
+// シーンの変更
 //---------------------------------------------------------
 void SceneManager::ChangeScene(IScene::SceneID sceneID)
 {
@@ -83,7 +83,7 @@ void SceneManager::ChangeScene(IScene::SceneID sceneID)
 }
 
 //---------------------------------------------------------
-// シーンを作成する
+// シーンの作成
 //---------------------------------------------------------
 void SceneManager::CreateScene(IScene::SceneID sceneID)
 {
@@ -113,7 +113,7 @@ void SceneManager::CreateScene(IScene::SceneID sceneID)
 }
 
 //---------------------------------------------------------
-// シーンを削除する
+// シーンの削除
 //---------------------------------------------------------
 void SceneManager::DeleteScene()
 {

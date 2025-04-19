@@ -26,7 +26,6 @@ public:
 		DirectX::SimpleMath::Matrix		matView;
 		DirectX::SimpleMath::Matrix		matProj;
 		DirectX::SimpleMath::Vector4	Diffuse;
-
 		DirectX::SimpleMath::Vector4	time;
 	};
 

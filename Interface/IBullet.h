@@ -14,7 +14,7 @@ public:
 
 public:
 	// Œ»İ‚ÌˆÊ’u‚ğæ“¾‚·‚é
-	virtual DirectX::SimpleMath::Vector3 GetPosition() const = 0;
+	virtual const DirectX::SimpleMath::Vector3& GetPosition() = 0;
 	// Œ»İ‚ÌˆÊ’u‚ğİ’è‚·‚é
 	virtual void SetPosition(const DirectX::SimpleMath::Vector3& position) = 0;
 	// –C’e‰ñ“]Šp‚Ìİ’è

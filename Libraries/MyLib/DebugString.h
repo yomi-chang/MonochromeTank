@@ -40,9 +40,6 @@ namespace mylib
 		void Render(DirectX::CommonStates* states);
 
 		// •`‰æ‚·‚é•¶š—ñ‚ÌF‚ğw’è‚·‚é
-		void SetColor(DirectX::FXMVECTOR color = DirectX::Colors::White)
-		{
-			m_color = color;
-		}
+		void SetColor(const DirectX::FXMVECTOR& color = DirectX::Colors::White){m_color = color;}
 	};
 }

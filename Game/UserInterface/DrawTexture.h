@@ -15,7 +15,7 @@ public:
 	// デストラクタ
 	~DrawTexture();
 	// 描画処理
-	void Render(DirectX::SimpleMath::Vector3 position);
+	void Render(const DirectX::SimpleMath::Vector3& position);
 	// 画像のセット
 	void SetTexture(ID3D11ShaderResourceView* texture) { m_texture  = texture; }
 

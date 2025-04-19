@@ -14,4 +14,10 @@ namespace mylib
 
 	// テクスチャの中心座標を取得する
 	DirectX::SimpleMath::Vector2 GetTextureCenter(ID3D11ShaderResourceView* tex);
+
+	// デバッグログを「出力」に表示
+	void DebugLog(std::string text, float value);
+	void DebugLog(std::string text, int value);
+	void DebugLog(std::string text);
+	void DebugLog(const DirectX::SimpleMath::Vector3& position);
 }

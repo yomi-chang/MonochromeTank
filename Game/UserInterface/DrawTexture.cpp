@@ -55,7 +55,7 @@ DrawTexture::~DrawTexture()
 //---------------------------------------------------------
 // •`‰æˆ—
 //---------------------------------------------------------
-void DrawTexture::Render(DirectX::SimpleMath::Vector3 position)
+void DrawTexture::Render(const DirectX::SimpleMath::Vector3& position)
 {
 	using namespace DirectX::SimpleMath;
 

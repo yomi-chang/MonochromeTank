@@ -18,16 +18,12 @@ namespace mylib
 
 		// カメラ座標
 		DirectX::SimpleMath::Vector3 m_eye;
-
 		// 注視点
 		DirectX::SimpleMath::Vector3 m_target;
-
 		// 追跡対象の座標
 		DirectX::SimpleMath::Vector3 m_targetPosition;
-
 		// 追跡対象のクォータニオン
 		DirectX::SimpleMath::Quaternion m_followUpTargetQuaternion;
-
 		// 対象からの距離
 		float m_distance;
 		float m_height;
@@ -49,7 +45,7 @@ namespace mylib
 		// setter
 		void SetEyePosition(const DirectX::SimpleMath::Vector3& position) { m_eye = position; }
 		void SetTargetPosition(const DirectX::SimpleMath::Vector3& position) { m_targetPosition = position; }
-		void SetDistance(const float distance) { m_distance = distance; }
-		void SetHeight(const float height) { m_height = height; }
+		void SetDistance(const float& distance) { m_distance = distance; }
+		void SetHeight(const float& height) { m_height = height; }
 	};
 }

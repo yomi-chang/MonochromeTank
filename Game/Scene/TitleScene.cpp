@@ -17,9 +17,6 @@
 #include "Game/Scene/Fade.h"
 #include <cassert>
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
-
 // ゲーム終了の関数
 extern void ExitGame() noexcept;
 
@@ -53,6 +50,9 @@ TitleScene::~TitleScene()
 //---------------------------------------------------------
 void TitleScene::Initialize()
 {	
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
 	// BGMの再生
 	SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_TITLESCENE_BGM);
 
@@ -153,6 +153,7 @@ void TitleScene::Update(float elapsedTime)
 		this->MoveCursor();
 	}
 
+	// カーソルの回転速度
 	m_cursorAngle += elapsedTime * CURSOR_SPEED;
 }
 
@@ -161,6 +162,8 @@ void TitleScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void TitleScene::Render()
 {
+	using namespace DirectX::SimpleMath;
+
 	auto states = m_graphics->GetCommonStates();
 	auto spriteBatch = m_graphics->GetSpriteBatch();
 
@@ -216,13 +219,16 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 //---------------------------------------------------------
 void TitleScene::DrawUi()
 {
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
 	auto states = m_graphics->GetCommonStates();
 	auto spriteBatch = m_graphics->GetSpriteBatch();
 
-	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
+	// スプライトバッチの開始
 	spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 
-	// ロゴを描画する
+	// ロゴの描画
 	Vector2 pos{ Screen::CENTER_X, Screen::BOTTOM / 3.0f };
 	spriteBatch->Draw(
 		m_titleLogo,

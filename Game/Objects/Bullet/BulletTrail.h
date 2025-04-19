@@ -40,7 +40,7 @@ private:
 
 public:
 	// À•W‚Ìó‚¯æ‚è
-	void SetPosition(DirectX::SimpleMath::Vector3 top, DirectX::SimpleMath::Vector3 bottom);
+	void SetPosition(const DirectX::SimpleMath::Vector3& top, const DirectX::SimpleMath::Vector3& bottom);
 	// ”z—ñ‚Ìíœ
 	void DeletePosBuffer() { m_posArray.clear(); }
 };

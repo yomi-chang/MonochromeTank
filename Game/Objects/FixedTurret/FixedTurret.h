@@ -23,7 +23,7 @@ private:
 
 public:
 	// コンストラクタ
-	FixedTurret(DirectX::SimpleMath::Vector3 position);
+	FixedTurret(const DirectX::SimpleMath::Vector3& position);
 	// デストラクタ
 	~FixedTurret() = default;
 	// 初期化処理

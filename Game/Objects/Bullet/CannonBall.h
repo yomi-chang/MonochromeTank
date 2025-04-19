@@ -51,7 +51,7 @@ private:
 
 public:
 	// ˆÊ’u‚ğæ“¾‚·‚é 
-	DirectX::SimpleMath::Vector3 GetPosition() const { return m_position; }
+	const DirectX::SimpleMath::Vector3& GetPosition() { return m_position; }
 	// ˆÊ’u‚ğİ’è‚·‚é
 	virtual void SetPosition(const DirectX::SimpleMath::Vector3& position) { m_position = position; };
 	// –C’e‚Ì‰ñ“]Šp‚Ìİ’è

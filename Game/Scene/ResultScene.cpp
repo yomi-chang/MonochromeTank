@@ -16,9 +16,6 @@
 #include "Game/Objects/Stage/StageObject/SkySphere.h"
 #include <cassert>
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
-
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
@@ -26,7 +23,6 @@ ResultScene::ResultScene()
 	:
 	m_graphics{Graphics::GetInstance()},
 	m_texture{},
-	m_texCenter{},
 	m_isChangeScene{},
 	m_tank{},
 	m_camera{},
@@ -52,28 +48,6 @@ void ResultScene::Initialize()
 	// テクスチャの受け取り
 	m_texture = Resources::GetInstance()->GetResultTexture();
 	m_pressSpace = Resources::GetInstance()->GetPressSpaceTexture();
-
-	Microsoft::WRL::ComPtr<ID3D11Resource> resource{};
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> tex2D{};
-	D3D11_TEXTURE2D_DESC desc{};
-	Vector2 texSize{};
-
-	// テクスチャの情報を取得する================================
-	// テクスチャをID3D11Resourceとして見る
-	m_texture->GetResource(resource.ReleaseAndGetAddressOf());
-
-	// ID3D11ResourceをID3D11Texture2Dとして見る
-	resource.As(&tex2D);
-
-	// テクスチャ情報を取得する
-	tex2D->GetDesc(&desc);
-
-	// テクスチャサイズを取得し、float型に変換する
-	texSize.x = static_cast<float>(desc.Width);
-	texSize.y = static_cast<float>(desc.Height);
-
-	// テクスチャの中心位置を計算する
-	m_texCenter = texSize / 2.0f;
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
@@ -101,7 +75,7 @@ void ResultScene::Initialize()
 	m_camera->SetEyePosition(DirectX::SimpleMath::Vector3(0.0f, 1.0f, 1.0f));
 
 	// 床の生成
-	m_floor = std::make_unique<Floor>(50);
+	m_floor = std::make_unique<Floor>(FLOOR_SIZE);
 	m_floor->SetTexture(Resources::GetInstance()->GetFloorTexture());
 
 	// シーン遷移用
@@ -117,6 +91,9 @@ void ResultScene::Initialize()
 //---------------------------------------------------------
 void ResultScene::Update(float elapsedTime)
 {
+	//using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
 	// 宣言をしたが、実際は使用していない変数
 	UNREFERENCED_PARAMETER(elapsedTime);
 
@@ -155,8 +132,7 @@ void ResultScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void ResultScene::Render()
 {
-	auto states = m_graphics->GetCommonStates();
-	auto spriteBatch = m_graphics->GetSpriteBatch();
+	using namespace DirectX::SimpleMath;
 
 	// ビュー行列の取得
 	auto view = Matrix::CreateLookAt(
@@ -175,33 +151,8 @@ void ResultScene::Render()
 	// 天球の描画
 	m_skySphere->Render();
 
-	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
-	spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
-
-	// 描画位置を決める
-	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
-	// 画像の中心を計算する
-	Vector2 pos{ rect.right / 2.0f, rect.bottom / 2.0f };
-
-	spriteBatch->Draw(
-		m_texture.Get(),	// テクスチャ(SRV)
-		pos,				// スクリーンの表示位置(originの描画位置)
-		&m_texturePos,		// 矩形(RECT)
-		Colors::White,		// 背景色
-		0.0f,				// 回転角(ラジアン)
-		m_texCenter,		// テクスチャの基準になる表示位置(描画中心)(origin)
-		1.0f				// スケール(scale)
-	);
-
-	rect = { 400,500,920,620 };
 	// UIの描画
-	spriteBatch->Draw(
-		m_pressSpace,
-		rect
-	);
-
-	// スプライトバッチの終わり
-	spriteBatch->End();
+	this->DrawUi();
 }
 
 //---------------------------------------------------------
@@ -225,4 +176,44 @@ IScene::SceneID ResultScene::GetNextSceneID() const
 
 	// シーン変更がない場合
 	return IScene::SceneID::NONE;
+}
+
+//---------------------------------------------------------
+// UIの描画
+//---------------------------------------------------------
+void ResultScene::DrawUi()
+{
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
+	auto states = m_graphics->GetCommonStates();
+	auto spriteBatch = m_graphics->GetSpriteBatch();
+
+	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
+	spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
+
+	// 勝敗の表示
+	spriteBatch->Draw(
+		m_texture.Get(),
+		Vector2(Screen::CENTER_X, Screen::CENTER_Y),
+		&m_texturePos,
+		Colors::White,
+		0.0f,
+		mylib::GetTextureCenter(m_texture.Get()),
+		1.0f
+	);
+
+	// UIの描画
+	spriteBatch->Draw(
+		m_pressSpace,
+		Vector2(Screen::CENTER_X, Screen::CENTER_Y + 200),
+		nullptr,
+		Colors::White,
+		0.0f,
+		mylib::GetTextureCenter(m_pressSpace),
+		1.0f
+	);
+
+	// スプライトバッチの終わり
+	spriteBatch->End();
 }

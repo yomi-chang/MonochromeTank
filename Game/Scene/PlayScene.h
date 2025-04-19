@@ -17,6 +17,7 @@ class MagazineUi;
 class Fade;
 class DamageEffect;
 class StageEffect;
+class PauseMenu;
 
 namespace mylib
 {
@@ -85,6 +86,8 @@ private:
 	std::unique_ptr<DamageEffect> m_damageEffect;
 	// ステージエフェクト
 	std::unique_ptr<StageEffect> m_stageEffect;
+	// ポーズ画面
+	std::unique_ptr<PauseMenu> m_pauseMenu;
 	// 時間
 	float m_time;
 	// 生存している戦車
@@ -93,4 +96,7 @@ private:
 private:
 	// 戦車の生成
 	void CreateTanks();
+
+	// UIの描画
+	void DrawUi();
 };

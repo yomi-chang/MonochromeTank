@@ -12,7 +12,6 @@
 #include "Game/Objects/Bullet/Bullet.h"
 #include "Game/Objects/Bullet/CannonBall.h"
 
-#include "Libraries/MyLib/DebugLog.h"
 #include "Libraries/MyLib/Utils.h"
 
 #include "Game/Other/SharedData.h"
@@ -375,7 +374,7 @@ DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 	using namespace DirectX::SimpleMath;
 
 	// 砲身の先端に対するオフセットベクトル
-	DirectX::SimpleMath::Vector3 muzzleOffset = DirectX::SimpleMath::Vector3(0.0f, 0.5f, -0.8f);
+	Vector3 muzzleOffset(0.0f, 0.5f, -0.8f);
 	// Quaternion から Matrix を作成して Transform を適用
 	Matrix rotationMatrix = Matrix::CreateFromQuaternion(m_cannonRotation * m_currentRotation);
 	// 回転をオフセットに適用し、砲身の先端座標を計算

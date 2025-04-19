@@ -110,7 +110,10 @@ void BulletTrail::Render()
 //-------------------------------------------------------------------
 // À•W‚ÌŽó‚¯Žæ‚è
 //-------------------------------------------------------------------
-void BulletTrail::SetPosition(DirectX::SimpleMath::Vector3 top, DirectX::SimpleMath::Vector3 bottom)
+void BulletTrail::SetPosition(
+	const DirectX::SimpleMath::Vector3& top,
+	const DirectX::SimpleMath::Vector3& bottom
+)
 {
 	// ŒÃ‚¢À•W‚ðíœ
 	if (m_posArray.size() > m_maxTrail)

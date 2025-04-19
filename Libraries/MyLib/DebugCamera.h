@@ -31,44 +31,31 @@ namespace mylib
 		DirectX::SimpleMath::Vector3 m_up;
 
 	public:
+		// コンストラクタ
 		DebugCamera();
+		// デストラクタ
 		~DebugCamera() = default;
-
+		// 初期化処理
 		void Initialize(int screenWidth, int screenHeight);
+		// 更新処理
 		void Update();
 
+	public:
 		// ビュー行列（カメラ行列）を取得する
-		const DirectX::SimpleMath::Matrix& GetViewMatrix() const
-		{
-			return m_view;
-		}
-
+		const DirectX::SimpleMath::Matrix& GetViewMatrix() { return m_view; }
 		// 視点を取得する
-		const DirectX::SimpleMath::Vector3& GetEyePosition() const
-		{
-			return m_eye;
-		}
-
+		const DirectX::SimpleMath::Vector3& GetEyePosition() { return m_eye; }
 		// 注視点を取得する
-		const DirectX::SimpleMath::Vector3& GetTargetPosition() const
-		{
-			return m_target;
-		}
-
+		const DirectX::SimpleMath::Vector3& GetTargetPosition() { return m_target; }
 		// カメラの頭の方向を取得する
-		const DirectX::SimpleMath::Vector3& GetUpPosition() const
-		{
-			return m_up;
-		}
+		const DirectX::SimpleMath::Vector3& GetUpPosition() { return m_up; }
 
 
 	private:
 		// 変位を計測する
 		void Motion(int x, int y);
-
 		// ビュー行列を計算する
 		void CalculateViewMatrix();
-
 		// 相対スケールを計算する
 		void CalculateRerativeScale(int windowWidth, int windowHeight);
 	};

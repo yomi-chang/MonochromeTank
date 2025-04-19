@@ -25,7 +25,7 @@ public:
 	// コンストラクタ
 	PlayerTank(
 		int tankNumber,
-		DirectX::SimpleMath::Vector3 position
+		const DirectX::SimpleMath::Vector3& position
 	);
 	// デストラクタ
 	~PlayerTank() override;
@@ -57,16 +57,16 @@ private:
 	bool m_isDamage;
 
 public:
-	// 他戦車情報受け渡し
+	// 他戦車情報の設定
 	void SetOtherTanks(std::vector<Tank*> tanks);
-	// カメラ情報の受け取り
+	// カメラ情報の設定
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 	// 座標の取得
-	DirectX::SimpleMath::Vector3 GetPosition() { return m_position; }
-	// 座標の受け取り
-	void SetPosition(DirectX::SimpleMath::Vector3 position);
+	const DirectX::SimpleMath::Vector3& GetPosition() { return m_position; }
+	// 座標の設定
+	void SetPosition(const DirectX::SimpleMath::Vector3& position);
 	// 回転角の取得
-	DirectX::SimpleMath::Quaternion GetAngle() { return m_angle; }
+	const DirectX::SimpleMath::Quaternion& GetAngle() { return m_angle; }
 	// 砲身の取得
 	TankCannon* GetTankCannon();
 	// 戦車情報の取得

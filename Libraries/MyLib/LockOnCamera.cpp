@@ -53,7 +53,7 @@ void mylib::LockOnCamera::Update(float elapsedTime)
 	// 基準になる「target」を計算する
 	DirectX::SimpleMath::Vector3 target = m_targetPosition;
 
-	// （ビュー行列で使用する）「m_eye」と「m_target」を計算する
+	//「m_eye」と「m_target」を計算する
 	m_eye += ((target + eye) - m_eye) * SPRING_RATE_EYE;
 	m_target += (target - m_target) * SPRING_RATE_TARGET;
 }

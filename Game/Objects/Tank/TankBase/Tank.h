@@ -114,15 +114,15 @@ public:
 	TankCannon* GetCannon() { return m_cannon; }
 
 	// 初期座標の取得
-	DirectX::SimpleMath::Vector3 GetInitialPosition(){ return m_initialPosition; }
+	const DirectX::SimpleMath::Vector3& GetInitialPosition(){ return m_initialPosition; }
 	// 戦車座標の取得
-	DirectX::SimpleMath::Vector3 GetPosition() { return m_body->GetPosition(); }
+	const DirectX::SimpleMath::Vector3& GetPosition() { return m_body->GetPosition(); }
 	// 戦車の角度の取得
-	DirectX::SimpleMath::Quaternion GetRotation() { return m_body->GetRotation(); }
+	const DirectX::SimpleMath::Quaternion& GetRotation() { return m_body->GetRotation(); }
 	// 砲塔角度の取得
-	DirectX::SimpleMath::Quaternion GetTurretRotation() { return m_turret->GetTurretRotation(); }
+	const DirectX::SimpleMath::Quaternion& GetTurretRotation() { return m_turret->GetTurretRotation(); }
 	// 砲身角度の取得
-	DirectX::SimpleMath::Quaternion GetCannonRotation() { return m_cannon->GetCannonRotation(); }
+	const DirectX::SimpleMath::Quaternion& GetCannonRotation() { return m_cannon->GetCannonRotation(); }
 	// コライダーの取得
 	DirectX::BoundingBox* GetBoundingBox() { return m_collider->GetBoundingBox(); }
 	// コライダーのポインタの取得

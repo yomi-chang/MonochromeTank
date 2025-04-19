@@ -18,7 +18,7 @@ public:
 	// デストラクタ
 	~HpGauge();
 	// 初期化処理
-	void Initialize(DirectX::SimpleMath::Vector2 position);
+	void Initialize(const DirectX::SimpleMath::Vector2& position);
 	// 描画処理
 	void Render(float hpRatio);
 

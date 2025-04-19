@@ -53,7 +53,7 @@ EnemyHpGauge::~EnemyHpGauge()
 // •`‰æˆ—
 //-------------------------------------------------------------------
 void EnemyHpGauge::Render(
-	DirectX::SimpleMath::Vector3 position,
+	const DirectX::SimpleMath::Vector3& position,
 	float hpRatio
 )
 {	

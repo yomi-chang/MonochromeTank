@@ -14,7 +14,7 @@
 //-------------------------------------------------------------------
 // コンストラクタ
 //-------------------------------------------------------------------
-FixedTurret::FixedTurret(DirectX::SimpleMath::Vector3 position)
+FixedTurret::FixedTurret(const DirectX::SimpleMath::Vector3& position)
 	:
 	m_position{},
 	m_angle{},

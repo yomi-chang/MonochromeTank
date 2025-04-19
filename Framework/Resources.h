@@ -39,6 +39,8 @@ public:
 	ID3D11ShaderResourceView* GetPressSpaceTexture() { return m_pressSpaceTexture.Get(); }	// プレススペーステクスチャ
 	ID3D11ShaderResourceView* GetTankCountTexture() { return m_tankCountTexture.Get(); }	// プレイシーン戦車カウントテクスチャ
 	ID3D11ShaderResourceView* GetTitleTextTexture() { return m_titleTextTexture.Get(); }	// タイトルテキストテクスチャ
+	ID3D11ShaderResourceView* GetPauseTextTexture() { return m_pauseTextTexture.Get(); }	// ポーズ画面テキストテクスチャ
+
 
 	ID3D11ShaderResourceView* GetBlackSmokeTexture() { return m_blackSmokeTexture.Get(); }	// 破壊演出テクスチャ
 	ID3D11ShaderResourceView* GetDamageEffectTexture() { return m_damageEffectTexture.Get(); }	// 破壊演出テクスチャ
@@ -89,6 +91,7 @@ private:
 		m_pressSpaceTexture{},
 		m_tankCountTexture{},
 		m_titleTextTexture{},
+		m_pauseTextTexture{},
 
 		m_blackSmokeTexture{},
 		m_damageEffectTexture{}
@@ -164,8 +167,11 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pressSpaceTexture;
 	// プレイシーン戦車カウントテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tankCountTexture;
-	// タイトルテクスチャ
+	// タイトルテキストテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_titleTextTexture;
+	// ポーズ画面テキストテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pauseTextTexture;
+
 
 	// エフェクトテクスチャ============================================
 	// 破壊演出テクスチャ

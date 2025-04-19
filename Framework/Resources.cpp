@@ -222,6 +222,15 @@ void Resources::LoadResource()
 		m_titleTextTexture.ReleaseAndGetAddressOf()
 	);
 
+	//	ポーズテキストテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\PauseText.png",
+		nullptr,
+		m_pauseTextTexture.ReleaseAndGetAddressOf()
+	);
+
+
 
 	//	破壊演出テクスチャのロード 
 	DirectX::CreateWICTextureFromFile(

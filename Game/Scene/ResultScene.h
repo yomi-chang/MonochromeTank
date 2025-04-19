@@ -19,6 +19,9 @@ class SkySphere;
 class ResultScene final :
     public IScene
 {
+private:
+	static constexpr int FLOOR_SIZE = 50;
+
 public:
 	// コンストラクタ
 	ResultScene();
@@ -41,8 +44,6 @@ private:
 	// テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_texture;
 	ID3D11ShaderResourceView* m_pressSpace;
-	// テクスチャの半分の大きさ
-	DirectX::SimpleMath::Vector2 m_texCenter;
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 	// 勝利した戦車
@@ -57,4 +58,8 @@ private:
 	RECT m_texturePos;
 	// 天球
 	std::unique_ptr<SkySphere> m_skySphere;
+
+private:
+	// UIの描画
+	void DrawUi();
 };

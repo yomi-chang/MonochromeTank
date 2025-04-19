@@ -7,7 +7,6 @@
 #include "Game/Collider/BoxCollider.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Framework/Graphics.h"
-#include "Libraries/MyLib/DebugLog.h"
 
 //-------------------------------------------------------------------
 // コンストラクタ

@@ -16,7 +16,7 @@ public:
     ~EnemyHpGauge();
     // •`‰æˆ—
     void Render(
-        DirectX::SimpleMath::Vector3 position,
+        const DirectX::SimpleMath::Vector3& position,
         float hpRatio
     );
 

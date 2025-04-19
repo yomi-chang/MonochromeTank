@@ -52,22 +52,18 @@ private:
 
 public:
 	// 角度の取得
-	DirectX::SimpleMath::Quaternion GetRotation(){ return m_currentRotation; }
+	const DirectX::SimpleMath::Quaternion& GetRotation(){ return m_currentRotation; }
 	// 座標の取得
-	DirectX::SimpleMath::Vector3 GetPosition() { return m_currentPosition; }
-
+	const DirectX::SimpleMath::Vector3& GetPosition() { return m_currentPosition; }
 	// 押し戻しベクトルの設定
-	void SetCollisionVel(DirectX::SimpleMath::Vector3 vel) { m_currentPosition += vel;}
-
-	// 座標の受け取り
-	void SetPosition(DirectX::SimpleMath::Vector3 position) { m_currentPosition = position; }
-
+	void SetCollisionVel(const DirectX::SimpleMath::Vector3& vel) { m_currentPosition += vel; }
+	// 座標の設定
+	void SetPosition(const DirectX::SimpleMath::Vector3& position) { m_currentPosition = position; }
 	// 移動処理
-	void Move(DirectX::SimpleMath::Vector3 velocity);
-
+	void Move(const DirectX::SimpleMath::Vector3& velocity);
 	// 回転処理
-	void Rotate(DirectX::SimpleMath::Quaternion rotation);
-
+	void Rotate(const DirectX::SimpleMath::Quaternion& rotation);
+	// 重力の設定
 	void SetGravity(bool b) { m_gravityEnabled = b; }
 
 private:

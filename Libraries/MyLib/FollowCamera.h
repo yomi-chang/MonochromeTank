@@ -18,40 +18,29 @@ namespace mylib
 		// 距離、高さ
 		static constexpr float DISTANCE = 4.5f;
 		static constexpr float HEIGHT = 2.0f;
-
 		// カメラ座標
 		DirectX::SimpleMath::Vector3 m_eye;
-
 		// 注視点
 		DirectX::SimpleMath::Vector3 m_target;
-
 		// 追跡対象の座標
 		DirectX::SimpleMath::Vector3 m_followUpTargetPosition;
-
 		// 追跡対象のクォータニオン
 		DirectX::SimpleMath::Quaternion m_followUpTargetQuaternion;
-
 		// 自機
 		Tank* m_tank;
-
 		// コライダー
 		std::unique_ptr<SphereCollider> m_collider;
-
 		// カメラが揺れているか
 		bool m_isShakeCamera;
-
 		// カメラの揺れる速度(1秒間に何回振動するか)
 		static constexpr float DEFAULT_SHAKE_SPEED = 25.0f;
 		float m_shakeSpeed;
-
 		// カメラの揺れ幅
 		static constexpr float DEFAULT_SHAKE_WIDTH = 0.05f;
 		float m_shakeWidth;
-
 		// カメラの振動時間
 		static constexpr float DEFAULT_SHAKE_TIME = 0.5f;
 		float m_shakeTime;
-
 		// カメラが揺れている時間
 		float m_shakeCount;
 

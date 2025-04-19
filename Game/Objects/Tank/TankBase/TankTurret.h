@@ -45,15 +45,12 @@ private:
 	std::vector<std::unique_ptr<IParts>> m_tankParts;	// ©g‚ªŠÇ—‚·‚éíÔ•”•i‚Ì”z—ñ	
 	DirectX::SimpleMath::Matrix m_worldMatrix;			// ƒ[ƒ‹ƒhs—ñ	
 	DirectX::Model* m_model;							// ƒ‚ƒfƒ‹	
-
-	DirectX::SimpleMath::Quaternion m_turretRotation;		// –C“ƒ‚ÌŠp“x
-
-	Tank* m_tank;
+	DirectX::SimpleMath::Quaternion m_turretRotation;	// –C“ƒ‚ÌŠp“x
+	Tank* m_tank;										// ©‹@
 
 public:
 	// –C“ƒ‚Ì‰ñ“]
 	void RotateTurret(float angle);
-
 	// –C“ƒ‚ÌŠp“x‚Ìæ“¾
-	DirectX::SimpleMath::Quaternion GetTurretRotation() { return m_turretRotation; }
+	const DirectX::SimpleMath::Quaternion& GetTurretRotation() { return m_turretRotation; }
 };

@@ -26,7 +26,7 @@
 //-------------------------------------------------------------------
 EnemyTank::EnemyTank(
 	int tankNumber,
-	DirectX::SimpleMath::Vector3 position
+	const DirectX::SimpleMath::Vector3& position
 )
 	:
 	m_tankNumber{ tankNumber },
@@ -174,7 +174,7 @@ void EnemyTank::Finalize()
 //-------------------------------------------------------------------
 // À•Wî•ñ‚ÌŽó‚¯Žæ‚è
 //-------------------------------------------------------------------
-void EnemyTank::SetPosition(DirectX::SimpleMath::Vector3 position)
+void EnemyTank::SetPosition(const DirectX::SimpleMath::Vector3& position)
 {
 	m_tank->GetBody()->SetCollisionVel(position);
 }

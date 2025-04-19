@@ -18,9 +18,6 @@
 #include "Game/Other/SharedData.h"
 #include <cassert>
 
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
-
 //---------------------------------------------------------
 // コンストラクタ
 //---------------------------------------------------------
@@ -48,11 +45,14 @@ SelectScene::~SelectScene()
 //---------------------------------------------------------
 void SelectScene::Initialize()
 {	
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
 	// BGMの再生
 	SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_SELECTSCENE_BGM);
 
 	// 床の生成
-	m_floor = std::make_unique<Floor>(50);
+	m_floor = std::make_unique<Floor>(FLOOR_SIZE);
 	m_floor->SetTexture(Resources::GetInstance()->GetFloorTexture());
 
 	// 射影行列を作成する
@@ -178,7 +178,8 @@ void SelectScene::Update(float elapsedTime)
 		m_fade->FadeIn();
 	}
 
-	m_selectAngle += elapsedTime * 2.0f;
+	// カーソルの回転
+	m_selectAngle += elapsedTime * CURSOR_SPEED;
 }
 
 //---------------------------------------------------------
@@ -186,6 +187,7 @@ void SelectScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void SelectScene::Render()
 {
+	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
 	auto states = m_graphics->GetCommonStates();
@@ -207,45 +209,45 @@ void SelectScene::Render()
 	// チュートリアル表示
 	spriteBatch->Draw(
 		m_resources->GetManualTexture(),
-		Vector2{ 550,90 },
+		Vector2{ Screen::CENTER_X + 250,Screen::CENTER_Y },
 		nullptr,
 		DirectX::Colors::White,
 		0.0f,
-		Vector2{ 0,0 },
-		Vector2{ 0.5f,0.5f }
+		mylib::GetTextureCenter(m_resources->GetManualTexture()),
+		0.5f
 	);
 
 	// 設定フレーム
 	spriteBatch->Draw(
 		m_resources->GetSettingTexture(),
-		Vector2{ 40,70 },
+		Vector2{ Screen::CENTER_X - 350,Screen::CENTER_Y },
 		nullptr,
 		DirectX::Colors::White,
 		0.0f,
-		Vector2{ 0,0 },
-		Vector2{ 0.5f,0.5f }
+		mylib::GetTextureCenter(m_resources->GetSettingTexture()),
+		0.5f
 	);
 
 	// ステージ
 	spriteBatch->Draw(
 		m_resources->GetStageTextTexture(),
-		Vector2{ 210,280 },
+		Vector2{ Screen::CENTER_X - 315,Screen::CENTER_Y - 5 },
 		&m_stageTexturePos,
 		DirectX::Colors::White,
 		0.0f,
-		Vector2{ 50,50 },
-		Vector2{ 0.5f,0.5f }
+		mylib::GetTextureCenter(m_resources->GetStageTextTexture()),
+		0.5f
 	);
 
 	// 戦車数
 	spriteBatch->Draw(
 		m_resources->GetCountTextTexture(),
-		Vector2{ 300,415 },
+		Vector2{ Screen::CENTER_X - 270,Screen::CENTER_Y + 85 },
 		&m_tankCountTexturePos,
 		DirectX::Colors::White,
 		0.0f,
-		Vector2{ 50,50 },
-		Vector2{ 0.5f,0.5f }
+		mylib::GetTextureCenter(m_resources->GetCountTextTexture()),
+		0.5f
 	);
 
 	// カーソル
@@ -255,8 +257,8 @@ void SelectScene::Render()
 		nullptr,
 		DirectX::Colors::White,
 		m_selectAngle,
-		Vector2{ 50,50 },
-		Vector2{ 1.0f,1.0f }
+		mylib::GetTextureCenter(m_resources->GetCursorTexture()),
+		1.0f
 	);
 
 	// スプライトバッチの終わり

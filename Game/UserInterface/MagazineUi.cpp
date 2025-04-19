@@ -8,6 +8,8 @@
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Framework/Resources.h"
+#include "Libraries/MyLib/Utils.h"
+#include "Game/Screen.h"
 
 #include "Game/Objects/Tank/PlayerTank.h"
 
@@ -130,6 +132,9 @@ void MagazineUi::SubBulletUi()
 // ÉÅÉCÉìÇÃíeÇÃUIï\é¶
 void MagazineUi::MainBulletUi()
 {
+    using namespace DirectX;
+    using namespace DirectX::SimpleMath;
+
     // òg
     DirectX::SimpleMath::Vector4 color = static_cast<DirectX::SimpleMath::Vector4>(DirectX::Colors::WhiteSmoke);
     color.w = 0.5f;
@@ -146,14 +151,15 @@ void MagazineUi::MainBulletUi()
     m_spriteBatch->Draw(m_gaugeTexture, RELOAD_GAUGE_BACK, DirectX::Colors::Black);
     m_spriteBatch->Draw(m_gaugeTexture, m_reloadPos, DirectX::Colors::Aqua);
 
+    // íeïœçXUIÇÃï`âÊ
     m_spriteBatch->Draw(
         Resources::GetInstance()->GetSpaceKeyTexture(),
-        DirectX::XMFLOAT2(1180, 640),                  
+        Vector2(Screen::CENTER_X + 560 ,Screen::CENTER_Y + 300),                  
         nullptr,                                     
         DirectX::Colors::White,                          
         0.0f,                                          
-        DirectX::XMFLOAT2(0, 0),                       
-        DirectX::XMFLOAT2(0.25f, 0.25f)
+        mylib::GetTextureCenter(Resources::GetInstance()->GetSpaceKeyTexture()),
+        0.25f
     );
 
     int value = CheckBulletValue();
@@ -164,11 +170,11 @@ void MagazineUi::MainBulletUi()
     // ìÒåÖñ⁄
     m_spriteBatch->Draw(
         Resources::GetInstance()->GetFontTexture(),
-        DirectX::XMFLOAT2(1110, 640),
+        DirectX::XMFLOAT2(1110  , 640),
         &rect,
         DirectX::Colors::White,
         0.0,
-        DirectX::XMFLOAT2(0,0),
+        Vector2::Zero,
         FONT_SCALE
     );
 
@@ -181,7 +187,7 @@ void MagazineUi::MainBulletUi()
         &rect,
         DirectX::Colors::White,
         0.0,
-        DirectX::XMFLOAT2(0, 0),
+        Vector2::Zero,
         FONT_SCALE
     );
 

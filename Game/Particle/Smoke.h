@@ -18,7 +18,7 @@ public:
 	// XVˆ—
 	void Update(float elapsedTime);
 	// •`‰æˆ—
-	void Render(DirectX::SimpleMath::Vector3 position);
+	void Render(const DirectX::SimpleMath::Vector3& position);
 
 private:
 	// ‰Œ‰æ‘œ

@@ -11,7 +11,6 @@
 #include "Framework/Resources.h"
 
 #include "Libraries/MyLib/DebugCamera.h"
-#include "Libraries/MyLib/DebugString.h"
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Libraries/Microsoft/RenderTexture.h"
@@ -23,6 +22,7 @@
 #include "Game/Objects/Tank/EnemyTanks/EnemyTank.h"
 
 #include "Game/UserInterface/MagazineUi.h"
+#include "Game/UserInterface/PauseMenu.h"
 
 #include "Game/Objects/Stage/StageManager.h"
 #include "Game/Other/CollisionManager.h"
@@ -32,12 +32,9 @@
 #include "Game/Particle/StageEffect.h"
 #include "Game/Other/SharedData.h"
 #include "Game/Other/Parameter.h"
+#include "Game/Screen.h"
 
 #include <cassert>
-
-
-using namespace DirectX;
-using namespace DirectX::SimpleMath;
 
 //---------------------------------------------------------
 // コンストラクタ
@@ -58,6 +55,7 @@ PlayScene::PlayScene()
 	m_skipTexture{},
 	m_damageEffect{},
 	m_stageEffect{},
+	m_pauseMenu{},
 	m_time{},
 	m_surviveTank{}
 {
@@ -76,6 +74,7 @@ PlayScene::~PlayScene()
 //---------------------------------------------------------
 void PlayScene::Initialize()
 {
+	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
 	// BGMの再生
@@ -131,6 +130,9 @@ void PlayScene::Initialize()
 	// ステージエフェクト
 	m_stageEffect = std::make_unique<StageEffect>();
 	m_stageEffect->Create();
+
+	// ポーズ画面
+	m_pauseMenu = std::make_unique<PauseMenu>();
 
 	//全戦車の情報を持つ配列
 	std::vector<Tank*> tankPointers;
@@ -205,6 +207,10 @@ void PlayScene::Update(float elapsedTime)
 	// フェードが終了していないなら早期リターン
 	if (!m_fade->FinishFade()) { return; }
 
+	// ポーズ画面の更新
+	m_pauseMenu->Update(elapsedTime);
+	if (m_pauseMenu->IsPause()) { return; }
+
 	// コリジョンマネージャーの更新
 	m_collisonManager->Update();
 
@@ -262,6 +268,9 @@ void PlayScene::Update(float elapsedTime)
 //---------------------------------------------------------
 void PlayScene::Render()
 {
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
 	// カメラタイプに応じたビュー行列の取得
 	auto view = DirectX::SimpleMath::Matrix::Identity;
 	switch (m_cameraType)
@@ -292,50 +301,10 @@ void PlayScene::Render()
 
 	// 戦車の描画
 	m_player->Render();
-
-	// UI関係
-	if (!m_player->GetDead())
-	{
-		m_magazine->Render();
-	}
-	else
-	{
-		// スキップUIの表示
-		auto spriteBatch = m_graphics->GetSpriteBatch();
-		spriteBatch->Begin();
-		spriteBatch->Draw(m_skipTexture, SKIP_UI_POS);
-		spriteBatch->End();
-	}
-
-	// 残り戦車の表示
-	auto spriteBatch = m_graphics->GetSpriteBatch();
-	spriteBatch->Begin();
-	spriteBatch->Draw(
-		Resources::GetInstance()->GetTankCountTexture(),
-		DirectX::XMFLOAT2(975, 25),
-		nullptr,
-		DirectX::Colors::White,
-		0.0f,
-		DirectX::XMFLOAT2(0, 0),
-		DirectX::XMFLOAT2(0.5f, 0.5f)
-	);
 	
-	m_surviveTank-=2;
-	RECT rect = { 0,0,0,0 };
-	rect.left = m_surviveTank * FONT_SIZE_X;
-	rect.right = rect.left + FONT_SIZE_X;
-	rect.bottom = FONT_SIZE_Y;
-	spriteBatch->Draw(
-		Resources::GetInstance()->GetCountTextTexture(),
-		DirectX::XMFLOAT2(1200, 50),
-		&rect,
-		DirectX::Colors::White,
-		0.0f,
-		Vector2{ 50,50 },
-		Vector2{ 0.5f,0.5f }
-	);
-	spriteBatch->End();
-	
+	// UIの描画
+	this->DrawUi();
+
 	// ステージエフェクト
 	m_stageEffect->Render();
 
@@ -345,6 +314,9 @@ void PlayScene::Render()
 		m_damageEffect->SetElapsedTime(m_time);
 		m_damageEffect->Render();
 	}
+
+	// ポーズ画面の描画
+	m_pauseMenu->Render();
 	
 	// シーン遷移用
 	m_fade->Render();
@@ -378,6 +350,7 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 //---------------------------------------------------------
 void PlayScene::CreateTanks()
 {
+	// パラメータの設定
 	auto parameter = Parameter::GetInstance();
 
 	// プレイヤー戦車の生成
@@ -408,4 +381,64 @@ void PlayScene::CreateTanks()
 	{
 		enemy->Initialize();
 	}
+}
+
+//---------------------------------------------------------
+// Uiの描画
+//---------------------------------------------------------
+void PlayScene::DrawUi()
+{
+	using namespace DirectX;
+	using namespace DirectX::SimpleMath;
+
+	auto spriteBatch = m_graphics->GetSpriteBatch();
+
+	// UI関係
+	if (!m_player->GetDead())
+	{
+		m_magazine->Render();
+	}
+	else
+	{
+		spriteBatch->Begin();
+		// スキップUIの描画
+		spriteBatch->Draw(
+			m_skipTexture,
+			Vector2(Screen::CENTER_X + 500, Screen::CENTER_Y + 300),
+			nullptr,
+			Colors::White,
+			0.0f,
+			mylib::GetTextureCenter(m_skipTexture),
+			0.5f
+		);
+		spriteBatch->End();
+	}
+
+	spriteBatch->Begin();
+	// 残り戦車の表示
+	spriteBatch->Draw(
+		Resources::GetInstance()->GetTankCountTexture(),
+		Vector2(Screen::CENTER_X + 420, Screen::CENTER_Y - 300),
+		nullptr,
+		DirectX::Colors::White,
+		0.0f,
+		mylib::GetTextureCenter(Resources::GetInstance()->GetTankCountTexture()),
+		0.5f
+	);
+
+	RECT rect = { 0,0,0,0 };
+	rect.left = (m_surviveTank - 2) * FONT_SIZE_X;
+	rect.right = rect.left + FONT_SIZE_X;
+	rect.bottom = FONT_SIZE_Y;
+	spriteBatch->Draw(
+		Resources::GetInstance()->GetCountTextTexture(),
+		Vector2(Screen::CENTER_X + 600, Screen::CENTER_Y - 300),
+		&rect,
+		DirectX::Colors::White,
+		0.0f,
+		mylib::GetTextureCenter(Resources::GetInstance()->GetCountTextTexture()),
+		0.5f
+	);
+	spriteBatch->End();
+
 }

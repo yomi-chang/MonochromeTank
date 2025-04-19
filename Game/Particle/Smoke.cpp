@@ -79,7 +79,7 @@ void Smoke::Update(float elapsedTime)
 //-------------------------------------------------------------------
 // ï`âÊèàóù
 //-------------------------------------------------------------------
-void Smoke::Render(DirectX::SimpleMath::Vector3 position)
+void Smoke::Render(const DirectX::SimpleMath::Vector3& position)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
