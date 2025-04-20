@@ -18,6 +18,7 @@ PauseMenu::PauseMenu()
 	m_graphics{},
 	m_resources{},
 	m_isDisplay{},
+	m_returnTitle{},
 	m_currentSelectUi{},
 	m_cursorAngle{}
 {
@@ -68,6 +69,7 @@ void PauseMenu::Update(float elapsedTime)
 		switch (m_currentSelectUi)
 		{
 		case PauseMenu::TITLE:
+			this->ReturnToTitle();
 			break;
 		case PauseMenu::CANCEL:
 			this->Cancel();
@@ -160,4 +162,5 @@ void PauseMenu::Cancel()
 //-------------------------------------------------------------------
 void PauseMenu::ReturnToTitle()
 {
+	m_returnTitle = true;
 }

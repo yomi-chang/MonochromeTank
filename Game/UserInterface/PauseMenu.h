@@ -36,6 +36,8 @@ private:
 	Resources* m_resources;
 	// ポーズ画面を表示するか
 	bool m_isDisplay;
+	// タイトルに戻るか
+	bool m_returnTitle;
 	// 選択されているUI
 	UI m_currentSelectUi;
 	// カーソルの角度
@@ -44,6 +46,8 @@ private:
 public:
 	// ポーズ中かどうか
 	bool IsPause() { return m_isDisplay; }
+	// タイトルに戻るかどうか
+	bool IsReturnTitle() { return m_returnTitle; }
 
 private:
 	// ポーズ画面の終了

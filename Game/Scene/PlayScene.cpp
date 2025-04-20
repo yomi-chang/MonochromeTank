@@ -77,6 +77,9 @@ void PlayScene::Initialize()
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
+	// 追加されている戦車情報の削除
+	Messenger::GetInstance()->DestroyInstance();
+
 	// BGMの再生
 	SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_PLAYSCENE_BGM);
 
@@ -207,9 +210,17 @@ void PlayScene::Update(float elapsedTime)
 	// フェードが終了していないなら早期リターン
 	if (!m_fade->FinishFade()) { return; }
 
-	// ポーズ画面の更新
+	// ポーズ画面の更新(ポーズ中なら早期リターン)
 	m_pauseMenu->Update(elapsedTime);
-	if (m_pauseMenu->IsPause()) { return; }
+	if (m_pauseMenu->IsPause())
+	{
+		// シーン変更のフラグが立っていたらタイトルシーンに戻る
+		if (m_pauseMenu->IsReturnTitle())
+		{
+			m_fade->FadeIn();
+		}
+		return; 
+	}
 
 	// コリジョンマネージャーの更新
 	m_collisonManager->Update();
@@ -337,7 +348,12 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 {
 	// シーン変更がある場合
 	if (m_isChangeScene)
-	{
+	{	
+		// ポーズ画面の場合タイトルに
+		if (m_pauseMenu->IsPause())
+		{
+			return IScene::SceneID::TITLE;
+		}
 		return IScene::SceneID::RESULT;
 	}
 
