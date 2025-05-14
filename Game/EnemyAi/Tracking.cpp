@@ -40,7 +40,10 @@ void Tracking::Update(float elapsedTime)
 	if (m_targetTank == nullptr) { return; }
 
 	using namespace DirectX::SimpleMath;
+
+	// パラメータの設定
 	auto parameter = Parameter::GetInstance();
+	// 速度の設定
 	float speed = parameter->GetEnemySpeed() * elapsedTime;
 
 	// 追跡中の敵の方向を向く
@@ -81,9 +84,6 @@ void Tracking::Update(float elapsedTime)
 	// 移動処理
 	m_tank->GetBody()->Move(heading);
 
-	/*
-		自機をターゲットの方向へ徐々に回転する
-	*/
 	// 「自機の進行方向ベクトル」と「ターゲットの方向」からcosθを計算する
 	float cosTheta = heading.Dot(toTarget) / (toTarget.Length() * heading.Length());
 
@@ -98,7 +98,6 @@ void Tracking::Update(float elapsedTime)
 	theta = std::min(10.0f, theta);
 
 	// 右側に行きたい場合は角度の符号を付け替える
-	// ZX平面上にあるベクトルの向きはYのプラスマイナスで判断する
 	if (heading.Cross(toTarget).y < 0.0f)
 	{
 		theta *= (-1.0f);
@@ -106,6 +105,12 @@ void Tracking::Update(float elapsedTime)
 
 	// 角度を更新する
 	m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(DirectX::XMConvertToRadians(theta), 0.0f, 0.0f));
+
+	// 壁に当たっていたら壁の回避行動の遷移
+	if (m_tank->GetAvoidWall())
+	{
+		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::AVOIDWALL);
+	}
 
 	// 追跡対象の戦車に接近
 	this->IsTargetTankNear();

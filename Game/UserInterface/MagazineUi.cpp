@@ -44,7 +44,7 @@ void MagazineUi::Initialize()
     using namespace DirectX::SimpleMath;
 
     // テクスチャの読み込み
-    LoadTexture();
+    this->LoadTexture();
 
     // スプライトバッチの受け取り
     m_spriteBatch = m_graphics->GetSpriteBatch();
@@ -86,9 +86,9 @@ void MagazineUi::Render()
     }
 
     // 選択されていない弾
-    SubBulletUi();
+    this->SubBulletUi();
     // 選択されている弾
-    MainBulletUi();
+    this->MainBulletUi();
 
     // 描画終了
     m_spriteBatch->End();

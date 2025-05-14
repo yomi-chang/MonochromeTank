@@ -13,7 +13,6 @@ public:
 	DirectX::Model* GetTankTurretModel() { return m_tankTurretModel.get(); }		// 砲塔モデル
 	DirectX::Model* GetTankCannonModel() { return m_tankCanonModel.get(); }			// 砲身モデル
 	DirectX::Model* GetSkySphereModel() { return m_skySphereModel.get(); }			// 天球モデル
-	DirectX::Model* GetBulletModel() { return m_bulletModel.get(); }				// 弾モデル
 	DirectX::Model* GetFixedTurretModel() { return m_fixedTurretModel.get(); }		// 固定砲台モデル
 
 	ID3D11ShaderResourceView* GetTargetTexture() { return m_targetTexture.Get(); }			// 照準テクスチャ
@@ -44,7 +43,7 @@ public:
 
 	ID3D11ShaderResourceView* GetBlackSmokeTexture() { return m_blackSmokeTexture.Get(); }	// 破壊演出テクスチャ
 	ID3D11ShaderResourceView* GetDamageEffectTexture() { return m_damageEffectTexture.Get(); }	// 破壊演出テクスチャ
-
+	ID3D11ShaderResourceView* GetTrailSmokeTexture() { return m_trailSmokeTexture.Get(); }	// 弾の軌跡テクスチャ
 public:
 	Resources(Resources&&) = default;
 	Resources& operator= (Resources&&) = default;
@@ -65,7 +64,6 @@ private:
 		m_tankTurretModel{},
 		m_tankCanonModel{},
 		m_skySphereModel{},
-		m_bulletModel {},
 		m_fixedTurretModel{},
 
 		m_targetTexture{},
@@ -94,7 +92,8 @@ private:
 		m_pauseTextTexture{},
 
 		m_blackSmokeTexture{},
-		m_damageEffectTexture{}
+		m_damageEffectTexture{},
+		m_trailSmokeTexture{}
 	{
 	}
 
@@ -117,8 +116,6 @@ private:
 	std::unique_ptr<DirectX::Model> m_tankCanonModel;
 	// 天球モデル
 	std::unique_ptr<DirectX::Model> m_skySphereModel;
-	// 弾モデル
-	std::unique_ptr<DirectX::Model> m_bulletModel;
 	// 固定砲台モデル
 	std::unique_ptr<DirectX::Model> m_fixedTurretModel;
 
@@ -178,4 +175,6 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_blackSmokeTexture;
 	// ダメージ演出テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_damageEffectTexture;
+	// 弾の軌跡テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_trailSmokeTexture;
 };

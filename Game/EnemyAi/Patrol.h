@@ -51,6 +51,8 @@ public:
 	// „‰ñ’n“_‚Ì“o˜^
 	void SetPatrolPoints(const std::vector<DirectX::SimpleMath::Vector3>& patrolPoints);
 
+	// „‰ñ’n“_‚Ìó‚¯æ‚è
+	const std::vector<DirectX::SimpleMath::Vector3>& GetPatrolPoints() { return m_patrolPoints; }
 
 private:
 	// õ“Gˆ—

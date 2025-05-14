@@ -28,7 +28,7 @@ SceneManager::SceneManager()
 //---------------------------------------------------------
 SceneManager::~SceneManager()
 {
-	Finalize();
+	this->Finalize();
 }
 
 //---------------------------------------------------------
@@ -37,7 +37,7 @@ SceneManager::~SceneManager()
 void SceneManager::Initialize()
 {
 	// 最初のシーンの設定
-	ChangeScene(IScene::SceneID::TITLE);
+	this->ChangeScene(IScene::SceneID::TITLE);
 }
 
 //---------------------------------------------------------
@@ -54,7 +54,7 @@ void SceneManager::Update(float elapsedTime)
 	if (nextSceneID == IScene::SceneID::NONE) return;
 
 	// シーンを変更する場合
-	ChangeScene(nextSceneID);
+	this->ChangeScene(nextSceneID);
 }
 
 //---------------------------------------------------------
@@ -70,7 +70,7 @@ void SceneManager::Render()
 //---------------------------------------------------------
 void SceneManager::Finalize()
 {
-	DeleteScene();
+	this->DeleteScene();
 }
 
 //---------------------------------------------------------
@@ -78,8 +78,8 @@ void SceneManager::Finalize()
 //---------------------------------------------------------
 void SceneManager::ChangeScene(IScene::SceneID sceneID)
 {
-	DeleteScene();
-	CreateScene(sceneID);
+	this->DeleteScene();
+	this->CreateScene(sceneID);
 }
 
 //---------------------------------------------------------

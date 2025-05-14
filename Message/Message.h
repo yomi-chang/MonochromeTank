@@ -5,8 +5,10 @@ public:
 	// メッセージID
 	enum MessageID : int
 	{
+		NONE,
 		PATROL,
 		TRACKING,
-		ATTACK
+		ATTACK,
+		AVOIDWALL
 	};
 };

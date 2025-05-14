@@ -32,6 +32,9 @@ public:
 	static constexpr float COLLIDER_POSITION = 0.5f;
 	// 影の半径
 	static constexpr float RADIUS = 1.1f;
+	// 回避用コライダーサイズ
+	static constexpr float AVOID_COLLIDER_SIZE = 1.5f;
+
 public:
 	// コンストラクタ
 	Tank(
@@ -144,4 +147,8 @@ public:
 
 	// ダメージ処理
 	void Damage(int damage);
+
+private:
+	// 影の描画
+	void DrawShadow();
 };

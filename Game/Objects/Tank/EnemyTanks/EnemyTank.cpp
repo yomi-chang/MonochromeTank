@@ -13,11 +13,10 @@
 #include "Game/UserInterface/EnemyHpGauge.h"
 #include "Game/Collider/SphereCollider.h"
 
-#include "Game/EnemyAi/SelectAction.h"
 #include "Game/EnemyAi/Patrol.h"
 #include "Game/EnemyAi/Tracking.h"
 #include "Game/EnemyAi/Attack.h"
-#include "Game/EnemyAi/Shot.h"
+#include "Game/EnemyAi/AvoidWall.h"
 
 #include "Message/Messenger.h"
 
@@ -39,8 +38,9 @@ EnemyTank::EnemyTank(
 	m_patrol{},
 	m_tracking{},
 	m_attack{},
-	m_shot{},
-	m_currentState{}
+	m_avoidWall{},
+	m_currentState{},
+	m_prevState{}
 {
 	// 戦車番号と戦車の登録
 	Messenger::GetInstance()->Register(m_tankNumber, this);
@@ -70,10 +70,6 @@ void EnemyTank::Initialize()
 	// 敵体力ゲージを生成
 	m_hpGauge = std::make_unique<EnemyHpGauge>();
 
-	// 敵AIの生成
-	m_selectAction = std::make_unique<SelectAction>();
-	m_selectAction->Initialize(m_tank.get());
-
 	// 巡回行動の生成
 	auto parameter = Parameter::GetInstance();
 	m_patrol = std::make_unique<Patrol>();
@@ -88,12 +84,13 @@ void EnemyTank::Initialize()
 	m_attack = std::make_unique<Attack>();
 	m_attack->Initialize(m_tank.get());
 
-	// 射撃行動の生成
-	m_shot = std::make_unique<Shot>();
-	m_shot->Initialize(m_tank.get());
+	// 壁回避行動の生成
+	m_avoidWall = std::make_unique<AvoidWall>();
+	m_avoidWall->Initialize(m_tank.get());
 
 	// 初期状態を追跡行動に
 	m_currentState = m_patrol.get();
+	m_prevState = m_currentState;
 }
 
 //-------------------------------------------------------------------
@@ -131,20 +128,6 @@ void EnemyTank::Update(float elapsedTime)
 			m_targetTank = nullptr;
 			Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::PATROL);
 		}
-	}
-
-	// 壁回避行動
-	if (m_tank->GetAvoidWall())
-	{
-		// 回避行動
-		float speed = elapsedTime * parameter->GetEnemySpeed();
-		float angle = DirectX::XMConvertToRadians(0.7f);
-		Vector3 velocity = Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
-		// 移動させる
-		m_tank->GetBody()->Move(velocity);
-		// 回転させる
-		m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(angle, 0.0f, 0.0f));
-		return;
 	}
 
 	// 行動の更新処理
@@ -185,7 +168,6 @@ void EnemyTank::SetPosition(const DirectX::SimpleMath::Vector3& position)
 void EnemyTank::SetOtherTanks(std::vector<Tank*> tanks)
 {
 	m_tank->SetOtherTanks(tanks);
-	m_selectAction->SetOtherTanks(tanks);
 	m_patrol->SetOtherTanks(tanks);
 }
 
@@ -197,6 +179,10 @@ void EnemyTank::OnMessegeAccepted(Message::MessageID messageID)
 	// 取得したメッセージに応じた処理
 	switch (messageID)
 	{
+	case Message::NONE:
+		// NONEが返されたら前回の行動に遷移する
+		this->ChangeState(m_prevState);
+		break;
 	case Message::PATROL:
 		// 追跡対象の戦車の登録解除(念の為行っておく)
 		m_targetTank = nullptr;
@@ -217,6 +203,12 @@ void EnemyTank::OnMessegeAccepted(Message::MessageID messageID)
 		m_targetTank = m_currentState->GetTargetTank();
 		// 攻撃行動に遷移
 		this->ChangeState(m_attack.get());
+		break;
+	case Message::AVOIDWALL:
+		// 前回の行動の設定
+		m_prevState = m_currentState;
+		// 壁回避行動に遷移
+		this->ChangeState(m_avoidWall.get());
 		break;
 	default:
 		break;

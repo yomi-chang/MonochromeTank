@@ -115,7 +115,7 @@ void Bullet::Render()
 		return;
 
 	// ’e‚ð•`‰æ‚·‚é
-	DrawBullet();
+	this->DrawBullet();
 
 	// ƒgƒŒƒCƒ‹‚Ì•`‰æ
 	Vector3 width = Matrix::CreateFromQuaternion(m_rotation).Right() * Parameter::GetInstance()->GetBulletWidth();

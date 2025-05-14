@@ -37,9 +37,6 @@ void Resources::LoadResource()
 	// 「天球」モデルをロードする
 	m_skySphereModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\GraySky.cmo", *m_graphics->GetFX());
 
-	// 「弾」モデルをロードする
-	m_bulletModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\bullet.cmo", *m_graphics->GetFX());
-
 	// 「固定砲台」モデルをロードする
 	m_fixedTurretModel = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\FixedTurret.sdkmesh", *m_graphics->GetFX());
 
@@ -246,5 +243,13 @@ void Resources::LoadResource()
 		L"Resources\\Textures\\DamageEffect.jpg",
 		nullptr,
 		m_damageEffectTexture.ReleaseAndGetAddressOf()
+	);
+
+	//	弾の軌跡テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\WhiteSmoke.png",
+		nullptr,
+		m_trailSmokeTexture.ReleaseAndGetAddressOf()
 	);
 }

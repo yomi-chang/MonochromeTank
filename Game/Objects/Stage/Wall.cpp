@@ -55,9 +55,9 @@ void Wall::Update(float elapsedTime)
 	// •Ç‚ðã‚°‚éA‚à‚µ‚­‚Í‰º‚°‚éˆ—
 	if (m_wallType == WallType::FIXED) { return; }
 	if (m_isActive)
-		RaiseWall(elapsedTime);
+		this->RaiseWall(elapsedTime);
 	else
-		LowerWall(elapsedTime);
+		this->LowerWall(elapsedTime);
 }
 
 //---------------------------------------------------------
@@ -71,7 +71,7 @@ void Wall::Render()
 	m_collider->Update(m_position);
 
 	// “–‚½‚è”»’è‚Ìˆ—
-	DetectCollision();
+	this->DetectCollision();
 
 	Matrix world = Matrix::CreateTranslation(m_position);
 	auto& view = m_graphics->GetViewMatrix();

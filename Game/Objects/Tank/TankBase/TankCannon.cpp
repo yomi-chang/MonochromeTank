@@ -136,7 +136,7 @@ void TankCannon::Update(
 	}
 
 	// ƒŠƒ[ƒhˆ—
-	Reload(elapsedTime);
+	this->Reload(elapsedTime);
 }
 
 //---------------------------------------------------------

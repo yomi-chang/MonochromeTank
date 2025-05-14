@@ -1,16 +1,17 @@
 /*
-	@file	Shot.h
-	@brief	敵の射撃処理クラス
+	@file	AvoidWall.h
+	@brief	敵の壁回避クラス
 */
 #pragma once
 #include "Interface/IState.h"
-class Shot : public IState
+
+class AvoidWall : public IState
 {
 public:
 	// コンストラクタ
-	Shot();
+	AvoidWall();
 	// デストラクタ
-	~Shot() override;
+	~AvoidWall() override;
 	// 初期化処理
 	void Initialize(Tank* tank) override;
 	// 更新処理
@@ -21,13 +22,12 @@ public:
 	void SetTargetTank(Tank* targetTank) override { m_targetTank = targetTank; }
 
 private:
-	// 自機の情報
+	// 自機
 	Tank* m_tank;
 	// 追跡対象の戦車
 	Tank* m_targetTank;
-
-private:
-	// 追跡対象の方向に向く
-	void LookTargetTank(float elapsedTime);
+	// 時間
+	float m_time;
+	// 前回の状態
+	IState* m_prevState;
 };
-

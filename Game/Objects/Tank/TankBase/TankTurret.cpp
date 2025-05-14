@@ -46,7 +46,7 @@ void TankTurret::Initialize()
 	using namespace DirectX::SimpleMath;
 
 	// –Cg‚Ì¶¬
-	Attach(std::make_unique<TankCannon>(m_tank, Vector3(0.0f, 0.0f, 0.0f), 0.0f));
+	this->Attach(std::make_unique<TankCannon>(m_tank, Vector3(0.0f, 0.0f, 0.0f), 0.0f));
 
 	// ƒ‚ƒfƒ‹‚Ìæ“¾
 	m_model = Resources::GetInstance()->GetTankTurretModel();

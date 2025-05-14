@@ -85,7 +85,7 @@ void SelectScene::Initialize()
 	// ゲーム設定の初期設定
 	m_selectPos = SELECT_POS1;
 	m_stageTexturePos = STAGE1;
-	m_tankCountTexturePos = TANK_COUNT3;
+	m_tankCountTexturePos = TANK_COUNT2;
 }
 
 //---------------------------------------------------------
@@ -106,7 +106,7 @@ void SelectScene::Update(float elapsedTime)
 		m_fade->FinishFade())
 	{
 		// ステージ設定の設定
-		SetStageSetting();
+		this->SetStageSetting();
 		// シーン遷移フラグ
 		m_isChangeScene = true;
 	}

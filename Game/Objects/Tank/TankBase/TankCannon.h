@@ -113,7 +113,7 @@ public:
 	// Ray‚ÌË’ö‚Ìæ“¾
 	float GetMaxRange() { return Parameter::GetInstance()->GetMaxRange(); }
 	// ”­Ë•ûŒü‚Ìæ“¾
-	const DirectX::SimpleMath::Quaternion& GetMuzzleRotation() { return m_cannonRotation * m_currentRotation; }
+	DirectX::SimpleMath::Quaternion GetMuzzleRotation() { return m_cannonRotation * m_currentRotation; }
 	// Æ€‚ğ•\¦‚·‚é‚©‚Ç‚¤‚©‚Ìİ’è
 	void SetDisplaySight(bool display) { m_displaySight = display; }
 

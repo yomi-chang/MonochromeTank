@@ -42,7 +42,7 @@
 PlayScene::PlayScene()
 	:
 	m_graphics{Graphics::GetInstance()},
-	m_debugCamera{},
+	m_deathCamera{},
 	m_tpsCamera{},
 	m_cameraType{CameraType::TPS},
 	m_isChangeScene{},
@@ -85,8 +85,8 @@ void PlayScene::Initialize()
 
 	// デバッグカメラを作成する
 	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
-	m_debugCamera = std::make_unique<mylib::DebugCamera>();
-	m_debugCamera->Initialize(rect.right, rect.bottom);
+	m_deathCamera = std::make_unique<mylib::DebugCamera>();
+	m_deathCamera->Initialize(rect.right, rect.bottom);
 
 	// 射影行列を作成する
 	Matrix projection;
@@ -104,7 +104,7 @@ void PlayScene::Initialize()
 
 	// オブジェクトの生成============================================================
 	// 戦車の生成
-	CreateTanks();
+	this->CreateTanks();
 
 	// TPSカメラの生成
 	m_tpsCamera = std::make_unique<mylib::FollowCamera>();
@@ -121,6 +121,9 @@ void PlayScene::Initialize()
 
 	// コリジョンマネージャー
 	m_collisonManager = std::make_unique<CollisionManager>();
+	
+	// 進行管理マネージャー
+	m_progressionManager = std::make_unique<ProgressionManager>();
 
 	// シーン遷移用
 	m_fade = std::make_unique<Fade>(1.0f);
@@ -137,12 +140,18 @@ void PlayScene::Initialize()
 	// ポーズ画面
 	m_pauseMenu = std::make_unique<PauseMenu>();
 
-	//全戦車の情報を持つ配列
+	// 全戦車の情報を持つ配列
 	std::vector<Tank*> tankPointers;
 	tankPointers.push_back(m_player->GetTank());
 	for (auto& tank : m_enemies)
 	{
 		tankPointers.push_back(tank->GetTank());
+	}
+	// 全敵戦車情報を持つ配列
+	std::vector<EnemyTank*> enemyTankPointers;
+	for (auto& enemy : m_enemies)
+	{
+		enemyTankPointers.push_back(enemy.get());
 	}
 
 	// 必要な情報の設定============================================================
@@ -164,10 +173,9 @@ void PlayScene::Initialize()
 		m_stageManager->GetWalls(),
 		m_stageManager->GetWallGimmick()
 	);
+	// 進行管理マネージャーに敵戦車情報の設定
+	m_progressionManager->Initialize(enemyTankPointers);
 
-	// 進行管理マネージャー
-	m_progressionManager = std::make_unique<ProgressionManager>();
-	m_progressionManager->Initialize(tankPointers);
 
 	//　スキップテクスチャの受け取り
 	m_skipTexture = Resources::GetInstance()->GetSkipTexture();
@@ -186,8 +194,8 @@ void PlayScene::Update(float elapsedTime)
 	// フォローカメラを更新する
 	m_tpsCamera->Update(elapsedTime);
 
-	// デバッグカメラを更新する
-	m_debugCamera->Update();
+	// カメラを更新する
+	m_deathCamera->Update();
 
 	// フェードイン中でフェードが終了しているならシーン遷移
 	if (m_fade->GetFadeType() == Fade::FADEIN &&
@@ -239,23 +247,26 @@ void PlayScene::Update(float elapsedTime)
 
 	// 生存戦車確認
 	m_surviveTank = 0;
-	// プレイヤー
-	if (!m_player->GetDead()){ m_surviveTank++;}
-	// やられているならカメラ変更
-	else{ m_cameraType = CameraType::DEATH;}
 	// 敵
 	for (auto& enemy : m_enemies)
 	{
 		if (!enemy->GetDead()) { m_surviveTank++; }
 	}
+	// 進行管理マネージャーに生存している敵戦車の数を渡す
+	m_progressionManager->SetTankCount(m_surviveTank);
 
+	// プレイヤー
+	if (!m_player->GetDead()){ m_surviveTank++;}
+	// やられているならカメラ変更
+	else{ m_cameraType = CameraType::DEATH;}
+	
 	// 生存している戦車が1台だけならフェード開始
 	if (m_surviveTank == 1){ m_fade->FadeIn();}
 
 	// キーボードステートの取得
 	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
 	
-	// デバッグカメラでスペースキーを押したらフェード開始
+	// デスカメラでスペースキーを押したらフェード開始
 	if (m_cameraType == CameraType::DEATH &&
 		kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
 	{
@@ -295,7 +306,7 @@ void PlayScene::Render()
 			Graphics::GetInstance()->SetViewMatrix(view);
 			break;
 		case CameraType::DEATH:
-			view = m_debugCamera->GetViewMatrix();
+			view = m_deathCamera->GetViewMatrix();
 			Graphics::GetInstance()->SetViewMatrix(view);
 			break;
 	}

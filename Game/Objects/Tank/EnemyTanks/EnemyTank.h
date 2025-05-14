@@ -11,11 +11,10 @@
 class Tank;
 class EnemyHpGauge;
 
-class SelectAction;
 class Patrol;
 class Tracking;
 class Attack;
-class Shot;
+class AvoidWall;
 class SphereCollider;
 
 class EnemyTank : IObject
@@ -54,14 +53,16 @@ private:
 	Tank* m_targetTank;
 
 	// AI関係
-	std::unique_ptr<SelectAction> m_selectAction;	// 行動選択
 	std::unique_ptr<Patrol> m_patrol;				// 巡回行動
 	std::unique_ptr<Tracking> m_tracking;			// 追跡行動
 	std::unique_ptr<Attack> m_attack;				// 攻撃行動
-	std::unique_ptr<Shot> m_shot;					// 射撃行動
+	std::unique_ptr<AvoidWall> m_avoidWall;			// 壁回避行動
 
 	// 現在の状態
 	IState* m_currentState;
+	// 前回の状態
+	IState* m_prevState;
+
 
 public:
 	// 座標の取得
@@ -88,4 +89,6 @@ public:
 	IState* GetCurrentState() { return m_currentState; }
 	// メッセージの取得
 	void OnMessegeAccepted(Message::MessageID messageID);
+	// 巡回行動の取得
+	Patrol* GetPatrol() { return m_patrol.get(); }
 };

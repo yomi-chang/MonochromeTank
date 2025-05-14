@@ -83,7 +83,7 @@ void CannonBall::Update(float time)
 	// 一定時間経過していたら使用済みにする
 	if (m_elapsedTime >= parameter->GetCannonBallSurvivalTime())
 	{
-		SetBulletState(IBullet::USED);
+		this->SetBulletState(IBullet::USED);
 	}
 
 	// 速度を計算する（初速度）
@@ -99,7 +99,7 @@ void CannonBall::Update(float time)
 	// 地面より下に行ったら使用済みにする
 	if (m_position.y <= 0)
 	{
-		SetBulletState(IBullet::USED);
+		this->SetBulletState(IBullet::USED);
 	}
 }
 
@@ -120,7 +120,7 @@ void CannonBall::Render()
 		return;
 
 	// 砲弾を描画する
-	DrawBullet();
+	this->DrawBullet();
 
 	// トレイルの描画
 	Vector3 width = Matrix::CreateFromQuaternion(m_rotation).Right() * Parameter::GetInstance()->GetCannonBallWidth();

@@ -25,9 +25,9 @@ namespace mylib
 		std::random_device seed_gen;
 		std::mt19937 engine(seed_gen());
 
-		std::normal_distribution<double> dist(min, max);
+		std::uniform_real_distribution<double> dist(min, max);
 
-		return dist(engine);
+		return static_cast<float>(dist(engine));
 	}
 
 	//---------------------------------------------------------
@@ -69,6 +69,8 @@ namespace mylib
 //---------------------------------------------------------
 void mylib::DebugLog(std::string text, float value)
 {
+	UNREFERENCED_PARAMETER(value);
+
 #ifdef _DEBUG
 	std::string str = text + ":" + std::to_string(value) + "\n";
 	LPCSTR lpcstr = str.c_str();
@@ -77,6 +79,8 @@ void mylib::DebugLog(std::string text, float value)
 }
 void mylib::DebugLog(std::string text, int value)
 {
+	UNREFERENCED_PARAMETER(value);
+
 #ifdef _DEBUG
 	std::string str = text + ":" + std::to_string(value) + "\n";
 	LPCSTR lpcstr = str.c_str();
@@ -85,6 +89,8 @@ void mylib::DebugLog(std::string text, int value)
 }
 void mylib::DebugLog(std::string text)
 {
+	UNREFERENCED_PARAMETER(text);
+
 #ifdef _DEBUG
 	std::string str = text + "\n";
 	LPCSTR lpcstr = str.c_str();
@@ -93,6 +99,8 @@ void mylib::DebugLog(std::string text)
 }
 void mylib::DebugLog(const DirectX::SimpleMath::Vector3& position)
 {
+	UNREFERENCED_PARAMETER(position);
+
 #ifdef _DEBUG
 	DirectX::SimpleMath::Vector3 pos = position;
 	std::string str = "Position:("

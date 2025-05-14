@@ -36,8 +36,8 @@ mylib::DebugCamera::DebugCamera()
 //---------------------------------------------------------
 void mylib::DebugCamera::Initialize(int screenWidth,int screenHeight)
 {
-	CalculateRerativeScale(screenWidth, screenHeight);
-	CalculateViewMatrix();
+	this->CalculateRerativeScale(screenWidth, screenHeight);
+	this->CalculateViewMatrix();
 
 	// マウスのホイール値をリセット
 	Mouse::Get().ResetScrollWheelValue();
@@ -84,11 +84,10 @@ void mylib::DebugCamera::Update()
 	{
 		m_scrollWheelValue = 0;
 		Mouse::Get().ResetScrollWheelValue();
-		//!! DirectX::Mouseはシングルトンなので…
 	}
 
 	// ビュー行列を算出する
-	CalculateViewMatrix();
+	this->CalculateViewMatrix();
 }
 
 //---------------------------------------------------------

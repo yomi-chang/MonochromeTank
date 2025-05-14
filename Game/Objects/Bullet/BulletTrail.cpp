@@ -1,6 +1,6 @@
 /*
 	@file	BulletTrail.cpp
-	@brief	’e‚Ì‹OÕ‚ğ•\¦‚·‚éƒNƒ‰ƒX
+	@brief	å¼¾ã®è»Œè·¡ã‚’è¡¨ç¤ºã™ã‚‹ã‚¯ãƒ©ã‚¹
 */
 #include "pch.h"
 #include "Game/Objects/Bullet/BulletTrail.h"
@@ -8,7 +8,7 @@
 #include "Framework/Resources.h"
 
 //-------------------------------------------------------------------
-// ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+// ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //-------------------------------------------------------------------
 BulletTrail::BulletTrail()
 	:
@@ -22,29 +22,29 @@ BulletTrail::BulletTrail()
 }
 
 //-------------------------------------------------------------------
-// ƒfƒXƒgƒ‰ƒNƒ^
+// ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 //-------------------------------------------------------------------
 BulletTrail::~BulletTrail()
 {
 }
 
 //-------------------------------------------------------------------
-// ‰Šú‰»ˆ—
+// åˆæœŸåŒ–å‡¦ç†
 //-------------------------------------------------------------------
 void BulletTrail::Initialize(int trailCount)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
-	// •\¦‚·‚éƒgƒŒƒCƒ‹‚Ì”‚Ìİ’è
+	// è¡¨ç¤ºã™ã‚‹é•·ã•ã®è¨­å®š
 	m_maxTrail = trailCount;
 
-	// ƒGƒtƒFƒNƒgì¬
+	// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆä½œæˆ
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
 	m_basicEffect = std::make_unique<BasicEffect>(device);
 	m_basicEffect->SetTextureEnabled(true);
 
-	// “ü—ÍƒŒƒCƒAƒEƒg‚ğİ’è‚·‚é
+	// å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆç”Ÿæˆ
 	DX::ThrowIfFailed(
 		CreateInputLayoutFromEffect<VertexPositionTexture>(
 			device,
@@ -53,45 +53,47 @@ void BulletTrail::Initialize(int trailCount)
 		)
 	);
 
-	// ƒvƒŠƒ~ƒeƒBƒuƒoƒbƒ`ì¬
+	// ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ãƒãƒƒãƒä½œæˆ
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 }
 
 //-------------------------------------------------------------------
-// •`‰æˆ—
+// æç”»å‡¦ç†
 //-------------------------------------------------------------------
 void BulletTrail::Render()
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
-	// À•Wî•ñ‚ª2‚Â‚È‚¢‚È‚ç‘ŠúƒŠƒ^[ƒ“
+	// ã‚µã‚¤ã‚ºãŒä¸€å®šä»¥ä¸Šå‡ºãªã„ãªã‚‰æ—©æœŸãƒªã‚¿ãƒ¼ãƒ³
 	if (m_posArray.size() <= 1) { return; }
 
+	// å¿…è¦ãªæƒ…å ±ã®å—ã‘å–ã‚Š
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	auto states = m_graphics->GetCommonStates();
-	// À•W‚Ìw’è
+	
 	Matrix world = Matrix::Identity;
-	// ƒAƒ‹ƒtƒ@ƒuƒŒƒ“ƒh‚Ì“K‰
+
+	// ã‚¢ãƒ«ãƒ•ã‚¡ãƒ–ãƒ¬ãƒ³ãƒ‰ã®é©å¿œ
 	context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xffffffff);
-	// •`‰æ‚É[“x’l‚ğ“K‰
+	// æ·±åº¦ãƒãƒƒãƒ•ã‚¡è¨­å®š
 	context->OMSetDepthStencilState(states->DepthRead(), 0);
-	// — –ÊƒJƒŠƒ“ƒO‚Ìİ’è
+	// ã‚«ãƒªãƒ³ã‚°ã®è¨­å®š(ã‚«ãƒªãƒ³ã‚°ãªã—)
 	context->RSSetState(states->CullNone());
-	// ƒeƒNƒXƒ`ƒƒƒTƒ“ƒvƒ‰‚ÉƒŠƒjƒAƒNƒ‰ƒ“ƒv‚ğ“K—p
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚µãƒ³ãƒ—ãƒ©ã«ãƒªãƒ‹ã‚¢ã‚¯ãƒ©ãƒ³ãƒ—ã‚’é©ç”¨
 	ID3D11SamplerState* sampler = states->LinearClamp();
 	context->PSSetSamplers(0, 1, &sampler);
-	// “ü—ÍƒŒƒCƒAƒEƒg‚Ì“K—p
+	// å…¥åŠ›ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®é©ç”¨
 	context->IASetInputLayout(m_inputLayout.Get());
-	// ƒx[ƒVƒbƒNƒGƒtƒFƒNƒg‚ğİ’è‚µ“K‰
+	// ãƒ™ãƒ¼ã‚·ãƒƒã‚¯ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã‚’è¨­å®šã—é©å¿œ
 	m_basicEffect->SetWorld(world);
 	m_basicEffect->SetView(m_graphics->GetViewMatrix());
 	m_basicEffect->SetProjection(m_graphics->GetProjectionMatrix());
-	m_basicEffect->SetTexture(Resources::GetInstance()->GetBoxTexture());
+	m_basicEffect->SetTexture(Resources::GetInstance()->GetTrailSmokeTexture());
 	m_basicEffect->Apply(context);
 
-	// À•Wİ’è
+	// ãƒˆãƒ¬ã‚¤ãƒ«ã®æç”»
 	for (int i = 1; i < m_posArray.size(); i++)
 	{
 		VertexPositionTexture vertex[4] =
@@ -108,19 +110,19 @@ void BulletTrail::Render()
 }
 
 //-------------------------------------------------------------------
-// À•W‚Ìó‚¯æ‚è
+// åº§æ¨™ã®è¨­å®š
 //-------------------------------------------------------------------
 void BulletTrail::SetPosition(
 	const DirectX::SimpleMath::Vector3& top,
 	const DirectX::SimpleMath::Vector3& bottom
 )
 {
-	// ŒÃ‚¢À•W‚ğíœ
+	// maxTrailã‚’è¶…éã—ãŸåˆ†ã‚’å‰Šé™¤
 	if (m_posArray.size() > m_maxTrail)
 	{
 		m_posArray.erase(m_posArray.begin(), m_posArray.begin() + (m_posArray.size() - m_maxTrail));
 	}
 
-	// À•Wî•ñ‚Ìó‚¯æ‚è
+	// åº§æ¨™ã®è¨­å®š
 	m_posArray.push_back(PosBuffer{ top, bottom });
 }

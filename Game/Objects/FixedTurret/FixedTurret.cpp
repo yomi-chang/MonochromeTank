@@ -167,7 +167,7 @@ void FixedTurret::Shot()
 				return;
 
 			//「連射弾」を発射する
-			ShootBullet(bullet.get());
+			this->ShootBullet(bullet.get());
 
 			// 発射クールタイムの設定
 			m_shotTimer = SHOT_INTERVAL;

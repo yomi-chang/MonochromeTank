@@ -75,7 +75,7 @@ void PlayerTank::Update(float elapsedTime)
 	if (m_tank->GetDead()) { return; }
 
 	// ƒL[“ü—Í‚Ìˆ—
-	KeyBoardEvent(elapsedTime);
+	this->KeyBoardEvent(elapsedTime);
 	// íÔ‚ÌXV
 	m_tank->Update(elapsedTime);
 
@@ -127,10 +127,10 @@ void PlayerTank::KeyBoardEvent(float elapsedTime)
 	if (m_tank->GetHp() <= 0) { return; }
 
 	// ˆÚ“®ˆ—
-	Move(elapsedTime);
+	this->Move(elapsedTime);
 
 	// –C“ƒ‚Æ–Cg‚Ì‰ñ“]
-	RotateTurretCannon();
+	this->RotateTurretCannon();
 
 	// ’e‚Ì”­Ë
 	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
@@ -181,7 +181,7 @@ void PlayerTank::Move(float elapsedTime)
 
 	// •Ï”éŒ¾
 	Vector3 velocity = Vector3::Zero;
-	float speed = elapsedTime * parameter->GetPlayerSpeed();
+	float speed = parameter->GetPlayerSpeed() * elapsedTime;
 	float angle = 0.0f;
 
 	// ¶‰E‰ñ“]

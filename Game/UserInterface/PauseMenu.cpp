@@ -9,6 +9,8 @@
 #include "Framework/InputManager.h"
 #include "Game/Screen.h"
 #include "Libraries/MyLib/Utils.h"
+#include "Game/Other/SharedData.h"
+#include "Libraries/MyLib/SoundManager.h"
 
 //-------------------------------------------------------------------
 // コンストラクタ
@@ -29,7 +31,7 @@ PauseMenu::PauseMenu()
 	m_resources = Resources::GetInstance();
 
 	// 初期選択されているUIの設定
-	m_currentSelectUi == UI::CANCEL;
+	m_currentSelectUi = UI::CANCEL;
 }
 
 //-------------------------------------------------------------------
@@ -48,7 +50,7 @@ void PauseMenu::Update(float elapsedTime)
 	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
 
 	// Escapeキーが押されたらポーズ画面の表示、非表示
-	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Q))
+	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Escape))
 	{
 		m_isDisplay = m_isDisplay == false ? true : false;
 	}
@@ -61,6 +63,8 @@ void PauseMenu::Update(float elapsedTime)
 		kbTracker->IsKeyPressed(DirectX::Keyboard::S))
 	{
 		m_currentSelectUi = m_currentSelectUi == UI::CANCEL ? UI::TITLE : UI::CANCEL;
+		// SEの再生
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
 	}
 
 	// 選択されていない方のUIを選択状態にする
@@ -75,6 +79,8 @@ void PauseMenu::Update(float elapsedTime)
 			this->Cancel();
 			break;
 		}
+		// SEの再生
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
 	}
 
 	// カーソルの回転

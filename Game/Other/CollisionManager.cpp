@@ -37,25 +37,25 @@ CollisionManager::~CollisionManager()
 void CollisionManager::Update()
 {
 	// 戦車の砲弾の当たり判定
-	DetectCollisionTankAndCannonBall();
+	this->DetectCollisionTankAndCannonBall();
 
 	// 戦車と連射弾の当たり判定
-	DetectCollisionTankAndNomalBullets();
+	this->DetectCollisionTankAndNomalBullets();
 
 	// 戦車同士の当たり判定
-	DetectCollisionTankAndOtherTanks();
+	this->DetectCollisionTankAndOtherTanks();
 
 	// 戦車と壁の当たり判定
-	DetectCollisionTankAndWalls();
+	this->DetectCollisionTankAndWalls();
 
 	// 弾と壁の当たり判定
-	DetectCollisionBulletsAndWalls();
+	this->DetectCollisionBulletsAndWalls();
 
 	// Rayと壁の当たり判定
-	DetectCollisionRayAndWalls();
+	this->DetectCollisionRayAndWalls();
 
 	// 壁と壁検知用コライダーの当たり判定
-	DetectCollisionWallAndAvoidCollider();
+	this->DetectCollisionWallAndAvoidCollider();
 }
 
 // 戦車と連射弾

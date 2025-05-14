@@ -182,6 +182,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Game\EnemyAi\AvoidWall.h" />
     <ClInclude Include="Game\Particle\DamageEffect.h" />
     <ClInclude Include="DeviceResources.h" />
     <ClInclude Include="Framework\Graphics.h" />
@@ -193,7 +194,6 @@
     <ClInclude Include="Game\EnemyAi\Attack.h" />
     <ClInclude Include="Interface\IState.h" />
     <ClInclude Include="Game\EnemyAi\Patrol.h" />
-    <ClInclude Include="Game\EnemyAi\SelectAction.h" />
     <ClInclude Include="Game\EnemyAi\Tracking.h" />
     <ClInclude Include="Game\Objects\Bullet\Bullet.h" />
     <ClInclude Include="Game\Objects\Bullet\BulletTrail.h" />
@@ -248,10 +248,10 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Libraries\MyLib\SoundManager.h" />
     <ClInclude Include="Game\Other\ProgressionManager.h" />
-    <ClInclude Include="Game\EnemyAi\Shot.h" />
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\EnemyAi\AvoidWall.cpp" />
     <ClCompile Include="Game\Particle\DamageEffect.cpp" />
     <ClCompile Include="DeviceResources.cpp" />
     <ClCompile Include="Framework\Graphics.cpp" />
@@ -262,7 +262,6 @@
     <ClCompile Include="Game\Collider\SphereCollider.cpp" />
     <ClCompile Include="Game\EnemyAi\Attack.cpp" />
     <ClCompile Include="Game\EnemyAi\Patrol.cpp" />
-    <ClCompile Include="Game\EnemyAi\SelectAction.cpp" />
     <ClCompile Include="Game\EnemyAi\Tracking.cpp" />
     <ClCompile Include="Game\Objects\Bullet\Bullet.cpp" />
     <ClCompile Include="Game\Objects\Bullet\BulletTrail.cpp" />
@@ -312,7 +311,6 @@
     </ClCompile>
     <ClCompile Include="Libraries\MyLib\SoundManager.cpp" />
     <ClCompile Include="Game\Other\ProgressionManager.cpp" />
-    <ClCompile Include="Game\EnemyAi\Shot.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

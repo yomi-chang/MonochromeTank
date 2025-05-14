@@ -5,8 +5,7 @@ SamplerState samLinear : register(s0);
 
 // プロトタイプ宣言
 float random(float2 uv);
-float random2(float2 st);
-//float noise(float2 uv);
+float2 random2(float2 st);
 float perlinNoise(float2 uv);
 float fBm(float2 uv);
 
@@ -17,7 +16,7 @@ float4 main(PS_INPUT input) : SV_TARGET
     
     float n = fBm((input.Tex + float2(0.0f,-time.x * 0.5f)) * 500) - 0.15f;
     
-    return lerp(float4(0, 0, 0, 0.085f), img, step(n, 0));
+    return lerp(float4(0, 0, 0, 0.03f), img, step(n, 0));
 }
 
 // 乱数の生成
@@ -27,7 +26,7 @@ float random(float2 uv)
 }
 
 // 2次元乱数の生成
-float random2(float2 st)
+float2 random2(float2 st)
 {
     st = float2(dot(st, float2(127.1f, 311.7f)),
                 dot(st, float2(269.5f, 183.3f)));

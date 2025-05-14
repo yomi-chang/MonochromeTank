@@ -143,6 +143,8 @@ void TitleScene::Update(float elapsedTime)
 	{
 		// 選択されているUIごとの実行
 		this->PressSelectUi();
+		// SEの再生
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
 	}
 
 	// 上キーか下キーが押されたらカーソル移動
@@ -151,6 +153,8 @@ void TitleScene::Update(float elapsedTime)
 	{
 		// カーソル移動
 		this->MoveCursor();
+		// SEの再生
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
 	}
 
 	// カーソルの回転速度
@@ -163,9 +167,6 @@ void TitleScene::Update(float elapsedTime)
 void TitleScene::Render()
 {
 	using namespace DirectX::SimpleMath;
-
-	auto states = m_graphics->GetCommonStates();
-	auto spriteBatch = m_graphics->GetSpriteBatch();
 
 	// ビュー行列の取得
 	auto view = Matrix::CreateLookAt(

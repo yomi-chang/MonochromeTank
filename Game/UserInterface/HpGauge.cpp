@@ -55,7 +55,7 @@ void HpGauge::Render(float hpRatio)
 
 	// 全体の長さ
 	float hpWidth = static_cast<float>(HP_POSITION.right - HP_POSITION.left);
-	m_hpGaugePosition.right = HP_POSITION.right - (hpWidth * hpRatio);
+	m_hpGaugePosition.right = static_cast<LONG>(HP_POSITION.right - (hpWidth * hpRatio));
 
 	// スプライトバッチを開始する
 	m_spriteBatch->Begin();

@@ -63,7 +63,7 @@ private:
 	bool m_isChangeScene;									// シーンチェンジフラグ
 
 	// カメラ関係
-	std::unique_ptr<mylib::DebugCamera> m_debugCamera;		// デバッグカメラ
+	std::unique_ptr<mylib::DebugCamera> m_deathCamera;		// デスカメラ
 	std::unique_ptr<mylib::FollowCamera> m_tpsCamera;		// 追従カメラ
 	CameraType m_cameraType;								// カメラタイプ
 

@@ -113,7 +113,6 @@
     <ClInclude Include="Game\EnemyAi\Patrol.h" />
     <ClInclude Include="Game\EnemyAi\Tracking.h" />
     <ClInclude Include="Game\EnemyAi\Attack.h" />
-    <ClInclude Include="Game\EnemyAi\SelectAction.h" />
     <ClInclude Include="Game\Objects\Bullet\BulletTrail.h" />
     <ClInclude Include="Game\Particle\Smoke.h" />
     <ClInclude Include="Interface\IState.h" />
@@ -127,9 +126,9 @@
     <ClInclude Include="Message\Message.h" />
     <ClInclude Include="Message\Messenger.h" />
     <ClInclude Include="Interface\IObserver.h" />
-    <ClInclude Include="Game\Other\ProgressionManager.h" />
-    <ClInclude Include="Game\EnemyAi\Shot.h" />
     <ClInclude Include="Game\UserInterface\PauseMenu.h" />
+    <ClInclude Include="Game\EnemyAi\AvoidWall.h" />
+    <ClInclude Include="Game\Other\ProgressionManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -189,7 +188,6 @@
     <ClCompile Include="Game\EnemyAi\Patrol.cpp" />
     <ClCompile Include="Game\EnemyAi\Tracking.cpp" />
     <ClCompile Include="Game\EnemyAi\Attack.cpp" />
-    <ClCompile Include="Game\EnemyAi\SelectAction.cpp" />
     <ClCompile Include="Game\Objects\Bullet\BulletTrail.cpp" />
     <ClCompile Include="Game\Particle\Smoke.cpp" />
     <ClCompile Include="Game\Scene\Fade.cpp" />
@@ -199,9 +197,9 @@
     <ClCompile Include="Game\Particle\StageEffect.cpp" />
     <ClCompile Include="Game\Other\Parameter.cpp" />
     <ClCompile Include="Message\Messenger.cpp" />
-    <ClCompile Include="Game\Other\ProgressionManager.cpp" />
-    <ClCompile Include="Game\EnemyAi\Shot.cpp" />
     <ClCompile Include="Game\UserInterface\PauseMenu.cpp" />
+    <ClCompile Include="Game\EnemyAi\AvoidWall.cpp" />
+    <ClCompile Include="Game\Other\ProgressionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

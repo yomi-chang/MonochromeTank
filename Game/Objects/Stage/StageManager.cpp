@@ -51,10 +51,10 @@ void StageManager::Initialize()
 	m_skySphere = std::make_unique<SkySphere>();
 
 	// CSVファイルの読み込み
-	LoadFile();
+	this->LoadFile();
 
 	// ステージの生成
-	CreateStage();
+	this->CreateStage();
 
 	// 壁ギミックの生成
 	m_wallGimmick = std::make_unique<WallGimmick>();

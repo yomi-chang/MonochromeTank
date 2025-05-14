@@ -45,10 +45,10 @@ DamageEffect::~DamageEffect()
 void DamageEffect::Create()
 {
 	// シェーダのロード
-	LoadShader();
+	this->LoadShader();
 
 	// 定数バッファの作成
-	CreateCBuffer();
+	this->CreateCBuffer();
 
 	// テクスチャの読み込み
 	m_texture = Resources::GetInstance()->GetDamageEffectTexture();

@@ -91,6 +91,12 @@ void Patrol::Update(float elapsedTime)
 		m_currentPoint %= m_patrolPointVelue;
 	}
 
+	// •Ç‚É“–‚½‚Á‚Ä‚¢‚½‚ç•Ç‚Ì‰ñ”ğs“®‚Ì‘JˆÚ
+	if (m_tank->GetAvoidWall())
+	{
+		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::AVOIDWALL);
+	}
+
 	// õ“G
 	this->ScoutOtherTank();
 }
@@ -118,7 +124,7 @@ void Patrol::ClearPatrolPoints()
 void Patrol::SetPatrolPoints(const std::vector<DirectX::SimpleMath::Vector3>& patrolPoints)
 {
 	// „‰ñ’n“_‚Ìíœ
-	ClearPatrolPoints();
+	this->ClearPatrolPoints();
 
 	// „‰ñ’n“_‚Ì“o˜^
 	m_patrolPoints = patrolPoints;

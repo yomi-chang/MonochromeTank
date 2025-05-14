@@ -50,24 +50,25 @@ void Attack::Update(float elapsedTime)
 	if (m_targetTank == nullptr) { return; }
 
 	// ’ÇÕ‘ÎÛ‚Ì•ûŒü‚ðŒü‚­
-	LookTargetTank(elapsedTime);
-
-	// ŽËŒ‚ˆ—
-	m_tank->GetCannon()->StartReload();
-	m_tank->GetCannon()->Shoot();
-	m_tank->GetCannon()->FinishShoot();
+	this->LookTargetTank(elapsedTime);
 
 	// s“®
 	switch (m_currentAction)
 	{
 		case Attack::SHOT:
-			ShotAction(elapsedTime);
+			this->ShotAction(elapsedTime);
 			break;
 		case Attack::MOVE:
-			MoveAction(elapsedTime);
+			this->MoveAction(elapsedTime);
 			break;
 		default:
 			break;
+	}
+
+	// •Ç‚É“–‚½‚Á‚Ä‚¢‚½‚ç•Ç‚Ì‰ñ”ðs“®‚Ì‘JˆÚ
+	if (m_tank->GetAvoidWall())
+	{
+		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::AVOIDWALL);
 	}
 
 	// ’ÇÕ‘ÎÛ‚ÌíŽÔ‚ª—£‚ê‚Ä‚¢‚½‚È‚ç
@@ -125,7 +126,7 @@ void Attack::MoveAction(float elapsedTime)
 
 	// ˆÚ“®
 	Vector3 velocity = Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
-
+	
 	// ˆÚ“®ˆ—
 	m_tank->GetBody()->Move(velocity);
 }
@@ -147,6 +148,7 @@ void Attack::ShotAction(float elapsedTime)
 	// ŽËŒ‚ˆ—
 	m_tank->GetCannon()->StartReload();
 	m_tank->GetCannon()->Shoot();
+	m_tank->GetCannon()->FinishShoot();
 }
 
 //-------------------------------------------------------------------

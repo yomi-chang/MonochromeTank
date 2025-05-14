@@ -41,7 +41,7 @@ Tank::Tank(
 	m_isAvoidWall{}
 {
 	// 体力の初期値の設定
-	SetMaxHp(1);
+	this->SetMaxHp(1);
 }
 
 //---------------------------------------------------------
@@ -60,7 +60,7 @@ void Tank::Initialize()
 	using namespace DirectX;
 
 	// 車体の生成
-	Attach(std::make_unique<TankBody>(this,Vector3(0.0f, 0.0f, 0.0f), 0.0f));
+	this->Attach(std::make_unique<TankBody>(this,Vector3(0.0f, 0.0f, 0.0f), 0.0f));
 
 	// 現在位置の更新
 	m_currentPosition = m_initialPosition;
@@ -72,10 +72,9 @@ void Tank::Initialize()
 
 	// 回避用コライダーの作成
 	m_avoidCollider = std::make_unique<SphereCollider>();
-	m_avoidCollider->CreateBoundingSphere(m_currentPosition, 1.5f);
+	m_avoidCollider->CreateBoundingSphere(m_currentPosition, AVOID_COLLIDER_SIZE);
 
-	// 影用のポリゴンを設定する
-	// ここではUV座標を指定している
+	// 影用のポリゴンの設定
 	m_vertices[0].textureCoordinate = Vector2(0.0f, 0.0f);	// 左上
 	m_vertices[1].textureCoordinate = Vector2(1.0f, 0.0f);	// 右上
 	m_vertices[2].textureCoordinate = Vector2(0.0f, 1.0f);	// 左下
@@ -86,7 +85,7 @@ void Tank::Initialize()
 	m_basicEffect = std::make_unique<BasicEffect>(device);
 	m_basicEffect->SetTextureEnabled(true);
 
-	// 入力レイアウトを設定する
+	// 入力レイアウトの設定
 	DX::ThrowIfFailed(
 		CreateInputLayoutFromEffect<VertexPositionTexture>(
 			device,
@@ -95,7 +94,7 @@ void Tank::Initialize()
 		)
 	);
 
-	// プリミティブバッチを生成する
+	// プリミティブバッチの生成
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 
@@ -151,40 +150,7 @@ void Tank::Render()
 	}
 
 	// 影の描画
-	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto states = m_graphics->GetCommonStates();
-
-	// アルファブレンドの適応
-	context->OMSetBlendState(states->AlphaBlend(),nullptr, 0xffffffff);
-	// 描画に深度値を適応
-	context->OMSetDepthStencilState(states->DepthRead(), 0);
-	// 裏面カリングの設定
-	context->RSSetState(states->CullCounterClockwise());
-	// テクスチャサンプラにリニアクランプを適用
-	ID3D11SamplerState* sampler = states->LinearClamp();
-	context->PSSetSamplers(0, 1, &sampler);
-	// 入力レイアウトの適用
-	context->IASetInputLayout(m_inputLayout.Get());
-	// ベーシックエフェクトを設定し適応
-	m_basicEffect->SetWorld(Matrix::Identity);
-	m_basicEffect->SetView(m_graphics->GetViewMatrix());
-	m_basicEffect->SetProjection(m_graphics->GetProjectionMatrix());
-	m_basicEffect->SetTexture(Resources::GetInstance()->GetShadowTexture());
-	m_basicEffect->Apply(context);
-
-	// 影のパラメータ
-	Vector3 position = GetPosition();
-
-	// 影ポリゴンの頂点情報を設定する：影を床から0.01f浮かせる
-	m_vertices[0].position = Vector3(-RADIUS, 0.01f, -RADIUS) + position;
-	m_vertices[1].position = Vector3( RADIUS, 0.01f, -RADIUS) + position;
-	m_vertices[2].position = Vector3(-RADIUS, 0.01f,  RADIUS) + position;
-	m_vertices[3].position = Vector3( RADIUS, 0.01f,  RADIUS) + position;
-
-	// 影ポリゴンを描画する
-	m_primitiveBatch->Begin();
-	m_primitiveBatch->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
-	m_primitiveBatch->End();
+	this->DrawShadow();
 
 	// コライダーの描画
 	m_collider->Render();
@@ -239,4 +205,48 @@ void Tank::Damage(int damage)
 		else
 			SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_DAMAGE_SE);
 	}
+}
+
+//---------------------------------------------------------
+// 影の描画
+//--------------------------------------------------------
+void Tank::DrawShadow()
+{
+	using namespace DirectX::SimpleMath;
+
+	// 影の描画
+	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
+	auto states = m_graphics->GetCommonStates();
+
+	// アルファブレンドの適応
+	context->OMSetBlendState(states->AlphaBlend(), nullptr, 0xffffffff);
+	// 描画に深度値を適応
+	context->OMSetDepthStencilState(states->DepthRead(), 0);
+	// 裏面カリングの設定
+	context->RSSetState(states->CullCounterClockwise());
+	// テクスチャサンプラにリニアクランプを適用
+	ID3D11SamplerState* sampler = states->LinearClamp();
+	context->PSSetSamplers(0, 1, &sampler);
+	// 入力レイアウトの適用
+	context->IASetInputLayout(m_inputLayout.Get());
+	// ベーシックエフェクトを設定し適応
+	m_basicEffect->SetWorld(Matrix::Identity);
+	m_basicEffect->SetView(m_graphics->GetViewMatrix());
+	m_basicEffect->SetProjection(m_graphics->GetProjectionMatrix());
+	m_basicEffect->SetTexture(Resources::GetInstance()->GetShadowTexture());
+	m_basicEffect->Apply(context);
+
+	// 影のパラメータ
+	Vector3 position = GetPosition();
+
+	// 影ポリゴンの頂点情報の設定：影を床から0.01f浮かせる
+	m_vertices[0].position = Vector3(-RADIUS, 0.01f, -RADIUS) + position;
+	m_vertices[1].position = Vector3(RADIUS, 0.01f, -RADIUS) + position;
+	m_vertices[2].position = Vector3(-RADIUS, 0.01f, RADIUS) + position;
+	m_vertices[3].position = Vector3(RADIUS, 0.01f, RADIUS) + position;
+
+	// 影ポリゴンの描画
+	m_primitiveBatch->Begin();
+	m_primitiveBatch->DrawQuad(m_vertices[0], m_vertices[1], m_vertices[3], m_vertices[2]);
+	m_primitiveBatch->End();
 }

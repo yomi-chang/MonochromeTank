@@ -52,6 +52,8 @@ void BoxCollider::Update(DirectX::SimpleMath::Vector3 centerPosition)
 //-------------------------------------------------------------------
 void BoxCollider::Render(DirectX::XMVECTOR color)
 {
+	UNREFERENCED_PARAMETER(color);
+
 	// 当たり判定の表示(デバッグビルドでのみ表示)
 #ifdef _DEBUG
 	// プリミティブ描画を開始する
