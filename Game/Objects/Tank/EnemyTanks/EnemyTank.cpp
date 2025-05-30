@@ -1,7 +1,7 @@
-/*
-	@file	EnemyTank.cpp
-	@brief	敵戦車クラス
-*/
+/**
+ * @file   EnemyTank.cpp
+ * @brief  敵戦車クラス
+ */
 #include"pch.h"
 #include"Game/Objects/Tank/EnemyTanks/EnemyTank.h"
 
@@ -20,9 +20,11 @@
 
 #include "Message/Messenger.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="tankNumber">戦車番号</param>
+/// <param name="position">座標</param>
 EnemyTank::EnemyTank(
 	int tankNumber,
 	const DirectX::SimpleMath::Vector3& position
@@ -46,16 +48,16 @@ EnemyTank::EnemyTank(
 	Messenger::GetInstance()->Register(m_tankNumber, this);
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 EnemyTank::~EnemyTank()
 {
 }
 
-//-------------------------------------------------------------------
-// 初期化処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void EnemyTank::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -93,9 +95,10 @@ void EnemyTank::Initialize()
 	m_prevState = m_currentState;
 }
 
-//-------------------------------------------------------------------
-// 更新処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void EnemyTank::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -134,9 +137,9 @@ void EnemyTank::Update(float elapsedTime)
 	m_currentState->Update(elapsedTime);
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void EnemyTank::Render()
 {
 	// 戦車の描画
@@ -147,33 +150,36 @@ void EnemyTank::Render()
 	m_hpGauge->Render(m_position,m_tank->GetHpRatio());
 }
 
-//-------------------------------------------------------------------
-// 終了処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void EnemyTank::Finalize()
 {
 }
 
-//-------------------------------------------------------------------
-// 座標情報の受け取り
-//-------------------------------------------------------------------
+/// <summary>
+/// 座標情報の設定
+/// </summary>
+/// <param name="position">座標</param>
 void EnemyTank::SetPosition(const DirectX::SimpleMath::Vector3& position)
 {
 	m_tank->GetBody()->SetCollisionVel(position);
 }
 
-//-------------------------------------------------------------------
-// 他の戦車情報の設定
-//-------------------------------------------------------------------
+/// <summary>
+/// 他の戦車情報の設定
+/// </summary>
+/// <param name="tanks">戦車情報</param>
 void EnemyTank::SetOtherTanks(std::vector<Tank*> tanks)
 {
 	m_tank->SetOtherTanks(tanks);
 	m_patrol->SetOtherTanks(tanks);
 }
 
-//-------------------------------------------------------------------
-// メッセージの取得
-//-------------------------------------------------------------------
+/// <summary>
+/// メッセージの取得
+/// </summary>
+/// <param name="messageID">メッセージID</param>
 void EnemyTank::OnMessegeAccepted(Message::MessageID messageID)
 {
 	// 取得したメッセージに応じた処理
@@ -216,6 +222,9 @@ void EnemyTank::OnMessegeAccepted(Message::MessageID messageID)
 
 	// 追跡対象の戦車の設定
 	m_currentState->SetTargetTank(m_targetTank);
+
+	// 状態遷移時に呼ばれる関数
+	m_currentState->Enter();
 }
 
 

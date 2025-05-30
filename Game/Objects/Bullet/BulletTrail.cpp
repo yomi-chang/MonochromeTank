@@ -1,15 +1,15 @@
-/*
-	@file	BulletTrail.cpp
-	@brief	弾の軌跡を表示するクラス
-*/
+/**
+ * @file   BulletTrail.cpp
+ * @brief  弾の軌跡を表示するクラス
+ */
 #include "pch.h"
 #include "Game/Objects/Bullet/BulletTrail.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 BulletTrail::BulletTrail()
 	:
 	m_posArray{},
@@ -21,16 +21,17 @@ BulletTrail::BulletTrail()
 {
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 BulletTrail::~BulletTrail()
 {
 }
 
-//-------------------------------------------------------------------
-// 初期化処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="trailCount">トレイルの長さ</param>
 void BulletTrail::Initialize(int trailCount)
 {
 	using namespace DirectX;
@@ -58,9 +59,9 @@ void BulletTrail::Initialize(int trailCount)
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void BulletTrail::Render()
 {
 	using namespace DirectX;
@@ -109,12 +110,14 @@ void BulletTrail::Render()
 	}
 }
 
-//-------------------------------------------------------------------
-// 座標の設定
-//-------------------------------------------------------------------
+/// <summary>
+/// 座標の設定
+/// </summary>
+/// <param name="right">板ポリの右端</param>
+/// <param name="left">板ポリの左端</param>
 void BulletTrail::SetPosition(
-	const DirectX::SimpleMath::Vector3& top,
-	const DirectX::SimpleMath::Vector3& bottom
+	const DirectX::SimpleMath::Vector3& right,
+	const DirectX::SimpleMath::Vector3& left
 )
 {
 	// maxTrailを超過した分を削除
@@ -124,5 +127,5 @@ void BulletTrail::SetPosition(
 	}
 
 	// 座標の設定
-	m_posArray.push_back(PosBuffer{ top, bottom });
+	m_posArray.push_back(PosBuffer{ right, left });
 }

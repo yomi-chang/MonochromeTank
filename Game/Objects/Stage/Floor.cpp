@@ -1,7 +1,7 @@
-/*
-	@file	Floor.cpp
-	@brief	床クラス
-*/
+/**
+ * @file   Floor.cpp
+ * @brief  床クラス
+ */
 #include "pch.h"
 #include "Game/Objects/Stage/Floor.h"
 #include "Framework/Graphics.h"
@@ -10,9 +10,10 @@
 #include <VertexTypes.h> 
 #include <WICTextureLoader.h> 
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="size">床サイズ</param>
 Floor::Floor(int size)
 	:
 	m_graphics{ Graphics::GetInstance()},
@@ -53,16 +54,16 @@ Floor::Floor(int size)
 	m_vertex[3] = DirectX::VertexPositionTexture(Vector3(-halfSize, 0.0f, -halfSize), Vector2(0.0f, halfSize));
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 Floor::~Floor()
 {
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void Floor::Render()
 {
 	using namespace DirectX::SimpleMath;

@@ -1,7 +1,7 @@
-/*
-	@file	PlayerTank.h
-	@brief	自機クラス
-*/
+/**
+ * @file   PlayerTank.h
+ * @brief  自機クラス
+ */
 #pragma once
 #include "Interface/IObject.h"
 #include "Libraries/MyLib/FollowCamera.h"
@@ -19,7 +19,7 @@ namespace mylib
 }
 
 // 自機クラス
-class PlayerTank : IObject
+class PlayerTank : public IObject
 {
 public:
 	// コンストラクタ
@@ -37,6 +37,12 @@ public:
 	void Render() override;
 	// 終了処理
 	void Finalize() override;
+	// 破壊されているか
+	bool GetDead() override { return m_tank->GetDead(); }
+	// 戦車の取得
+	Tank* GetTank() override { return m_tank.get(); }
+	// 他の戦車情報の設定
+	void SetOtherTanks(std::vector<Tank*> tanks) override;
 
 private:
 	// 戦車番号
@@ -57,8 +63,8 @@ private:
 	bool m_isDamage;
 
 public:
-	// 他戦車情報の設定
-	void SetOtherTanks(std::vector<Tank*> tanks);
+	// 戦車番号の取得
+	int GetTankNumber() { return m_tankNumber; }
 	// カメラ情報の設定
 	void SetCamera(mylib::FollowCamera* camera) { m_camera = camera; }
 	// 座標の取得
@@ -69,16 +75,14 @@ public:
 	const DirectX::SimpleMath::Quaternion& GetAngle() { return m_angle; }
 	// 砲身の取得
 	TankCannon* GetTankCannon();
-	// 戦車情報の取得
-	Tank* GetTank() { return m_tank.get(); }
 	// Tankの所有権を移動する（新しいメソッド）
 	std::unique_ptr<Tank> ReleaseTank() { return std::move(m_tank);}
-	// 死亡しているかどうか
-	bool GetDead() { return m_tank->GetDead(); }
 	// ダメージを受けたかどうか
 	bool GetDamage() { return m_isDamage; }
 	// メッセージを取得する
 	void OnMessegeAccepted(Message::MessageID messageID);
+	// 照準の描画
+	void DrawSight() { m_tank->GetCannon()->DrawSight(); }
 
 private:
 	// キーボードイベント

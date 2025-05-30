@@ -211,12 +211,28 @@ void Resources::LoadResource()
 		m_tankCountTexture.ReleaseAndGetAddressOf()
 	);
 
-	//	タイトルテキストテクスチャのロード 
+	////	タイトルテキストテクスチャのロード 
+	//DirectX::CreateWICTextureFromFile(
+	//	m_graphics->GetDeviceResources()->GetD3DDevice(),
+	//	L"Resources\\Textures\\TitleText.png",
+	//	nullptr,
+	//	m_titleTextTexture.ReleaseAndGetAddressOf()
+	//);
+	
+	//	スタートテキストテクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
-		L"Resources\\Textures\\TitleText.png",
+		L"Resources\\Textures\\StartText.png",
 		nullptr,
-		m_titleTextTexture.ReleaseAndGetAddressOf()
+		m_startTextTexture.ReleaseAndGetAddressOf()
+	);
+
+	//	終了テキストテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\ExitText.png",
+		nullptr,
+		m_exitTextTexture.ReleaseAndGetAddressOf()
 	);
 
 	//	ポーズテキストテクスチャのロード 

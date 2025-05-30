@@ -1,7 +1,7 @@
-/*
-	@file	Tank.h
-	@brief	戦車クラス
-*/
+/**
+ * @file   Tank.h
+ * @brief  戦車クラス
+ */
 #pragma once
 #include "Interface/IParent.h"
 #include "Interface/IParts.h"

@@ -1,7 +1,7 @@
-/*
-	@file	FixedTurret.cpp
-	@brief	固定砲台クラス
-*/
+/**
+ * @file   FixedTurret.cpp
+ * @brief  固定砲台クラス
+ */
 #include "pch.h"
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
@@ -11,9 +11,10 @@
 
 #include "Framework/Graphics.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="position">座標</param>
 FixedTurret::FixedTurret(const DirectX::SimpleMath::Vector3& position)
 	:
 	m_position{},
@@ -30,9 +31,9 @@ FixedTurret::FixedTurret(const DirectX::SimpleMath::Vector3& position)
 	m_position = position;
 }
 
-//-------------------------------------------------------------------
-// 初期化処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void FixedTurret::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -56,9 +57,10 @@ void FixedTurret::Initialize()
 	m_targetTank = nullptr;
 }
 
-//-------------------------------------------------------------------
-// 更新処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void FixedTurret::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -101,9 +103,9 @@ void FixedTurret::Update(float elapsedTime)
 		m_shotTimer -= elapsedTime;
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void FixedTurret::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -121,9 +123,10 @@ void FixedTurret::Render()
 	Graphics::GetInstance()->DrawModel(m_model, world);
 }
 
-//-------------------------------------------------------------------
-// 弾の発射
-//-------------------------------------------------------------------
+/// <summary>
+/// 弾の発射
+/// </summary>
+/// <param name="bullet">弾情報</param>
 void FixedTurret::ShootBullet(IBullet* bullet)
 {
 	// 「砲弾」位置を設定する
@@ -136,9 +139,10 @@ void FixedTurret::ShootBullet(IBullet* bullet)
 	bullet->SetBulletState(IBullet::FLYING);
 }
 
-//-------------------------------------------------------------------
-// 砲身先端座標の取得
-//-------------------------------------------------------------------
+/// <summary>
+/// 砲身先端座標の取得
+/// </summary>
+/// <returns>砲身先端座標</returns>
 DirectX::SimpleMath::Vector3 FixedTurret::GetMuzzlePosition()
 {
 	using namespace DirectX::SimpleMath;
@@ -151,9 +155,9 @@ DirectX::SimpleMath::Vector3 FixedTurret::GetMuzzlePosition()
 	return Vector3::Transform(muzzleOffset, rotationMatrix) + m_position;
 }
 
-//-------------------------------------------------------------------
-// 発射処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 発射処理
+/// </summary>
 void FixedTurret::Shot()
 {
 	// 弾の発射処理
@@ -175,9 +179,10 @@ void FixedTurret::Shot()
 	}
 }
 
-//-------------------------------------------------------------------
-// リロード処理
-//-------------------------------------------------------------------
+/// <summary>
+/// リロード処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void FixedTurret::Reload(float elapsedTime)
 {
 	// カウントダウン
@@ -193,9 +198,9 @@ void FixedTurret::Reload(float elapsedTime)
 	}
 }
 
-//-------------------------------------------------------------------
-// リロード開始
-//-------------------------------------------------------------------
+/// <summary>
+/// リロード開始
+/// </summary>
 void FixedTurret::StartReload()
 {
 	// リロード開始
@@ -213,9 +218,9 @@ void FixedTurret::StartReload()
 	}
 }
 
-//-------------------------------------------------------------------
-// 追跡対象の戦車を変更及び設定する
-//-------------------------------------------------------------------
+/// <summary>
+/// 追跡対象の戦車を変更及び設定する
+/// </summary>
 void FixedTurret::ChangeTargetTank()
 {
 	// 一番近い戦車を追跡対象にする

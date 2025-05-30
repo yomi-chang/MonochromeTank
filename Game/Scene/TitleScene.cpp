@@ -15,14 +15,15 @@
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Libraries/MyLib/LockOnCamera.h"
 #include "Game/Scene/Fade.h"
+#include "Game/UserInterface/Button.h"
 #include <cassert>
 
 // ゲーム終了の関数
 extern void ExitGame() noexcept;
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 TitleScene::TitleScene()
 	:
 	m_graphics{ Graphics::GetInstance() },
@@ -33,21 +34,25 @@ TitleScene::TitleScene()
 	m_tanks{},
 	m_fade{},
 	m_currentSelectUi{},
-	m_cursorAngle{}
+	m_cursorAngle{},
+	m_startTextTex{},
+	m_exitTextTex{},
+	m_startButton{},
+	m_exitButton{}
 {
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 TitleScene::~TitleScene()
 {
 	// do nothing.
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void TitleScene::Initialize()
 {	
 	using namespace DirectX;
@@ -58,7 +63,8 @@ void TitleScene::Initialize()
 
 	// 画像の受け取り
 	m_titleLogo = Resources::GetInstance()->GetTitleLogoTexture();
-	m_titleText = Resources::GetInstance()->GetTitleTextTexture();
+	m_startTextTex = Resources::GetInstance()->GetStartTextTexture();
+	m_exitTextTex = Resources::GetInstance()->GetExitTextTexture();
 	m_cursorUi = Resources::GetInstance()->GetCursorTexture();
 
 	// 床の生成
@@ -95,6 +101,9 @@ void TitleScene::Initialize()
 	m_camera->SetHeight(CAMERA_HEIGHT);
 	m_camera->SetEyePosition(CAMERA_EYE_POSITION);
 
+	// ボタンの作成
+	this->CreateButton();
+
 	// シーン遷移用
 	m_fade = std::make_unique<Fade>(1.0f);
 	m_fade->FadeOut();
@@ -106,9 +115,10 @@ void TitleScene::Initialize()
 	m_currentSelectUi = UI::START;
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void TitleScene::Update(float elapsedTime)
 {
 	// 宣言をしたが、実際は使用していない変数
@@ -133,10 +143,11 @@ void TitleScene::Update(float elapsedTime)
 		m_isChangeScene = true;
 	}
 	// フェードが終了していないなら早期リターン
-	if (!m_fade->FinishFade()){ return; }
+	if (!m_fade->FinishFade()) { return; }
 
 	// キーボードステートの取得
 	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
+	const auto& mouseTracker = InputManager::GetInstance()->GetMouseTracker();
 
 	// スペースキーが押された場合
 	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
@@ -147,23 +158,31 @@ void TitleScene::Update(float elapsedTime)
 		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
 	}
 
-	// 上キーか下キーが押されたらカーソル移動
-	if (kbTracker->IsKeyPressed(DirectX::Keyboard::W) ||
-		kbTracker->IsKeyPressed(DirectX::Keyboard::S))
+	// ボタンの接触及びクリック処理
+	for (auto& button : m_buttons)
 	{
-		// カーソル移動
-		this->MoveCursor();
-		// SEの再生
-		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
+		button->CheckOnMouseOver();
+		button->CheckClickButton();
 	}
+
+	// ボタンと接触していて右クリックされたら
+	//if (m_startButton->IsMouseOverUI() && mouseTracker->leftButton)
+	//{
+	//	// 選択されているUIごとの実行
+	//	this->PressSelectUi();
+	//	// SEの再生
+	//	SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
+	//}
+	// カーソル移動
+	this->MoveCursor();
 
 	// カーソルの回転速度
 	m_cursorAngle += elapsedTime * CURSOR_SPEED;
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void TitleScene::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -192,17 +211,18 @@ void TitleScene::Render()
 	m_fade->Render();
 }
 
-//---------------------------------------------------------
-// 終了処理
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void TitleScene::Finalize()
 {
 	// do nothing.
 }
 
-//---------------------------------------------------------
-// 次のシーンIDの取得
-//---------------------------------------------------------
+/// <summary>
+/// 次のシーンIDの取得
+/// </summary>
+/// <returns>シーンID</returns>
 IScene::SceneID TitleScene::GetNextSceneID() const
 {
 	// シーン変更がある場合
@@ -215,9 +235,9 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 	return IScene::SceneID::NONE;
 }
 
-//---------------------------------------------------------
-// UIの描画
-//---------------------------------------------------------
+/// <summary>
+/// UIの描画
+/// </summary>
 void TitleScene::DrawUi()
 {
 	using namespace DirectX;
@@ -225,6 +245,12 @@ void TitleScene::DrawUi()
 
 	auto states = m_graphics->GetCommonStates();
 	auto spriteBatch = m_graphics->GetSpriteBatch();
+
+	// ボタンの描画
+	for (auto& button : m_buttons)
+	{
+		button->Render();
+	}
 
 	// スプライトバッチの開始
 	spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
@@ -240,19 +266,7 @@ void TitleScene::DrawUi()
 		mylib::GetTextureCenter(m_titleLogo),
 		LOGO_SCALE
 	);
-
-	// タイトルテキストの表示
-	pos = { Screen::CENTER_X, Screen::CENTER_Y + Screen::CENTER_Y / 2 };
-	spriteBatch->Draw(
-		m_titleText,
-		pos,
-		nullptr,
-		Colors::White,
-		0.0f,
-		mylib::GetTextureCenter(m_titleText),
-		TITLE_TEXT_SCALE
-	);
-
+	
 	// 選択しているUI
 	switch (m_currentSelectUi)
 	{
@@ -281,23 +295,97 @@ void TitleScene::DrawUi()
 	default:
 		break;
 	}
-
 	// スプライトバッチの終わり
 	spriteBatch->End();
 }
 
-//---------------------------------------------------------
-// カーソルの移動
-//---------------------------------------------------------
+/// <summary>
+/// カーソルの移動
+/// </summary>
 void TitleScene::MoveCursor()
 {
-	// 選択されていない方のUIを選択する
-	m_currentSelectUi = m_currentSelectUi == UI::START ? UI::EXIT : UI::START;
+	// キーボードステートの取得
+	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
+
+	// 上キーか下キーが押されたらカーソル移動
+	if (kbTracker->IsKeyPressed(DirectX::Keyboard::W) ||
+		kbTracker->IsKeyPressed(DirectX::Keyboard::S))
+	{
+		// 選択されていない方のUIを選択する
+		m_currentSelectUi = m_currentSelectUi == UI::START ? UI::EXIT : UI::START;
+		// SEの再生
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
+	}
+	// マウスが接触しているものを選択
+	//if (m_startButton->IsMouseOverUI()) { m_currentSelectUi = UI::START; }
+	//if (m_exitButton->IsMouseOverUI()) { m_currentSelectUi = UI::EXIT; }
 }
 
-//---------------------------------------------------------
-// 選択されているUIの決定
-//---------------------------------------------------------
+/// <summary>
+/// ボタンの作成
+/// </summary>
+void TitleScene::CreateButton()
+{
+	using namespace DirectX::SimpleMath;
+
+	// ゲーム開始ボタン
+	auto startButton = std::make_unique<Button>();
+	startButton->Initialize(
+		Resources::GetInstance()->GetStartTextTexture(),
+		TITLE_TEXT_SCALE,
+		Vector2(Screen::CENTER_X, Screen::CENTER_Y + 120)
+	);
+	// マウス接触時の処理
+	startButton->SetOnMouseOver([this] {
+		m_currentSelectUi = UI::START;
+	});
+
+	// ゲーム終了ボタン
+	auto exitButton = std::make_unique<Button>();
+	exitButton->Initialize(
+		Resources::GetInstance()->GetExitTextTexture(),
+		TITLE_TEXT_SCALE,
+		Vector2(Screen::CENTER_X, Screen::CENTER_Y + Screen::BOTTOM / 3)
+	);
+	// マウス接触時の処理
+	exitButton->SetOnMouseOver([this] {
+		m_currentSelectUi = UI::EXIT;
+	});
+
+	// ボタン情報に配列に譲渡する
+	m_buttons.emplace_back(std::move(startButton));
+	m_buttons.emplace_back(std::move(exitButton));
+
+	// ボタンがクリックされたときの処理を登録する
+	for (auto& button : m_buttons)
+	{
+		button->SetOnClick([this]() {
+			this->PressSelectUi();
+		});
+	}
+
+	// ボタンの作成
+	//m_startButton = std::make_unique<Button>();
+	//m_startButton->Initialize(
+	//	Resources::GetInstance()->GetStartTextTexture(),
+	//	TITLE_TEXT_SCALE,
+	//	Vector2(Screen::CENTER_X, Screen::CENTER_Y + 120)
+	//);
+	//// ボタンクリック時の処理の設定
+	//m_startButton->SetOnClick([this]() {
+	//	this->PressSelectUi();
+	//	});
+	/*m_exitButton = std::make_unique<Button>();
+	m_exitButton->Initialize(
+		Resources::GetInstance()->GetExitTextTexture(),
+		TITLE_TEXT_SCALE,
+		Vector2(Screen::CENTER_X, Screen::CENTER_Y + Screen::BOTTOM / 3)
+	);*/
+}
+
+/// <summary>
+/// 選択されているUIの決定
+/// </summary>
 void TitleScene::PressSelectUi()
 {
 	switch (m_currentSelectUi)

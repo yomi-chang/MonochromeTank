@@ -7,9 +7,12 @@
 #include <cstdarg>
 #include <cassert>
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="device">デバイス</param>
+/// <param name="context">コンテキスト</param>
+/// <param name="fontFilePath">フォントパス</param>
 mylib::DebugString::DebugString(
 	ID3D11Device* device,
 	ID3D11DeviceContext* context,
@@ -28,9 +31,11 @@ mylib::DebugString::DebugString(
 	m_color = DirectX::Colors::White;
 }
 
-//---------------------------------------------------------
-// 描画する文字列を登録する
-//---------------------------------------------------------
+/// <summary>
+/// 描画する文字列の登録
+/// </summary>
+/// <param name="format"></param>
+/// <param name=""></param>
 void mylib::DebugString::AddString(const char* format, ...)
 {
 	// 可変長引数を扱うためのデータ型：va_list
@@ -54,9 +59,10 @@ void mylib::DebugString::AddString(const char* format, ...)
 	m_strings.push_back(appendString);
 }
 
-//---------------------------------------------------------
-// デバッグ文字列を描画する
-//---------------------------------------------------------
+/// <summary>
+/// デバッグ文字列を描画
+/// </summary>
+/// <param name="states">ステータス</param>
 void mylib::DebugString::Render(DirectX::CommonStates* states)
 {
 	UNREFERENCED_PARAMETER(states);	// Beginのパラメータ設定用

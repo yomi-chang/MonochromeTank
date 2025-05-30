@@ -1,7 +1,7 @@
-/*
-	@file	SphereCollider.cpp
-	@brief	球状の当たり判定クラス
-*/
+/**
+ * @file   SphereCollider.cpp
+ * @brief  球状の当たり判定クラス
+ */
 #include "pch.h"
 #include "Game/Collider/SphereCollider.h"
 #include "Libraries/Microsoft/DebugDraw.h"

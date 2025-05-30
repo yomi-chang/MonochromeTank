@@ -13,9 +13,9 @@
 
 #include "Game/Objects/Tank/PlayerTank.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 MagazineUi::MagazineUi()
     : 
     m_windowHeight{},
@@ -35,9 +35,16 @@ MagazineUi::MagazineUi()
     m_graphics->GetScreenSize(m_windowWidth, m_windowHeight);
 }
 
-//-------------------------------------------------------------------
-// 初期化処理
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
+MagazineUi::~MagazineUi()
+{
+}
+
+/// <summary>
+/// 初期化処理
+/// </summary>
 void MagazineUi::Initialize()
 {
     using namespace DirectX;
@@ -53,9 +60,9 @@ void MagazineUi::Initialize()
     m_reloadPos.right = RELOAD_GAUGE_BACK.left;
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void MagazineUi::Render()
 {
     using namespace DirectX;
@@ -94,9 +101,9 @@ void MagazineUi::Render()
     m_spriteBatch->End();
 }
 
-//-------------------------------------------------------------------
-// テクスチャの読み込み
-//-------------------------------------------------------------------
+/// <summary>
+/// テクスチャの読み込み
+/// </summary>
 void MagazineUi::LoadTexture()
 {
     m_cannonTexture = Resources::GetInstance()->GetCannonBallTexture();
@@ -113,7 +120,9 @@ void MagazineUi::LoadTexture()
     }
 }
 
-// サブの弾のUI表示
+/// <summary>
+/// サブの弾のUI表示
+/// </summary>
 void MagazineUi::SubBulletUi()
 {
     // 枠
@@ -129,7 +138,9 @@ void MagazineUi::SubBulletUi()
         m_spriteBatch->Draw(m_cannonTexture, SUB_BULLET_UI, DirectX::Colors::DimGray);
 }
 
-// メインの弾のUI表示
+/// <summary>
+/// メインの弾のUI表示
+/// </summary>
 void MagazineUi::MainBulletUi()
 {
     using namespace DirectX;
@@ -193,7 +204,10 @@ void MagazineUi::MainBulletUi()
 
 }
 
-// 残弾数の確認
+/// <summary>
+/// 装弾数の確認
+/// </summary>
+/// <returns>装弾数</returns>
 int MagazineUi::CheckBulletValue()
 {
     int num = 0;

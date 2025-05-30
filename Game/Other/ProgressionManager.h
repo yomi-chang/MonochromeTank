@@ -1,7 +1,7 @@
-/*
-	@file	ProgressionManager.h
-	@brief	ゲームの進行管理クラス
-*/
+/**
+ * @file   ProgressionManager.h
+ * @brief  ゲームの進行管理クラス
+ */
 #pragma once
 
 class EnemyTank;
@@ -36,4 +36,7 @@ public:
 private:
 	// 巡回範囲を狭める
 	void NarrowPatrolPoints();
+
+	// ゲーム終盤
+	void HandleEndgamePhase();
 };

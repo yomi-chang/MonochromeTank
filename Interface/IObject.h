@@ -7,6 +7,7 @@
 #include "Framework/Resources.h"
 #include "Interface/IObserver.h"
 #include "Libraries/MyLib/Utils.h"
+#include "Game/Objects/Tank/TankBase/Tank.h"
 
 
 class IObject : public IObserver
@@ -22,4 +23,11 @@ public:
 	virtual void Render() = 0;
 	// I—¹ˆ—
 	virtual void Finalize() = 0;
+
+	// ”j‰ó‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©
+	virtual bool GetDead() = 0;
+	// íÔ‚Ìæ“¾
+	virtual Tank* GetTank() = 0;
+	// ‘¼‚ÌíÔî•ñ‚Ìİ’è
+	virtual void SetOtherTanks(std::vector<Tank*> tanks) = 0;
 };

@@ -1,7 +1,7 @@
-/*
-	@file	BulletTrail.h
-	@brief	弾の軌跡を表示するクラス
-*/
+/**
+ * @file   BulletTrail.h
+ * @brief  弾の軌跡を表示するクラス
+ */
 #pragma once
 
 class Graphics;
@@ -40,7 +40,7 @@ private:
 
 public:
 	// 座標の受け取り
-	void SetPosition(const DirectX::SimpleMath::Vector3& top, const DirectX::SimpleMath::Vector3& bottom);
+	void SetPosition(const DirectX::SimpleMath::Vector3& right, const DirectX::SimpleMath::Vector3& left);
 	// 配列の削除
-	void DeletePosBuffer() { m_posArray.clear(); }
+	void DeletePosArray() { m_posArray.clear(); }
 };

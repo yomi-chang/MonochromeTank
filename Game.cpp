@@ -175,6 +175,9 @@ void Game::Render()
 
     // デバッグ文字列を作成する：FPS
 #ifdef _DEBUG
+    auto mouse = InputManager::GetInstance()->GetMouseState();
+    m_debugString->AddString("x : %f", static_cast<float>(mouse.x));
+    m_debugString->AddString("y : %f", static_cast<float>(mouse.y));
     m_debugString->AddString("fps : %d", m_timer.GetFramesPerSecond());
 #endif
 
@@ -247,6 +250,7 @@ void Game::OnWindowMoved()
     // フルスクリーンか調べる
     BOOL fullscreen = FALSE;
     m_deviceResources->GetSwapChain()->GetFullscreenState(&fullscreen, nullptr);
+
     // フルスクリーンが解除されてしまった時の処理
     if (m_fullscreen != fullscreen)
     {

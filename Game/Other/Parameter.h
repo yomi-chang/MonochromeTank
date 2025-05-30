@@ -1,7 +1,7 @@
-/*
-	@file	Parameter.h
-	@brief	パラメータークラス
-*/
+/**
+ * @file   Parameter.h
+ * @brief  パラメータークラス
+ */
 #pragma once
 
 class Parameter
@@ -56,8 +56,8 @@ private:
 	DirectX::SimpleMath::Vector3 m_cannonBallGravity;			// 重力
 	float m_cannonBallColliderRadius;							// コライダー大きさ
 	int   m_cannonBallDamage;									// ダメージ
-	int   m_cannonBallMaxTrail;										// トレイルの長さ
-	float m_cannonBallTrailWidth;									// トレイルの幅
+	int   m_cannonBallMaxTrail;									// トレイルの長さ
+	float m_cannonBallTrailWidth;								// トレイルの幅
 	// 壁サイズ
 	DirectX::SimpleMath::Vector3 m_wallSize;					// 壁サイズ
 	// 索敵範囲

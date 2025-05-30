@@ -1,7 +1,7 @@
-/*
-	@file	EnemyTank.h
-	@brief	敵戦車クラス
-*/
+/**
+ * @file   EnemyTank.h
+ * @brief  敵戦車クラス
+ */
 #pragma once
 #include "Interface/IObject.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
@@ -17,7 +17,7 @@ class Attack;
 class AvoidWall;
 class SphereCollider;
 
-class EnemyTank : IObject
+class EnemyTank : public IObject
 {
 public:
 	// コンストラクタ
@@ -34,7 +34,13 @@ public:
 	// 描画処理
 	void Render()override;
 	// 終了処理
-	void Finalize()override;
+	void Finalize() override;
+	// 破壊されているか
+	bool GetDead() override { return m_tank->GetDead(); }
+	// 戦車の取得
+	Tank* GetTank() override { return m_tank.get(); }
+	// 他の戦車情報の設定
+	void SetOtherTanks(std::vector<Tank*> tanks) override;
 
 private:
 	// 戦車番号
@@ -65,20 +71,16 @@ private:
 
 
 public:
+	// 戦車番号の取得
+	int GetTankNumber() { return m_tankNumber; }
 	// 座標の取得
 	const DirectX::SimpleMath::Vector3& GetPosition() { return m_position; }
 	// 回転角の取得
 	const DirectX::SimpleMath::Quaternion& GetAngle() { return m_angle; }
-	// 死亡情報を渡す
-	bool GetDead() { return m_tank->GetDead(); }
 	// 座標の受け取り
 	void SetPosition(const DirectX::SimpleMath::Vector3& position);
-	// 戦車情報の取得
-	Tank* GetTank() { return m_tank.get(); }
-	// Tankの所有権を移動する（新しいメソッド）
+	// Tankの所有権の移動
 	std::unique_ptr<Tank> ReleaseTank() { return std::move(m_tank); }
-	// 他戦車情報の受け渡し
-	void SetOtherTanks(std::vector<Tank*> tanks);
 	// HPの取得
 	int GetHP() { return m_tank->GetHp(); }
 	// 追跡対象の戦車の設定

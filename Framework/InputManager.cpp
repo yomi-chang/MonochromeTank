@@ -42,9 +42,6 @@ void InputManager::Initialize(const HWND& window)
 	// キーボードを使用できる状態にする
 	m_keyboard = std::make_unique<DirectX::Keyboard>();
 	m_keyboardTracker = std::make_unique<DirectX::Keyboard::KeyboardStateTracker>();
-
-	// マウスカーソルの固定
-	this->LockMouseCursor();
 }
 
 //---------------------------------------------------------

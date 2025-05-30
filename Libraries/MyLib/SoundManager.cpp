@@ -5,9 +5,9 @@
 #include "pch.h"
 #include "Libraries/MyLib/SoundManager.h"
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 mylib::SoundManager::SoundManager()
 	:
 	m_audioEngine{},
@@ -17,9 +17,9 @@ mylib::SoundManager::SoundManager()
 {
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 mylib::SoundManager::~SoundManager()
 {
 	// BGMを停止する
@@ -35,9 +35,9 @@ mylib::SoundManager::~SoundManager()
 	}
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void mylib::SoundManager::Initialize()
 {
 	// オーディオエンジンのフラグを設定する
@@ -65,9 +65,9 @@ void mylib::SoundManager::Initialize()
 		m_waveBank->CreateInstance(XACT_WAVEBANK_SOUNDS_RESULTSCENELOSE_BGM)));
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
 void mylib::SoundManager::Update()
 {
 	// オーディオエンジンを更新する
@@ -81,17 +81,19 @@ void mylib::SoundManager::Update()
 	}
 }
 
-//---------------------------------------------------------
-// SEの再生
-//---------------------------------------------------------
+/// <summary>
+/// SEの再生
+/// </summary>
+/// <param name="seName">SEの名前</param>
 void mylib::SoundManager::PlaySE(XACT_WAVEBANK_SOUNDS seName)
 {
 	m_waveBank->Play(seName);
 }
 
-//---------------------------------------------------------
-// BGMの再生
-//---------------------------------------------------------
+/// <summary>
+/// BGMの再生
+/// </summary>
+/// <param name="bgmName">BGMの名前</param>
 void mylib::SoundManager::PlayBGM(XACT_WAVEBANK_SOUNDS bgmName)
 {
 	// 今のBGMを停止する
@@ -107,9 +109,9 @@ void mylib::SoundManager::PlayBGM(XACT_WAVEBANK_SOUNDS bgmName)
 	m_currentBGM = m_bgms.at(bgmName).get();
 }
 
-//---------------------------------------------------------
-// BGMの停止
-//---------------------------------------------------------
+/// <summary>
+/// BGMの停止
+/// </summary>
 void mylib::SoundManager::StopBGM()
 {
 	m_currentBGM->Stop(true);

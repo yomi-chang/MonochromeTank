@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "Message/Messenger.h"
+#include "Interface/IObject.h"
+
 
 // s_messengerを初期化する
 std::unique_ptr<Messenger> Messenger::s_messenger = nullptr;
@@ -22,21 +24,31 @@ Messenger* Messenger::GetInstance()
 	return s_messenger.get();
 }
 
-// インスタンスを破棄する
+/// <summary>
+/// インスタンスの破棄
+/// </summary>
 void Messenger::DestroyInstance()
 {
 	// Messengerクラスのインスタンスをリセットする
 	s_messenger.reset();
 }
 
-// オブジェクトを登録する
+/// <summary>
+/// オブジェクトの登録
+/// </summary>
+/// <param name="objectID">オブジェクトID</param>
+/// <param name="object">オブジェクト</param>
 void Messenger::Register(int objectID, IObject* object)
 {
 	// オブジェクトIDとオブジェクトを登録する
 	m_objects.emplace(objectID, object);
 }
 
-// オブジェクトにメッセージを送信する
+/// <summary>
+/// オブジェクトにメッセージを送信
+/// </summary>
+/// <param name="objectID">オブジェクトID</param>
+/// <param name="messageID">メッセージID</param>
 void Messenger::Dispatch(int objectID, Message::MessageID messageID)
 {
 	// メッセージを送信するオブジェクトを検索する

@@ -1,7 +1,7 @@
-/*
-	@file	CannonBall.h
-	@brief	–C’eƒNƒ‰ƒX
-*/
+/**
+ * @file   CannonBall.h
+ * @brief  –C’eƒNƒ‰ƒX
+ */
 #pragma once
 #include "Interface/IBullet.h"
 #include "Framework/Graphics.h"
@@ -19,7 +19,7 @@ public:
 	// ‰Šú‰»ˆ—
 	void Initialize();
 	// XVˆ— 
-	inline void Update(float time);
+	inline void Update(float elapsedTime);
 	// •`‰æˆ— 
 	inline void Render();
 	// ’e•`‰æˆ—

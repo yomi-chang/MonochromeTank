@@ -1,7 +1,7 @@
-/*
-	@file	Bullet.h
-	@brief	連射弾クラス
-*/
+/**
+ * @file   Bullet.h
+ * @brief  連射弾クラス
+ */
 #pragma once
 #include "Interface/IBullet.h"
 #include "Framework/Graphics.h"
@@ -19,7 +19,7 @@ public:
 	// 初期化処理
 	void Initialize();
 	// 更新処理 
-	inline void Update(float time);
+	inline void Update(float elapsedTime);
 	// 描画処理 
 	inline void Render();
 	// 弾描画処理

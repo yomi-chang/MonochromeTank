@@ -11,9 +11,9 @@
 
 using namespace DirectX;
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 DrawTexture::DrawTexture()
 	:
 	m_graphics{Graphics::GetInstance()},
@@ -45,16 +45,17 @@ DrawTexture::DrawTexture()
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 DrawTexture::~DrawTexture()
 {
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="position">座標</param>
 void DrawTexture::Render(const DirectX::SimpleMath::Vector3& position)
 {
 	using namespace DirectX::SimpleMath;
@@ -77,7 +78,6 @@ void DrawTexture::Render(const DirectX::SimpleMath::Vector3& position)
 
 	// 座標指定
 	Matrix mat = Matrix::CreateTranslation(position);
-	//mat = Matrix::CreateScale(5.0f);
 
 	// ビルボード
 	Matrix billboard = view.Invert();
@@ -90,7 +90,7 @@ void DrawTexture::Render(const DirectX::SimpleMath::Vector3& position)
 	ID3D11SamplerState* samplers[1] = { states->PointWrap() };
 	context->PSSetSamplers(0, 1, samplers);
 
-	// 深度バッファ設定(一番手前に表示)
+	// 深度バッファ設定
 	context->OMSetDepthStencilState(states->DepthNone(), 0);
 
 	//	カリングなし　

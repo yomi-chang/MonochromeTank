@@ -1,7 +1,7 @@
-/*
-	@file	TankTurret.h
-	@brief	砲塔クラス
-*/
+/**
+ * @file   TankTurret.h
+ * @brief  砲塔クラス
+ */
 #pragma once
 #include "Interface/IParts.h"
 

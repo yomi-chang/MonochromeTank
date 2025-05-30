@@ -1,7 +1,7 @@
-/*
-	@file	StageEffect.cpp
-	@brief	ステージエフェクトクラス
-*/
+/**
+ * @file   StageEffect.cpp
+ * @brief  ステージエフェクトクラス
+ */
 #include "pch.h"
 #include "StageEffect.h"
 #include "Framework/Resources.h"
@@ -14,9 +14,9 @@ const std::vector<D3D11_INPUT_ELEMENT_DESC> StageEffect::INPUT_LAYOUT =
 	{ "TEXCOORD",	0, DXGI_FORMAT_R32G32_FLOAT,		0, D3D11_APPEND_ALIGNED_ELEMENT, D3D11_INPUT_PER_VERTEX_DATA, 0 }
 };
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 StageEffect::StageEffect()
 	:
 	m_graphics{ Graphics::GetInstance() },
@@ -32,16 +32,16 @@ StageEffect::StageEffect()
 {
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 StageEffect::~StageEffect()
 {
 }
 
-//-------------------------------------------------------------------
-// 生成処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 生成処理
+/// </summary>
 void StageEffect::Create()
 {
 	// シェーダのロード
@@ -57,9 +57,9 @@ void StageEffect::Create()
 	m_primitiveBatch = std::make_unique<DirectX::PrimitiveBatch<DirectX::VertexPositionColorTexture>>(context);
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void StageEffect::Render()
 {
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
@@ -129,9 +129,9 @@ void StageEffect::Render()
 	context->PSSetShader(nullptr, nullptr, 0);
 }
 
-//-------------------------------------------------------------------
-// シェーダの読み込み
-//-------------------------------------------------------------------
+/// <summary>
+/// シェーダの読み込み
+/// </summary>
 void StageEffect::LoadShader()
 {
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();
@@ -164,7 +164,9 @@ void StageEffect::LoadShader()
 	);
 }
 
-// バッファの作成
+/// <summary>
+/// バッファの生成
+/// </summary>
 void StageEffect::CreateCBuffer()
 {
 	auto device = m_graphics->GetDeviceResources()->GetD3DDevice();

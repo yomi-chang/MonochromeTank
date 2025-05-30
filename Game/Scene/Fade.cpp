@@ -1,16 +1,17 @@
-/*
-	@file	Fade.h
-	@brief	シーン遷移フェードクラス
-*/
+/**
+ * @file   Fade.h
+ * @brief  シーン遷移フェードクラス
+ */
 #include "pch.h"
 #include "Game/Scene/Fade.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 #include "Game/Other/Parameter.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="alpha">初期不透明度</param>
 Fade::Fade(float alpha)
 	:
 	m_alpha{},
@@ -24,16 +25,17 @@ Fade::Fade(float alpha)
 	m_alpha = alpha;
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 Fade::~Fade()
 {
 }
 
-//-------------------------------------------------------------------
-// 更新処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void Fade::Update(float elapsedTime)
 {
 	// フェード速度の受け取り
@@ -54,9 +56,9 @@ void Fade::Update(float elapsedTime)
 	m_color.w = m_alpha;
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void Fade::Render()
 {
 	auto spriteBatch = Graphics::GetInstance()->GetSpriteBatch();
@@ -69,9 +71,10 @@ void Fade::Render()
 	spriteBatch->End();
 }
 
-//-------------------------------------------------------------------
-// フェードの終了確認
-//-------------------------------------------------------------------
+/// <summary>
+/// フェードの終了確認
+/// </summary>
+/// <returns>フェードが終了していくかどうか</returns>
 bool Fade::FinishFade()
 {
 	// フェード処理が終了していたらtrueを返す

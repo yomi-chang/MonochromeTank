@@ -1,16 +1,16 @@
-/*
-	@file	Patrol.cpp
-	@brief	敵の巡回行動処理クラス
-*/
-
+/**
+ * @file   Patrol.cpp
+ * @brief  敵の巡回行動処理クラス
+ */
 #include "pch.h"
 #include "Game/EnemyAi/Patrol.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 Patrol::Patrol()
 	:
+	m_stateID{StateID::PATROL},
 	m_patrolPoints{},
 	m_patrolPointVelue{},
 	m_currentPoint{},
@@ -20,25 +20,27 @@ Patrol::Patrol()
 {
 }
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 Patrol::~Patrol()
 {
 }
 
-//-------------------------------------------------------------------
-// 初期化処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="tank">戦車情報</param>
 void Patrol::Initialize(Tank* tank)
 {
 	// 自機の取得
 	m_tank = tank;
 }
 
-//-------------------------------------------------------------------
-// 更新処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void Patrol::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -101,26 +103,35 @@ void Patrol::Update(float elapsedTime)
 	this->ScoutOtherTank();
 }
 
-//-------------------------------------------------------------------
-// 巡回地点の追加
-//-------------------------------------------------------------------
+/// <summary>
+/// 行動状態遷移をした際に呼び出される関数
+/// </summary>
+void Patrol::Enter()
+{
+}
+
+/// <summary>
+/// 巡回地点の追加
+/// </summary>
+/// <param name="point">巡回地点</param>
 void Patrol::AddPatrolPoint(const DirectX::SimpleMath::Vector3& point)
 {
 	m_patrolPoints.push_back(point);
 	m_patrolPointVelue++;
 }
 
-//-------------------------------------------------------------------
-// 巡回地点の削除
-//-------------------------------------------------------------------
+/// <summary>
+/// 巡回ルートの削除
+/// </summary>
 void Patrol::ClearPatrolPoints()
 {
 	m_patrolPoints.clear();
 }
 
-//-------------------------------------------------------------------
-// 巡回地点の登録
-//-------------------------------------------------------------------
+/// <summary>
+/// 巡回ルートの登録
+/// </summary>
+/// <param name="patrolPoints">巡回ルート</param>
 void Patrol::SetPatrolPoints(const std::vector<DirectX::SimpleMath::Vector3>& patrolPoints)
 {
 	// 巡回地点の削除
@@ -133,9 +144,9 @@ void Patrol::SetPatrolPoints(const std::vector<DirectX::SimpleMath::Vector3>& pa
 	m_patrolPointVelue = static_cast<int>(m_patrolPoints.size());
 }
 
-//-------------------------------------------------------------------
-// 他戦車の索敵
-//-------------------------------------------------------------------
+/// <summary>
+/// 他戦車の索敵
+/// </summary>
 void Patrol::ScoutOtherTank()
 {
 	// 追跡中の戦車がいるなら早期リターン

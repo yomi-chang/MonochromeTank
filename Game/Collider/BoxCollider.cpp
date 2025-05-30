@@ -1,7 +1,7 @@
-/*
-	@file	BoxCollider.cpp
-	@brief	箱状の当たり判定クラス
-*/
+/**
+ * @file   BoxCollider.cpp
+ * @brief  箱状の当たり判定クラス
+ */
 #include "pch.h"
 #include "Game/Collider/BoxCollider.h"
 #include "Libraries/Microsoft/DebugDraw.h"

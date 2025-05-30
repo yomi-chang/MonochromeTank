@@ -9,7 +9,7 @@
 class IBullet
 {
 public:
-	// –C’e‚Ìó‘Ô
+	// ’e‚Ìó‘Ô
 	enum BulletState : short { UNUSED, FLYING, USED };
 
 public:
@@ -17,11 +17,11 @@ public:
 	virtual const DirectX::SimpleMath::Vector3& GetPosition() = 0;
 	// Œ»İ‚ÌˆÊ’u‚ğİ’è‚·‚é
 	virtual void SetPosition(const DirectX::SimpleMath::Vector3& position) = 0;
-	// –C’e‰ñ“]Šp‚Ìİ’è
+	// ’e‰ñ“]Šp‚Ìİ’è
 	virtual void SetRotation(const DirectX::SimpleMath::Quaternion& rotation) = 0;
-	// –C’e‚ª”­Ë‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
+	// ’e‚ª”­Ë‚³‚ê‚Ä‚¢‚é‚©‚Ç‚¤‚©‚ğæ“¾‚·‚é
 	virtual BulletState GetBulletState() const = 0;
-	// –C’e‚Ìó‘Ô‚ğİ’è‚·‚é
+	// ’e‚Ìó‘Ô‚ğİ’è‚·‚é
 	virtual void SetBulletState(BulletState bulletState) = 0;
 	// ƒRƒ‰ƒCƒ_[‚Ìæ“¾
 	virtual DirectX::BoundingSphere* GetBoundingSphere() = 0;
@@ -34,7 +34,7 @@ public:
 	// ‰Šú‰»ˆ—
 	virtual void Initialize() = 0;
 	// XVˆ—
-	virtual void Update(float time) = 0;
+	virtual void Update(float elapsedTime) = 0;
 	// •`‰æˆ—
 	virtual void Render() = 0;
 	// I—¹ˆ—

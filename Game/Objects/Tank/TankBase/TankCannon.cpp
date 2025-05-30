@@ -1,7 +1,7 @@
-/*
-	@file	TankCannon.h
-	@brief	砲身クラス
-*/
+/**
+ * @file   TankCannon.h
+ * @brief  砲身クラス
+ */
 #include "pch.h"
 #include "Game/Objects/Tank/TankBase/TankCannon.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
@@ -19,9 +19,12 @@
 #include "Game/Other/Sounds.h"
 
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="tank">戦車の情報</param>
+/// <param name="initialPosition">初期座標</param>
+/// <param name="initialAngle">初期角度</param>
 TankCannon::TankCannon(
 	Tank* tank,
 	const DirectX::SimpleMath::Vector3& initialPosition,
@@ -47,22 +50,23 @@ TankCannon::TankCannon(
 	m_drawTexture{},
 	m_tank{},
 	m_displaySight{},
-	m_isShot{}
+	m_isShot{},
+	m_shotTimer{}
 {
 	// 戦車情報の受け取り
 	m_tank = tank;
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 TankCannon::~TankCannon()
 {
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void TankCannon::Initialize()
 {
 	// パラメータの受け取り
@@ -98,9 +102,12 @@ void TankCannon::Initialize()
 	m_displaySight = true;
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
+/// <param name="currentPosition">現在の座標</param>
+/// <param name="currentRotation">現在の角度</param>
 void TankCannon::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
@@ -139,9 +146,9 @@ void TankCannon::Update(
 	this->Reload(elapsedTime);
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void TankCannon::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -162,22 +169,19 @@ void TankCannon::Render()
 
 	// 「砲身」の描画
 	m_graphics->DrawModel(m_model, m_worldMatrix);
-
-	// 照準画像の表示
-	if (m_tank->GetTankNumber() == 0 && m_displaySight)
-		m_drawTexture->Render(m_hitPosition);
 }
 
-//---------------------------------------------------------
-// 終了処理
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void TankCannon::Finalize()
 {
 }
 
-//---------------------------------------------------------
-// 砲身の回転
-//---------------------------------------------------------
+/// <summary>
+/// 砲身の回転
+/// </summary>
+/// <param name="angle">角度</param>
 void TankCannon::RotateCannon(float angle)
 {
 	using namespace DirectX::SimpleMath;
@@ -186,9 +190,10 @@ void TankCannon::RotateCannon(float angle)
 	m_cannonRotation = Quaternion::CreateFromYawPitchRoll(0.0f, angle, 0.0f);
 }
 
-//---------------------------------------------------------
-// 弾の発射処理
-//---------------------------------------------------------
+/// <summary>
+/// 弾の発射処理
+/// </summary>
+/// <param name="bullet">弾の情報</param>
 void TankCannon::ShootBullet(IBullet* bullet)
 {
 	// 「砲弾」位置を設定する
@@ -201,9 +206,9 @@ void TankCannon::ShootBullet(IBullet* bullet)
 	bullet->SetBulletState(IBullet::FLYING);
 }
 
-//---------------------------------------------------------
-// 弾の発射呼び出し
-//---------------------------------------------------------
+/// <summary>
+/// 弾の発射呼び出し
+/// </summary>
 void TankCannon::Shoot()
 {
 	// 弾を撃っている状態にする
@@ -252,9 +257,9 @@ void TankCannon::Shoot()
 	m_shotTimer = Parameter::GetInstance()->GetShotInterval();
 }
 
-//---------------------------------------------------------
-// 弾の変更
-//---------------------------------------------------------
+/// <summary>
+/// 弾の変更
+/// </summary>
 void TankCannon::ChangeBullet()
 {
 	// リロード開始
@@ -263,9 +268,9 @@ void TankCannon::ChangeBullet()
 }
 
 
-//---------------------------------------------------------
-// リロード開始
-//---------------------------------------------------------
+/// <summary>
+/// リロード開始
+/// </summary>
 void TankCannon::StartReload()
 {
 	// リロード開始
@@ -307,10 +312,20 @@ void TankCannon::StartReload()
 	}
 }
 
+/// <summary>
+/// 照準の描画
+/// </summary>
+void TankCannon::DrawSight()
+{
+	// 照準画像の表示
+	if (m_tank->GetTankNumber() == 0 && m_displaySight)
+		m_drawTexture->Render(m_hitPosition);
+}
 
-//---------------------------------------------------------
-// リロード処理
-//---------------------------------------------------------
+/// <summary>
+/// リロード処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void TankCannon::Reload(float elapsedTime)
 {
 	// リロード中でないなら早期リターン
@@ -346,9 +361,10 @@ void TankCannon::Reload(float elapsedTime)
 	}
 }
 
-//---------------------------------------------------------
-// ずらした射撃方向を取得する
-//---------------------------------------------------------
+/// <summary>
+/// ずらした射撃方向の取得
+/// </summary>
+/// <returns></returns>
 DirectX::SimpleMath::Quaternion TankCannon::GetShotRotation()
 {
 	using namespace DirectX::SimpleMath;
@@ -366,9 +382,10 @@ DirectX::SimpleMath::Quaternion TankCannon::GetShotRotation()
 	return shotRotation;
 }
 
-//---------------------------------------------------------
-// 砲身の先端座標取得
-//---------------------------------------------------------
+/// <summary>
+/// 砲身の先端座標取得
+/// </summary>
+/// <returns>先端座標</returns>
 DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 {
 	using namespace DirectX::SimpleMath;
@@ -381,6 +398,11 @@ DirectX::SimpleMath::Vector3 TankCannon::GetMuzzlePosition()
 	return Vector3::Transform(muzzleOffset, rotationMatrix) + m_currentPosition;
 }
 
+/// <summary>
+/// Rayの衝突情報の設定
+/// </summary>
+/// <param name="isHit">衝突しているかどうか</param>
+/// <param name="hitPosition">衝突地点</param>
 void TankCannon::SetRayInfo(bool isHit, DirectX::SimpleMath::Vector3 hitPosition)
 {
 	// 衝突しているかに応じたテクスチャの設定

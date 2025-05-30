@@ -1,7 +1,7 @@
-/*
-	@file	TankCannon.h
-	@brief	砲身クラス
-*/
+/**
+ * @file   TankCannon.h
+ * @brief  砲身クラス
+ */
 #pragma once
 #include "Interface/IParts.h"
 #include "Interface/IBullet.h"
@@ -116,6 +116,8 @@ public:
 	DirectX::SimpleMath::Quaternion GetMuzzleRotation() { return m_cannonRotation * m_currentRotation; }
 	// 照準を表示するかどうかの設定
 	void SetDisplaySight(bool display) { m_displaySight = display; }
+	// 照準の表示
+	void DrawSight();
 
 private:
 	// リロード処理

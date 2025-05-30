@@ -1,7 +1,7 @@
-/*
-	@file	SphereCollider.h
-	@brief	球状の当たり判定クラス
-*/
+/**
+ * @file   SphereCollider.h
+ * @brief  球状の当たり判定クラス
+ */
 #pragma once
 #include "Framework/Graphics.h"
 

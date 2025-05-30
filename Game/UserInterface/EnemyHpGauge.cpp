@@ -10,9 +10,9 @@
 
 using namespace DirectX;
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 EnemyHpGauge::EnemyHpGauge()
 	:
 	m_alpha{},
@@ -42,16 +42,18 @@ EnemyHpGauge::EnemyHpGauge()
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionColor>>(context);
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 EnemyHpGauge::~EnemyHpGauge()
 {
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="position">座標</param>
+/// <param name="hpRatio">体力の比率</param>
 void EnemyHpGauge::Render(
 	const DirectX::SimpleMath::Vector3& position,
 	float hpRatio

@@ -6,27 +6,31 @@
 #include "Game/UserInterface/HpGauge.h"
 #include "Framework/Resources.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 HpGauge::HpGauge()
 	:
 	m_graphics{ Graphics::GetInstance() },
 	m_position{},
-	m_isDead{}
+	m_isDead{},
+	m_hpGaugePosition{},
+	m_spriteBatch{},
+	m_texture{}
 {
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 HpGauge::~HpGauge()
 {
 }
 
-//-------------------------------------------------------------------
-// 初期化処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="position">座標</param>
 void HpGauge::Initialize(const DirectX::SimpleMath::Vector2& position)
 {
 	using namespace DirectX;
@@ -45,9 +49,10 @@ void HpGauge::Initialize(const DirectX::SimpleMath::Vector2& position)
 
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
+/// <param name="hpRatio">体力の比率</param>
 void HpGauge::Render(float hpRatio)
 {
 	using namespace DirectX;

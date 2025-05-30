@@ -1,7 +1,7 @@
-/*
-	@file	SkySphere.h
-	@brief	天球クラス
-*/
+/**
+ * @file   SkySphere.h
+ * @brief  天球クラス
+ */
 #pragma once
 
 class SkySphere

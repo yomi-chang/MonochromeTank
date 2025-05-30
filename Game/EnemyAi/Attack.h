@@ -1,7 +1,7 @@
-/*
-	@file	Attack.h
-	@brief	敵の攻撃処理クラス
-*/
+/**
+ * @file   Attack.h
+ * @brief  敵の攻撃処理クラス
+ */
 #pragma once
 #include "Interface/IState.h"
 
@@ -21,12 +21,18 @@ public:
 	void Initialize(Tank* tank) override;
 	// 更新処理
 	void Update(float elapsedTime) override;
+	// 行動状態遷移をした際に呼び出される関数
+	void Enter() override;
 	// 追跡対象の戦車の取得
 	Tank* GetTargetTank() override { return m_targetTank; }
 	// 追跡対象の戦車の設定
 	void SetTargetTank(Tank* targetTank) override { m_targetTank = targetTank; }
+	// 状態番号の取得
+	StateID GetStateID() override { return m_stateID; }
 
 private:
+	// 状態番号
+	StateID m_stateID;
 	// 自機
 	Tank* m_tank;
 	// 追跡対象の戦車
@@ -39,14 +45,17 @@ private:
 	float m_moveTime;
 	// 攻撃時間
 	float m_shotTime;
+	// 射撃を一回以上を行っているかどうか
+	bool m_isShot;
+
 
 private:
 	// 追跡対象の方向に向く
 	void LookTargetTank(float elapsedTime);
-	// 移動
+	// 移動処理
 	void MoveAction(float elapsedTime);
-	// 射撃
+	// 射撃処理
 	void ShotAction(float elapsedTime);
-	// 追跡対象から距離が離れている
+	// 追跡対象の戦車が離れている判定及び処理
 	void IsTargetTankFar();
 };

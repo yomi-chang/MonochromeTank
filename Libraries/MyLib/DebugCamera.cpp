@@ -11,9 +11,9 @@ using namespace DirectX::SimpleMath;
 
 const float mylib::DebugCamera::DEFAULT_CAMERA_DISTANCE = 5.0f;
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 mylib::DebugCamera::DebugCamera()
 	:
 	m_yAngle{ 0.0f },
@@ -31,9 +31,11 @@ mylib::DebugCamera::DebugCamera()
 {
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="screenWidth">スクリーンサイズ(横)</param>
+/// <param name="screenHeight">スクリーンサイズ(縦)</param>
 void mylib::DebugCamera::Initialize(int screenWidth,int screenHeight)
 {
 	this->CalculateRerativeScale(screenWidth, screenHeight);
@@ -43,9 +45,9 @@ void mylib::DebugCamera::Initialize(int screenWidth,int screenHeight)
 	Mouse::Get().ResetScrollWheelValue();
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
 void mylib::DebugCamera::Update()
 {
 	const auto& state = InputManager::GetInstance()->GetMouseState();
@@ -90,9 +92,11 @@ void mylib::DebugCamera::Update()
 	this->CalculateViewMatrix();
 }
 
-//---------------------------------------------------------
-// 変位を計測する
-//---------------------------------------------------------
+/// <summary>
+/// 変異の計測
+/// </summary>
+/// <param name="x">座標x</param>
+/// <param name="y">座標y</param>
 void mylib::DebugCamera::Motion(int x, int y)
 {
 	// マウスポインタの位置のドラッグ開始位置からの変位 (相対値)
@@ -111,9 +115,9 @@ void mylib::DebugCamera::Motion(int x, int y)
 	}
 }
 
-//---------------------------------------------------------
-// ビュー行列を計算する
-//---------------------------------------------------------
+/// <summary>
+/// ビュー行列を計算する
+/// </summary>
 void mylib::DebugCamera::CalculateViewMatrix()
 {
 	// ビュー行列を算出する
@@ -137,9 +141,11 @@ void mylib::DebugCamera::CalculateViewMatrix()
 	m_view = Matrix::CreateLookAt(eye, target, up);
 }
 
-//---------------------------------------------------------
-// 相対スケールを計算する
-//---------------------------------------------------------
+/// <summary>
+/// 相対スケールを計算する
+/// </summary>
+/// <param name="screenWidth">スクリーンサイズ(横)</param>
+/// <param name="screenHeight">スクリーンサイズ(縦)</param>
 void mylib::DebugCamera::CalculateRerativeScale(int screenWidth, int screenHeight)
 {
 	// 画面サイズに対する相対的なスケールに調整

@@ -1,15 +1,18 @@
-/*
-	@file	TankBody.cpp
-	@brief	車体クラス
-*/
+/**
+ * @file   TankBody.cpp
+ * @brief  車体クラス
+ */
 #include "pch.h"
 #include "Game/Objects/Tank/TankBase/TankBody.h"
 #include "Game/Objects/Tank/TankBase/TankTurret.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="tank">戦車情報</param>
+/// <param name="initialPosition">初期座標</param>
+/// <param name="initialAngle">初期角度</param>
 TankBody::TankBody(
 	Tank* tank,
 	const DirectX::SimpleMath::Vector3& initialPosition,
@@ -32,16 +35,16 @@ TankBody::TankBody(
 	m_tank = tank;
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 TankBody::~TankBody()
 {
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void TankBody::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -59,9 +62,12 @@ void TankBody::Initialize()
 	m_currentPosition = m_initialPosition + m_tank->GetInitialPosition();
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
+/// <param name="currentPosition">現在の座標</param>
+/// <param name="currentRotation">現在の角度</param>
 void TankBody::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
@@ -86,9 +92,9 @@ void TankBody::Update(
 	}
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void TankBody::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -108,16 +114,17 @@ void TankBody::Render()
 	}
 }
 
-//---------------------------------------------------------
-// 終了処理
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void TankBody::Finalize()
 {
 }
 
-//---------------------------------------------------------
-// パーツの追加
-//---------------------------------------------------------
+/// <summary>
+/// パーツの追加
+/// </summary>
+/// <param name="parts">パーツ</param>
 void TankBody::Attach(std::unique_ptr<IParts> parts)
 {
 	// パーツの初期化
@@ -126,25 +133,28 @@ void TankBody::Attach(std::unique_ptr<IParts> parts)
 	m_tankParts.emplace_back(std::move(parts));
 }
 
-//---------------------------------------------------------
-// パーツの削除
-//---------------------------------------------------------
+/// <summary>
+/// パーツの削除
+/// </summary>
+/// <param name="parts">パーツ</param>
 void TankBody::Detach(std::unique_ptr<IParts> parts)
 {
 }
 
-//---------------------------------------------------------
-// 移動処理
-//---------------------------------------------------------
+/// <summary>
+/// 移動処理
+/// </summary>
+/// <param name="velocity">速度</param>
 void TankBody::Move(const DirectX::SimpleMath::Vector3& velocity)
 {
 	// 速度の加算
 	m_currentPosition += velocity;
 }
 
-//---------------------------------------------------------
-// 回転処理
-//---------------------------------------------------------
+/// <summary>
+/// 回転処理
+/// </summary>
+/// <param name="rotation">回転角</param>
 void TankBody::Rotate(const DirectX::SimpleMath::Quaternion& rotation)
 {
 	// 回転を加える

@@ -37,7 +37,9 @@ public:
 	ID3D11ShaderResourceView* GetSkipTexture() { return m_skipTexture.Get(); }				// スキップテクスチャ
 	ID3D11ShaderResourceView* GetPressSpaceTexture() { return m_pressSpaceTexture.Get(); }	// プレススペーステクスチャ
 	ID3D11ShaderResourceView* GetTankCountTexture() { return m_tankCountTexture.Get(); }	// プレイシーン戦車カウントテクスチャ
-	ID3D11ShaderResourceView* GetTitleTextTexture() { return m_titleTextTexture.Get(); }	// タイトルテキストテクスチャ
+	//ID3D11ShaderResourceView* GetTitleTextTexture() { return m_titleTextTexture.Get(); }	// タイトルテキストテクスチャ
+	ID3D11ShaderResourceView* GetStartTextTexture() { return m_startTextTexture.Get(); }	// スタートテキストテクスチャ
+	ID3D11ShaderResourceView* GetExitTextTexture() { return m_exitTextTexture.Get(); }	// 終了テキストテクスチャ
 	ID3D11ShaderResourceView* GetPauseTextTexture() { return m_pauseTextTexture.Get(); }	// ポーズ画面テキストテクスチャ
 
 
@@ -88,7 +90,7 @@ private:
 		m_skipTexture{},
 		m_pressSpaceTexture{},
 		m_tankCountTexture{},
-		m_titleTextTexture{},
+		//m_titleTextTexture{},
 		m_pauseTextTexture{},
 
 		m_blackSmokeTexture{},
@@ -165,7 +167,11 @@ private:
 	// プレイシーン戦車カウントテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tankCountTexture;
 	// タイトルテキストテクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_titleTextTexture;
+	//Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_titleTextTexture;
+	// スタートテキストテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_startTextTexture;
+	// 終了テキストテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_exitTextTexture;
 	// ポーズ画面テキストテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pauseTextTexture;
 

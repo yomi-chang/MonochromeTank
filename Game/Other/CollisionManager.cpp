@@ -1,7 +1,7 @@
-/*
-	@file	CollisionManager.cpp
-	@brief	当たり判定管理クラス
-*/
+/**
+ * @file   CollisionManager.cpp
+ * @brief  当たり判定管理クラス
+ */
 #include "pch.h"
 #include "Game/Other/CollisionManager.h"
 #include "Game/Collider/BoxCollider.h"
@@ -11,9 +11,9 @@
 #include "Game/Objects/FixedTurret/FixedTurret.h"
 #include "Game/Other/Parameter.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 CollisionManager::CollisionManager()
 	:
 	m_tanks{},
@@ -24,16 +24,16 @@ CollisionManager::CollisionManager()
 {
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 CollisionManager::~CollisionManager()
 {
 }
 
-//-------------------------------------------------------------------
-// 更新処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
 void CollisionManager::Update()
 {
 	// 戦車の砲弾の当たり判定
@@ -58,7 +58,9 @@ void CollisionManager::Update()
 	this->DetectCollisionWallAndAvoidCollider();
 }
 
-// 戦車と連射弾
+/// <summary>
+/// 戦車と連射弾
+/// </summary>
 void CollisionManager::DetectCollisionTankAndNomalBullets()
 {
 	for (auto& tank : m_tanks)
@@ -114,7 +116,9 @@ void CollisionManager::DetectCollisionTankAndNomalBullets()
 	}
 }
 
-// 戦車と砲弾
+/// <summary>
+/// 戦車と砲弾
+/// </summary>
 void CollisionManager::DetectCollisionTankAndCannonBall()
 {
 	for (auto& tank : m_tanks)
@@ -148,7 +152,9 @@ void CollisionManager::DetectCollisionTankAndCannonBall()
 	}
 }
 
-// 戦車同士
+/// <summary>
+/// 戦車同士
+/// </summary>
 void CollisionManager::DetectCollisionTankAndOtherTanks()
 {
 	for (auto& tank : m_tanks)
@@ -173,7 +179,9 @@ void CollisionManager::DetectCollisionTankAndOtherTanks()
 	}
 }
 
-// 戦車と壁
+/// <summary>
+/// 戦車と壁
+/// </summary>
 void CollisionManager::DetectCollisionTankAndWalls()
 {
 	for (auto& wall : m_walls)
@@ -198,7 +206,9 @@ void CollisionManager::DetectCollisionTankAndWalls()
 	}
 }
 
-// 弾と壁
+/// <summary>
+/// 弾と壁
+/// </summary>
 void CollisionManager::DetectCollisionBulletsAndWalls()
 {
 	for (auto& tank : m_tanks)
@@ -230,7 +240,9 @@ void CollisionManager::DetectCollisionBulletsAndWalls()
 	}
 }
 
-// Rayと壁
+/// <summary>
+/// Rayと壁
+/// </summary>
 void CollisionManager::DetectCollisionRayAndWalls()
 {
 	using namespace DirectX::SimpleMath;
@@ -314,7 +326,9 @@ void CollisionManager::DetectCollisionRayAndWalls()
 	}
 }
 
-// 壁と回避用コライダー
+/// <summary>
+/// 壁と回避用コライダー
+/// </summary>
 void CollisionManager::DetectCollisionWallAndAvoidCollider()
 {
 	using namespace DirectX::SimpleMath;

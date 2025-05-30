@@ -1,15 +1,18 @@
-/*
-	@file	Wall.cpp
-	@brief	壁クラス
-*/
+/**
+ * @file   Wall.cpp
+ * @brief  壁クラス
+ */
 #include "pch.h"
 #include "Game/Objects/Stage/Wall.h"
 #include "Framework/Graphics.h"
 #include "Libraries/MyLib/FollowCamera.h"
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="scale">サイズ</param>
+/// <param name="position">座標</param>
+/// <param name="type">壁タイプ</param>
 Wall::Wall(
 	const DirectX::SimpleMath::Vector3& scale,
 	const DirectX::SimpleMath::Vector3& position,
@@ -40,16 +43,17 @@ Wall::Wall(
 	m_wallType = type;
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 Wall::~Wall()
 {
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void Wall::Update(float elapsedTime)
 {
 	// 壁を上げる、もしくは下げる処理
@@ -60,9 +64,9 @@ void Wall::Update(float elapsedTime)
 		this->LowerWall(elapsedTime);
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void Wall::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -84,16 +88,16 @@ void Wall::Render()
 	m_model->Draw(world, view, proj, m_color);
 }
 
-//---------------------------------------------------------
-// 終了処理
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void Wall::Finalize()
 {
 }
 
-//---------------------------------------------------------
-// 衝突判定
-//---------------------------------------------------------
+/// <summary>
+/// カメラとの衝突判定
+/// </summary>
 void Wall::DetectCollision()
 {
 	// カメラとの当たり判定
@@ -101,18 +105,20 @@ void Wall::DetectCollision()
 }
 
 
-//---------------------------------------------------------
-// 壁をゆっくり上げる処理
-//---------------------------------------------------------
+/// <summary>
+/// 壁をゆっくり上げる処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void Wall::RaiseWall(float elapsedTime)
 {
 	if (m_position.y < 0.5f)
 		m_position.y += 0.5f * elapsedTime;
 }
 
-//---------------------------------------------------------
-// 壁をゆっくり下げる処理
-//---------------------------------------------------------
+/// <summary>
+/// 壁をゆっくり下げる処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void Wall::LowerWall(float elapsedTime)
 {
 	if (m_position.y >= -1.0f)

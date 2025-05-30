@@ -1,18 +1,18 @@
 /**
- * @file   Smoke.h
- * @brief  破壊エフェクトクラス
+ * @file   HitEffect.h
+ * @brief  弾のヒットエフェクトクラス
  */
 #pragma once
 
 class Graphics;
 
-class Smoke
+class HitEffect
 {
 public:
 	// コンストラクタ
-	Smoke();
+	HitEffect();
 	// デストラクタ
-	~Smoke();
+	~HitEffect();
 	// 初期化処理
 	void Initialize();
 	// 更新処理
@@ -21,8 +21,8 @@ public:
 	void Render(const DirectX::SimpleMath::Vector3& position);
 
 private:
-	// 煙画像
-	ID3D11ShaderResourceView* m_smokeTexture;
+	// ヒット時画像
+	ID3D11ShaderResourceView* m_hitTexture;
 	// エフェクトの再生中かどうか
 	bool m_isPlay;
 	// 不透明度

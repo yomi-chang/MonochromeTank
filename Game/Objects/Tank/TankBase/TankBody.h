@@ -1,7 +1,7 @@
-/*
-	@file	TankBody.h
-	@brief	車体クラス
-*/
+/**
+ * @file   TankBody.h
+ * @brief  車体クラス
+ */
 #pragma once
 #include "Interface/IParts.h"
 

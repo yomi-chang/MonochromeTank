@@ -1,7 +1,7 @@
-/*
-	@file	Fade.h
-	@brief	シーン遷移フェードクラス
-*/
+/**
+ * @file   Fade.h
+ * @brief  シーン遷移フェードクラス
+ */
 #pragma once
 
 class Fade

@@ -1,40 +1,43 @@
-/*
-	@file	AvoidWall.cpp
-	@brief	敵の壁回避クラス
-*/
+/**
+ * @file   AvoidWall.cpp
+ * @brief  敵の壁回避クラス
+ */
 #include "pch.h"
 #include "Game/EnemyAi/AvoidWall.h"
 #include "Libraries/MyLib/Utils.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 AvoidWall::AvoidWall()
 	:
+	m_stateID{StateID::AVOIDWALL},
 	m_tank{},
 	m_targetTank{},
 	m_time{}
 {
 }
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 AvoidWall::~AvoidWall()
 {
 }
 
-//-------------------------------------------------------------------
-// 初期化処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="tank">戦車情報</param>
 void AvoidWall::Initialize(Tank* tank)
 {
 	m_tank = tank;
 }
 
-//-------------------------------------------------------------------
-// 更新処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void AvoidWall::Update(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -54,4 +57,11 @@ void AvoidWall::Update(float elapsedTime)
 	{
  		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::NONE);
 	}
+}
+
+/// <summary>
+/// 行動状態遷移をした際に呼び出される関数
+/// </summary>
+void AvoidWall::Enter()
+{
 }

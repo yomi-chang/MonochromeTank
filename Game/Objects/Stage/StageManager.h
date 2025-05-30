@@ -1,7 +1,7 @@
-/*
-	@file	StageManager.h
-	@brief	ステージの管理クラス
-*/
+/**
+ * @file   StageManager.h
+ * @brief  ステージの管理クラス
+ */
 #pragma once
 #include "Game/Objects/Stage/Floor.h"
 #include "Game/Objects/Stage/Gimmick/WallGimmick.h"
@@ -38,12 +38,10 @@ private:
 	std::vector<std::unique_ptr<Wall>> m_walls;						// 壁
 	std::unique_ptr<Floor> m_floor;									// 床
 	std::unique_ptr<SkySphere> m_skySphere;							// 天球
-	std::unique_ptr<WallGimmick> m_wallGimmick;					// 壁ギミック
+	std::unique_ptr<WallGimmick> m_wallGimmick;						// 壁ギミック
 	std::vector<std::unique_ptr<FixedTurret>> m_fixedTurrets;		// 固定砲台
 	// 配列サイズの宣言
 	static const int STAGESIZE = 20;
-	// 土台
-	int m_base[STAGESIZE][STAGESIZE];
 	// データを入れておくサイズ
 	int m_data[STAGESIZE][STAGESIZE];
 

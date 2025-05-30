@@ -18,9 +18,9 @@
 #include "Game/Other/SharedData.h"
 #include <cassert>
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
 SelectScene::SelectScene()
 	:
 	m_graphics{ Graphics::GetInstance() },
@@ -28,21 +28,23 @@ SelectScene::SelectScene()
 	m_floor{},
 	m_fade{},
 	m_resources{ Resources::GetInstance() },
-	m_selectAngle {}
+	m_selectAngle{},
+	m_stageTexturePos{},
+	m_tankCountTexturePos{}
 {
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 SelectScene::~SelectScene()
 {
 	// do nothing.
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void SelectScene::Initialize()
 {	
 	using namespace DirectX;
@@ -88,9 +90,10 @@ void SelectScene::Initialize()
 	m_tankCountTexturePos = TANK_COUNT2;
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void SelectScene::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
@@ -182,9 +185,9 @@ void SelectScene::Update(float elapsedTime)
 	m_selectAngle += elapsedTime * CURSOR_SPEED;
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void SelectScene::Render()
 {
 	using namespace DirectX;
@@ -268,17 +271,18 @@ void SelectScene::Render()
 	m_fade->Render();
 }
 
-//---------------------------------------------------------
-// 終了処理
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void SelectScene::Finalize()
 {
 	// do nothing.
 }
 
-//---------------------------------------------------------
-// 次のシーンIDの取得
-//---------------------------------------------------------
+/// <summary>
+/// 次のシーンIDの取得
+/// </summary>
+/// <returns>シーンID</returns>
 IScene::SceneID SelectScene::GetNextSceneID() const
 {
 	// シーン変更がある場合
@@ -291,9 +295,9 @@ IScene::SceneID SelectScene::GetNextSceneID() const
 	return IScene::SceneID::NONE;
 }
 
-//---------------------------------------------------------
-// ステージ設定の設定
-//---------------------------------------------------------
+/// <summary>
+/// ステージ設定の設定
+/// </summary>
 void SelectScene::SetStageSetting()
 {
 	int tankCount = 0;

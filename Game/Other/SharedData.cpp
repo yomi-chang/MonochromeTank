@@ -1,7 +1,7 @@
-/*
-	@file	SharedData.cpp
-	@brief	共有情報管理クラス
-*/
+/**
+ * @file   SharedData.cpp
+ * @brief  共有情報管理クラス
+ */
 #include "pch.h"
 #include "Game/Other/SharedData.h"
 
@@ -19,19 +19,20 @@ SharedData* const SharedData::GetInstance()
 	return m_sharedData.get();
 }
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 SharedData::SharedData()
 	:
 	m_winnerTank{},
-	m_soundManager{}
+	m_soundManager{},
+	m_tankCount{}
 {
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 SharedData::~SharedData()
 {
 }

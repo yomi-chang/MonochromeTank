@@ -1,7 +1,7 @@
-/*
-	@file	Bullet.cpp
-	@brief	連射弾クラス
-*/
+/**
+ * @file   Bullet.cpp
+ * @brief  連射弾クラス
+ */
 #include "pch.h"
 #include "Game/Objects/Bullet/Bullet.h"
 #include "Framework/Resources.h"
@@ -9,9 +9,10 @@
 #include "Libraries/Microsoft/DebugDraw.h"
 #include "Game/Objects/Bullet/BulletTrail.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="bulletState">弾の状態</param>
 Bullet::Bullet(IBullet::BulletState bulletState)
 	:
 	m_graphics{ Graphics::GetInstance() },
@@ -27,16 +28,16 @@ Bullet::Bullet(IBullet::BulletState bulletState)
 {
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 Bullet::~Bullet()
 {
 }
 
-//-------------------------------------------------------------------
-// 初期化処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void Bullet::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -56,21 +57,22 @@ void Bullet::Initialize()
 	m_count = Parameter::GetInstance()->GetBulletSurvivalTime();
 }
 
-//-------------------------------------------------------------------
-// 更新処理
-//-------------------------------------------------------------------
-void Bullet::Update(float time)
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
+void Bullet::Update(float elapsedTime)
 {
-	UNREFERENCED_PARAMETER(time);
+	UNREFERENCED_PARAMETER(elapsedTime);
 	using namespace DirectX::SimpleMath;
 	auto parameter = Parameter::GetInstance();
-	Vector3 speed = parameter->GetBulletSpeed() * time;
+	Vector3 speed = parameter->GetBulletSpeed() * elapsedTime;
 
 	// 使用可能もしくは使用済みの場合
 	if (m_bulletState == USED)
 	{
 		// トレイルの座標の削除
-		m_trail->DeletePosBuffer();
+		m_trail->DeletePosArray();
 		return;
 	}
 	else if(m_bulletState == UNUSED)
@@ -88,7 +90,7 @@ void Bullet::Update(float time)
 	// コライダーの座標更新
 	m_collider->Update(m_position);
 	// 生存カウントを減らす
-	m_count -= time;
+	m_count -= elapsedTime;
 
 	// 床より下または生存カウントが0になったら使用済みにする
 	if (m_position.y <= 0.0f ||
@@ -98,9 +100,9 @@ void Bullet::Update(float time)
 	}
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void Bullet::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -125,9 +127,9 @@ void Bullet::Render()
 	m_trail->Render();
 }
 
-//-------------------------------------------------------------------
-// 弾の描画
-//-------------------------------------------------------------------
+/// <summary>
+/// 弾の描画
+/// </summary>
 void Bullet::DrawBullet()
 {
 	using namespace DirectX::SimpleMath;
@@ -142,9 +144,9 @@ void Bullet::DrawBullet()
 	m_bullet->Draw(m_worldMatrix, view, proj, DirectX::Colors::Silver);
 }
 
-//-------------------------------------------------------------------
-// 終了処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void Bullet::Finalize()
 {
 }

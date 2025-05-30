@@ -1,7 +1,7 @@
-/*
-	@file	Wall.h
-	@brief	壁クラス
-*/
+/**
+ * @file   Wall.h
+ * @brief  壁クラス
+ */
 #pragma once
 #include "Game/Collider/BoxCollider.h"
 

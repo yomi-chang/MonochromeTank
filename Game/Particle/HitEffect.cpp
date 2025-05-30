@@ -1,9 +1,9 @@
 /**
- * @file   Smoke.cpp
- * @brief  破壊エフェクトクラス
+ * @file   HitEffect.cpp
+ * @brief  弾のヒットエフェクトクラス
  */
 #include "pch.h"
-#include "Game/Particle/Smoke.h"
+#include "Game/Particle/HitEffect.h"
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"
 
@@ -14,9 +14,9 @@
 /// <summary>
 /// コンストラクタ
 /// </summary>
-Smoke::Smoke()
+HitEffect::HitEffect()
 	:
-	m_smokeTexture{},
+	m_hitTexture{},
 	m_alpha{},
 	m_graphics{ Graphics::GetInstance() },
 	m_isPlay{}
@@ -26,14 +26,14 @@ Smoke::Smoke()
 /// <summary>
 /// デストラクタ
 /// </summary>
-Smoke::~Smoke()
+HitEffect::~HitEffect()
 {
 }
 
 /// <summary>
 /// 初期化処理
 /// </summary>
-void Smoke::Initialize()
+void HitEffect::Initialize()
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
@@ -57,7 +57,7 @@ void Smoke::Initialize()
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 
 	// 画像の受け取り
-	m_smokeTexture = Resources::GetInstance()->GetBlackSmokeTexture();
+	m_hitTexture = Resources::GetInstance()->GetBlackSmokeTexture();
 
 	// 不透明度の初期値の設定
 	m_alpha = 1.0f;
@@ -67,7 +67,7 @@ void Smoke::Initialize()
 /// 更新処理
 /// </summary>
 /// <param name="elapsedTime">フレーム間の経過時間</param>
-void Smoke::Update(float elapsedTime)
+void HitEffect::Update(float elapsedTime)
 {
 	// 画像の不透明度を下げていく
 	m_alpha -= elapsedTime * 0.5f;
@@ -80,8 +80,8 @@ void Smoke::Update(float elapsedTime)
 /// <summary>
 /// 描画処理
 /// </summary>
-/// <param name="position"></param>
-void Smoke::Render(const DirectX::SimpleMath::Vector3& position)
+/// <param name="position">座標</param>
+void HitEffect::Render(const DirectX::SimpleMath::Vector3& position)
 {
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;

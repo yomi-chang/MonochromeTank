@@ -1,7 +1,7 @@
-/*
-	@file	Parameter.cpp
-	@brief	パラメータークラス
-*/
+/**
+ * @file   Parameter.cpp
+ * @brief  パラメータークラス
+ */
 #include "pch.h"
 #include "Parameter.h"
 #include <iostream>
@@ -22,9 +22,9 @@ Parameter* const Parameter::GetInstance()
     return m_parameter.get();
 }
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 Parameter::Parameter()
     :
     m_turretAngleMin{},
@@ -67,16 +67,16 @@ Parameter::Parameter()
 {
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 Parameter::~Parameter()
 {
 }
 
-//-------------------------------------------------------------------
-// パラメータの読み込み
-//-------------------------------------------------------------------
+/// <summary>
+/// パラメータ読み込み
+/// </summary>
 void Parameter::LoadParameter()
 {
     using namespace DirectX;

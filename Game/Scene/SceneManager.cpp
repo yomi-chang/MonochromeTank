@@ -14,35 +14,36 @@
 #include <cassert>
 
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 SceneManager::SceneManager()
 	:
 	m_currentScene{}
 {
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 SceneManager::~SceneManager()
 {
 	this->Finalize();
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void SceneManager::Initialize()
 {
 	// 最初のシーンの設定
 	this->ChangeScene(IScene::SceneID::TITLE);
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void SceneManager::Update(float elapsedTime)
 {
 	m_currentScene->Update(elapsedTime);
@@ -57,34 +58,36 @@ void SceneManager::Update(float elapsedTime)
 	this->ChangeScene(nextSceneID);
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void SceneManager::Render()
 {
 	m_currentScene->Render();
 }
 
-//---------------------------------------------------------
-// 終了処理
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void SceneManager::Finalize()
 {
 	this->DeleteScene();
 }
 
-//---------------------------------------------------------
-// シーンの変更
-//---------------------------------------------------------
+/// <summary>
+/// シーン変更
+/// </summary>
+/// <param name="sceneID">シーンID</param>
 void SceneManager::ChangeScene(IScene::SceneID sceneID)
 {
 	this->DeleteScene();
 	this->CreateScene(sceneID);
 }
 
-//---------------------------------------------------------
-// シーンの作成
-//---------------------------------------------------------
+/// <summary>
+/// シーンの作成
+/// </summary>
+/// <param name="sceneID">シーンID</param>
 void SceneManager::CreateScene(IScene::SceneID sceneID)
 {
 	assert(m_currentScene == nullptr);
@@ -112,9 +115,9 @@ void SceneManager::CreateScene(IScene::SceneID sceneID)
 	m_currentScene->Initialize();
 }
 
-//---------------------------------------------------------
-// シーンの削除
-//---------------------------------------------------------
+/// <summary>
+/// シーンの削除
+/// </summary>
 void SceneManager::DeleteScene()
 {
 	if (m_currentScene)

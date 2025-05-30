@@ -1,16 +1,16 @@
-/*
-	@file	WallGimmick.cpp
-	@brief	壁ギミッククラス
-*/
+/**
+ * @file   WallGimmick.cpp
+ * @brief  壁ギミッククラス
+ */
 #include "pch.h"
 #include "Game/Objects/Stage/Gimmick/WallGimmick.h"
 #include "Game/Collider/BoxCollider.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Framework/Graphics.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 WallGimmick::WallGimmick()
 	:
 	m_position{},
@@ -18,16 +18,16 @@ WallGimmick::WallGimmick()
 {
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 WallGimmick::~WallGimmick()
 {
 }
 
-//-------------------------------------------------------------------
-// 初期化処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void WallGimmick::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -41,9 +41,9 @@ void WallGimmick::Initialize()
 	m_collider->CreateBoundingBox(Vector3{0.0f,2.0f,0.0f}, DirectX::SimpleMath::Vector3(1.0f, 1.0f, 1.0f));
 }
 
-//-------------------------------------------------------------------
-// 更新処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
 void WallGimmick::Update()
 {
 	// 当たっている情報をリセット
@@ -63,9 +63,9 @@ void WallGimmick::Update()
 	}
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void WallGimmick::Render()
 {
 	using namespace DirectX::SimpleMath;

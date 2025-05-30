@@ -1,31 +1,31 @@
-/*
-	@file	SkySphere.cpp
-	@brief	天球クラス
-*/
+/**
+ * @file   SkySphere.cpp
+ * @brief  天球クラス
+ */
 #include "pch.h"
 #include "Game/Objects/Stage/StageObject/SkySphere.h"
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 SkySphere::SkySphere()
 {
 	// モデルの受け取り
 	m_skyModel = Resources::GetInstance()->GetSkySphereModel();
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 SkySphere::~SkySphere()
 {
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void SkySphere::Render()
 {
 	using namespace DirectX;

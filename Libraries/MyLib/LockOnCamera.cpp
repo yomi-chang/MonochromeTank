@@ -5,9 +5,9 @@
 #include "pch.h"
 #include "Libraries/MyLib/LockOnCamera.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 mylib::LockOnCamera::LockOnCamera()
 	:
 	m_eye{},
@@ -19,16 +19,16 @@ mylib::LockOnCamera::LockOnCamera()
 {
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 mylib::LockOnCamera::~LockOnCamera()
 {
 }
 
-//-------------------------------------------------------------------
-// 初期化する
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void mylib::LockOnCamera::Initialize()
 {
 
@@ -39,9 +39,10 @@ void mylib::LockOnCamera::Initialize()
 	m_height = HEIGHT;
 }
 
-//-------------------------------------------------------------------
-// 更新する
-//-------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void mylib::LockOnCamera::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);

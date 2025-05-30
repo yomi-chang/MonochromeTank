@@ -12,9 +12,9 @@
 #include "Game/Other/SharedData.h"
 #include "Libraries/MyLib/SoundManager.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 PauseMenu::PauseMenu()
 	:
 	m_graphics{},
@@ -34,16 +34,17 @@ PauseMenu::PauseMenu()
 	m_currentSelectUi = UI::CANCEL;
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 PauseMenu::~PauseMenu()
 {
 }
 
-//-------------------------------------------------------------------
-// 更新処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void PauseMenu::Update(float elapsedTime)
 {
 	// キーボードステートの取得
@@ -53,6 +54,16 @@ void PauseMenu::Update(float elapsedTime)
 	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Escape))
 	{
 		m_isDisplay = m_isDisplay == false ? true : false;
+
+		// ポーズ中ならマウスの固定の解除
+		if (m_isDisplay)
+		{
+			InputManager::GetInstance()->UnLockMouseCursor();
+		}
+		else
+		{
+			InputManager::GetInstance()->LockMouseCursor();
+		}
 	}
 
 	// 以下ポーズ画面が表示されていないなら早期リターン
@@ -87,9 +98,9 @@ void PauseMenu::Update(float elapsedTime)
 	m_cursorAngle += elapsedTime * CURSOR_SPEED;
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void PauseMenu::Render()
 {
 	using namespace DirectX;
@@ -155,17 +166,17 @@ void PauseMenu::Render()
 	spriteBatch->End();
 }
 
-//-------------------------------------------------------------------
-// ポーズ画面の終了
-//-------------------------------------------------------------------
+/// <summary>
+/// ポーズ画面の終了
+/// </summary>
 void PauseMenu::Cancel()
 {
 	m_isDisplay = false;
 }
 
-//-------------------------------------------------------------------
-// タイトルに戻る
-//-------------------------------------------------------------------
+/// <summary>
+/// タイトルに戻る
+/// </summary>
 void PauseMenu::ReturnToTitle()
 {
 	m_returnTitle = true;

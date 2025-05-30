@@ -1,7 +1,7 @@
-/*
-	@file	PlayScene.h
-	@brief	プレイシーンクラス
-*/
+/**
+ * @file   PlayScene.h
+ * @brief  プレイシーンクラス
+ */
 #pragma once
 #include "Interface/IScene.h"
 #include <PostProcess.h>
@@ -70,6 +70,7 @@ private:
 	// オブジェクト
 	std::unique_ptr<PlayerTank> m_player;					// プレイヤー
 	std::vector<std::unique_ptr<EnemyTank>> m_enemies;		// 敵戦車(配列管理)
+	std::vector<IObject*> m_allTanks;					// 全戦車情報のマップ
 
 	// マネージャー
 	std::unique_ptr<StageManager> m_stageManager;				// ステージマネージャー
@@ -90,8 +91,9 @@ private:
 	std::unique_ptr<PauseMenu> m_pauseMenu;
 	// 時間
 	float m_time;
-	// 生存している戦車
-	int m_surviveTank;
+	// 生存している敵戦車
+	int m_surviveEnemyTank;
+
 
 private:
 	// 戦車の生成

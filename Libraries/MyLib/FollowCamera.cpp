@@ -8,9 +8,9 @@
 #include "Game/Objects/Tank/PlayerTank.h"
 #include <cassert>
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 mylib::FollowCamera::FollowCamera()
 	:
 	m_eye{},
@@ -27,16 +27,17 @@ mylib::FollowCamera::FollowCamera()
 {
 }
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 mylib::FollowCamera::~FollowCamera()
 {
 }
 
-//-------------------------------------------------------------------
-// 初期化する
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="tank">戦車の情報</param>
 void mylib::FollowCamera::Initialize(Tank* tank)
 {
 	// 自機情報の受け取り
@@ -50,9 +51,10 @@ void mylib::FollowCamera::Initialize(Tank* tank)
 	this->Update(0.0f);
 }
 
-//-------------------------------------------------------------------
-// 更新する
-//-------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void mylib::FollowCamera::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
@@ -84,9 +86,10 @@ void mylib::FollowCamera::Update(float elapsedTime)
 }
 
 
-//-------------------------------------------------------------------
-// カメラを揺らす処理
-//-------------------------------------------------------------------
+/// <summary>
+/// カメラの振動処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void mylib::FollowCamera::ShakeCamera(float elapsedTime)
 {
 	// カメラ振動がセットされていないなら早期リターン
@@ -102,9 +105,12 @@ void mylib::FollowCamera::ShakeCamera(float elapsedTime)
 	}
 }
 
-//-------------------------------------------------------------------
-// 振動開始
-//-------------------------------------------------------------------
+/// <summary>
+/// 振動開始
+/// </summary>
+/// <param name="speed">速度</param>
+/// <param name="width">幅</param>
+/// <param name="time">時間</param>
 void mylib::FollowCamera::StartShakeCamera(
 	float speed,
 	float width,

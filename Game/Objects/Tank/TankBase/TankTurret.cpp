@@ -1,15 +1,18 @@
-/*
-	@file	TankTurret.cpp
-	@brief	砲塔クラス
-*/
+/**
+ * @file   TankTurret.cpp
+ * @brief  砲塔クラス
+ */
 #include "pch.h"
 #include "Game/Objects/Tank/TankBase/TankTurret.h"
 #include "Game/Objects/Tank/TankBase/TankCannon.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="tank">戦車の情報</param>
+/// <param name="initialPosition">初期座標</param>
+/// <param name="initialAngle">初期角度</param>
 TankTurret::TankTurret(
 	Tank* tank,
 	const DirectX::SimpleMath::Vector3& initialPosition,
@@ -31,16 +34,16 @@ TankTurret::TankTurret(
 	m_tank = tank;
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 TankTurret::~TankTurret()
 {
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void TankTurret::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -55,9 +58,12 @@ void TankTurret::Initialize()
 	m_tank->SetTurret(this);
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
+/// <param name="currentPosition">現在の座標</param>
+/// <param name="currentRotation">現在の角度</param>
 void TankTurret::Update(
 	float elapsedTime,
 	const DirectX::SimpleMath::Vector3& currentPosition,
@@ -75,9 +81,9 @@ void TankTurret::Update(
 	}
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void TankTurret::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -97,16 +103,17 @@ void TankTurret::Render()
 	}
 }
 
-//---------------------------------------------------------
-// 終了処理
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void TankTurret::Finalize()
 {
 }
 
-//---------------------------------------------------------
-// パーツの追加
-//---------------------------------------------------------
+/// <summary>
+/// パーツの追加
+/// </summary>
+/// <param name="parts">パーツ</param>
 void TankTurret::Attach(std::unique_ptr<IParts> parts)
 {
 	// パーツの初期化
@@ -115,16 +122,18 @@ void TankTurret::Attach(std::unique_ptr<IParts> parts)
 	m_tankParts.emplace_back(std::move(parts));
 }
 
-//---------------------------------------------------------
-// パーツの削除
-//---------------------------------------------------------
+/// <summary>
+/// パーツの削除
+/// </summary>
+/// <param name="parts">パーツ</param>
 void TankTurret::Detach(std::unique_ptr<IParts> parts)
 {
 }
 
-//---------------------------------------------------------
-// 砲塔の回転
-//---------------------------------------------------------
+/// <summary>
+/// 砲塔の回転
+/// </summary>
+/// <param name="angle">角度</param>
 void TankTurret::RotateTurret(float angle)
 {
 	using namespace DirectX::SimpleMath;

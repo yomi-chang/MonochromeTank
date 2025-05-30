@@ -1,7 +1,7 @@
-/*
-	@file	Floor.h
-	@brief	床クラス
-*/
+/**
+ * @file   Floor.h
+ * @brief  床クラス
+ */
 #pragma once
 #include <PrimitiveBatch.h>
 #include <VertexTypes.h>

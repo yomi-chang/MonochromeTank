@@ -15,6 +15,7 @@ class Graphics;
 class Floor;
 class Tank;
 class Fade;
+class Button;
 
 class TitleScene final :
     public IScene
@@ -28,6 +29,9 @@ private:
 	static constexpr float TITLE_TEXT_SCALE = 0.8f;
 	static constexpr float CURSOR_SCALE = 1.0f;
 	static constexpr float CURSOR_SPEED = 2.0f;
+
+	static constexpr RECT START_UI = {};
+	static constexpr RECT EXIT_UI = {};
 
 	enum UI
 	{
@@ -56,7 +60,8 @@ private:
 	Graphics* m_graphics;
 	// テクスチャ
 	ID3D11ShaderResourceView* m_titleLogo;
-	ID3D11ShaderResourceView* m_titleText;
+	ID3D11ShaderResourceView* m_startTextTex;
+	ID3D11ShaderResourceView* m_exitTextTex;
 	ID3D11ShaderResourceView* m_cursorUi;
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
@@ -73,11 +78,22 @@ private:
 	// カーソルの角度
 	float m_cursorAngle;
 
+	// スタートボタン
+	std::unique_ptr<Button> m_startButton;
+	// 終了ボタン
+	std::unique_ptr<Button> m_exitButton;
+	// ボタン
+	std::vector<std::unique_ptr<Button>> m_buttons;
+
+public:
+	// 選択されているUIの決定
+	void PressSelectUi();
+
 private:
 	// UIの描画
 	void DrawUi();
 	// カーソルの移動
 	void MoveCursor();
-	// 選択されているUIの決定
-	void PressSelectUi();
+	// ボタンの作成
+	void CreateButton();
 };

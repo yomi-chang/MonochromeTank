@@ -1,7 +1,7 @@
-/*
-	@file	Tank.cpp
-	@brief	戦車クラス
-*/
+/**
+ * @file   Tank.cpp
+ * @brief  戦車クラス
+ */
 #include "pch.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Game/Particle/Smoke.h"
@@ -9,9 +9,12 @@
 #include "Libraries/MyLib/SoundManager.h"
 #include "Game/Other/Sounds.h"
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="tankNumber">戦車番号</param>
+/// <param name="initialPosition">初期座標</param>
+/// <param name="initialAngle">初期角度</param>
 Tank::Tank(
 	const int& tankNumber,
 	const DirectX::SimpleMath::Vector3& initialPosition,
@@ -44,16 +47,16 @@ Tank::Tank(
 	this->SetMaxHp(1);
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 Tank::~Tank()
 {
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void Tank::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -103,9 +106,10 @@ void Tank::Initialize()
 	m_smokeEffect->Initialize();
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void Tank::Update(float elapsedTime)
 {
 	// やられているなら破壊演出再生
@@ -128,9 +132,9 @@ void Tank::Update(float elapsedTime)
 	m_avoidCollider->Update(colliderPos);
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void Tank::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -163,16 +167,17 @@ void Tank::Render()
 	}
 }
 
-//---------------------------------------------------------
-// 終了処理
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void Tank::Finalize()
 {
 }
 
-//---------------------------------------------------------
-// パーツの追加
-//---------------------------------------------------------
+/// <summary>
+/// パーツの追加
+/// </summary>
+/// <param name="parts">パーツ</param>
 void Tank::Attach(std::unique_ptr<IParts> parts)
 {
 	// パーツの初期化
@@ -181,16 +186,18 @@ void Tank::Attach(std::unique_ptr<IParts> parts)
 	m_tankParts.emplace_back(std::move(parts));
 }
 
-//---------------------------------------------------------
-// パーツの削除
-//---------------------------------------------------------
+/// <summary>
+/// パーツの削除
+/// </summary>
+/// <param name="parts">パーツ</param>
 void Tank::Detach(std::unique_ptr<IParts> parts)
 {
 }
 
-//---------------------------------------------------------
-// ダメージ処理
-//---------------------------------------------------------
+/// <summary>
+/// ダメージ処理
+/// </summary>
+/// <param name="damage">受けるダメージ</param>
 void Tank::Damage(int damage)
 {
 	// ダメージが０でないなら
@@ -207,9 +214,9 @@ void Tank::Damage(int damage)
 	}
 }
 
-//---------------------------------------------------------
-// 影の描画
-//--------------------------------------------------------
+/// <summary>
+/// 影の描画
+/// </summary>
 void Tank::DrawShadow()
 {
 	using namespace DirectX::SimpleMath;

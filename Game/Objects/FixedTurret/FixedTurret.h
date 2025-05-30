@@ -1,7 +1,7 @@
-/*
-	@file	FixedTurret.h
-	@brief	固定砲台クラス
-*/
+/**
+ * @file   FixedTurret.h
+ * @brief  固定砲台クラス
+ */
 #pragma once
 
 class Tank;

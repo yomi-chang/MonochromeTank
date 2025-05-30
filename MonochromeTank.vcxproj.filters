@@ -129,6 +129,8 @@
     <ClInclude Include="Game\UserInterface\PauseMenu.h" />
     <ClInclude Include="Game\EnemyAi\AvoidWall.h" />
     <ClInclude Include="Game\Other\ProgressionManager.h" />
+    <ClInclude Include="Game\Particle\HitEffect.h" />
+    <ClInclude Include="Game\UserInterface\Button.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -200,6 +202,8 @@
     <ClCompile Include="Game\UserInterface\PauseMenu.cpp" />
     <ClCompile Include="Game\EnemyAi\AvoidWall.cpp" />
     <ClCompile Include="Game\Other\ProgressionManager.cpp" />
+    <ClCompile Include="Game\Particle\HitEffect.cpp" />
+    <ClCompile Include="Game\UserInterface\Button.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />

@@ -1,7 +1,7 @@
-/*
-	@file	BoxCollider.h
-	@brief	箱状の当たり判定クラス
-*/
+/**
+ * @file   BoxCollider.h
+ * @brief  箱状の当たり判定クラス
+ */
 #pragma once
 #include "Framework/Graphics.h"
 

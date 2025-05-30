@@ -16,9 +16,9 @@
 #include "Game/Objects/Stage/StageObject/SkySphere.h"
 #include <cassert>
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 ResultScene::ResultScene()
 	:
 	m_graphics{Graphics::GetInstance()},
@@ -32,17 +32,17 @@ ResultScene::ResultScene()
 {
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 ResultScene::~ResultScene()
 {
 	// do nothing.
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void ResultScene::Initialize()
 {
 	// テクスチャの受け取り
@@ -84,11 +84,15 @@ void ResultScene::Initialize()
 
 	// 天球
 	m_skySphere = std::make_unique<SkySphere>();
+
+	// マウス固定の解除
+	InputManager::GetInstance()->UnLockMouseCursor();
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void ResultScene::Update(float elapsedTime)
 {
 	//using namespace DirectX;
@@ -127,9 +131,9 @@ void ResultScene::Update(float elapsedTime)
 		m_fade->FadeIn();
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void ResultScene::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -155,17 +159,18 @@ void ResultScene::Render()
 	this->DrawUi();
 }
 
-//---------------------------------------------------------
-// 終了処理
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void ResultScene::Finalize()
 {
 	// do nothing.
 }
 
-//---------------------------------------------------------
-// 次のシーンIDの取得
-//---------------------------------------------------------
+/// <summary>
+/// 次のシーンIDの取得
+/// </summary>
+/// <returns>シーンID</returns>
 IScene::SceneID ResultScene::GetNextSceneID() const
 {
 	// シーン変更がある場合
@@ -178,9 +183,9 @@ IScene::SceneID ResultScene::GetNextSceneID() const
 	return IScene::SceneID::NONE;
 }
 
-//---------------------------------------------------------
-// UIの描画
-//---------------------------------------------------------
+/// <summary>
+/// UIの描画
+/// </summary>
 void ResultScene::DrawUi()
 {
 	using namespace DirectX;

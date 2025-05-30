@@ -1,34 +1,37 @@
-/*
-	@file	Attack.cpp
-	@brief	敵の攻撃処理クラス
-*/
+/**
+ * @file   Attack.cpp
+ * @brief  敵の攻撃処理クラス
+ */
 #include "pch.h"
 #include "Game/EnemyAi/Attack.h"
-#include "Libraries/MyLib/Utils.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 Attack::Attack()
 	:
+	m_stateID{ StateID::ATTACK },
 	m_tank{},
 	m_targetTank{},
 	m_time{},
 	m_moveTime{},
-	m_shotTime{}
+	m_shotTime{},
+	m_currentAction{},
+	m_isShot{}
 {
 }
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 Attack::~Attack()
 {
 }
 
-//-------------------------------------------------------------------
-// 初期化処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
+/// <param name="tank">戦車情報</param>
 void Attack::Initialize(Tank* tank)
 {
 	m_tank = tank;
@@ -39,11 +42,15 @@ void Attack::Initialize(Tank* tank)
 
 	// 初期の攻撃時間の設定
 	m_shotTime = mylib::Random(1.0f, SHOT_TIME);
+
+	// 一回も弾を発射されていない状態にする
+	m_isShot = false;
 }
 
-//-------------------------------------------------------------------
-// 更新処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void Attack::Update(float elapsedTime)
 {
 	// 追跡対象の戦車がいないなら処理しない
@@ -75,9 +82,19 @@ void Attack::Update(float elapsedTime)
 	this->IsTargetTankFar();
 }
 
-//-------------------------------------------------------------------
-// 追跡対象の方向を向く
-//-------------------------------------------------------------------
+/// <summary>
+/// 行動状態遷移をした際に呼び出される関数
+/// </summary>
+void Attack::Enter()
+{
+	// 射撃情報のリセット
+	m_isShot = false;
+}
+
+/// <summary>
+/// 追跡対象の方向を向く
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void Attack::LookTargetTank(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -105,9 +122,10 @@ void Attack::LookTargetTank(float elapsedTime)
 	m_tank->GetTurret()->RotateTurret(newAngle);
 }
 
-//-------------------------------------------------------------------
-// 移動
-//-------------------------------------------------------------------
+/// <summary>
+/// 移動処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void Attack::MoveAction(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -131,9 +149,11 @@ void Attack::MoveAction(float elapsedTime)
 	m_tank->GetBody()->Move(velocity);
 }
 
-//-------------------------------------------------------------------
-// 射撃
-//-------------------------------------------------------------------
+
+/// <summary>
+/// 射撃処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void Attack::ShotAction(float elapsedTime)
 {
 	m_time += elapsedTime;
@@ -149,18 +169,22 @@ void Attack::ShotAction(float elapsedTime)
 	m_tank->GetCannon()->StartReload();
 	m_tank->GetCannon()->Shoot();
 	m_tank->GetCannon()->FinishShoot();
+
+	// 射撃したフラグを立てる
+	m_isShot = true;
 }
 
-//-------------------------------------------------------------------
-// 追跡対象の戦車が離れている
-//-------------------------------------------------------------------
+/// <summary>
+/// 追跡対象の戦車が離れている判定及び処理
+/// </summary>
 void Attack::IsTargetTankFar()
 {
 	// 追跡対象の戦車との距離を調べる
 	float distance = (m_targetTank->GetPosition() - m_tank->GetPosition()).LengthSquared();
 
-	// 追跡対象の戦車が離れているなら追跡行動にする
-	if (distance >= Parameter::GetInstance()->GetAttackFinishRadius())
+	// 追跡対象の戦車が離れているかつ一度でも射撃をしているなら追跡行動にする
+	if (distance >= Parameter::GetInstance()->GetAttackFinishRadius() &&
+		m_isShot)
 	{
 		// 追跡行動にする
 		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::TRACKING);

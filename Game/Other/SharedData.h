@@ -1,7 +1,7 @@
-/*
-	@file	SharedData.h
-	@brief	共有情報管理クラス
-*/
+/**
+ * @file   SharedData.h
+ * @brief  共有情報管理クラス
+ */
 #pragma once
 #include "Game/Objects/Tank/TankBase/Tank.h"
 

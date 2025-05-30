@@ -1,7 +1,7 @@
-/*
-	@file	StageManager.cpp
-	@brief	ステージの管理クラス
-*/
+/**
+ * @file   StageManager.cpp
+ * @brief  ステージの管理クラス
+ */
 #include"pch.h"
 
 #include<iostream>
@@ -22,29 +22,30 @@
 
 #include "Game/Objects/Tank/TankBase/Tank.h"
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 StageManager::StageManager()
 	:
 	m_walls{},
 	m_floor{},
 	m_skySphere{},
 	m_wallGimmick{},
-	m_fixedTurrets{} 
+	m_fixedTurrets{},
+	m_data{}
 {
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 StageManager::~StageManager()
 {
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void StageManager::Initialize()
 {
 	// 天球の生成
@@ -67,9 +68,10 @@ void StageManager::Initialize()
 	}
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void StageManager::Update(float elapsedTime)
 {
 	// ステージの更新
@@ -91,9 +93,9 @@ void StageManager::Update(float elapsedTime)
 	}
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void StageManager::Render()
 {
 	// 天球の描画
@@ -124,9 +126,9 @@ void StageManager::MoveWall()
 	}
 }
 
-//---------------------------------------------------------
-// CSVファイルの読み込み
-//---------------------------------------------------------
+/// <summary>
+/// CSVファイルの読み込み
+/// </summary>
 void StageManager::LoadFile()
 {
 	std::string str[STAGESIZE];
@@ -161,9 +163,9 @@ void StageManager::LoadFile()
 	}
 }
 
-//---------------------------------------------------------
-// ステージの生成
-//---------------------------------------------------------
+/// <summary>
+/// ステージの生成
+/// </summary>
 void StageManager::CreateStage()
 {
 	using namespace DirectX::SimpleMath;
@@ -208,14 +210,17 @@ void StageManager::CreateStage()
 	}
 }
 
-//---------------------------------------------------------
-// オブジェクトデータの受け渡し
-//---------------------------------------------------------
+/// <summary>
+/// オブジェクトデータの受け渡し
+/// </summary>
+/// <param name="tanks">全戦車の情報</param>
+/// <param name="camera">カメラの情報</param>
 void StageManager::SetObjectData(
 	std::vector<Tank*> tanks,
 	mylib::FollowCamera* camera
 )
 {
+	// 壁にカメラの情報を渡す
 	for (auto& wall : m_walls)
 	{
 		wall->SetCamera(camera);
@@ -223,6 +228,7 @@ void StageManager::SetObjectData(
 
 	m_wallGimmick->SetTanks(tanks);
 
+	// 固定砲台に全戦車の情報を渡す
 	for (auto& fixedTurret : m_fixedTurrets)
 	{
 		fixedTurret->SetTanks(tanks);

@@ -1,7 +1,7 @@
-/*
-	@file	WallGimmick.h
-	@brief	壁ギミッククラス
-*/
+/**
+ * @file   WallGimmick.h
+ * @brief  壁ギミッククラス
+ */
 #pragma once
 
 class BoxCollider;

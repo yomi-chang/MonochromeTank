@@ -1,7 +1,7 @@
-/*
-	@file	PlayerTank.cpp
-	@brief	自機クラス
-*/
+/**
+ * @file   PlayerTank.cpp
+ * @brief  自機クラス
+ */
 #include "pch.h"
 #include "Game/Objects/Tank/PlayerTank.h"
 
@@ -16,9 +16,11 @@
 #include "Framework/InputManager.h"
 #include "Game/Other/Parameter.h"
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="tankNumber">戦車番号</param>
+/// <param name="position">座標</param>
 PlayerTank::PlayerTank(
 	int tankNumber,
 	const DirectX::SimpleMath::Vector3& position
@@ -35,16 +37,16 @@ PlayerTank::PlayerTank(
 {
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 PlayerTank::~PlayerTank()
 {
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void PlayerTank::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -63,9 +65,10 @@ void PlayerTank::Initialize()
 	m_previousHp = m_tank->GetHp();
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void PlayerTank::Update(float elapsedTime)
 {
 	// ダメージを受けたかどうかのリセット
@@ -95,9 +98,9 @@ void PlayerTank::Update(float elapsedTime)
 	m_previousHp = m_tank->GetHp();
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void PlayerTank::Render()
 {
 	// 戦車の描画
@@ -108,16 +111,17 @@ void PlayerTank::Render()
 	m_hpGauge->Render(m_tank->GetHpRatio());
 }
 
-//---------------------------------------------------------
-// 終了処理
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void PlayerTank::Finalize()
 {
 }
 
-//---------------------------------------------------------
-// キーボードイベント
-//---------------------------------------------------------
+/// <summary>
+/// キーボードイベント
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void PlayerTank::KeyBoardEvent(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -166,9 +170,10 @@ void PlayerTank::KeyBoardEvent(float elapsedTime)
 	}
 }
 
-//---------------------------------------------------------
-// 移動処理
-//---------------------------------------------------------
+/// <summary>
+/// 移動処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void PlayerTank::Move(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
@@ -211,9 +216,9 @@ void PlayerTank::Move(float elapsedTime)
 	m_tank->GetBody()->Rotate(Quaternion::CreateFromYawPitchRoll(angle, 0.0f, 0.0f));
 }
 
-//---------------------------------------------------------
-// 砲塔と砲身の回転
-//---------------------------------------------------------
+/// <summary>
+/// 砲塔と砲身の回転
+/// </summary>
 void PlayerTank::RotateTurretCannon()
 {
 	// マウスステートの取得
@@ -248,33 +253,37 @@ void PlayerTank::RotateTurretCannon()
 	m_tank->GetCannon()->RotateCannon(eulerAngle);
 }
 
-//---------------------------------------------------------
-// 座標の受け渡し
-//---------------------------------------------------------
+/// <summary>
+/// 座標の受け渡し
+/// </summary>
+/// <param name="position">座標</param>
 void PlayerTank::SetPosition(const DirectX::SimpleMath::Vector3& position)
 {
 	m_tank->GetBody()->SetCollisionVel(position);
 }
 
-//---------------------------------------------------------
-// 砲身情報の取得
-//---------------------------------------------------------
+/// <summary>
+/// 砲身情報の取得
+/// </summary>
+/// <returns>砲身情報</returns>
 TankCannon* PlayerTank::GetTankCannon() 
 {
 	return m_tank->GetCannon(); 
 }
 
-//---------------------------------------------------------
-// メッセージの受け取り
-//---------------------------------------------------------
+/// <summary>
+/// メッセージの受け取り
+/// </summary>
+/// <param name="messageID">メッセージ</param>
 void PlayerTank::OnMessegeAccepted(Message::MessageID messageID)
 {
 	UNREFERENCED_PARAMETER(messageID);
 }
 
-//---------------------------------------------------------
-// 他戦車情報の取得
-//---------------------------------------------------------
+/// <summary>
+/// 他戦車情報の設定
+/// </summary>
+/// <param name="tanks">全戦車情報</param>
 void PlayerTank::SetOtherTanks(std::vector<Tank*> tanks)
 {
 	m_tank->SetOtherTanks(tanks);

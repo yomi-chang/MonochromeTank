@@ -1,7 +1,7 @@
-/*
-	@file	PlayScene.cpp
-	@brief	プレイシーンクラス
-*/
+/**
+ * @file   PlayScene.cpp
+ * @brief  プレイシーンクラス
+ */
 #include "pch.h"
 #include "PlayScene.h"
 #include "DeviceResources.h"
@@ -36,9 +36,9 @@
 
 #include <cassert>
 
-//---------------------------------------------------------
-// コンストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 PlayScene::PlayScene()
 	:
 	m_graphics{Graphics::GetInstance()},
@@ -48,6 +48,7 @@ PlayScene::PlayScene()
 	m_isChangeScene{},
 	m_player{},
 	m_enemies{},
+	m_allTanks{},
 	m_stageManager{},
 	m_collisonManager{},
 	m_progressionManager{},
@@ -57,21 +58,21 @@ PlayScene::PlayScene()
 	m_stageEffect{},
 	m_pauseMenu{},
 	m_time{},
-	m_surviveTank{}
+	m_surviveEnemyTank{}
 {
 }
 
-//---------------------------------------------------------
-// デストラクタ
-//---------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
 PlayScene::~PlayScene()
 {
 	// do nothing.
 }
 
-//---------------------------------------------------------
-// 初期化処理
-//---------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void PlayScene::Initialize()
 {
 	using namespace DirectX;
@@ -101,6 +102,9 @@ void PlayScene::Initialize()
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
+
+	// マウスの固定
+	InputManager::GetInstance()->LockMouseCursor();
 
 	// オブジェクトの生成============================================================
 	// 戦車の生成
@@ -142,11 +146,11 @@ void PlayScene::Initialize()
 
 	// 全戦車の情報を持つ配列
 	std::vector<Tank*> tankPointers;
-	tankPointers.push_back(m_player->GetTank());
-	for (auto& tank : m_enemies)
+	for (auto& tank : m_allTanks)
 	{
 		tankPointers.push_back(tank->GetTank());
 	}
+
 	// 全敵戦車情報を持つ配列
 	std::vector<EnemyTank*> enemyTankPointers;
 	for (auto& enemy : m_enemies)
@@ -156,8 +160,7 @@ void PlayScene::Initialize()
 
 	// 必要な情報の設定============================================================
 	// 各戦車に全戦車の情報を設定
-	m_player->SetOtherTanks(tankPointers);
-	for (auto& tank : m_enemies)
+	for (auto& tank : m_allTanks)
 	{
 		tank->SetOtherTanks(tankPointers);
 	}
@@ -181,9 +184,10 @@ void PlayScene::Initialize()
 	m_skipTexture = Resources::GetInstance()->GetSkipTexture();
 }
 
-//---------------------------------------------------------
-// 更新処理
-//---------------------------------------------------------
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void PlayScene::Update(float elapsedTime)
 {
 	UNREFERENCED_PARAMETER(elapsedTime);
@@ -201,7 +205,7 @@ void PlayScene::Update(float elapsedTime)
 	if (m_fade->GetFadeType() == Fade::FADEIN &&
 		m_fade->FinishFade())
 	{
-		//生存している戦車情報をRetultDataに所有権ごと渡す
+		//生存している戦車情報をResultDataに所有権ごと渡す
 		if (!m_player->GetDead())
 		{
 			SharedData::GetInstance()->SetWinnerTank(m_player->ReleaseTank());
@@ -233,35 +237,41 @@ void PlayScene::Update(float elapsedTime)
 	// コリジョンマネージャーの更新
 	m_collisonManager->Update();
 
-	// 戦車の更新
-	m_player->Update(elapsedTime);
+	// 進行管理マネージャーの更新
+	m_progressionManager->Update();
 
-	// 敵戦車の更新
-	for (auto& enemy : m_enemies)
+	// 戦車の更新
+	for (auto& tank : m_allTanks)
 	{
-		enemy->Update(elapsedTime);
+		tank->Update(elapsedTime);
 	}
 
 	// ステージの更新
 	m_stageManager->Update(elapsedTime);
 
-	// 生存戦車確認
-	m_surviveTank = 0;
-	// 敵
+	// 生存している敵戦車の数を調べる
+	m_surviveEnemyTank = 0;
 	for (auto& enemy : m_enemies)
 	{
-		if (!enemy->GetDead()) { m_surviveTank++; }
+		if (!enemy->GetDead()) { m_surviveEnemyTank++; }
 	}
 	// 進行管理マネージャーに生存している敵戦車の数を渡す
-	m_progressionManager->SetTankCount(m_surviveTank);
+	m_progressionManager->SetTankCount(m_surviveEnemyTank);
 
 	// プレイヤー
-	if (!m_player->GetDead()){ m_surviveTank++;}
-	// やられているならカメラ変更
-	else{ m_cameraType = CameraType::DEATH;}
-	
-	// 生存している戦車が1台だけならフェード開始
-	if (m_surviveTank == 1){ m_fade->FadeIn();}
+	if (m_player->GetDead())
+	{ 
+		// デスカメラに変更
+		m_cameraType = CameraType::DEATH; 
+
+		// 生存している敵戦車が残り1台なら終了
+		if(m_surviveEnemyTank == 1) { m_fade->FadeIn(); }
+	}
+	else if (m_surviveEnemyTank == 0)
+	{
+		// 生存している敵戦車がいないならクリア
+		m_fade->FadeIn();
+	}
 
 	// キーボードステートの取得
 	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
@@ -285,9 +295,9 @@ void PlayScene::Update(float elapsedTime)
 		m_time -= elapsedTime;
 }
 
-//---------------------------------------------------------
-// 描画処理
-//---------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void PlayScene::Render()
 {
 	using namespace DirectX;
@@ -315,14 +325,13 @@ void PlayScene::Render()
 	// ステージの描画
 	m_stageManager->Render();
 
-	// 敵の描画
-	for (auto& enemy : m_enemies)
-	{
-		enemy->Render();
-	}
-
 	// 戦車の描画
-	m_player->Render();
+	for (auto& tank : m_allTanks)
+	{
+		tank->Render();
+	}
+	// 照準の描画
+	m_player->DrawSight();
 	
 	// UIの描画
 	this->DrawUi();
@@ -344,17 +353,18 @@ void PlayScene::Render()
 	m_fade->Render();
 }
 
-//---------------------------------------------------------
-// 終了処理
-//---------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void PlayScene::Finalize()
 {
 	// do nothing.
 }
 
-//---------------------------------------------------------
-// 次のシーンIDの取得
-//---------------------------------------------------------
+/// <summary>
+/// 次のシーンIDの取得
+/// </summary>
+/// <returns>シーンID</returns>
 IScene::SceneID PlayScene::GetNextSceneID() const
 {
 	// シーン変更がある場合
@@ -372,9 +382,9 @@ IScene::SceneID PlayScene::GetNextSceneID() const
 	return IScene::SceneID::NONE;
 }
 
-//---------------------------------------------------------
-// 戦車の生成
-//---------------------------------------------------------
+/// <summary>
+/// 戦車の生成
+/// </summary>
 void PlayScene::CreateTanks()
 {
 	// パラメータの設定
@@ -382,7 +392,6 @@ void PlayScene::CreateTanks()
 
 	// プレイヤー戦車の生成
 	m_player = std::make_unique<PlayerTank>(0, parameter->GetPlayerPosition());
-	m_player->Initialize();
 
 	// 設定した戦車の数に応じた戦車の生成
 	switch (SharedData::GetInstance()->GetTankCount())
@@ -402,17 +411,24 @@ void PlayScene::CreateTanks()
 		default:
 			break;
 	}
-	
-	// 初期化処理
+
+	// 全戦車の登録
+	m_allTanks.push_back(m_player.get());
 	for (auto& enemy : m_enemies)
 	{
-		enemy->Initialize();
+		m_allTanks.push_back(enemy.get());
+	}
+
+	// 初期化処理
+	for (auto& tank : m_allTanks) 
+	{
+		tank->Initialize();
 	}
 }
 
-//---------------------------------------------------------
-// Uiの描画
-//---------------------------------------------------------
+/// <summary>
+/// UIの描画
+/// </summary>
 void PlayScene::DrawUi()
 {
 	using namespace DirectX;
@@ -454,7 +470,7 @@ void PlayScene::DrawUi()
 	);
 
 	RECT rect = { 0,0,0,0 };
-	rect.left = (m_surviveTank - 2) * FONT_SIZE_X;
+	rect.left = (m_surviveEnemyTank - 1) * FONT_SIZE_X;
 	rect.right = rect.left + FONT_SIZE_X;
 	rect.bottom = FONT_SIZE_Y;
 	spriteBatch->Draw(

@@ -1,7 +1,8 @@
 #pragma once
 #include "Message/Message.h"
-#include "Interface/IObject.h"
 #include <unordered_map>
+
+class IObject;
 
 class Messenger
 {

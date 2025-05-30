@@ -1,16 +1,17 @@
-/*
-	@file	CannonBall.cpp
-	@brief	砲弾クラス
-*/
+/**
+ * @file   CannonBall.cpp
+ * @brief  砲弾クラス
+ */
 #include "pch.h"
 #include "Game/Objects/Bullet/CannonBall.h"
 #include "Framework/Resources.h"
 #include "Framework/Graphics.h"
 #include "Game/Objects/Bullet/BulletTrail.h"
 
-//-------------------------------------------------------------------
-// コンストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// コンストラクタ
+/// </summary>
+/// <param name="bulletState">弾の状態</param>
 CannonBall::CannonBall(IBullet::BulletState bulletState)
 	:
 	m_position{},
@@ -26,16 +27,16 @@ CannonBall::CannonBall(IBullet::BulletState bulletState)
 {
 }
 
-//-------------------------------------------------------------------
-// デストラクタ
-//-------------------------------------------------------------------
+/// <summary>
+/// デストラクタ
+/// </summary>
 CannonBall::~CannonBall()
 {
 }
 
-//-------------------------------------------------------------------
-// 初期化処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 初期化処理
+/// </summary>
 void CannonBall::Initialize()
 {
 	using namespace DirectX::SimpleMath;
@@ -52,22 +53,23 @@ void CannonBall::Initialize()
 	m_collider->CreateBoundingSphere(m_position, Parameter::GetInstance()->GetCannonBallColliderRadius());
 }
 
-//-------------------------------------------------------------------
-// 更新処理
-//-------------------------------------------------------------------
-void CannonBall::Update(float time)
+/// <summary>
+/// 更新処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
+void CannonBall::Update(float elapsedTime)
 {
-	UNREFERENCED_PARAMETER(time);
+	UNREFERENCED_PARAMETER(elapsedTime);
 	using namespace DirectX::SimpleMath;
 	auto parameter = Parameter::GetInstance();
-	Vector3 speed = parameter->GetCannonBallSpeed() * time;
-	Vector3 gravity = parameter->GetCannonBallGravity() * time;
+	Vector3 speed = parameter->GetCannonBallSpeed() * elapsedTime;
+	Vector3 gravity = parameter->GetCannonBallGravity() * elapsedTime;
 
 	// 使用可能もしくは使用済みの場合
 	if (m_bulletState == USED)
 	{
 		// トレイルの座標の削除
-		m_trail->DeletePosBuffer();
+		m_trail->DeletePosArray();
 		return;
 	}
 	else if (m_bulletState == UNUSED)
@@ -78,7 +80,7 @@ void CannonBall::Update(float time)
 	}
 
 	// 経過時間を記録
-	m_elapsedTime += time;
+	m_elapsedTime += elapsedTime;
 
 	// 一定時間経過していたら使用済みにする
 	if (m_elapsedTime >= parameter->GetCannonBallSurvivalTime())
@@ -103,9 +105,9 @@ void CannonBall::Update(float time)
 	}
 }
 
-//-------------------------------------------------------------------
-// 描画処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 描画処理
+/// </summary>
 void CannonBall::Render()
 {
 	using namespace DirectX::SimpleMath;
@@ -130,9 +132,9 @@ void CannonBall::Render()
 	m_trail->Render();
 }
 
-//-------------------------------------------------------------------
-// 砲弾の描画
-//------------------------------------------------------------------
+/// <summary>
+/// 砲弾の描画
+/// </summary>
 void CannonBall::DrawBullet()
 {
 	using namespace DirectX::SimpleMath;
@@ -147,9 +149,9 @@ void CannonBall::DrawBullet()
 	m_bullet->Draw(m_worldMatrix, view, proj,DirectX::Colors::LightGray);
 }
 
-//-------------------------------------------------------------------
-// 終了処理
-//-------------------------------------------------------------------
+/// <summary>
+/// 終了処理
+/// </summary>
 void CannonBall::Finalize()
 {
 }

@@ -15,6 +15,12 @@ namespace mylib
 	// テクスチャの中心座標を取得する
 	DirectX::SimpleMath::Vector2 GetTextureCenter(ID3D11ShaderResourceView* tex);
 
+	// テクスチャのサイズ取得
+	DirectX::SimpleMath::Vector2 GetTextureSize(ID3D11ShaderResourceView* tex, float scale);
+
+	// テクスチャの矩形取得
+	RECT GetTextureRect(ID3D11ShaderResourceView* tex, float scale, const DirectX::SimpleMath::Vector2 pos);
+
 	// デバッグログを「出力」に表示
 	void DebugLog(std::string text, float value);
 	void DebugLog(std::string text, int value);
