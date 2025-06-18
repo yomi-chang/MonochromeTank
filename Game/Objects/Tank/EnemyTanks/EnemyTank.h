@@ -3,7 +3,7 @@
  * @brief  敵戦車クラス
  */
 #pragma once
-#include "Interface/IObject.h"
+#include "Interface/ITank.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Game/UserInterface/EnemyHpGauge.h"
 #include "Interface/IState.h"
@@ -14,10 +14,11 @@ class EnemyHpGauge;
 class Patrol;
 class Tracking;
 class Attack;
+class RetreatAttack;
 class AvoidWall;
 class SphereCollider;
 
-class EnemyTank : public IObject
+class EnemyTank : public ITank
 {
 public:
 	// コンストラクタ
@@ -41,6 +42,10 @@ public:
 	Tank* GetTank() override { return m_tank.get(); }
 	// 他の戦車情報の設定
 	void SetOtherTanks(std::vector<Tank*> tanks) override;
+	// 体力ゲージの描画
+	void DrawHpGauge() override;
+	// 弾の描画
+	void DrawBullet() override;
 
 private:
 	// 戦車番号
@@ -62,6 +67,7 @@ private:
 	std::unique_ptr<Patrol> m_patrol;				// 巡回行動
 	std::unique_ptr<Tracking> m_tracking;			// 追跡行動
 	std::unique_ptr<Attack> m_attack;				// 攻撃行動
+	std::unique_ptr<RetreatAttack> m_retreatAttack;	// 後退攻撃行動
 	std::unique_ptr<AvoidWall> m_avoidWall;			// 壁回避行動
 
 	// 現在の状態

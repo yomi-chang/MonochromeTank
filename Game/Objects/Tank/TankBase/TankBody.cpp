@@ -48,12 +48,13 @@ TankBody::~TankBody()
 void TankBody::Initialize()
 {
 	using namespace DirectX::SimpleMath;
+	using namespace DirectX;
 
 	// –C“ƒ‚Ì¶¬
 	this->Attach(std::make_unique<TankTurret>(m_tank,Vector3(0.0f, 0.0f, 0.0f), 0.0f));
 
 	// ƒ‚ƒfƒ‹‚ÌŽæ“¾
-	m_model = Resources::GetInstance()->GetTankBodyModel();
+	m_model = Resources::GetInstance()->GetTankModel(m_tank->GetTankNumber(), Resources::BODY);
 
 	// íŽÔ‚ÉŽÔ‘Ìî•ñ‚ð“n‚·
 	m_tank->SetBody(this);
@@ -97,14 +98,30 @@ void TankBody::Update(
 /// </summary>
 void TankBody::Render()
 {
+	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
 	// ƒ[ƒ‹ƒhs—ñ‚Ì¶¬
 	m_worldMatrix = Matrix::CreateScale(Tank::TANK_SIZE) *
 		Matrix::CreateFromQuaternion(m_currentRotation) *
 		Matrix::CreateTranslation(m_currentPosition);
+	
+	// ƒeƒNƒXƒ`ƒƒ‚Ì“\‚è•t‚¯
+	/*m_model->UpdateEffects([](IEffect* effect)
+		{
+			BasicEffect* basicEffect = dynamic_cast<BasicEffect*>(effect);
+			if (basicEffect)
+			{
+				basicEffect->SetTextureEnabled(true);
+				basicEffect->SetTexture(Resources::GetInstance()->GetTank1Texture());
 
-	// uŽÔ‘Ìv‚Ì•`‰æ
+				basicEffect->SetLightingEnabled(true);
+				basicEffect->SetDiffuseColor(DirectX::Colors::White);
+				basicEffect->SetPerPixelLighting(true);
+			}
+		});*/
+
+	// ƒ‚ƒfƒ‹‚Ì•`‰æ
 	m_graphics->DrawModel(m_model, m_worldMatrix);
 
 	// •”•i‚Ì•`‰æ

@@ -77,6 +77,7 @@ private:
 	std::unique_ptr<DirectX::PrimitiveBatch<DirectX::VertexPositionTexture>> m_primitiveBatch;	// プリミティブバッチ
 	Microsoft::WRL::ComPtr<ID3D11InputLayout> m_inputLayout;									// 入力レイアウト 
 	std::unique_ptr<DirectX::BasicEffect> m_basicEffect;										// エフェクト
+								
 
 	int m_tankNumber;										// 戦車番号
 	std::unique_ptr<BoxCollider> m_collider;				// コライダー

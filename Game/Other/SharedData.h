@@ -41,6 +41,8 @@ private:
 	int m_tankCount;
 	// ステージ
 	std::string m_stageName;
+	// フルスクリーンかどうか
+	bool m_isFullScreen;
 
 public:
 	// 勝利した戦車情報の設定
@@ -63,5 +65,9 @@ public:
 	void SetSoundManager(mylib::SoundManager* soundManager) { m_soundManager = soundManager; }
 	// サウンドマネージャの取得
 	mylib::SoundManager* GetSoundManager() { return m_soundManager; }
+	// フルスクリーン状態かどうかの設定
+	void SetIsFullScreen(bool isFullScreen) { m_isFullScreen = isFullScreen; }
+	// フルスクリーンかどうかの取得
+	bool GetIsFullScreen() { return m_isFullScreen; }
 };
 

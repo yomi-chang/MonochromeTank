@@ -16,6 +16,7 @@
 #include "Game/EnemyAi/Patrol.h"
 #include "Game/EnemyAi/Tracking.h"
 #include "Game/EnemyAi/Attack.h"
+#include "Game/EnemyAi/RetreatAttack.h"
 #include "Game/EnemyAi/AvoidWall.h"
 
 #include "Message/Messenger.h"
@@ -86,6 +87,10 @@ void EnemyTank::Initialize()
 	m_attack = std::make_unique<Attack>();
 	m_attack->Initialize(m_tank.get());
 
+	// Œã‘ŞUŒ‚s“®‚Ì¶¬
+	m_retreatAttack = std::make_unique<RetreatAttack>();
+	m_retreatAttack->Initialize(m_tank.get());
+
 	// •Ç‰ñ”ğs“®‚Ì¶¬
 	m_avoidWall = std::make_unique<AvoidWall>();
 	m_avoidWall->Initialize(m_tank.get());
@@ -144,10 +149,6 @@ void EnemyTank::Render()
 {
 	// íÔ‚Ì•`‰æ
 	m_tank->Render();
-
-	// HPƒQ[ƒW
-	if (m_tank->GetHp() <= 0.0f) { return; }
-	m_hpGauge->Render(m_position,m_tank->GetHpRatio());
 }
 
 /// <summary>
@@ -174,6 +175,24 @@ void EnemyTank::SetOtherTanks(std::vector<Tank*> tanks)
 {
 	m_tank->SetOtherTanks(tanks);
 	m_patrol->SetOtherTanks(tanks);
+}
+
+/// <summary>
+/// ‘Ì—ÍƒQ[ƒW‚Ì•`‰æ
+/// </summary>
+void EnemyTank::DrawHpGauge()
+{
+	if (m_tank->GetHp() <= 0.0f) { return; }
+	m_hpGauge->Render(m_position, m_tank->GetHpRatio());
+}
+
+/// <summary>
+/// ’e‚Ì•`‰æ
+/// </summary>
+void EnemyTank::DrawBullet()
+{
+	if (m_tank->GetHp() <= 0.0f) { return; }
+	m_tank->GetCannon()->DrawBullet();
 }
 
 /// <summary>
@@ -208,7 +227,14 @@ void EnemyTank::OnMessegeAccepted(Message::MessageID messageID)
 		// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìæ“¾
 		m_targetTank = m_currentState->GetTargetTank();
 		// UŒ‚s“®‚É‘JˆÚ
-		this->ChangeState(m_attack.get());
+		//this->ChangeState(m_attack.get());
+		this->ChangeState(m_retreatAttack.get());
+		break;
+	case Message::RETREAT_ATTACK:
+		// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìæ“¾
+		m_targetTank = m_currentState->GetTargetTank();
+		// Œã‘ŞUŒ‚s“®‚É‘JˆÚ
+		this->ChangeState(m_retreatAttack.get());
 		break;
 	case Message::AVOIDWALL:
 		// ‘O‰ñ‚Ìs“®‚Ìİ’è

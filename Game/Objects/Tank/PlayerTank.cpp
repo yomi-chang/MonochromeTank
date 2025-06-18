@@ -105,10 +105,6 @@ void PlayerTank::Render()
 {
 	// íÔ‚Ì•`‰æ
 	m_tank->Render();
-
-	// HPƒQ[ƒW
-	if (m_tank->GetHp() <= 0) { return; }
-	m_hpGauge->Render(m_tank->GetHpRatio());
 }
 
 /// <summary>
@@ -135,6 +131,9 @@ void PlayerTank::KeyBoardEvent(float elapsedTime)
 
 	// –C“ƒ‚Æ–Cg‚Ì‰ñ“]
 	this->RotateTurretCannon();
+
+	// ƒ}ƒEƒX‚ª§ŒÀ‚³‚ê‚Ä‚¢‚é‚È‚ç‘ŠúƒŠƒ^[ƒ“
+	if (InputManager::GetInstance()->GetDisableMouseClick()) { return; }
 
 	// ’e‚Ì”­Ë
 	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
@@ -278,6 +277,26 @@ TankCannon* PlayerTank::GetTankCannon()
 void PlayerTank::OnMessegeAccepted(Message::MessageID messageID)
 {
 	UNREFERENCED_PARAMETER(messageID);
+}
+
+/// <summary>
+/// ‘Ì—ÍƒQ[ƒW‚Ì•`‰æ
+/// </summary>
+void PlayerTank::DrawHpGauge()
+{
+	// HPƒQ[ƒW
+	if (m_tank->GetHp() <= 0) { return; }
+	m_hpGauge->Render(m_tank->GetHpRatio());
+}
+
+/// <summary>
+/// ’e‚Ì•`‰æ
+/// </summary>
+void PlayerTank::DrawBullet()
+{
+	// ’e‚Ì•`‰æ
+	if (m_tank->GetHp() <= 0) { return; }
+	m_tank->GetCannon()->DrawBullet();
 }
 
 /// <summary>

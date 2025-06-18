@@ -73,7 +73,7 @@ void TankCannon::Initialize()
 	auto parameter = Parameter::GetInstance();
 
 	// ƒ‚ƒfƒ‹‚ÌŽæ“¾
-	m_model = Resources::GetInstance()->GetTankCannonModel();
+	m_model = Resources::GetInstance()->GetTankModel(m_tank->GetTankNumber(), Resources::CANNON);
 
 	// íŽÔ‚É–Cgî•ñ‚ð“n‚·
 	m_tank->SetCannon(this);
@@ -153,19 +153,13 @@ void TankCannon::Render()
 {
 	using namespace DirectX::SimpleMath;
 
-	// ’e‚Ì•`‰æ
-	for (auto& bullet : m_bullets)
-	{
-		bullet->Render();
-	}
-	m_cannonBall->Render();
-
 	// ƒ[ƒ‹ƒhs—ñ‚Ì¶¬
 	m_worldMatrix = Matrix::CreateScale(Tank::TANK_SIZE) *
 		Matrix::CreateFromQuaternion(m_cannonRotation) *
 		Matrix::CreateTranslation(Vector3(0.0f, 0.0f, 0.0f)) *
 		Matrix::CreateFromQuaternion(m_currentRotation) *
 		Matrix::CreateTranslation(m_currentPosition);
+
 
 	// u–Cgv‚Ì•`‰æ
 	m_graphics->DrawModel(m_model, m_worldMatrix);
@@ -320,6 +314,18 @@ void TankCannon::DrawSight()
 	// Æ€‰æ‘œ‚Ì•\Ž¦
 	if (m_tank->GetTankNumber() == 0 && m_displaySight)
 		m_drawTexture->Render(m_hitPosition);
+}
+
+/// <summary>
+/// ’e‚Ì•`‰æ
+/// </summary>
+void TankCannon::DrawBullet()
+{
+	for (auto& bullet : m_bullets)
+	{
+		bullet->Render();
+	}
+	m_cannonBall->Render();
 }
 
 /// <summary>

@@ -45,7 +45,6 @@ void mylib::SoundManager::Initialize()
 #ifdef _DEBUG
 	eflags |= DirectX::AudioEngine_Debug;
 #endif
-
 	// オーディオエンジンを作成する
 	m_audioEngine = std::make_unique<DirectX::AudioEngine>(eflags);
 

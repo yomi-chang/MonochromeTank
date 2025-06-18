@@ -25,14 +25,8 @@ void Resources::LoadResource()
 	// リソースディレクトリを設定する
 	m_graphics->GetFX()->SetDirectory(L"Resources\\Models");
 
-	// 「車体」モデルをロードする
-	m_tankBodyModel = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\TankBody.sdkmesh", *m_graphics->GetFX());
-
-	// 「砲塔」モデルをロードする
-	m_tankTurretModel = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\TankTurret.sdkmesh", *m_graphics->GetFX());
-
-	// 「砲塔」モデルをロードする
-	m_tankCanonModel = DirectX::Model::CreateFromSDKMESH(m_device, L"Resources\\Models\\TankCannon.sdkmesh", *m_graphics->GetFX());
+	// 戦車モデルのロード
+	this->LoadTankModels();
 
 	// 「天球」モデルをロードする
 	m_skySphereModel = DirectX::Model::CreateFromCMO(m_device, L"Resources\\Models\\GraySky.cmo", *m_graphics->GetFX());
@@ -155,6 +149,22 @@ void Resources::LoadResource()
 		m_settingTexture.ReleaseAndGetAddressOf()
 	);
 
+	//	右選択テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\SelectRight.png",
+		nullptr,
+		m_selectRightTexture.ReleaseAndGetAddressOf()
+	);
+
+	//	左選択テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\SelectLeft.png",
+		nullptr,
+		m_selectLeftTexture.ReleaseAndGetAddressOf()
+	);
+
 	//	戦車カウント用テキストテクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
@@ -210,14 +220,6 @@ void Resources::LoadResource()
 		nullptr,
 		m_tankCountTexture.ReleaseAndGetAddressOf()
 	);
-
-	////	タイトルテキストテクスチャのロード 
-	//DirectX::CreateWICTextureFromFile(
-	//	m_graphics->GetDeviceResources()->GetD3DDevice(),
-	//	L"Resources\\Textures\\TitleText.png",
-	//	nullptr,
-	//	m_titleTextTexture.ReleaseAndGetAddressOf()
-	//);
 	
 	//	スタートテキストテクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
@@ -235,14 +237,37 @@ void Resources::LoadResource()
 		m_exitTextTexture.ReleaseAndGetAddressOf()
 	);
 
-	//	ポーズテキストテクスチャのロード 
+	//　リターンタイトルテキストテクスチャのロード 
 	DirectX::CreateWICTextureFromFile(
 		m_graphics->GetDeviceResources()->GetD3DDevice(),
-		L"Resources\\Textures\\PauseText.png",
+		L"Resources\\Textures\\ReturnTitleText.png",
 		nullptr,
-		m_pauseTextTexture.ReleaseAndGetAddressOf()
+		m_returnTitleTextTexture.ReleaseAndGetAddressOf()
 	);
 
+	//	キャンセルテキストテクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\CancelText.png",
+		nullptr,
+		m_cancelTextTexture.ReleaseAndGetAddressOf()
+	);
+
+	//	壁テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\Wall.jpg",
+		nullptr,
+		m_wallTexture.ReleaseAndGetAddressOf()
+	);
+
+	//	戦車テクスチャのロード 
+	DirectX::CreateWICTextureFromFile(
+		m_graphics->GetDeviceResources()->GetD3DDevice(),
+		L"Resources\\Textures\\Tank1BodyTex.png",
+		nullptr,
+		m_tank1Texture.ReleaseAndGetAddressOf()
+	);
 
 
 	//	破壊演出テクスチャのロード 
@@ -268,4 +293,44 @@ void Resources::LoadResource()
 		nullptr,
 		m_trailSmokeTexture.ReleaseAndGetAddressOf()
 	);
+}
+
+/// <summary>
+/// 戦車モデルのロード
+/// </summary>
+void Resources::LoadTankModels()
+{
+	// 戦車数分の枠を用意
+	m_tankModels.resize(TANK_COUNT);
+
+	for (int i = 0; i < TANK_COUNT; i++)
+	{
+		// パーツ分の枠を用意
+		m_tankModels[i].resize(PARTS_COUNT);
+		
+		// 戦車番号
+		std::wstring tankIndex = std::to_wstring(i + 1);
+
+		// パスの設定
+		std::wstring bodyPath = L"Resources\\Models\\Tank" + tankIndex + L"Body.sdkmesh";
+		std::wstring turretPath = L"Resources\\Models\\Tank" + tankIndex + L"Turret.sdkmesh";
+		std::wstring cannonPath = L"Resources\\Models\\Tank" + tankIndex + L"Cannon.sdkmesh";
+
+		// 各パーツにモデルを読み込んで格納
+		m_tankModels[i][TankPart::BODY] = DirectX::Model::CreateFromSDKMESH(m_device, bodyPath.c_str(), *m_graphics->GetFX());
+		m_tankModels[i][TankPart::TURRET] = DirectX::Model::CreateFromSDKMESH(m_device, turretPath.c_str(), *m_graphics->GetFX());
+		m_tankModels[i][TankPart::CANNON] = DirectX::Model::CreateFromSDKMESH(m_device, cannonPath.c_str(), *m_graphics->GetFX());
+	}
+}
+
+/// <summary>
+/// 戦車モデルの取得
+/// </summary>
+/// <param name="tankNumber">戦車番号</param>
+/// <param name="parts">パーツの種類</param>
+/// <returns>パーツ</returns>
+DirectX::Model* Resources::GetTankModel(int tankNumber, TankPart parts)
+{
+	// 対応するパーツの取得
+	return m_tankModels[tankNumber][parts].get();
 }

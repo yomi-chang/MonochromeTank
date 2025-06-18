@@ -7,6 +7,8 @@
 #include "Framework/Graphics.h"
 #include "Libraries/MyLib/FollowCamera.h"
 
+#include "Framework/Resources.h"
+
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -21,7 +23,7 @@ Wall::Wall(
 	:
 	m_camera{},
 	m_graphics{ Graphics::GetInstance() },
-	m_color{ static_cast<DirectX::SimpleMath::Vector4>(DirectX::Colors::DimGray) },
+	m_color{ static_cast<DirectX::SimpleMath::Vector4>(DirectX::Colors::White) },
 	m_isActive{}
 {
 	using namespace DirectX::SimpleMath;
@@ -85,7 +87,10 @@ void Wall::Render()
 	m_collider->Render(DirectX::Colors::Black);
 
 	// 壁の描画
-	m_model->Draw(world, view, proj, m_color);
+	m_model->Draw(
+		world, view, proj, m_color,
+		Resources::GetInstance()->GetWallTexture()
+	);
 }
 
 /// <summary>

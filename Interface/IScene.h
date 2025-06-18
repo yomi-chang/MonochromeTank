@@ -4,6 +4,8 @@
 */
 #pragma once
 #include "Game/Other/SharedData.h"
+#include "Framework/Graphics.h"
+#include "Framework/Resources.h"
 #include "Game/Other/Sounds.h"
 #include "Libraries/MyLib/SoundManager.h"
 #include "Libraries/MyLib/Utils.h"

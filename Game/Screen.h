@@ -10,6 +10,9 @@ public:
 	static const int WIDTH = 1280;
 	static const int HEIGHT = 720;
 
+	static const int FULLSCREEN_WIDTH = 1920;
+	static const int FULLSCREEN_HEIGHT = 1080;
+
 	static const int CENTER_X = WIDTH / 2;
 	static const int CENTER_Y = HEIGHT / 2;
 

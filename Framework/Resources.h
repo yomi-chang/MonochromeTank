@@ -9,43 +9,56 @@
 class Resources
 {
 public:
-	DirectX::Model* GetTankBodyModel() { return m_tankBodyModel.get(); }			// 車体モデル
-	DirectX::Model* GetTankTurretModel() { return m_tankTurretModel.get(); }		// 砲塔モデル
-	DirectX::Model* GetTankCannonModel() { return m_tankCanonModel.get(); }			// 砲身モデル
+	// 戦車パーツ番号
+	enum TankPart
+	{
+		BODY,
+		TURRET,
+		CANNON
+	};
+
+public:
+	DirectX::Model* GetTankModel(int tankNumber, TankPart parts);
+
 	DirectX::Model* GetSkySphereModel() { return m_skySphereModel.get(); }			// 天球モデル
 	DirectX::Model* GetFixedTurretModel() { return m_fixedTurretModel.get(); }		// 固定砲台モデル
 
-	ID3D11ShaderResourceView* GetTargetTexture() { return m_targetTexture.Get(); }			// 照準テクスチャ
-	ID3D11ShaderResourceView* GetTargetLockTexture() { return m_targetLockTexture.Get(); }	// 照準ロックテクスチャ
-	ID3D11ShaderResourceView* GetShadowTexture() { return m_shadowTexture.Get(); }			// 丸影テクスチャ
-	ID3D11ShaderResourceView* GetFloorTexture() { return m_floorTexture.Get(); }			// 床テクスチャ
+	ID3D11ShaderResourceView* GetTargetTexture() { return m_targetTexture.Get(); }						// 照準テクスチャ
+	ID3D11ShaderResourceView* GetTargetLockTexture() { return m_targetLockTexture.Get(); }				// 照準ロックテクスチャ
+	ID3D11ShaderResourceView* GetShadowTexture() { return m_shadowTexture.Get(); }						// 丸影テクスチャ
+	ID3D11ShaderResourceView* GetFloorTexture() { return m_floorTexture.Get(); }						// 床テクスチャ
 
-	ID3D11ShaderResourceView* GetBoxTexture() { return m_boxTexture.Get(); }				// 塗りつぶし用テクスチャ
-	ID3D11ShaderResourceView* GetCannonBallTexture() { return m_cannonBallTexture.Get(); }	// 砲弾テクスチャ
-	ID3D11ShaderResourceView* GetBulletTexture() { return m_bulletTexture.Get(); }			// 連射弾テクスチャ
-	ID3D11ShaderResourceView* GetFrameTexture() { return m_frameTexture.Get(); }			// フレームテクスチャ
-	ID3D11ShaderResourceView* GetRelooadTexture() { return m_reloadTexture.Get(); }			// リロードテキストテクスチャ
-	ID3D11ShaderResourceView* GetTitleLogoTexture() { return m_titleLogoTexture.Get(); }	// タイトルロゴテクスチャ
-	ID3D11ShaderResourceView* GetSpaceKeyTexture() { return m_spaceKeyTexture.Get(); }		// スペースキーテクスチャ
-	ID3D11ShaderResourceView* GetFontTexture() { return m_fontTexture.Get(); }				// フォントテクスチャ
-	ID3D11ShaderResourceView* GetManualTexture() { return m_manualTexture.Get(); }			// マニュアルテクスチャ
-	ID3D11ShaderResourceView* GetSettingTexture() { return m_settingTexture.Get(); }		// 設定フレームテクスチャ
-	ID3D11ShaderResourceView* GetCountTextTexture() { return m_countTextTexture.Get(); }	// 戦車のカウント用テキストテクスチャ
-	ID3D11ShaderResourceView* GetStageTextTexture() { return m_stageTextTexture.Get(); }	// ステージ用テキストテクスチャ
-	ID3D11ShaderResourceView* GetCursorTexture() { return m_cursorTexture.Get(); }			// 設定カーソルテクスチャ
-	ID3D11ShaderResourceView* GetResultTexture() { return m_resultTexture.Get(); }			// リザルトテクスチャ
-	ID3D11ShaderResourceView* GetSkipTexture() { return m_skipTexture.Get(); }				// スキップテクスチャ
-	ID3D11ShaderResourceView* GetPressSpaceTexture() { return m_pressSpaceTexture.Get(); }	// プレススペーステクスチャ
-	ID3D11ShaderResourceView* GetTankCountTexture() { return m_tankCountTexture.Get(); }	// プレイシーン戦車カウントテクスチャ
-	//ID3D11ShaderResourceView* GetTitleTextTexture() { return m_titleTextTexture.Get(); }	// タイトルテキストテクスチャ
-	ID3D11ShaderResourceView* GetStartTextTexture() { return m_startTextTexture.Get(); }	// スタートテキストテクスチャ
-	ID3D11ShaderResourceView* GetExitTextTexture() { return m_exitTextTexture.Get(); }	// 終了テキストテクスチャ
-	ID3D11ShaderResourceView* GetPauseTextTexture() { return m_pauseTextTexture.Get(); }	// ポーズ画面テキストテクスチャ
+	ID3D11ShaderResourceView* GetBoxTexture() { return m_boxTexture.Get(); }							// 塗りつぶし用テクスチャ
+	ID3D11ShaderResourceView* GetCannonBallTexture() { return m_cannonBallTexture.Get(); }				// 砲弾テクスチャ
+	ID3D11ShaderResourceView* GetBulletTexture() { return m_bulletTexture.Get(); }						// 連射弾テクスチャ
+	ID3D11ShaderResourceView* GetFrameTexture() { return m_frameTexture.Get(); }						// フレームテクスチャ
+	ID3D11ShaderResourceView* GetRelooadTexture() { return m_reloadTexture.Get(); }						// リロードテキストテクスチャ
+	ID3D11ShaderResourceView* GetTitleLogoTexture() { return m_titleLogoTexture.Get(); }				// タイトルロゴテクスチャ
+	ID3D11ShaderResourceView* GetSpaceKeyTexture() { return m_spaceKeyTexture.Get(); }					// スペースキーテクスチャ
+	ID3D11ShaderResourceView* GetFontTexture() { return m_fontTexture.Get(); }							// フォントテクスチャ
+	ID3D11ShaderResourceView* GetManualTexture() { return m_manualTexture.Get(); }						// マニュアルテクスチャ
+	ID3D11ShaderResourceView* GetSettingTexture() { return m_settingTexture.Get(); }					// 設定フレームテクスチャ
+	ID3D11ShaderResourceView* GetSelectRightTexture() { return m_selectRightTexture.Get(); }			// 右選択テクスチャ
+	ID3D11ShaderResourceView* GetSelectLeftTexture() { return m_selectLeftTexture.Get(); }				// 左選択テクスチャ
+	ID3D11ShaderResourceView* GetCountTextTexture() { return m_countTextTexture.Get(); }				// 戦車のカウント用テキストテクスチャ
+	ID3D11ShaderResourceView* GetStageTextTexture() { return m_stageTextTexture.Get(); }				// ステージ用テキストテクスチャ
+	ID3D11ShaderResourceView* GetCursorTexture() { return m_cursorTexture.Get(); }						// 設定カーソルテクスチャ
+	ID3D11ShaderResourceView* GetResultTexture() { return m_resultTexture.Get(); }						// リザルトテクスチャ
+	ID3D11ShaderResourceView* GetSkipTexture() { return m_skipTexture.Get(); }							// スキップテクスチャ
+	ID3D11ShaderResourceView* GetPressSpaceTexture() { return m_pressSpaceTexture.Get(); }				// プレススペーステクスチャ
+	ID3D11ShaderResourceView* GetTankCountTexture() { return m_tankCountTexture.Get(); }				// プレイシーン戦車カウントテクスチャ
+	ID3D11ShaderResourceView* GetStartTextTexture() { return m_startTextTexture.Get(); }				// スタートテキストテクスチャ
+	ID3D11ShaderResourceView* GetExitTextTexture() { return m_exitTextTexture.Get(); }					// 終了テキストテクスチャ
+	ID3D11ShaderResourceView* GetReturnTitleTextTexture() { return m_returnTitleTextTexture.Get(); }	// ポーズ画面テキストテクスチャ
+	ID3D11ShaderResourceView* GetCancelTextTexture() { return m_cancelTextTexture.Get(); }				// ポーズ画面テキストテクスチャ
+	ID3D11ShaderResourceView* GetWallTexture() { return m_wallTexture.Get(); }							// 壁テクスチャ
+	
+	ID3D11ShaderResourceView* GetTank1Texture() { return m_tank1Texture.Get(); }						// 戦車のテクスチャ
 
 
-	ID3D11ShaderResourceView* GetBlackSmokeTexture() { return m_blackSmokeTexture.Get(); }	// 破壊演出テクスチャ
-	ID3D11ShaderResourceView* GetDamageEffectTexture() { return m_damageEffectTexture.Get(); }	// 破壊演出テクスチャ
-	ID3D11ShaderResourceView* GetTrailSmokeTexture() { return m_trailSmokeTexture.Get(); }	// 弾の軌跡テクスチャ
+	ID3D11ShaderResourceView* GetBlackSmokeTexture() { return m_blackSmokeTexture.Get(); }				// 破壊演出テクスチャ
+	ID3D11ShaderResourceView* GetDamageEffectTexture() { return m_damageEffectTexture.Get(); }			// 破壊演出テクスチャ
+	ID3D11ShaderResourceView* GetTrailSmokeTexture() { return m_trailSmokeTexture.Get(); }				// 弾の軌跡テクスチャ
 public:
 	Resources(Resources&&) = default;
 	Resources& operator= (Resources&&) = default;
@@ -61,10 +74,7 @@ private:
 	// コンストラクタ
 	Resources() noexcept
 		:
-		m_tank{},
-		m_tankBodyModel{},
-		m_tankTurretModel{},
-		m_tankCanonModel{},
+		m_tankModels{},
 		m_skySphereModel{},
 		m_fixedTurretModel{},
 
@@ -83,6 +93,8 @@ private:
 		m_fontTexture{},
 		m_manualTexture{},
 		m_settingTexture{},
+		m_selectRightTexture{},
+		m_selectLeftTexture{},
 		m_countTextTexture{},
 		m_stageTextTexture{},
 		m_cursorTexture{},
@@ -90,8 +102,10 @@ private:
 		m_skipTexture{},
 		m_pressSpaceTexture{},
 		m_tankCountTexture{},
-		//m_titleTextTexture{},
-		m_pauseTextTexture{},
+		m_returnTitleTextTexture{},
+		m_cancelTextTexture{},
+		m_wallTexture{},
+		m_tank1Texture{},
 
 		m_blackSmokeTexture{},
 		m_damageEffectTexture{},
@@ -107,15 +121,14 @@ private:
 	// デバイス
 	ID3D11Device* m_device = m_graphics->GetDeviceResources()->GetD3DDevice();
 
+	// 戦車の数
+	static constexpr int TANK_COUNT = 4;
+	// パーツの数
+	static constexpr int PARTS_COUNT = 3;
+
 	// モデル==========================================================
 	// 戦車モデル
-	std::unique_ptr<DirectX::Model> m_tank;
-	// 車体モデル
-	std::unique_ptr<DirectX::Model> m_tankBodyModel;
-	// 砲塔モデル
-	std::unique_ptr<DirectX::Model> m_tankTurretModel;
-	// 砲身モデル
-	std::unique_ptr<DirectX::Model> m_tankCanonModel;
+	std::vector<std::vector<std::unique_ptr<DirectX::Model>>> m_tankModels;
 	// 天球モデル
 	std::unique_ptr<DirectX::Model> m_skySphereModel;
 	// 固定砲台モデル
@@ -152,6 +165,10 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_manualTexture;
 	// 設定フレームテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_settingTexture;
+	// 右選択テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_selectRightTexture;
+	// 左選択テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_selectLeftTexture;
 	// 戦車のカウント用テキストテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_countTextTexture;
 	// ステージ用テキストテクスチャ
@@ -166,15 +183,19 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pressSpaceTexture;
 	// プレイシーン戦車カウントテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tankCountTexture;
-	// タイトルテキストテクスチャ
-	//Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_titleTextTexture;
 	// スタートテキストテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_startTextTexture;
 	// 終了テキストテクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_exitTextTexture;
-	// ポーズ画面テキストテクスチャ
-	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_pauseTextTexture;
-
+	// リターンタイトルテキストテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_returnTitleTextTexture;
+	// キャンセルテキストテクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_cancelTextTexture;
+	// 壁テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_wallTexture;
+	
+	// 戦車テクスチャ
+	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_tank1Texture;
 
 	// エフェクトテクスチャ============================================
 	// 破壊演出テクスチャ
@@ -183,4 +204,8 @@ private:
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_damageEffectTexture;
 	// 弾の軌跡テクスチャ
 	Microsoft::WRL::ComPtr<ID3D11ShaderResourceView> m_trailSmokeTexture;
+
+private:
+	// 戦車モデルのロード
+	void LoadTankModels();
 };

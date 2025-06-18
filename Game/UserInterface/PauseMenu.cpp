@@ -11,6 +11,7 @@
 #include "Libraries/MyLib/Utils.h"
 #include "Game/Other/SharedData.h"
 #include "Libraries/MyLib/SoundManager.h"
+#include "Game/UserInterface/Button.h"
 
 /// <summary>
 /// コンストラクタ
@@ -22,16 +23,14 @@ PauseMenu::PauseMenu()
 	m_isDisplay{},
 	m_returnTitle{},
 	m_currentSelectUi{},
-	m_cursorAngle{}
+	m_cursorAngle{},
+	m_buttons{}
 {
 	// グラフィックスの設定
 	m_graphics = Graphics::GetInstance();
 
 	// リソースの設定
 	m_resources = Resources::GetInstance();
-
-	// 初期選択されているUIの設定
-	m_currentSelectUi = UI::CANCEL;
 }
 
 /// <summary>
@@ -39,6 +38,18 @@ PauseMenu::PauseMenu()
 /// </summary>
 PauseMenu::~PauseMenu()
 {
+}
+
+/// <summary>
+/// 初期化処理
+/// </summary>
+void PauseMenu::Initialize()
+{
+	// ボタンの作成
+	this->CreateButtons();
+
+	// 初期選択されているUIの設定
+	m_currentSelectUi = UI::CANCEL;
 }
 
 /// <summary>
@@ -69,29 +80,11 @@ void PauseMenu::Update(float elapsedTime)
 	// 以下ポーズ画面が表示されていないなら早期リターン
 	if (!m_isDisplay) { return; }
 
-	// 選択されていない方のUIを選択状態にする
-	if (kbTracker->IsKeyPressed(DirectX::Keyboard::W) ||
-		kbTracker->IsKeyPressed(DirectX::Keyboard::S))
+	// ボタンがクリックされたときの処理を登録する
+	for (auto& button : m_buttons)
 	{
-		m_currentSelectUi = m_currentSelectUi == UI::CANCEL ? UI::TITLE : UI::CANCEL;
-		// SEの再生
-		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
-	}
-
-	// 選択されていない方のUIを選択状態にする
-	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
-	{
-		switch (m_currentSelectUi)
-		{
-		case PauseMenu::TITLE:
-			this->ReturnToTitle();
-			break;
-		case PauseMenu::CANCEL:
-			this->Cancel();
-			break;
-		}
-		// SEの再生
-		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
+		button->CheckOnMouseOver();
+		button->CheckClickButton();
 	}
 
 	// カーソルの回転
@@ -111,7 +104,7 @@ void PauseMenu::Render()
 
 	auto spriteBatch = m_graphics->GetSpriteBatch();
 
-	// スプライトバッチの開始
+	// 描画開始
 	spriteBatch->Begin();
 	Vector4 color = static_cast<DirectX::SimpleMath::Vector4>(DirectX::Colors::Black);
 	color.w *= 0.8f;
@@ -123,17 +116,6 @@ void PauseMenu::Render()
 		screen,
 		nullptr,
 		color
-	);
-
-	// テキスト描画
-	spriteBatch->Draw(
-		m_resources->GetPauseTextTexture(),
-		Vector2(Screen::CENTER_X + 100, Screen::CENTER_Y),
-		nullptr,
-		Colors::White,
-		0.0f,
-		mylib::GetTextureCenter(m_resources->GetPauseTextTexture()),
-		0.7f
 	);
 
 	// カーソルの描画
@@ -162,8 +144,60 @@ void PauseMenu::Render()
 		break;
 	}
 
-	// スプライトバッチの終了
+	// 描画終了
 	spriteBatch->End();
+
+	// ボタンの描画
+	for (auto& button : m_buttons)
+	{
+		button->Render();
+	}
+}
+
+/// <summary>
+/// ボタンの作成
+/// </summary>
+void PauseMenu::CreateButtons()
+{
+	using namespace DirectX::SimpleMath;
+
+	// タイトルに戻るボタン
+	auto returnTitleButton = std::make_unique<Button>();
+	returnTitleButton->Initialize(
+		m_resources->GetReturnTitleTextTexture(),
+		0.7f,
+		Vector2(Screen::CENTER_X + 100, Screen::CENTER_Y - 50)
+	);
+	// マウス接触処理
+	returnTitleButton->SetOnMouseOver([this] {
+		m_currentSelectUi = UI::TITLE;
+		});
+	// マウスクリック処理
+	returnTitleButton->SetOnClick([this] {
+		this->ReturnToTitle();
+		});
+
+	// ポーズ画面の終了ボタン
+	auto cancelButton = std::make_unique<Button>();
+	cancelButton->Initialize(
+		m_resources->GetCancelTextTexture(),
+		0.7f,
+		Vector2(Screen::CENTER_X + 100, Screen::CENTER_Y + 50)
+	);
+	// マウス接触処理
+	cancelButton->SetOnMouseOver([this] {
+		m_currentSelectUi = UI::CANCEL;
+		});
+	// マウスクリック処理
+	cancelButton->SetOnClick([this] {
+		this->Cancel();
+		// マウスクリックを制限させる
+		InputManager::GetInstance()->SetDisableMouseClick(true);
+		});
+
+	// ボタンの追加
+	m_buttons.emplace_back(std::move(returnTitleButton));
+	m_buttons.emplace_back(std::move(cancelButton));
 }
 
 /// <summary>
@@ -171,7 +205,14 @@ void PauseMenu::Render()
 /// </summary>
 void PauseMenu::Cancel()
 {
+	// ポーズ画面終了
 	m_isDisplay = false;
+
+	// マウスの固定
+	InputManager::GetInstance()->LockMouseCursor();
+
+	// SEの再生
+	SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
 }
 
 /// <summary>
@@ -179,5 +220,9 @@ void PauseMenu::Cancel()
 /// </summary>
 void PauseMenu::ReturnToTitle()
 {
+	// タイトルに戻る
 	m_returnTitle = true;
+
+	// SEの再生
+	SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
 }

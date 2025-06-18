@@ -92,7 +92,7 @@
     <ClInclude Include="Game\Objects\Stage\Wall.h" />
     <ClInclude Include="Game\UserInterface\DrawTexture.h" />
     <ClInclude Include="Game\Objects\Tank\TankBase\Tank.h" />
-    <ClInclude Include="Interface\IObject.h" />
+    <ClInclude Include="Interface\ITank.h" />
     <ClInclude Include="Game\Objects\Tank\TankBase\TankBody.h" />
     <ClInclude Include="Game\Objects\Tank\TankBase\TankCannon.h" />
     <ClInclude Include="Game\Objects\Tank\TankBase\TankTurret.h" />
@@ -131,6 +131,8 @@
     <ClInclude Include="Game\Other\ProgressionManager.h" />
     <ClInclude Include="Game\Particle\HitEffect.h" />
     <ClInclude Include="Game\UserInterface\Button.h" />
+    <ClInclude Include="Game\EnemyAi\LongRangeAttack.h" />
+    <ClInclude Include="Game\EnemyAi\RetreatAttack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp" />
@@ -204,6 +206,8 @@
     <ClCompile Include="Game\Other\ProgressionManager.cpp" />
     <ClCompile Include="Game\Particle\HitEffect.cpp" />
     <ClCompile Include="Game\UserInterface\Button.cpp" />
+    <ClCompile Include="Game\EnemyAi\LongRangeAttack.cpp" />
+    <ClCompile Include="Game\EnemyAi\RetreatAttack.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="resource.rc" />
@@ -216,6 +220,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <None Include="Game\Shader\Effect.hlsli" />
+    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Game\Shader\StageEffectPS.hlsl" />

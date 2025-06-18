@@ -59,10 +59,10 @@ private:
 	// グラフィックス
 	Graphics* m_graphics;
 	// テクスチャ
-	ID3D11ShaderResourceView* m_titleLogo;
+	ID3D11ShaderResourceView* m_titleLogoTex;
 	ID3D11ShaderResourceView* m_startTextTex;
 	ID3D11ShaderResourceView* m_exitTextTex;
-	ID3D11ShaderResourceView* m_cursorUi;
+	ID3D11ShaderResourceView* m_cursorUiTex;
 	// シーンチェンジフラグ
 	bool m_isChangeScene;
 	// カメラ
@@ -77,11 +77,6 @@ private:
 	UI m_currentSelectUi;
 	// カーソルの角度
 	float m_cursorAngle;
-
-	// スタートボタン
-	std::unique_ptr<Button> m_startButton;
-	// 終了ボタン
-	std::unique_ptr<Button> m_exitButton;
 	// ボタン
 	std::vector<std::unique_ptr<Button>> m_buttons;
 
@@ -90,10 +85,12 @@ public:
 	void PressSelectUi();
 
 private:
+	// 画像の設定
+	void SetTextures();
+	// オブジェクト生成
+	void CreateObject();
 	// UIの描画
 	void DrawUi();
-	// カーソルの移動
-	void MoveCursor();
 	// ボタンの作成
 	void CreateButton();
 };

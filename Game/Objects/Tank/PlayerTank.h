@@ -3,7 +3,7 @@
  * @brief  自機クラス
  */
 #pragma once
-#include "Interface/IObject.h"
+#include "Interface/ITank.h"
 #include "Libraries/MyLib/FollowCamera.h"
 #include "Game/Objects/Tank/TankBase/TankCannon.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
@@ -19,7 +19,7 @@ namespace mylib
 }
 
 // 自機クラス
-class PlayerTank : public IObject
+class PlayerTank : public ITank
 {
 public:
 	// コンストラクタ
@@ -43,6 +43,10 @@ public:
 	Tank* GetTank() override { return m_tank.get(); }
 	// 他の戦車情報の設定
 	void SetOtherTanks(std::vector<Tank*> tanks) override;
+	// 体力ゲージの描画
+	void DrawHpGauge() override;
+	// 弾の描画
+	void DrawBullet() override;
 
 private:
 	// 戦車番号

@@ -22,6 +22,7 @@ class PauseMenu;
 namespace mylib
 {
 	class DebugCamera;
+	class LockOnCamera;
 	class FollowCamera;
 }
 
@@ -33,7 +34,8 @@ private:
 	enum CameraType
 	{
 		TPS,
-		DEATH
+		DEATH,
+		DEBUG
 	};
 
 	// UI座標
@@ -63,14 +65,15 @@ private:
 	bool m_isChangeScene;									// シーンチェンジフラグ
 
 	// カメラ関係
-	std::unique_ptr<mylib::DebugCamera> m_deathCamera;		// デスカメラ
+	std::unique_ptr<mylib::LockOnCamera> m_deathCamera;		// デスカメラ
+	std::unique_ptr<mylib::DebugCamera> m_debugCamera;		// デスカメラ
 	std::unique_ptr<mylib::FollowCamera> m_tpsCamera;		// 追従カメラ
 	CameraType m_cameraType;								// カメラタイプ
 
 	// オブジェクト
 	std::unique_ptr<PlayerTank> m_player;					// プレイヤー
 	std::vector<std::unique_ptr<EnemyTank>> m_enemies;		// 敵戦車(配列管理)
-	std::vector<IObject*> m_allTanks;					// 全戦車情報のマップ
+	std::vector<ITank*> m_allTanks;					// 全戦車情報のマップ
 
 	// マネージャー
 	std::unique_ptr<StageManager> m_stageManager;				// ステージマネージャー
@@ -96,9 +99,12 @@ private:
 
 
 private:
+	// マウスの制限解除
+	void UnDisableMouse();
+	// オブジェクトの生成
+	void CreateObjects();
 	// 戦車の生成
 	void CreateTanks();
-
 	// UIの描画
 	void DrawUi();
 };

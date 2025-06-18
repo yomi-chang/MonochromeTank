@@ -52,7 +52,7 @@ void TankTurret::Initialize()
 	this->Attach(std::make_unique<TankCannon>(m_tank, Vector3(0.0f, 0.0f, 0.0f), 0.0f));
 
 	// ƒ‚ƒfƒ‹‚ÌŽæ“¾
-	m_model = Resources::GetInstance()->GetTankTurretModel();
+	m_model = Resources::GetInstance()->GetTankModel(m_tank->GetTankNumber(), Resources::TURRET);
 
 	// íŽÔ‚É–C“ƒî•ñ‚ð“n‚·
 	m_tank->SetTurret(this);

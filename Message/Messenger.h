@@ -2,7 +2,7 @@
 #include "Message/Message.h"
 #include <unordered_map>
 
-class IObject;
+class ITank;
 
 class Messenger
 {
@@ -19,7 +19,7 @@ private:
 	// メッセンジャーインスタンス
 	static std::unique_ptr<Messenger> s_messenger;
 	// オブジェクトIDとオブジェクトマッピング
-	std::unordered_map<int, IObject*> m_objects;
+	std::unordered_map<int, ITank*> m_objects;
 
 public:
 	// Messengerクラスのインスタンスを取得する
@@ -27,7 +27,7 @@ public:
 	// Messengerクラスのインスタンスを破棄する
 	static void DestroyInstance();
 	// オブジェクトを登録する
-	void Register(int objectID, IObject* object);
+	void Register(int objectID, ITank* object);
 	// メッセージを送信する
 	void Dispatch(int objectID, Message::MessageID);
 };

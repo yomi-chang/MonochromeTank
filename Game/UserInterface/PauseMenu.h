@@ -5,6 +5,7 @@
 #pragma once
 class Graphics;
 class Resources;
+class Button;
 
 class PauseMenu
 {
@@ -24,6 +25,8 @@ public:
 	PauseMenu();
 	// デストラクタ
 	~PauseMenu();
+	// 初期処理
+	void Initialize();
 	// 更新処理
 	void Update(float elapsedTime);
 	// 描画処理
@@ -42,6 +45,8 @@ private:
 	UI m_currentSelectUi;
 	// カーソルの角度
 	float m_cursorAngle;
+	// ボタン
+	std::vector<std::unique_ptr<Button>> m_buttons;
 
 public:
 	// ポーズ中かどうか
@@ -50,6 +55,8 @@ public:
 	bool IsReturnTitle() { return m_returnTitle; }
 
 private:
+	// ボタンの作成
+	void CreateButtons();
 	// ポーズ画面の終了
 	void Cancel();
 	// タイトルに戻る

@@ -1,6 +1,6 @@
 /*
-	@file	IObject.h
-	@brief	Objectインターフェース
+	@file	ITank.h
+	@brief	Tankインターフェース
 */
 #pragma once
 #include "Framework/Graphics.h"
@@ -10,11 +10,11 @@
 #include "Game/Objects/Tank/TankBase/Tank.h"
 
 
-class IObject : public IObserver
+class ITank : public IObserver
 {
 public:
 	// デストラクタ
-	virtual ~IObject() = default;
+	virtual ~ITank() = default;
 	// 初期化処理
 	virtual void Initialize() = 0;
 	// 更新処理
@@ -30,4 +30,8 @@ public:
 	virtual Tank* GetTank() = 0;
 	// 他の戦車情報の設定
 	virtual void SetOtherTanks(std::vector<Tank*> tanks) = 0;
+	// 体力ゲージの描画
+	virtual void DrawHpGauge() = 0;
+	// 弾の描画
+	virtual void DrawBullet() = 0;
 };

@@ -182,6 +182,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Game\EnemyAi\RetreatAttack.h" />
     <ClInclude Include="Game\UserInterface\Button.h" />
     <ClInclude Include="Game\EnemyAi\AvoidWall.h" />
     <ClInclude Include="Game\Particle\DamageEffect.h" />
@@ -231,7 +232,7 @@
     <ClInclude Include="Game\UserInterface\HpGauge.h" />
     <ClInclude Include="Game\UserInterface\MagazineUi.h" />
     <ClInclude Include="Interface\IBullet.h" />
-    <ClInclude Include="Interface\IObject.h" />
+    <ClInclude Include="Interface\ITank.h" />
     <ClInclude Include="Interface\IParent.h" />
     <ClInclude Include="Interface\IParts.h" />
     <ClInclude Include="Libraries\Microsoft\DebugDraw.h" />
@@ -253,6 +254,7 @@
     <ClInclude Include="StepTimer.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Game\EnemyAi\RetreatAttack.cpp" />
     <ClCompile Include="Game\UserInterface\Button.cpp" />
     <ClCompile Include="Game\EnemyAi\AvoidWall.cpp" />
     <ClCompile Include="Game\Particle\DamageEffect.cpp" />
@@ -323,6 +325,7 @@
     <Manifest Include="settings.manifest" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="ClassDiagram.cd" />
     <None Include="Game\Shader\Effect.hlsli" />
     <None Include="packages.config" />
   </ItemGroup>

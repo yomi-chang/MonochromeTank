@@ -5,12 +5,7 @@
 #include "pch.h"
 #include "TitleScene.h"
 #include "Game/Screen.h"
-#include "DeviceResources.h"
 #include "Libraries/MyLib/MemoryLeakDetector.h"
-#include "Framework/InputManager.h"
-#include "Framework/Graphics.h"
-#include "Framework/Resources.h"
-
 #include "Game/Objects/Stage/Floor.h"
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Libraries/MyLib/LockOnCamera.h"
@@ -27,18 +22,18 @@ extern void ExitGame() noexcept;
 TitleScene::TitleScene()
 	:
 	m_graphics{ Graphics::GetInstance() },
-	m_titleLogo{},
-	m_cursorUi{},
+	m_titleLogoTex{},
+	m_startTextTex{},
+	m_exitTextTex{},
+	m_cursorUiTex{},
 	m_isChangeScene{},
+	m_camera{},
 	m_floor{},
 	m_tanks{},
 	m_fade{},
 	m_currentSelectUi{},
 	m_cursorAngle{},
-	m_startTextTex{},
-	m_exitTextTex{},
-	m_startButton{},
-	m_exitButton{}
+	m_buttons{}
 {
 }
 
@@ -58,29 +53,6 @@ void TitleScene::Initialize()
 	using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
-	// BGMの再生
-	SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_TITLESCENE_BGM);
-
-	// 画像の受け取り
-	m_titleLogo = Resources::GetInstance()->GetTitleLogoTexture();
-	m_startTextTex = Resources::GetInstance()->GetStartTextTexture();
-	m_exitTextTex = Resources::GetInstance()->GetExitTextTexture();
-	m_cursorUi = Resources::GetInstance()->GetCursorTexture();
-
-	// 床の生成
-	m_floor = std::make_unique<Floor>(FLOOR_SIZE);
-	m_floor->SetTexture(Resources::GetInstance()->GetFloorTexture());
-
-	// 戦車の生成
-	m_tanks.push_back(std::make_unique<Tank>(1, Vector3{ -1.5f, 0.1f, -1.5f }, DirectX::XMConvertToRadians(-135.0f)));
-	m_tanks.push_back(std::make_unique<Tank>(2, Vector3{ 1.5f, 0.1f, -1.5f }, DirectX::XMConvertToRadians(135.0f)));
-	m_tanks.push_back(std::make_unique<Tank>(3, Vector3{ -1.5f, 0.1f, 1.5f }, DirectX::XMConvertToRadians(-45.0f)));
-	m_tanks.push_back(std::make_unique<Tank>(4, Vector3{ 1.5f, 0.1f, 1.5f }, DirectX::XMConvertToRadians(45.0f)));
-	for (auto& tank : m_tanks)
-	{
-		tank->Initialize();
-	}
-
 	// 射影行列を作成する
 	RECT rect{ m_graphics->GetDeviceResources()->GetOutputSize() };
 	Matrix projection;
@@ -92,6 +64,15 @@ void TitleScene::Initialize()
 
 	// 射影行列を設定する
 	m_graphics->SetProjectionMatrix(projection);
+
+	// BGMの再生
+	SharedData::GetInstance()->GetSoundManager()->PlayBGM(XACT_WAVEBANK_SOUNDS_TITLESCENE_BGM);
+
+	// 画像の設定
+	this->SetTextures();
+
+	// オブジェクトの生成
+	this->CreateObject();
 
 	// TPSカメラの生成
 	m_camera = std::make_unique<mylib::LockOnCamera>();
@@ -110,7 +91,6 @@ void TitleScene::Initialize()
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
-
 	// 初期に選択されているUIの設定
 	m_currentSelectUi = UI::START;
 }
@@ -142,21 +122,9 @@ void TitleScene::Update(float elapsedTime)
 	{
 		m_isChangeScene = true;
 	}
+
 	// フェードが終了していないなら早期リターン
 	if (!m_fade->FinishFade()) { return; }
-
-	// キーボードステートの取得
-	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
-	const auto& mouseTracker = InputManager::GetInstance()->GetMouseTracker();
-
-	// スペースキーが押された場合
-	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
-	{
-		// 選択されているUIごとの実行
-		this->PressSelectUi();
-		// SEの再生
-		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
-	}
 
 	// ボタンの接触及びクリック処理
 	for (auto& button : m_buttons)
@@ -164,17 +132,6 @@ void TitleScene::Update(float elapsedTime)
 		button->CheckOnMouseOver();
 		button->CheckClickButton();
 	}
-
-	// ボタンと接触していて右クリックされたら
-	//if (m_startButton->IsMouseOverUI() && mouseTracker->leftButton)
-	//{
-	//	// 選択されているUIごとの実行
-	//	this->PressSelectUi();
-	//	// SEの再生
-	//	SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
-	//}
-	// カーソル移動
-	this->MoveCursor();
 
 	// カーソルの回転速度
 	m_cursorAngle += elapsedTime * CURSOR_SPEED;
@@ -198,7 +155,7 @@ void TitleScene::Render()
 	// 床の描画
 	m_floor->Render();
 
-	// 敵戦車の更新
+	// 敵戦車の描画
 	for (auto& tank : m_tanks)
 	{
 		tank->Render();
@@ -236,6 +193,39 @@ IScene::SceneID TitleScene::GetNextSceneID() const
 }
 
 /// <summary>
+/// 画像の設定
+/// </summary>
+void TitleScene::SetTextures()
+{
+	m_titleLogoTex = Resources::GetInstance()->GetTitleLogoTexture();
+	m_startTextTex = Resources::GetInstance()->GetStartTextTexture();
+	m_exitTextTex = Resources::GetInstance()->GetExitTextTexture();
+	m_cursorUiTex = Resources::GetInstance()->GetCursorTexture();
+}
+
+/// <summary>
+/// オブジェクトの生成
+/// </summary>
+void TitleScene::CreateObject()
+{
+	using namespace DirectX::SimpleMath;
+
+	// 床の生成
+	m_floor = std::make_unique<Floor>(FLOOR_SIZE);
+	m_floor->SetTexture(Resources::GetInstance()->GetFloorTexture());
+
+	// 戦車の生成
+	m_tanks.push_back(std::make_unique<Tank>(0, Vector3{ -1.5f, 0.1f, -1.5f }, DirectX::XMConvertToRadians(-135.0f)));
+	m_tanks.push_back(std::make_unique<Tank>(1, Vector3{ 1.5f, 0.1f, -1.5f }, DirectX::XMConvertToRadians(135.0f)));
+	m_tanks.push_back(std::make_unique<Tank>(2, Vector3{ -1.5f, 0.1f, 1.5f }, DirectX::XMConvertToRadians(-45.0f)));
+	m_tanks.push_back(std::make_unique<Tank>(3, Vector3{ 1.5f, 0.1f, 1.5f }, DirectX::XMConvertToRadians(45.0f)));
+	for (auto& tank : m_tanks)
+	{
+		tank->Initialize();
+	}
+}
+
+/// <summary>
 /// UIの描画
 /// </summary>
 void TitleScene::DrawUi()
@@ -258,37 +248,37 @@ void TitleScene::DrawUi()
 	// ロゴの描画
 	Vector2 pos{ Screen::CENTER_X, Screen::BOTTOM / 3.0f };
 	spriteBatch->Draw(
-		m_titleLogo,
+		m_titleLogoTex,
 		pos,
 		nullptr,
 		Colors::White,
 		0.0f,
-		mylib::GetTextureCenter(m_titleLogo),
+		mylib::GetTextureCenter(m_titleLogoTex),
 		LOGO_SCALE
 	);
 	
-	// 選択しているUI
+	// カーソル
 	switch (m_currentSelectUi)
 	{
 	case TitleScene::START:
 		spriteBatch->Draw(
-			m_cursorUi,
+			m_cursorUiTex,
 			Vector2(Screen::CENTER_X - 200, Screen::CENTER_Y + 120),
 			nullptr,
 			Colors::White,
 			m_cursorAngle,
-			mylib::GetTextureCenter(m_cursorUi),
+			mylib::GetTextureCenter(m_cursorUiTex),
 			CURSOR_SCALE
 		);
 		break;
 	case TitleScene::EXIT:
 		spriteBatch->Draw(
-			m_cursorUi,
+			m_cursorUiTex,
 			Vector2(Screen::CENTER_X - 200, Screen::CENTER_Y + Screen::BOTTOM / 3),
 			nullptr,
 			Colors::White,
 			m_cursorAngle,
-			mylib::GetTextureCenter(m_cursorUi),
+			mylib::GetTextureCenter(m_cursorUiTex),
 			CURSOR_SCALE
 		);
 		break;
@@ -297,28 +287,6 @@ void TitleScene::DrawUi()
 	}
 	// スプライトバッチの終わり
 	spriteBatch->End();
-}
-
-/// <summary>
-/// カーソルの移動
-/// </summary>
-void TitleScene::MoveCursor()
-{
-	// キーボードステートの取得
-	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
-
-	// 上キーか下キーが押されたらカーソル移動
-	if (kbTracker->IsKeyPressed(DirectX::Keyboard::W) ||
-		kbTracker->IsKeyPressed(DirectX::Keyboard::S))
-	{
-		// 選択されていない方のUIを選択する
-		m_currentSelectUi = m_currentSelectUi == UI::START ? UI::EXIT : UI::START;
-		// SEの再生
-		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_CURSOR_SE);
-	}
-	// マウスが接触しているものを選択
-	//if (m_startButton->IsMouseOverUI()) { m_currentSelectUi = UI::START; }
-	//if (m_exitButton->IsMouseOverUI()) { m_currentSelectUi = UI::EXIT; }
 }
 
 /// <summary>
@@ -331,7 +299,7 @@ void TitleScene::CreateButton()
 	// ゲーム開始ボタン
 	auto startButton = std::make_unique<Button>();
 	startButton->Initialize(
-		Resources::GetInstance()->GetStartTextTexture(),
+		m_startTextTex,
 		TITLE_TEXT_SCALE,
 		Vector2(Screen::CENTER_X, Screen::CENTER_Y + 120)
 	);
@@ -343,7 +311,7 @@ void TitleScene::CreateButton()
 	// ゲーム終了ボタン
 	auto exitButton = std::make_unique<Button>();
 	exitButton->Initialize(
-		Resources::GetInstance()->GetExitTextTexture(),
+		m_exitTextTex,
 		TITLE_TEXT_SCALE,
 		Vector2(Screen::CENTER_X, Screen::CENTER_Y + Screen::BOTTOM / 3)
 	);
@@ -352,7 +320,7 @@ void TitleScene::CreateButton()
 		m_currentSelectUi = UI::EXIT;
 	});
 
-	// ボタン情報に配列に譲渡する
+	// ボタン情報配列に譲渡する
 	m_buttons.emplace_back(std::move(startButton));
 	m_buttons.emplace_back(std::move(exitButton));
 
@@ -363,24 +331,6 @@ void TitleScene::CreateButton()
 			this->PressSelectUi();
 		});
 	}
-
-	// ボタンの作成
-	//m_startButton = std::make_unique<Button>();
-	//m_startButton->Initialize(
-	//	Resources::GetInstance()->GetStartTextTexture(),
-	//	TITLE_TEXT_SCALE,
-	//	Vector2(Screen::CENTER_X, Screen::CENTER_Y + 120)
-	//);
-	//// ボタンクリック時の処理の設定
-	//m_startButton->SetOnClick([this]() {
-	//	this->PressSelectUi();
-	//	});
-	/*m_exitButton = std::make_unique<Button>();
-	m_exitButton->Initialize(
-		Resources::GetInstance()->GetExitTextTexture(),
-		TITLE_TEXT_SCALE,
-		Vector2(Screen::CENTER_X, Screen::CENTER_Y + Screen::BOTTOM / 3)
-	);*/
 }
 
 /// <summary>

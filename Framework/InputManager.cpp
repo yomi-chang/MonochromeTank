@@ -25,7 +25,8 @@ InputManager* const InputManager::GetInstance()
 InputManager::InputManager()
 	:
 	m_mouseState{},
-	m_keyboardState{}
+	m_keyboardState{},
+	m_disableMouseClick{}
 {
 }
 

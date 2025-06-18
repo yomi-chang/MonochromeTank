@@ -258,6 +258,9 @@ void Game::OnWindowMoved()
         // ResizeBuffers関数を呼び出す
         m_deviceResources->CreateWindowSizeDependentResources();
     }
+
+    // フルスクリーンかの情報を渡す
+    SharedData::GetInstance()->SetIsFullScreen(m_fullscreen);
 }
 
 void Game::OnDisplayChange()

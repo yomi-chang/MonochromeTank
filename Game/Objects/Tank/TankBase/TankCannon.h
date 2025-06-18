@@ -118,6 +118,8 @@ public:
 	void SetDisplaySight(bool display) { m_displaySight = display; }
 	// Æ€‚Ì•\¦
 	void DrawSight();
+	// ’e‚Ì•`‰æ
+	void DrawBullet();
 
 private:
 	// ƒŠƒ[ƒhˆ—

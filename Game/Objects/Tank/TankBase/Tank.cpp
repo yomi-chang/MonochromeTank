@@ -101,9 +101,12 @@ void Tank::Initialize()
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 	m_primitiveBatch = std::make_unique<PrimitiveBatch<VertexPositionTexture>>(context);
 
+
 	// ”j‰ó‚Ì‰‰oì¬
 	m_smokeEffect = std::make_unique<Smoke>();
 	m_smokeEffect->Initialize();
+
+
 }
 
 /// <summary>

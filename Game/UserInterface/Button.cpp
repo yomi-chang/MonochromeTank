@@ -8,6 +8,7 @@
 #include "Framework/Graphics.h"
 #include "Framework/InputManager.h"
 #include "Framework/Resources.h"
+#include "Game/Other/SharedData.h"
 #include "Game/Screen.h"
 
 /// <summary>
@@ -65,10 +66,10 @@ void Button::Render(float rotation)
 			m_texture,
 			m_buttonPosition,
 			nullptr,
-			Colors::Red,
+			Colors::LightSlateGray,
 			rotation,
 			mylib::GetTextureCenter(m_texture),
-			m_scale * 1.1f
+			m_scale * 1.05f
 		);
 	}
 	else
@@ -85,12 +86,13 @@ void Button::Render(float rotation)
 	}
 
 	// 矩形の表示
-	spriteBatch->Draw(
+	/*spriteBatch->Draw(
 		Resources::GetInstance()->GetBoxTexture(),
 		m_buttonRect,
 		Colors::Red
-	);
+	);*/
 
+	// 描画終了
 	spriteBatch->End();
 }
 
@@ -104,7 +106,7 @@ void Button::CheckClickButton()
 
 	// 左クリックされた場合
 	const auto& mouseTracker = InputManager::GetInstance()->GetMouseTracker();
-	if (mouseTracker->leftButton)
+	if (mouseTracker->leftButton == mouseTracker->PRESSED)
 	{
 		// クリック時の処理を行う
 		if (m_onClick) { m_onClick(); }
@@ -132,24 +134,21 @@ bool Button::IsMouseOverUI()
 	// マウスステートの取得
 	const auto& mouseState = InputManager::GetInstance()->GetMouseState();
 	
-	// マウス座標の取得
-	/*DirectX::SimpleMath::Vector2 mousePos{
-		static_cast<float>(mouseState.x),
-		static_cast<float>(mouseState.y)
-	};*/
-
-	Microsoft::WRL::ComPtr<ID3D11Texture2D> backBuffer;
-	HRESULT hr = Graphics::GetInstance()->GetDeviceResources()->GetSwapChain()->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)backBuffer.GetAddressOf());
-
-	D3D11_TEXTURE2D_DESC desc = {};
-	backBuffer->GetDesc(&desc);
-
-	int width = static_cast<int>(desc.Width);
-	int height = static_cast<int>(desc.Height);
-
 	// 実際の描画解像度
-	int realWidth = 1920; 
-	int realHeight = 1080;
+	int realWidth = 0;
+	int realHeight = 0;
+
+	// フルスクリーンかどうかによって描画解像度を設定する
+	if (SharedData::GetInstance()->GetIsFullScreen())
+	{
+		realWidth = Screen::FULLSCREEN_WIDTH;
+		realHeight = Screen::FULLSCREEN_HEIGHT;
+	}
+	else
+	{
+		realWidth = Screen::WIDTH;
+		realHeight = Screen::HEIGHT;
+	}
 
 	// 仮想解像度（固定）
 	constexpr float virtualWidth = Screen::WIDTH;
@@ -165,21 +164,13 @@ bool Button::IsMouseOverUI()
 
 	// マウスが矩形内にあるかどうか
 	if (scaledX >= m_buttonRect.left &&
-		scaledX < m_buttonRect.right &&
+		scaledX <  m_buttonRect.right &&
 		scaledY >= m_buttonRect.top &&
-		scaledY < m_buttonRect.bottom)
+		scaledY <  m_buttonRect.bottom
+	)
 	{
 		return true;
 	}
 	return false;
-	//// マウスが矩形内にあるかどうか
-	//if (mouseState.x >= m_buttonRect.left  &&
-	//	mouseState.x <  m_buttonRect.right &&
-	//	mouseState.y >= m_buttonRect.top   &&
-	//	mouseState.y <  m_buttonRect.bottom)
-	//{
-	//	return true;
-	//}
-	//return false;
 }
 

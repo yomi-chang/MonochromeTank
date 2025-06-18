@@ -26,7 +26,8 @@ SharedData::SharedData()
 	:
 	m_winnerTank{},
 	m_soundManager{},
-	m_tankCount{}
+	m_tankCount{},
+	m_isFullScreen{}
 {
 }
 

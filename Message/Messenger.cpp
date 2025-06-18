@@ -1,6 +1,6 @@
 #include "pch.h"
 #include "Message/Messenger.h"
-#include "Interface/IObject.h"
+#include "Interface/ITank.h"
 
 
 // s_messengerを初期化する
@@ -38,7 +38,7 @@ void Messenger::DestroyInstance()
 /// </summary>
 /// <param name="objectID">オブジェクトID</param>
 /// <param name="object">オブジェクト</param>
-void Messenger::Register(int objectID, IObject* object)
+void Messenger::Register(int objectID, ITank* object)
 {
 	// オブジェクトIDとオブジェクトを登録する
 	m_objects.emplace(objectID, object);

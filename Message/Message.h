@@ -9,6 +9,7 @@ public:
 		PATROL,
 		TRACKING,
 		ATTACK,
+		RETREAT_ATTACK,
 		AVOIDWALL
 	};
 };

@@ -15,12 +15,14 @@ class Tank;
 class Floor;
 class Fade;
 class SkySphere;
+class Button;
 
 class ResultScene final :
     public IScene
 {
 private:
 	static constexpr int FLOOR_SIZE = 50;
+	static constexpr float TEXT_SIZE = 0.6f;
 
 public:
 	// コンストラクタ
@@ -58,8 +60,12 @@ private:
 	RECT m_texturePos;
 	// 天球
 	std::unique_ptr<SkySphere> m_skySphere;
+	// ボタン
+	std::vector<std::unique_ptr<Button>> m_buttons;
 
 private:
 	// UIの描画
 	void DrawUi();
+	// ボタンの作成
+	void CreateButton();
 };

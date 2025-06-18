@@ -20,6 +20,9 @@ private:
 	std::unique_ptr<DirectX::Keyboard::KeyboardStateTracker> m_keyboardTracker;
 	DirectX::Keyboard::State m_keyboardState;
 
+	// マウスの制限
+	bool m_disableMouseClick;
+
 public:
 	//InputManager(const HWND& window);
 	~InputManager() = default;
@@ -57,6 +60,13 @@ public:
 
 	// マウスカーソルの固定を解除する
 	void UnLockMouseCursor() { m_mouse->SetMode(DirectX::Mouse::MODE_ABSOLUTE); }
+
+	// マウスの制限の取得
+	bool GetDisableMouseClick() { return m_disableMouseClick; }
+
+	// マウスの制限の設定
+	void SetDisableMouseClick(bool disable) { m_disableMouseClick = disable; }
+
 
 private:
 	// コンストラクタ

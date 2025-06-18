@@ -14,7 +14,11 @@
 #include "Game/Objects/Stage/Floor.h"
 #include "Game/Scene/Fade.h"
 #include "Game/Objects/Stage/StageObject/SkySphere.h"
+#include "Game/UserInterface/Button.h"
 #include <cassert>
+
+// ゲーム終了の関数
+extern void ExitGame() noexcept;
 
 /// <summary>
 /// コンストラクタ
@@ -28,7 +32,8 @@ ResultScene::ResultScene()
 	m_camera{},
 	m_floor{},
 	m_texturePos{},
-	m_pressSpace{}
+	m_pressSpace{},
+	m_buttons{}
 {
 }
 
@@ -81,12 +86,18 @@ void ResultScene::Initialize()
 	// シーン遷移用
 	m_fade = std::make_unique<Fade>(1.0f);
 	m_fade->FadeOut();
-
+	
 	// 天球
 	m_skySphere = std::make_unique<SkySphere>();
 
 	// マウス固定の解除
 	InputManager::GetInstance()->UnLockMouseCursor();
+
+	// ボタンの作成
+	this->CreateButton();
+
+	// シーン変更フラグを初期化する
+	m_isChangeScene = false;
 }
 
 /// <summary>
@@ -95,11 +106,12 @@ void ResultScene::Initialize()
 /// <param name="elapsedTime">フレーム間の経過時間</param>
 void ResultScene::Update(float elapsedTime)
 {
-	//using namespace DirectX;
 	using namespace DirectX::SimpleMath;
 
-	// 宣言をしたが、実際は使用していない変数
 	UNREFERENCED_PARAMETER(elapsedTime);
+
+	// フェード
+	m_fade->Update(elapsedTime);
 
 	// 戦車の更新
 	float angle = DirectX::XMConvertToRadians(0.7f);
@@ -109,8 +121,7 @@ void ResultScene::Update(float elapsedTime)
 	// フォローカメラを更新する
 	m_camera->Update(elapsedTime);
 
-	// フェード
-	m_fade->Update(elapsedTime);
+	
 
 	// フェードイン中でフェードが終了しているならシーン遷移
 	if (m_fade->GetFadeType() == Fade::FADEIN &&
@@ -122,13 +133,12 @@ void ResultScene::Update(float elapsedTime)
 	// フェードが終了していないなら早期リターン
 	if (!m_fade->FinishFade()) { return; }
 
-
-	// キーボードステートトラッカーを取得する
-	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
-
-	// スペースキーが押されたら
-	if (kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
-		m_fade->FadeIn();
+	// ボタンの接触及びクリック処理
+	for (auto& button : m_buttons)
+	{
+		button->CheckOnMouseOver();
+		button->CheckClickButton();
+	}
 }
 
 /// <summary>
@@ -157,6 +167,9 @@ void ResultScene::Render()
 
 	// UIの描画
 	this->DrawUi();
+
+	// シーン遷移用
+	m_fade->Render();
 }
 
 /// <summary>
@@ -194,6 +207,12 @@ void ResultScene::DrawUi()
 	auto states = m_graphics->GetCommonStates();
 	auto spriteBatch = m_graphics->GetSpriteBatch();
 
+	// ボタンの描画
+	for (auto& button : m_buttons)
+	{
+		button->Render();
+	}
+
 	// スプライトバッチの開始：オプションでソートモード、ブレンドステートを指定する
 	spriteBatch->Begin(SpriteSortMode_Deferred, states->NonPremultiplied());
 
@@ -208,17 +227,44 @@ void ResultScene::DrawUi()
 		1.0f
 	);
 
-	// UIの描画
-	spriteBatch->Draw(
-		m_pressSpace,
-		Vector2(Screen::CENTER_X, Screen::CENTER_Y + 200),
-		nullptr,
-		Colors::White,
-		0.0f,
-		mylib::GetTextureCenter(m_pressSpace),
-		1.0f
-	);
-
 	// スプライトバッチの終わり
 	spriteBatch->End();
+}
+
+/// <summary>
+/// ボタンの作成
+/// </summary>
+void ResultScene::CreateButton()
+{
+	using namespace DirectX::SimpleMath;
+
+	// タイトルに戻るボタン
+	auto returnTitleButton = std::make_unique<Button>();
+	returnTitleButton->Initialize(
+		Resources::GetInstance()->GetReturnTitleTextTexture(),
+		TEXT_SIZE,
+		Vector2(Screen::CENTER_X, Screen::CENTER_Y + 220)
+	);
+	// クリック時の処理
+	returnTitleButton->SetOnClick([this]() {
+		// フェード開始
+		m_fade->FadeIn();
+	});
+
+	// ゲーム終了ボタン
+	auto exitButton = std::make_unique<Button>();
+	exitButton->Initialize(
+		Resources::GetInstance()->GetExitTextTexture(),
+		TEXT_SIZE,
+		Vector2(Screen::CENTER_X, Screen::CENTER_Y + 300)
+	);
+	// クリック時の処理
+	exitButton->SetOnClick([this]() {
+		// ゲーム終了
+		ExitGame();
+	});
+
+	// ボタン情報配列に譲渡する
+	m_buttons.emplace_back(std::move(returnTitleButton));
+	m_buttons.emplace_back(std::move(exitButton));
 }
