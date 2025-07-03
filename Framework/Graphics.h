@@ -1,7 +1,7 @@
-/*
-	@file	Graphics.h
-	@brief	•`‰æŠÖŒWƒNƒ‰ƒX
-*/
+/**
+ * @file   Graphics.h
+ * @brief  •`‰æŠÖŒWƒNƒ‰ƒX
+ */
 #pragma once
 #include "DeviceResources.h"
 

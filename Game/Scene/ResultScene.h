@@ -1,7 +1,7 @@
-/*
-	@file	ResultScene.h
-	@brief	リザルトシーンクラス
-*/
+/**
+ * @file   ResultScene.h
+ * @brief  リザルトシーンクラス
+ */
 #pragma once
 #include "Interface/IScene.h"
 #include "Framework/Graphics.h"

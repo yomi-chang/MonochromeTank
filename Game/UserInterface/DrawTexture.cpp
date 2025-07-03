@@ -1,7 +1,7 @@
-/*
-	@file	DrawTexture.cpp
-	@brief	シーンにテクスチャを描画するクラス
-*/
+/**
+ * @file   DrawTexture.cpp
+ * @brief  シーンにテクスチャを描画するクラス
+ */
 #include "pch.h"
 #include "Game/UserInterface/DrawTexture.h"
 #include "Framework/Graphics.h"
@@ -61,9 +61,9 @@ void DrawTexture::Render(const DirectX::SimpleMath::Vector3& position)
 	using namespace DirectX::SimpleMath;
 
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto view = m_graphics->GetViewMatrix();
-	auto proj = m_graphics->GetProjectionMatrix();
 	auto states = m_graphics->GetCommonStates();
+	auto& view = m_graphics->GetViewMatrix();
+	auto& proj = m_graphics->GetProjectionMatrix();
 
 	
 

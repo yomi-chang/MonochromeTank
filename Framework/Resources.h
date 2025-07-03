@@ -1,7 +1,7 @@
-/*
-	@file	Resources.h
-	@brief	モデル、テクスチャ等のリソース管理クラス
-*/
+/**
+ * @file   Resources.h
+ * @brief  モデル、テクスチャ等のリソース管理クラス
+ */
 #pragma once
 #include "Model.h"
 #include "Framework/Graphics.h"

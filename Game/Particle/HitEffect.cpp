@@ -87,8 +87,8 @@ void HitEffect::Render(const DirectX::SimpleMath::Vector3& position)
 	using namespace DirectX::SimpleMath;
 
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
-	auto view = m_graphics->GetViewMatrix();
 	auto states = m_graphics->GetCommonStates();
+	auto& view = m_graphics->GetViewMatrix();
 
 	// ’¸“_î•ñ‚Ìİ’è
 	VertexPositionTexture vertex[4] =

@@ -1,7 +1,7 @@
-/*
-	@file	ResultScene.cpp
-	@brief	リザルトシーンクラス
-*/
+/**
+ * @file   ResultScene.cpp
+ * @brief  リザルトシーンクラス
+ */
 #include "pch.h"
 #include "ResultScene.h"
 #include "Game/Screen.h"
@@ -249,6 +249,8 @@ void ResultScene::CreateButton()
 	returnTitleButton->SetOnClick([this]() {
 		// フェード開始
 		m_fade->FadeIn();
+		// SEの再生
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
 	});
 
 	// ゲーム終了ボタン
@@ -262,6 +264,8 @@ void ResultScene::CreateButton()
 	exitButton->SetOnClick([this]() {
 		// ゲーム終了
 		ExitGame();
+		// SEの再生
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
 	});
 
 	// ボタン情報配列に譲渡する

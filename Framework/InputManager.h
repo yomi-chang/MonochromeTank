@@ -1,7 +1,7 @@
-/*
-	@file	InputManager.h
-	@brief	入力関係クラス
-*/
+/**
+ * @file   InputManager.h
+ * @brief  入力関係クラス
+ */
 #pragma once
 
 class InputManager

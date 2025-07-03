@@ -9,8 +9,8 @@ RetreatAttack::RetreatAttack()
     m_stateID(StateID::RETREAT_ATTACK),
     m_tank(),
     m_targetTank(),
-    m_moveTimer(),
-    m_shotTimer()
+    m_moveTime(),
+    m_shotInterval()
 {
 }
 
@@ -27,9 +27,12 @@ RetreatAttack::~RetreatAttack()
 /// <param name="tank">戦車情報</param>
 void RetreatAttack::Initialize(Tank* tank)
 {
+    // 戦車情報の設定
     m_tank = tank;
-    m_moveTimer = BACK_MOVE_TIME;
-    m_shotTimer = 0.0f;
+    // 移動時間の設定
+    m_moveTime = BACK_MOVE_TIME;
+    // 射撃インターバルの設定
+    m_shotInterval = SHOT_INTERVAL;
 }
 
 /// <summary>
@@ -37,8 +40,10 @@ void RetreatAttack::Initialize(Tank* tank)
 /// </summary>
 void RetreatAttack::Enter()
 {
-    m_moveTimer = BACK_MOVE_TIME;
-    m_shotTimer = 0.0f;
+    // 時間の設定
+    m_moveTime = BACK_MOVE_TIME;
+    // 射撃インターバルの設定
+    m_shotInterval = SHOT_INTERVAL;
 }
 
 /// <summary>
@@ -47,7 +52,8 @@ void RetreatAttack::Enter()
 /// <param name="elapsedTime"></param>
 void RetreatAttack::Update(float elapsedTime)
 {
-    if (m_targetTank == nullptr) return;
+    // 追跡対象の戦車がいないなら早期リターン
+    if (m_targetTank == nullptr) { return; }
 
     // 追跡対象の方向に向く処理
     LookAtTarget(elapsedTime);
@@ -56,8 +62,9 @@ void RetreatAttack::Update(float elapsedTime)
     // 後退行動
     RetreatMove(elapsedTime);
 
-    m_moveTimer -= elapsedTime;
-    if (m_moveTimer <= 0.0f)
+    // 移動時間が終了したら追跡行動に移行
+    m_moveTime -= elapsedTime;
+    if (m_moveTime <= 0.0f)
     {
         // 通常の追跡に戻す
         Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::TRACKING);
@@ -96,7 +103,7 @@ void RetreatAttack::LookAtTarget(float elapsedTime)
 }
 
 /// <summary>
-/// 後退攻撃処理
+/// 後退移動処理
 /// </summary>
 /// <param name="elapsedTime"></param>
 void RetreatAttack::RetreatMove(float elapsedTime)
@@ -104,7 +111,7 @@ void RetreatAttack::RetreatMove(float elapsedTime)
     using namespace DirectX::SimpleMath;
 
     // 速度の設定
-    float speed = Parameter::GetInstance()->GetEnemySpeed() * elapsedTime * 0.6f; // 後退は少し遅く
+    float speed = Parameter::GetInstance()->GetEnemySpeed() * elapsedTime * 0.6f;
     Vector3 backward = Vector3::Backward * speed;
     Vector3 velocity = Vector3::Transform(backward, m_tank->GetRotation());
 
@@ -112,14 +119,22 @@ void RetreatAttack::RetreatMove(float elapsedTime)
     m_tank->GetBody()->Move(velocity);
 }
 
+/// <summary>
+/// 射撃処理
+/// </summary>
+/// <param name="elapsedTime">フレーム間の経過時間</param>
 void RetreatAttack::ShotAction(float elapsedTime)
 {
-    m_shotTimer += elapsedTime;
+    // 射撃待機カウントを減らす
+    m_shotInterval -= elapsedTime;
 
-    if (m_shotTimer >= SHOT_INTERVAL)
+    // リロードは常にしておく
+    m_tank->GetCannon()->StartReload();
+
+    // インターバルのカウントが0なら射撃処理
+    if (m_shotInterval <= 0)
     {
-        m_shotTimer = 0.0f;
-        m_tank->GetCannon()->StartReload();
+        m_shotInterval = SHOT_INTERVAL;
         m_tank->GetCannon()->Shoot();
         m_tank->GetCannon()->FinishShoot();
     }

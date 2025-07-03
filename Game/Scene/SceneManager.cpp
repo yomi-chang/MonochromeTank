@@ -1,7 +1,7 @@
-/*
-	@file	SceneManager.cpp
-	@brief	シーンマネージャクラス
-*/
+/**
+ * @file   SceneManager.cpp
+ * @brief  シーンマネージャクラス
+ */
 #include "pch.h"
 #include "SceneManager.h"
 #include "TitleScene.h"

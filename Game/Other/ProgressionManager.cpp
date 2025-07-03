@@ -16,7 +16,8 @@ ProgressionManager::ProgressionManager()
 	:
 	m_tanks{},
 	m_messenger{},
-	m_duelFlag{}
+	m_tankCount{},
+	m_flag{}
 {
 }
 
@@ -45,13 +46,11 @@ void ProgressionManager::Initialize(std::vector<EnemyTank*> tanks)
 /// </summary>
 void ProgressionManager::Update()
 {
-	
 	// 一騎打ちの場合巡回範囲を狭める
-	if (m_tankCount <= 2 && !m_duelFlag)
+	if (m_tankCount == 2 && !m_flag)
 	{
 		this->NarrowPatrolPoints();
 	}
-
 }
 
 /// <summary>
@@ -63,13 +62,13 @@ void ProgressionManager::NarrowPatrolPoints()
 
 	for (auto& tank : m_tanks)
 	{
-		// 倒されていたら早期リターン
-		if (tank->GetDead()) { return; }
+		// 倒されている戦車はスキップ
+		if (tank->GetDead()) { continue; }
 
 		// 巡回ルートの受け取り
 		std::vector<Vector3> patrolPoints = tank->GetPatrol()->GetPatrolPoints();
 
-		// 巡回地点を中央に寄せる
+		// 巡回地点を狭める
 		for (auto& point : patrolPoints)
 		{
 			point.x *= 0.5f;
@@ -79,6 +78,8 @@ void ProgressionManager::NarrowPatrolPoints()
 		// 新しい巡回ルートを設定する
 		tank->GetPatrol()->SetPatrolPoints(patrolPoints);
 	}
+
+	m_flag = true;
 }
 
 /// <summary>
@@ -108,17 +109,16 @@ void ProgressionManager::HandleEndgamePhase()
 		}
 	}
 	
-
 	// 全員が巡回行動でないなら早期リターン
 	if (!allTanksPatrolState) { return; }
 
 	// 全員が巡回行動の場合の行動
-	for (auto& tank : m_tanks)
-	{
-		// 撃破されていない敵を探す
-		if (!tank->GetDead())
-		{
-			
-		}
-	}
+	//for (auto& tank : m_tanks)
+	//{
+	//	// 撃破されていない敵を探す
+	//	if (!tank->GetDead())
+	//	{
+	//		
+	//	}
+	//}
 }

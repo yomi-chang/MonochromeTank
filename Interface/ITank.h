@@ -1,7 +1,7 @@
-/*
-	@file	ITank.h
-	@brief	Tankインターフェース
-*/
+/**
+ * @file   ITank.h
+ * @brief  Tankインターフェース
+ */
 #pragma once
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"

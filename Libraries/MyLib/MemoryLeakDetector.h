@@ -1,7 +1,7 @@
-/*
-	@file	MemoryLeakDetector.h
-	@brief	メモリリークの検出器
-*/
+/**
+ * @file   MemoryLeakDetector.h
+ * @brief  メモリリークの検出器
+ */
 #pragma once
 
 #if defined(_DEBUG)

@@ -48,30 +48,22 @@ void Tracking::Update(float elapsedTime)
 	auto parameter = Parameter::GetInstance();
 	// ‘¬“x‚ÌÝ’è
 	float speed = parameter->GetEnemySpeed() * elapsedTime;
-
 	// ’ÇÕ’†‚Ì“G‚Ì•ûŒü‚ðŒü‚­
 	Vector3 delta = m_tank->GetPosition() - m_targetTank->GetPosition();
 	float angleRadians = atan2(delta.x, delta.z);
-	
 	// ŽÔ‘Ì‚Ì‰ñ“]‚ðl—¶‚µ‚Ä–Ú•W‚ÌŠp“x‚ðŒvŽZ
 	float targetAngle = angleRadians - m_tank->GetRotation().ToEuler().y;
-	
 	// –C“ƒ‰ñ“]‚Ì§ŒÀ
 	targetAngle = mylib::Clamp(targetAngle, DirectX::XMConvertToRadians(-45.0f), DirectX::XMConvertToRadians(45.0f));
-	
 	// Œ»Ý‚Ì–C“ƒ‚Ì‰ñ“]Šp“x
 	float currentAngle = m_tank->GetTurret()->GetTurretRotation().ToEuler().y;
-	
 	// –Ú•WŠp“x‚ÆŒ»Ý‚ÌŠp“x‚Æ‚Ì·‚ð‹‚ßALerp•âŠÔ‚Å‰ñ“]
 	float angleDifference = targetAngle - currentAngle;
-	
 	// ‚ä‚Á‚­‚è‰ñ“]‚·‚é‚½‚ß‚Ì‘¬“x§Œä
 	float rotationSpeed = 0.9f;
 	float t = rotationSpeed * elapsedTime;
-	
 	// •âŠÔŒã‚Ì‰ñ“]Šp“x
 	float newAngle = currentAngle + angleDifference * t;
-	
 	// –C“ƒ‚Ì‰ñ“]
 	m_tank->GetTurret()->RotateTurret(newAngle);
 
@@ -138,6 +130,6 @@ void Tracking::IsTargetTankNear()
 	if (distance <= Parameter::GetInstance()->GetAttackStartRadius())
 	{
 		// UŒ‚s“®‚É‚·‚é
-		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::ATTACK);
+		Messenger::GetInstance()->Dispatch(m_tank->GetTankNumber(), Message::RETREAT_ATTACK);
 	}
 }

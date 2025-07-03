@@ -26,7 +26,8 @@ Game::Game() noexcept(false)
     m_sceneManager{},
     m_soundManager{},
     m_graphics{},
-    m_hWnd{}
+    m_hWnd{},
+    m_fullscreen{}
 {
     // グラフィックスインスタンスの取得
     m_graphics = Graphics::GetInstance();

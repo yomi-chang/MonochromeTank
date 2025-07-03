@@ -1,7 +1,7 @@
-/*
-	@file	FollowCamera.cpp
-	@brief	後追いカメラクラス、ばね付き
-*/
+/**
+ * @file   FollowCamera.cpp
+ * @brief  後追いカメラクラス、ばね付き
+ */
 #include "pch.h"
 #include "FollowCamera.h"
 #include "Game/Screen.h"

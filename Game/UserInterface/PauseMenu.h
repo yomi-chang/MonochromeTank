@@ -1,7 +1,7 @@
-/*
-	@file	PauseMenu.h
-	@brief	ポーズ画面クラス
-*/
+/**
+ * @file   PauseMenu.h
+ * @brief  ポーズ画面クラス
+ */
 #pragma once
 class Graphics;
 class Resources;

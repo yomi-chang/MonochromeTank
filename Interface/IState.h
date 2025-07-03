@@ -1,7 +1,7 @@
-/*
-	@file	IState.h
-	@brief	IStateインターフェース
-*/
+/**
+ * @file   IState.h
+ * @brief  IStateインターフェース
+ */
 #pragma once
 #include "Game/Objects/Tank/TankBase/Tank.h"
 #include "Libraries/MyLib/Utils.h"

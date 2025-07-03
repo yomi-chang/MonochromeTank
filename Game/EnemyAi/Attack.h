@@ -37,8 +37,6 @@ private:
 	Tank* m_tank;
 	// ’ÇÕ‘ÎÛ‚ÌíÔ
 	Tank* m_targetTank;
-	// ŠÔ
-	float m_time;
 	// Œ»İ‚Ìs“®
 	Action m_currentAction;
 	// ˆÚ“®ŠÔ
@@ -47,7 +45,6 @@ private:
 	float m_shotTime;
 	// ËŒ‚‚ğˆê‰ñˆÈã‚ğs‚Á‚Ä‚¢‚é‚©‚Ç‚¤‚©
 	bool m_isShot;
-
 
 private:
 	// ’ÇÕ‘ÎÛ‚Ì•ûŒü‚ÉŒü‚­

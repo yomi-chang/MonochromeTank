@@ -26,8 +26,8 @@ private:
 	Messenger* m_messenger;
 	// 残り戦車数
 	int m_tankCount;
-	// 一騎打ちになったかのフラグ
-	bool m_duelFlag;
+	// 巡回範囲を縮小したかどうか
+	bool m_flag;
 
 public:
 	// 残り戦車情報の設定

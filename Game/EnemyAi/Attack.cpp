@@ -13,7 +13,6 @@ Attack::Attack()
 	m_stateID{ StateID::ATTACK },
 	m_tank{},
 	m_targetTank{},
-	m_time{},
 	m_moveTime{},
 	m_shotTime{},
 	m_currentAction{},
@@ -34,7 +33,10 @@ Attack::~Attack()
 /// <param name="tank">戦車情報</param>
 void Attack::Initialize(Tank* tank)
 {
+	// 戦車情報の設定
 	m_tank = tank;
+	
+	// 初期行動の設定
 	m_currentAction = Action::SHOT;
 
 	// 初期の移動時間の設定
@@ -42,9 +44,6 @@ void Attack::Initialize(Tank* tank)
 
 	// 初期の攻撃時間の設定
 	m_shotTime = mylib::Random(1.0f, SHOT_TIME);
-
-	// 一回も弾を発射されていない状態にする
-	m_isShot = false;
 }
 
 /// <summary>
@@ -89,6 +88,12 @@ void Attack::Enter()
 {
 	// 射撃情報のリセット
 	m_isShot = false;
+
+	// 初期の移動時間の設定
+	m_moveTime = mylib::Random(1.0f, MOVE_TIME);
+
+	// 初期の攻撃時間の設定
+	m_shotTime = mylib::Random(1.0f, SHOT_TIME);
 }
 
 /// <summary>
@@ -129,21 +134,21 @@ void Attack::LookTargetTank(float elapsedTime)
 void Attack::MoveAction(float elapsedTime)
 {
 	using namespace DirectX::SimpleMath;
-	auto parameter = Parameter::GetInstance();
-	float speed = parameter->GetEnemySpeed() * elapsedTime;
 
 	// 時間経過
-	m_time += elapsedTime;
-	if (m_time >= m_moveTime)
+	m_moveTime -= elapsedTime;
+	if (m_moveTime <= 0)
 	{
-		m_time = 0.0f;
+		// 射撃行動に移行
 		m_currentAction = Action::SHOT;
-		// 移動時間を再度設定
+		// 移動時間を再設定
 		m_moveTime = mylib::Random(1.0f, MOVE_TIME);
 	}
 
-	// 移動
-	Vector3 velocity = Vector3::Transform(Vector3::Forward * speed, m_tank->GetRotation());
+	// 速度の設定
+	float speed = Parameter::GetInstance()->GetEnemySpeed() * elapsedTime;
+	Vector3 forward = Vector3::Forward * speed;
+	Vector3 velocity = Vector3::Transform(forward, m_tank->GetRotation());
 	
 	// 移動処理
 	m_tank->GetBody()->Move(velocity);
@@ -156,12 +161,14 @@ void Attack::MoveAction(float elapsedTime)
 /// <param name="elapsedTime">フレーム間の経過時間</param>
 void Attack::ShotAction(float elapsedTime)
 {
-	m_time += elapsedTime;
-	if (m_time >= m_shotTime)
+	m_shotTime -= elapsedTime;
+
+	// 射撃行動の時間が終了したら攻撃行動に移行
+	if (m_shotTime <= 0)
 	{
-		m_time = 0.0f;
+		// 移動行動に移行
 		m_currentAction = Action::MOVE;
-		// 初期の攻撃時間の設定
+		// 攻撃時間の再設定
 		m_shotTime = mylib::Random(1.0f, SHOT_TIME);
 	}
 

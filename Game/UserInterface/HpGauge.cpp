@@ -1,7 +1,7 @@
-/*
-	@file	HpGauge.cpp
-	@brief	自機体力クラス
-*/
+/**
+ * @file   HpGauge.cpp
+ * @brief  自機体力クラス
+ */
 #include "pch.h"
 #include "Game/UserInterface/HpGauge.h"
 #include "Framework/Resources.h"

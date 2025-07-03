@@ -1,7 +1,7 @@
-/*
-    @file	EnemyHpGauge.h
-    @brief	敵体力クラス
-*/
+/**
+ * @file   EnemyHpGauge.h
+ * @brief  敵体力クラス
+ */
 #pragma once
 #include <PrimitiveBatch.h>
 #include <VertexTypes.h>

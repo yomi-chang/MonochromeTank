@@ -1,7 +1,7 @@
-/*
-	@file	IBullet.h
-	@brief	Bulletインターフェース
-*/
+/**
+ * @file   IBullet.h
+ * @brief  Bulletインターフェース
+ */
 #pragma once
 #include "pch.h"
 #include "Game/Other/Parameter.h"

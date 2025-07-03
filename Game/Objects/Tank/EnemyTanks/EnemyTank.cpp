@@ -183,6 +183,7 @@ void EnemyTank::SetOtherTanks(std::vector<Tank*> tanks)
 void EnemyTank::DrawHpGauge()
 {
 	if (m_tank->GetHp() <= 0.0f) { return; }
+
 	m_hpGauge->Render(m_position, m_tank->GetHpRatio());
 }
 
@@ -192,6 +193,7 @@ void EnemyTank::DrawHpGauge()
 void EnemyTank::DrawBullet()
 {
 	if (m_tank->GetHp() <= 0.0f) { return; }
+
 	m_tank->GetCannon()->DrawBullet();
 }
 
@@ -227,8 +229,7 @@ void EnemyTank::OnMessegeAccepted(Message::MessageID messageID)
 		// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìæ“¾
 		m_targetTank = m_currentState->GetTargetTank();
 		// UŒ‚s“®‚É‘JˆÚ
-		//this->ChangeState(m_attack.get());
-		this->ChangeState(m_retreatAttack.get());
+		this->ChangeState(m_attack.get());
 		break;
 	case Message::RETREAT_ATTACK:
 		// ’ÇÕ‘ÎÛ‚ÌíÔ‚Ìæ“¾

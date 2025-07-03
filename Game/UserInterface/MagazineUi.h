@@ -1,7 +1,7 @@
-/*
-	@file	MagazineUi.h
-	@brief	弾関係UIクラス
-*/
+/**
+ * @file   MagazineUi.h
+ * @brief  弾関係UIクラス
+ */
 #pragma once
 
 // 前方宣言

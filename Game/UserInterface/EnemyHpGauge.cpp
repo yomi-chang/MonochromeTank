@@ -1,7 +1,7 @@
-/*
-	@file	EnemyHpGauge.cpp
-	@brief	敵体力クラス
-*/
+/**
+ * @file   EnemyHpGauge.cpp
+ * @brief  敵体力クラス
+ */
 #include "pch.h"
 #include "Game/UserInterface/EnemyHpGauge.h"
 #include <PrimitiveBatch.h> 
@@ -59,8 +59,8 @@ void EnemyHpGauge::Render(
 	float hpRatio
 )
 {	
-	auto view = m_graphics->GetViewMatrix();
-	auto proj = m_graphics->GetProjectionMatrix();
+	auto& view = m_graphics->GetViewMatrix();
+	auto& proj = m_graphics->GetProjectionMatrix();
 	auto states = m_graphics->GetCommonStates();
 	auto context = m_graphics->GetDeviceResources()->GetD3DDeviceContext();
 

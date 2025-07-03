@@ -1,7 +1,7 @@
-﻿/*
-	@file	DebugCamera.h
-	@brief	デバッグ用カメラクラス
-*/
+﻿/**
+ * @file   DebugCamera.h
+ * @brief  デバッグ用カメラクラス
+ */
 #pragma once
 namespace mylib
 {

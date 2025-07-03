@@ -1,7 +1,7 @@
-/*
-	@file	SelectScene.cpp
-	@brief	セレクトシーンクラス
-*/
+/**
+ * @file   SelectScene.cpp
+ * @brief  セレクトシーンクラス
+ */
 #include "pch.h"
 #include "SelectScene.h"
 #include "Game/Screen.h"

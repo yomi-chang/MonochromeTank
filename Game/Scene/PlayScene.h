@@ -18,6 +18,7 @@ class Fade;
 class DamageEffect;
 class StageEffect;
 class PauseMenu;
+class Button;
 
 namespace mylib
 {
@@ -97,12 +98,17 @@ private:
 	// 生存している敵戦車
 	int m_surviveEnemyTank;
 
+	// ボタン
+	std::vector<std::unique_ptr<Button>> m_buttons;
+
 
 private:
 	// マウスの制限解除
 	void UnDisableMouse();
 	// オブジェクトの生成
 	void CreateObjects();
+	// ボタンの作成
+	void CreateButton();
 	// 戦車の生成
 	void CreateTanks();
 	// UIの描画

@@ -1,7 +1,7 @@
-/*
-	@file	PauseMenu.cpp
-	@brief	ポーズ画面クラス
-*/
+/**
+ * @file   PauseMenu.cpp
+ * @brief  ポーズ画面クラス
+ */
 #include "pch.h"
 #include "PauseMenu.h"
 #include "Framework/Graphics.h"
@@ -171,11 +171,13 @@ void PauseMenu::CreateButtons()
 	// マウス接触処理
 	returnTitleButton->SetOnMouseOver([this] {
 		m_currentSelectUi = UI::TITLE;
-		});
+	});
 	// マウスクリック処理
 	returnTitleButton->SetOnClick([this] {
 		this->ReturnToTitle();
-		});
+		// SEの再生
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
+	});
 
 	// ポーズ画面の終了ボタン
 	auto cancelButton = std::make_unique<Button>();
@@ -193,7 +195,9 @@ void PauseMenu::CreateButtons()
 		this->Cancel();
 		// マウスクリックを制限させる
 		InputManager::GetInstance()->SetDisableMouseClick(true);
-		});
+		// SEの再生
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
+	});
 
 	// ボタンの追加
 	m_buttons.emplace_back(std::move(returnTitleButton));

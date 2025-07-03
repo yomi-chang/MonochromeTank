@@ -1,7 +1,7 @@
-/*
-	@file	Screen.h
-	@brief	画面にまつわる定数をまとめたクラス
-*/
+/**
+ * @file   Screen.h
+ * @brief  画面にまつわる定数をまとめたクラス
+ */
 #pragma once
 
 class Screen

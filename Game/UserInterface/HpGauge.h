@@ -1,7 +1,7 @@
-/*
-	@file	HpGauge.h
-	@brief	自機体力クラス
-*/
+/**
+ * @file   HpGauge.h
+ * @brief  自機体力クラス
+ */
 #pragma once
 #include "Framework/Graphics.h"
 

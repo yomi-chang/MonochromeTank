@@ -1,7 +1,7 @@
-/*
-	@file	SceneManager.h
-	@brief	シーンマネージャクラス
-*/
+/**
+ * @file   SceneManager.h
+ * @brief  シーンマネージャクラス
+ */
 #pragma once
 #include "Interface/IScene.h"
 

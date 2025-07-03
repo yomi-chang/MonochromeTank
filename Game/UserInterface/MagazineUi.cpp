@@ -1,7 +1,7 @@
-/*
-    @file	MagazineUi.cpp
-    @brief	’eŠÖŒWUIƒNƒ‰ƒX
-*/
+/**
+ * @file   MagazineUi.cpp
+ * @brief  ’eŠÖŒWUIƒNƒ‰ƒX
+ */
 #include "pch.h"
 #include "Game/UserInterface/MagazineUi.h"
 

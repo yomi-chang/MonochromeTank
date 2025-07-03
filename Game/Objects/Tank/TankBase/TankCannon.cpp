@@ -126,15 +126,13 @@ void TankCannon::Update(
 	m_cannonBall->Update(elapsedTime);
 
 	// ƒ^ƒCƒ}[‚ðŒ¸‚ç‚·
-	if (m_shotTimer > 0.0f)
-	{
-		m_shotTimer -= elapsedTime;
-	}
+	if (m_shotTimer > 0.0f) { m_shotTimer -= elapsedTime; }
 
 	// ’e‚ð”­ŽË‚µ‚Ä‚¢‚é‚È‚ç­‚µ‚¸‚Â’e‚ªŽU‚Á‚Ä‚¢‚­‚æ‚¤‚É‚·‚é
 	if (m_isShot)
 	{
-		m_bulletBlurRadius += elapsedTime;
+		// ŽU‚ç‚Î‚é”ÍˆÍ‚Ì‰ÁŽZ
+		m_bulletBlurRadius += elapsedTime * 2.0f;
 	}
 	else
 	{
@@ -159,7 +157,6 @@ void TankCannon::Render()
 		Matrix::CreateTranslation(Vector3(0.0f, 0.0f, 0.0f)) *
 		Matrix::CreateFromQuaternion(m_currentRotation) *
 		Matrix::CreateTranslation(m_currentPosition);
-
 
 	// u–Cgv‚Ì•`‰æ
 	m_graphics->DrawModel(m_model, m_worldMatrix);
@@ -379,11 +376,11 @@ DirectX::SimpleMath::Quaternion TankCannon::GetShotRotation()
 	Quaternion shotRotation = m_cannonRotation * m_currentRotation;
 
 	// Šp“x‚ðƒ‰ƒ“ƒ_ƒ€‚È’l‚ð—˜—p‚µ‚Ä‚¸‚ç‚·
-	/*shotRotation *= Quaternion::CreateFromYawPitchRoll(
+	shotRotation *= Quaternion::CreateFromYawPitchRoll(
 		mylib::Random(XMConvertToRadians(-m_bulletBlurRadius), XMConvertToRadians(m_bulletBlurRadius)),
 		mylib::Random(XMConvertToRadians(-m_bulletBlurRadius), XMConvertToRadians(m_bulletBlurRadius)),
 		0.0f
-	);*/
+	);
 
 	return shotRotation;
 }

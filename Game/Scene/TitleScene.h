@@ -1,7 +1,7 @@
-/*
-	@file	TitleScene.h
-	@brief	タイトルシーンクラス
-*/
+/**
+ * @file   TitleScene.h
+ * @brief  タイトルシーンクラス
+ */
 #pragma once
 #include "Interface/IScene.h"
 #include "Framework/Graphics.h"

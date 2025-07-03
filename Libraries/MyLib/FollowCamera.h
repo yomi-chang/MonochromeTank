@@ -1,7 +1,7 @@
-/*
-	@file	FollowCamera.h
-	@brief	後追いカメラクラス、ばね付き
-*/
+/**
+ * @file   FollowCamera.h
+ * @brief  後追いカメラクラス、ばね付き
+ */
 #pragma once
 #include "Game/Collider/SphereCollider.h"
 

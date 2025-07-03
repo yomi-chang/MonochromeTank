@@ -1,7 +1,7 @@
-/*
-	@file	TitleScene.cpp
-	@brief	タイトルシーンクラス
-*/
+/**
+ * @file   TitleScene.cpp
+ * @brief  タイトルシーンクラス
+ */
 #include "pch.h"
 #include "TitleScene.h"
 #include "Game/Screen.h"
@@ -330,6 +330,8 @@ void TitleScene::CreateButton()
 		button->SetOnClick([this]() {
 			this->PressSelectUi();
 		});
+		// SEの再生
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
 	}
 }
 

@@ -1,7 +1,7 @@
-/*
-	@file	Graphics.cpp
-	@brief	•`‰æŠÖŒWƒNƒ‰ƒX
-*/
+/**
+ * @file   Graphics.cpp
+ * @brief  •`‰æŠÖŒWƒNƒ‰ƒX
+ */
 #include "pch.h"
 #include "Graphics.h"
 

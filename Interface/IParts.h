@@ -1,7 +1,7 @@
-/*
-	@file	IParts.h
-	@brief	Partsインターフェース
-*/
+/**
+ * @file   IParts.h
+ * @brief  Partsインターフェース
+ */
 #pragma once
 #include "Framework/Graphics.h"
 #include "Framework/Resources.h"

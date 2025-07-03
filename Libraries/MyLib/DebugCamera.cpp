@@ -1,7 +1,7 @@
-﻿/*
-	@file	DebugCamera.cpp
-	@brief	デバッグ用カメラクラス
-*/
+﻿/**
+ * @file   DebugCamera.cpp
+ * @brief  デバッグ用カメラクラス
+ */
 #include "pch.h"
 #include "DebugCamera.h"
 #include "Framework/InputManager.h"

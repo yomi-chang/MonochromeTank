@@ -1,7 +1,7 @@
-/*
-	@file	IScene.h
-	@brief	Sceneインターフェイスクラス
-*/
+/**
+ * @file   IScene.h
+ * @brief  Sceneインターフェイスクラス
+ */
 #pragma once
 #include "Game/Other/SharedData.h"
 #include "Framework/Graphics.h"

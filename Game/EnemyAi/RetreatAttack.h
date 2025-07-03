@@ -8,7 +8,7 @@
 class RetreatAttack : public IState
 {
 private:
-    static constexpr float BACK_MOVE_TIME = 2.0f;
+    static constexpr float BACK_MOVE_TIME = 3.0f;
     static constexpr float SHOT_INTERVAL = 0.5f;
 
 public:
@@ -37,11 +37,15 @@ private:
     // ’ÇÕ‘ÎÛ‚ÌíÔ
     Tank* m_targetTank;
     // ˆÚ“®ŠÔ
-    float m_moveTimer;
+    float m_moveTime;
     // UŒ‚ŠÔ
-    float m_shotTimer;
+    float m_shotInterval;
 
+private:
+    // ’ÇÕ‘ÎÛ‚Ì•ûŒü‚ÉŒü‚­
     void LookAtTarget(float elapsedTime);
+    // Œã‘ŞˆÚ“®ˆ—
     void RetreatMove(float elapsedTime);
+    // ËŒ‚ˆ—
     void ShotAction(float elapsedTime);
 };

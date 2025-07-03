@@ -1,7 +1,7 @@
-/*
-	@file	Resources.cpp
-	@brief	モデル、テクスチャ等のリソース管理クラス
-*/
+/**
+ * @file   Resources.cpp
+ * @brief  モデル、テクスチャ等のリソース管理クラス
+ */
 #include "pch.h"
 #include "Framework/Resources.h"
 

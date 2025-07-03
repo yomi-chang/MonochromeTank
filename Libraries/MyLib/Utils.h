@@ -1,7 +1,7 @@
-/*
-	@file	Utils.h
-	@brief	G‘½‚È•Ö—˜ŠÖ”
-*/
+/**
+ * @file   Utils.h
+ * @brief  G‘½‚È•Ö—˜ŠÖ”
+ */
 #pragma once
 
 namespace mylib

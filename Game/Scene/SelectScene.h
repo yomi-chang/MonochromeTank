@@ -1,7 +1,7 @@
-/*
-	@file	SelectScene.h
-	@brief	セレクトシーンクラス
-*/
+/**
+ * @file   SelectScene.h
+ * @brief  セレクトシーンクラス
+ */
 #pragma once
 #include "Interface/IScene.h"
 #include "Framework/Graphics.h"

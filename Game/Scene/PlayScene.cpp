@@ -21,6 +21,7 @@
 
 #include "Game/UserInterface/MagazineUi.h"
 #include "Game/UserInterface/PauseMenu.h"
+#include "Game/UserInterface/Button.h"
 
 #include "Game/Objects/Stage/StageManager.h"
 #include "Game/Other/CollisionManager.h"
@@ -39,11 +40,11 @@
 /// </summary>
 PlayScene::PlayScene()
 	:
-	m_graphics{Graphics::GetInstance()},
+	m_graphics{ Graphics::GetInstance() },
 	m_deathCamera{},
 	m_debugCamera{},
 	m_tpsCamera{},
-	m_cameraType{CameraType::TPS},
+	m_cameraType{ CameraType::TPS },
 	m_isChangeScene{},
 	m_player{},
 	m_enemies{},
@@ -57,7 +58,8 @@ PlayScene::PlayScene()
 	m_stageEffect{},
 	m_pauseMenu{},
 	m_time{},
-	m_surviveEnemyTank{}
+	m_surviveEnemyTank{},
+	m_buttons{}
 {
 }
 
@@ -100,12 +102,13 @@ void PlayScene::Initialize()
 
 	// シーン変更フラグを初期化する
 	m_isChangeScene = false;
-
 	// マウスの固定
 	InputManager::GetInstance()->LockMouseCursor();
 
 	// オブジェクトの生成
 	this->CreateObjects();
+	// ボタンの作成
+	this->CreateButton();
 
 	// スキップテクスチャの受け取り
 	m_skipTexture = Resources::GetInstance()->GetSkipTexture();
@@ -137,9 +140,7 @@ void PlayScene::Update(float elapsedTime)
 	{
 		//生存している戦車情報をResultDataに所有権ごと渡す
 		if (!m_player->GetDead())
-		{
 			SharedData::GetInstance()->SetWinnerTank(m_player->ReleaseTank());
-		}
 		for (auto& enemy : m_enemies)
 		{
 			if (!enemy->GetDead())
@@ -163,16 +164,13 @@ void PlayScene::Update(float elapsedTime)
 
 	// コリジョンマネージャーの更新
 	m_collisonManager->Update();
-
 	// 進行管理マネージャーの更新
 	m_progressionManager->Update();
-
 	// 戦車の更新
 	for (auto& tank : m_allTanks)
 	{
 		tank->Update(elapsedTime);
 	}
-
 	// ステージの更新
 	m_stageManager->Update(elapsedTime);
 
@@ -182,12 +180,11 @@ void PlayScene::Update(float elapsedTime)
 	{
 		if (!enemy->GetDead()) { m_surviveEnemyTank++; }
 	}
-	// 進行管理マネージャーに生存している敵戦車の数を渡す
-	m_progressionManager->SetTankCount(m_surviveEnemyTank);
-
 	// プレイヤー
 	if (m_player->GetDead())
 	{ 
+		// 進行管理マネージャーに生存している敵戦車の数を渡す
+		m_progressionManager->SetTankCount(m_surviveEnemyTank);
 		// デスカメラに変更
 		m_cameraType = CameraType::DEATH; 
 		m_player->GetTank()->GetCannon()->SetDisplaySight(false);
@@ -200,14 +197,18 @@ void PlayScene::Update(float elapsedTime)
 		m_fade->FadeIn();
 	}
 
-	// キーボードステートの取得
-	const auto& kbTracker = InputManager::GetInstance()->GetKeyboardTracker();
-	
-	// デスカメラでスペースキーを押したらフェード開始
-	if (m_cameraType == CameraType::DEATH &&
-		kbTracker->IsKeyPressed(DirectX::Keyboard::Space))
+	// デスカメラの場合の処理
+	if (m_cameraType == CameraType::DEATH)
 	{
-		m_fade->FadeIn();
+		// マウスの固定解除
+		InputManager::GetInstance()->UnLockMouseCursor();
+
+		// ボタンの判定
+		for (auto& button : m_buttons)
+		{
+			button->CheckOnMouseOver();
+			button->CheckClickButton();
+		}
 	}
 
 	// 経過時間の設定
@@ -420,6 +421,32 @@ void PlayScene::CreateObjects()
 }
 
 /// <summary>
+/// ボタンの作成
+/// </summary>
+void PlayScene::CreateButton()
+{
+	using namespace DirectX::SimpleMath;
+
+	// ゲーム終了ボタン
+	auto battleSkipButton = std::make_unique<Button>();
+	battleSkipButton->Initialize(
+		Resources::GetInstance()->GetSkipTexture(),
+		0.7f,
+		Vector2(Screen::CENTER_X + 500, Screen::CENTER_Y + 300)
+	);
+	// クリック時の処理
+	battleSkipButton->SetOnClick([this]() {
+		// 戦闘の終了
+		m_fade->FadeIn();
+		// SEの再生
+		SharedData::GetInstance()->GetSoundManager()->PlaySE(XACT_WAVEBANK_SOUNDS_BUTTON_SE);
+	});
+
+	// ボタン情報配列に譲渡する
+	m_buttons.emplace_back(std::move(battleSkipButton));
+}
+
+/// <summary>
 /// 戦車の生成
 /// </summary>
 void PlayScene::CreateTanks()
@@ -480,18 +507,11 @@ void PlayScene::DrawUi()
 	}
 	else
 	{
-		spriteBatch->Begin();
-		// スキップUIの描画
-		spriteBatch->Draw(
-			m_skipTexture,
-			Vector2(Screen::CENTER_X + 500, Screen::CENTER_Y + 300),
-			nullptr,
-			Colors::White,
-			0.0f,
-			mylib::GetTextureCenter(m_skipTexture),
-			0.5f
-		);
-		spriteBatch->End();
+		// ボタンの描画
+		for (auto& button : m_buttons)
+		{
+			button->Render();
+		}
 	}
 
 	spriteBatch->Begin();

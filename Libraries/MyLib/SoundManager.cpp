@@ -1,7 +1,7 @@
-/*
-	@file	SoundManager.cpp
-	@brief	サウンド管理クラス
-*/
+/**
+ * @file   SoundManager.cpp
+ * @brief  サウンド管理クラス
+ */
 #include "pch.h"
 #include "Libraries/MyLib/SoundManager.h"
 
