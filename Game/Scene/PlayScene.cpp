@@ -180,21 +180,26 @@ void PlayScene::Update(float elapsedTime)
 	{
 		if (!enemy->GetDead()) { m_surviveEnemyTank++; }
 	}
-	// プレイヤー
-	if (m_player->GetDead())
-	{ 
-		// 進行管理マネージャーに生存している敵戦車の数を渡す
-		m_progressionManager->SetTankCount(m_surviveEnemyTank);
-		// デスカメラに変更
-		m_cameraType = CameraType::DEATH; 
-		m_player->GetTank()->GetCannon()->SetDisplaySight(false);
-		// 生存している敵戦車が残り1台なら終了
-		if(m_surviveEnemyTank == 1) { m_fade->FadeIn(); }
-	}
-	else if (m_surviveEnemyTank == 0)
+	// 進行管理マネージャーに生存している敵戦車の数を渡す
+	m_progressionManager->SetTankCount(m_surviveEnemyTank);
+
+	// 残っている敵戦車がいないなら
+	if (m_surviveEnemyTank == 0)
 	{
 		// 生存している敵戦車がいないならクリア
 		m_fade->FadeIn();
+	}
+
+	// プレイヤーがやられた場合の処理
+	if (m_player->GetDead())
+	{ 
+		// デスカメラに変更
+		m_cameraType = CameraType::DEATH; 
+		m_player->GetTank()->GetCannon()->SetDisplaySight(false);
+		// プレイヤーがやられた情報を進行管理マネージャーに伝える
+		m_progressionManager->PlayerBreak();
+		// 生存している敵戦車が残り1台なら終了
+		if(m_surviveEnemyTank == 1) { m_fade->FadeIn(); }
 	}
 
 	// デスカメラの場合の処理
@@ -417,7 +422,7 @@ void PlayScene::CreateObjects()
 		m_stageManager->GetWallGimmick()
 	);
 	// 進行管理マネージャーに敵戦車情報の設定
-	m_progressionManager->Initialize(enemyTankPointers);
+	m_progressionManager->Initialize(enemyTankPointers,m_player.get());
 }
 
 /// <summary>
@@ -515,7 +520,7 @@ void PlayScene::DrawUi()
 	}
 
 	spriteBatch->Begin();
-	// 残り戦車の表示
+	// 残り戦車数の表示
 	spriteBatch->Draw(
 		Resources::GetInstance()->GetTankCountTexture(),
 		Vector2(Screen::CENTER_X + 420, Screen::CENTER_Y - 300),

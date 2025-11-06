@@ -74,7 +74,7 @@ private:
 	// オブジェクト
 	std::unique_ptr<PlayerTank> m_player;					// プレイヤー
 	std::vector<std::unique_ptr<EnemyTank>> m_enemies;		// 敵戦車(配列管理)
-	std::vector<ITank*> m_allTanks;					// 全戦車情報のマップ
+	std::vector<ITank*> m_allTanks;							// 全戦車情報のマップ
 
 	// マネージャー
 	std::unique_ptr<StageManager> m_stageManager;				// ステージマネージャー
