@@ -1,0 +1,71 @@
+{
+	"TURRET_ANGLE_MIN": -45,
+	"TURRET_ANGLE_MAX": 45,
+	"CANNON_ANGLE_MIN": -7.5,
+	"CANNON_ANGLE_MAX": 13,
+
+	"PLAYER_POSITION": {"x": -5.5,"y": 0.0,"z": 5.5},
+	"PLAYER_SPEED": 3.0,
+	"PLAYER_ROTATION_SPEED": 0.75,
+	"PLAYER_HP": 50,
+
+	"ENEMY_POSITIONS": [
+		{"x":  5.5,"y": 0.0,"z": -5.5},
+		{"x": -5.5,"y": 0.0,"z": -5.5},
+		{"x":  5.5,"y": 0.0,"z":  5.5}
+	],
+	"ENEMY_SPEED": 2.0,
+	"ENEMY_ROTATION_SPEED": 1.5,
+	"ENEMY_HP": 50,
+
+	"SHOT_INTERVAL": 0.15,
+
+	"BULLET_COUNT": 20,
+	"BULLET_RELOAD_TIME": 0.8,
+	"BULLET_SURVIVAL_TIME": 1.5,
+	"BULLET_SPEED": {"x": 0.0,"y": 0.0,"z": -15.0},
+	"BULLET_COLLIDER_RADIUS": 0.05,
+	"BULLET_DAMAGE": 1,
+	"BULLET_MAX_TRAIL": 7,
+	"BULLET_TRAIL_WIDTH": 0.015,
+
+	"CANNONBALL_RELOAD_TIME": 1.5,
+	"CANNONBALL_SURVIVAL_TIME": 5.0,
+	"CANNONBALL_SPEED": {"x": 0.0,"y": 0.0,"z": -10.0},
+	"CANNONBALL_GRAVITY": {"x": 0.0,"y": -5.0,"z": 0.0},
+	"CANNONBALL_COLLIDER_RADIUS": 0.125,
+	"CANNONBALL_DAMAGE": 10,
+	"CANNONBALL_MAX_TRAIL": 15,
+	"CANNONBALL_TRAIL_WIDTH": 0.15,
+
+	"WALL_SIZE": {"x": 1.0,"y": 2.0,"z": 1.0},
+
+	"SCOUT_RADIUS": 5.0,
+	"ATTACK_START_RADIUS": 4.0,
+	"ATTACK_FINISH_RADIUS": 20.0,
+
+	"FADE_SPEED": 2.0,
+
+	"MAX_RANGE": 4.0,
+
+	"DAMAGE_EFFECT_TIME": 1.0,
+
+	"PATROL_ROUTES": [
+		[
+			{"x": -5.5,"y": 0.0,"z": -5.5},
+			{"x":  3.0,"y": 0.0,"z":  5.5},
+			{"x":  5.5,"y": 0.0,"z": -5.5}
+		],
+		[
+			{"x":  3.0,"y": 0.0,"z":  5.5},
+			{"x":  5.5,"y": 0.0,"z": -5.5},
+			{"x": -5.5,"y": 0.0,"z": -5.5}
+		],
+		[
+			{"x": -5.5,"y": 0.0,"z":  5.5},
+			{"x": -5.5,"y": 0.0,"z": -5.5},
+			{"x":  5.5,"y": 0.0,"z": -5.5},
+			{"x":  5.5,"y": 0.0,"z":  5.5}
+		]
+	]
+}
